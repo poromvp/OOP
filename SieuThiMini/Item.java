@@ -7,7 +7,6 @@ public class Item {
         this.price = price;
     }
 
-    
     public String getName() {
         return name;
     }
@@ -24,4 +23,3 @@ public class Item {
         this.price = price;
     }
 }
-
