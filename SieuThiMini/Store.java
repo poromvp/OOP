@@ -1,10 +1,9 @@
-package SieuThiMini;
 public class Store {
     public String storeName, address, phoneNumber;
-    public Staff[] staffList;
-    public Product[] inventory;
-    public Transaction[] transactions;
-    public LoyaltyProgram[] loyaltyProgram;
+    public Staff[] staffList;                   // danh sách nhân viên
+    public Product[] inventory;                 // danh sách sản phẩm
+    public Transaction[] transactions;          // danh sách giao dịch
+    public LoyaltyProgram[] loyaltyProgram;     // danh sách khuyến mãi cho khách hàng thân thiết 
 
     public Store(){}
     public Store(String storeName, String address, String phoneNumber, Staff[] staffList, Product[] inventory,
@@ -60,10 +59,18 @@ public class Store {
         this.loyaltyProgram = loyaltyProgram;
     }
     
-    public void addStaff(Staff staff, int index){ //index là số lượng muốn thêm vào
-
+    public void addStaff(Staff staff, int index){ //index là vị trí muốn thêm vào
+        if (index >= 0 && index < staffList.length) {
+            staffList[index] = staff; 
+        } else {
+            System.out.println("Vi tri vuot qua kich thuoc mang");
+        }
     }
     public void addProduct(Product product, int index){
-        
+        if (index >= 0 && index < inventory.length) {
+            inventory[index] = product;
+        } else {
+            System.out.println("Vi tri vuot qua kich thuoc mang");
+        }
     }
 }

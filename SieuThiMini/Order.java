@@ -5,13 +5,14 @@ public class Order {
     public Product[] productList;
     public double totalAmount; //Tổng số tiền
     public Order(){}
-    public Order(int orderId, String orderDate, Customer customer, Product[] productList, double totalAmount) {
+    public Order(int orderId, String orderDate, Customer customer, int productCapacity) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customer = customer;
-        this.productList = productList;
-        this.totalAmount = totalAmount;
+        this.productList = new Product[productCapacity];
+        this.totalAmount = 0.0;
     }
+
     public int getOrderId() {
         return orderId;
     }
@@ -43,7 +44,23 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public void addProduct(Product product, int index){ //index là số lượng cần thêm
-
+    public void addProduct(Product product, int index) {
+        if (index >= 0 && index < productList.length) {
+            productList[index] = product;       // thêm sản phẩm vào vị trí index cụ thể
+            totalAmount += product.getPrice(); // Cập nhật tổng số tiền ngay khi thêm sản phẩm
+        } else {
+            System.out.println("Vi tri vuot qua kich thuoc mang");
+        }
     }
+
+    public double calculateTotalAmount() { //Tính tổng số tiền của sản phẩm
+        double total = 0.0;
+        for (Product product : productList) { // vòng lặp for each duyệt từng sản phẩm có kdl là Products
+            if (product != null) {
+                total += product.getPrice(); 
+            }
+        }
+        return total;
+    }
+    
 }
