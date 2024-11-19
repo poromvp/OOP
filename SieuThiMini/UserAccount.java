@@ -1,5 +1,5 @@
 public class UserAccount {
-    public String username, password, email, phoneNumber, role; //vai trò(admin, customer, staff)
+    public String username, password, email, phoneNumber, role; //role: vai trò(admin, customer, staff)
 
     public UserAccount(){}
     public UserAccount(String username, String password, String email, String phoneNumber, String role) {
@@ -7,7 +7,7 @@ public class UserAccount {
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.role = role;
+        this.role = role; 
     }
     public String getUsername() {
         return username;
@@ -41,12 +41,13 @@ public class UserAccount {
     }
     
     public boolean login(String username, String password){
-        return true;
+        return this.username.equals(username) && this.password.equals(password);
+        // So sánh trực tiếp
     }
     public void logout(){
-
+        //
     }
     public void resetPassword(String newPassword){
-        
+        this.password = newPassword; // gán mật khẩu mới vào mật khẩu cũ
     }
 }
