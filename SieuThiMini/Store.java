@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+
 public class Store {
     public String storeName, address, phoneNumber;
     public Staff[] staffList;                   // danh sách nhân viên
@@ -5,7 +10,27 @@ public class Store {
     public Transaction[] transactions;          // danh sách giao dịch
     public LoyaltyProgram[] loyaltyProgram;     // danh sách khuyến mãi cho khách hàng thân thiết 
 
-    public Store(){}
+    public Store(){
+        staffList=new Staff[3];
+        String filepath="dsnv.txt";
+        int i=0;
+        try (BufferedReader br= new BufferedReader(new FileReader(filepath))){
+            String Line;
+            while ((Line= br.readLine())!=null){
+                staffList[i] = new Staff();
+                String [] parts= Line.split(" ");
+                staffList[i].setStaffID(parts[0]);
+                staffList[i].setName(parts[1] +" "+ parts[2]+ " "+ parts[3]);
+                staffList[i].setSalary(Integer.parseInt(parts[4]));
+                staffList[i].setRole(parts[5]);
+                i++;
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
     public Store(String storeName, String address, String phoneNumber, Staff[] staffList, Product[] inventory,
         Transaction[] transactions, LoyaltyProgram[] loyaltyProgram) {
         this.storeName = storeName;
@@ -14,7 +39,7 @@ public class Store {
         this.staffList = staffList;
         this.inventory = inventory;
         this.transactions = transactions;
-        this.loyaltyProgram = loyaltyProgram;
+        this.loyaltyProgram = loyaltyProgram; 
     }
     public String getStoreName() {
         return storeName;
@@ -59,13 +84,26 @@ public class Store {
         this.loyaltyProgram = loyaltyProgram;
     }
     
-    public void addStaff(Staff staff, int index){ //index là vị trí muốn thêm vào
+    public void addStaff(int index){ //index là vị trí muốn thêm vào
         if (index >= 0 && index < staffList.length) {
-            staffList[index] = staff; 
+            Staff staff=new Staff();
+            staffList=Arrays.copyOf(staffList, staffList.length+1);
+            for(int i=staffList.length-1;i>index;i--) {
+               staffList[i]=staffList[i-1];
+            }
+            staffList[index]=staff;
+            staff.inputStaff();
         } else {
             System.out.println("Vi tri vuot qua kich thuoc mang");
+        } 
+    }
+
+    public void xuatStaff(){
+        for(int i=0;i<staffList.length;i++){
+            staffList[i].displayStaffInfo();
         }
     }
+
     public void addProduct(Product product, int index){
         if (index >= 0 && index < inventory.length) {
             inventory[index] = product;
