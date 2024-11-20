@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Staff {
+public class  Staff {
     protected String StaffID;
     protected String Name;
     protected String Role;
