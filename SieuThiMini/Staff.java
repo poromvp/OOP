@@ -1,12 +1,14 @@
 import java.io.BufferedReader; 
 import java.io.FileReader; 
 import java.io.IOException;
+import java.util.Scanner;
 
-public abstract class Staff implements QLFile {
-    protected int StaffID;
+
+public class Staff {
+    protected String StaffID;
     protected String Name;
     protected String Role;
-    protected double Salary;
+    protected int Salary; 
     protected String ContactNum;
 
     
@@ -70,16 +72,31 @@ public abstract class Staff implements QLFile {
         System.out.println("So dien thoai"+ContactNum);
     }
 
-    @Override
-    public abstract void writeToFile(String filePath);
-    public abstract void readFromFile(String filePath);
+  
+    public void inputStaff() {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.print("Enter Staff ID: ");
+        StaffID = scanner.nextLine();
+
+        System.out.print("Enter Name: ");
+        Name = scanner.nextLine();
+
+        System.out.print("Enter Role: ");
+        Role = scanner.nextLine();
+
+        System.out.print("Enter Salary: ");
+        Salary = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter Contact Number: ");
+        ContactNum = scanner.nextLine();
+    }
+
+    public void displayStaffInfo() {
+        System.out.println("Staff ID: " + StaffID);
+        System.out.println("Name: " + Name);
+        System.out.println("Role: " + Role);
+        System.out.println("Salary: " + Salary);
+        System.out.println("Contact Number: " + ContactNum);
+        System.out.println("--------------------------");
+    }
 }
-    
-
-
-
-    
-
-
-
