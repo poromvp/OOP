@@ -4,6 +4,7 @@ public class Order {
     public Customer customer;
     public Product[] productList;
     public double totalAmount; //Tổng số tiền
+    private static final double VAT=0.1; //Thuế VAT 10%
     public Order(){}
     public Order(int orderId, String orderDate, Customer customer, int productCapacity) {
         this.orderId = orderId;
@@ -42,6 +43,10 @@ public class Order {
     }
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public static double calculateVAT(double amount) {
+        return amount * VAT;
     }
 
     public void addProduct(Product product, int index) {

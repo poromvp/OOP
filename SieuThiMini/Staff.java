@@ -13,7 +13,7 @@ public class Staff {
 
     
 
-    public Staff(int staffID, String name, String role, double salary, String contactNum) {
+    public Staff(String staffID, String name, String role, int salary, String contactNum) {
         StaffID = staffID;
         Name = name;
         Role = role;
@@ -24,11 +24,11 @@ public class Staff {
     public Staff() {
     }
 
-    public int getStaffID() {
+    public String getStaffID() {
         return StaffID;
     }
 
-    public void setStaffID(int staffID) {
+    public void setStaffID(String staffID) {
         StaffID = staffID;
     }
 
@@ -52,7 +52,7 @@ public class Staff {
         return Salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(int salary) {
         Salary = salary;
     }
 

@@ -9,10 +9,21 @@ public class Store {
     public Product[] inventory;                 // danh sách sản phẩm
     public Transaction[] transactions;          // danh sách giao dịch
     public LoyaltyProgram[] loyaltyProgram;     // danh sách khuyến mãi cho khách hàng thân thiết 
-
     public Store(){
-        staffList=new Staff[3];
         String filepath="dsnv.txt";
+        int n=0;
+        try (BufferedReader br= new BufferedReader(new FileReader(filepath))){
+            String Line;
+            while ((Line= br.readLine())!=null){
+                n++;
+            }
+            br.close();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        staffList=new Staff[n];
         int i=0;
         try (BufferedReader br= new BufferedReader(new FileReader(filepath))){
             String Line;
@@ -25,6 +36,7 @@ public class Store {
                 staffList[i].setRole(parts[5]);
                 i++;
             }
+            br.close();
 
         } catch (IOException e){
             e.printStackTrace();
@@ -84,6 +96,8 @@ public class Store {
         this.loyaltyProgram = loyaltyProgram;
     }
     
+
+    /* các thao tác với staffList START */
     public void addStaff(int index){ //index là vị trí muốn thêm vào
         if (index >= 0 && index < staffList.length) {
             Staff staff=new Staff();
@@ -111,4 +125,6 @@ public class Store {
             System.out.println("Vi tri vuot qua kich thuoc mang");
         }
     }
+    /* các thao tác với staffList END */
+
 }
