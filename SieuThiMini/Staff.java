@@ -3,15 +3,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class  Staff {
+
+public class Staff {
     protected String StaffID;
     protected String Name;
     protected String Role;
     protected int Salary; 
     protected String ContactNum;
 
-    public Staff() {
-    }
+    
 
     public Staff(String staffID, String name, String role, int salary, String contactNum) {
         StaffID = staffID;
@@ -19,6 +19,9 @@ public class  Staff {
         Role = role;
         Salary = salary;
         ContactNum = contactNum;
+    }
+
+    public Staff() {
     }
 
     public String getStaffID() {
@@ -45,7 +48,7 @@ public class  Staff {
         Role = role;
     }
 
-    public int getSalary() {
+    public double getSalary() {
         return Salary;
     }
 
@@ -61,26 +64,15 @@ public class  Staff {
         ContactNum = contactNum;
     }
 
-    
-    public void GetDetail (){
-        String filepath="dsnv.txt";
-        try (BufferedReader br= new BufferedReader(new FileReader(filepath))){
-            String Line;
-            while ((Line= br.readLine())!=null){
-                String [] parts= Line.split(" ");
-                StaffID = parts[0];
-                Name = parts[1] +" "+ parts[2]+ " "+ parts[3];
-                Salary= Integer.parseInt(parts[4]);
-                Role = parts[5];
-            }
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
+    public void getdetail(){
+        System.out.println("Ma nhan vien: "+ StaffID);
+        System.out.println("Ho ten nhan vien: "+Name);
+        System.out.println("Luong: "+ Salary);
+        System.out.println("Vai tro: "+Role);
+        System.out.println("So dien thoai"+ContactNum);
     }
-   
 
+  
     public void inputStaff() {
         Scanner scanner = new Scanner(System.in);
 
@@ -95,7 +87,6 @@ public class  Staff {
 
         System.out.print("Enter Salary: ");
         Salary = Integer.parseInt(scanner.nextLine());
-
         System.out.print("Enter Contact Number: ");
         ContactNum = scanner.nextLine();
     }

@@ -3,32 +3,33 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringBufferInputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.BufferedReader;
 public class Department extends Staff {
     protected String departmentID;
     protected String departmentName;
-    protected Staff[] StaffList;
+    protected String StaffName;
 
-    public Department(String departmentID, String departmentName, Staff[] staffList) {
-        this.departmentID = departmentID;
-        this.departmentName = departmentName;
-        StaffList = staffList;
-    }
-
-    public Department(String staffID, String name, String role, int salary, String contactNum, String departmentID,
-            String departmentName, Staff[] staffList) {
+    public Department(int staffID, String name, String role, double salary, String contactNum) {
         super(staffID, name, role, salary, contactNum);
-        this.departmentID = departmentID;
-        this.departmentName = departmentName;
-        StaffList = staffList;
     }
 
     public Department() {
     }
 
-    public Department(String staffID, String name, String role, int salary, String contactNum) {
+    public Department(int staffID, String name, String role, double salary, String contactNum, String departmentID,
+            String departmentName, String staffName) {
         super(staffID, name, role, salary, contactNum);
+        this.departmentID = departmentID;
+        this.departmentName = departmentName;
+        StaffName = staffName;
+    }
+
+    public Department(String departmentID, String departmentName, String staffName) {
+        this.departmentID = departmentID;
+        this.departmentName = departmentName;
+        StaffName = staffName;
     }
 
     public String getDepartmentID() {
@@ -47,32 +48,65 @@ public class Department extends Staff {
         this.departmentName = departmentName;
     }
 
-    public Staff[] getStaffList() {
-        return StaffList;
+    public String getStaffName() {
+        return StaffName;
+    }
+    public void setStaffName(String staffName) {
+        StaffName = staffName;
     }
 
-    public void setStaffList(Staff[] staffList) {
-        StaffList = staffList;
+    @Override 
+    public void readFromFile(String filepath){
+        filepath="DepartmentStaffList.txt";
+         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+            String line;
+
+            while ((line = reader.readLine()) != null ) {
+                String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
+
+                if (parts.length >= 3) {
+                    // Lấy các trường từ mảng parts
+                    departmentID = parts[0];
+                    departmentName = parts [1];
+                    StaffName = String.join(" ", Arrays.copyOfRange(parts, 3, parts.length - 1));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi khi đọc file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Lỗi khi phân tích dữ liệu: " + e.getMessage());
+        }
     }
     
-    public void addStaff (Staff[] Stafflist){
+    //them nhan vien vao trong danh sach department
+    public void writeToFile(String filepath){
+        filepath="DepartmentStaffList.txt";
         Scanner sc= new Scanner(System.in);
-        String filepath ="dsnv.txt";
+        System.out.print("Nhap ma phong ban ban muon them vao(SER, MAN, SAL): ");
+        String departID=sc.nextLine();
+        while(!departID.equals("SER")||!departID.equals("MAN")||!departID.equals("SAL")){
+            System.out.print("nhap sai !!! xin nhap lai: ");
+            departID = sc.nextLine();
+        }
 
-        System.out.print("Nhap ma cho nhan vien moi: ");
-        String ID=sc.nextLine();
+        String departName; 
 
-        System.out.println("Nhap ho ten nhan vien moi: ");
-        String Ten=sc.nextLine();
+        if(departID.equals("SER")){
+             departName = "SERVER";
+        }
+        else if(departID.equals("MAN")){
+             departName="Manage";
+        } else {
+             departName="SAL";
+        }
 
-        String Luong="25000";
+        System.out.print("nhap ho ten nhan vien muon them vao phong ban: ");
+        String newName = sc.nextLine();
 
-        System.out.println("Nhap vi tri ban muon dua vao: ");
-        String role =  sc.nextLine();
+        String newdepart = departID + " " + departName + " " + newName;
 
-        String newStaff= ID + " " + Ten + " " + Luong + " " + role; 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath, true))){
-            bw.write(newStaff);
+            bw.write(newdepart);
             bw.newLine();
             bw.close();
 
@@ -82,17 +116,18 @@ public class Department extends Staff {
         } 
     }
 
-    public void removeStaff (String Staff[]){
+    public void removeStaffFromDepartment(){
         Scanner sc= new Scanner(System.in);
-        System.out.print("Nhap ma nhan vien ban muon xoa: ");
-        String IDremove = sc.nextLine();
-        String filepath= "dsnv.txt";
+        System.out.print("Nhap ho ten nhan vien ban muon xoa: ");
+        String NameRemove = sc.nextLine();
+        String filepath= "DepartmentStaffList.txt";
         StringBuilder content = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader( new FileReader(filepath))){
             String line;
             while ((line= br.readLine())!=null){
-                if(!line.startsWith(IDremove)){
+                String[] parts = line.split(" ");
+                if(NameRemove==String.join(" ", Arrays.copyOfRange(parts, 3, parts.length - 1))){
                     content.append(line).append(System.lineSeparator());            // đọc file và lưu lại các dòng không chứa mã nhân viên cần xoá;
                 }
             }
@@ -106,7 +141,7 @@ public class Department extends Staff {
             e.printStackTrace();
         }
     }
+}
 
     
-    
-}
+
