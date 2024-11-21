@@ -1,12 +1,15 @@
-public class Order {
-    public int orderId;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+public class Order{
+    public String orderId;
     public String orderDate;
     public Customer customer;
     public Product[] productList;
     public double totalAmount; //Tổng số tiền
     private static final double VAT=0.1; //Thuế VAT 10%
     public Order(){}
-    public Order(int orderId, String orderDate, Customer customer, int productCapacity) {
+    public Order(String orderId, String orderDate, Customer customer, int productCapacity) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customer = customer;
@@ -14,10 +17,10 @@ public class Order {
         this.totalAmount = 0.0;
     }
 
-    public int getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
-    public void setOrderId(int orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
     public String getOrderDate() {
@@ -48,7 +51,7 @@ public class Order {
     public static double calculateVAT(double amount) {
         return amount * VAT;
     }
-
+ 
     public void addProduct(Product product, int index) {
         if (index >= 0 && index < productList.length) {
             productList[index] = product;       // thêm sản phẩm vào vị trí index cụ thể
@@ -68,4 +71,34 @@ public class Order {
         return total;
     }
     
+    public void displayOrderDetails() {
+        System.out.println("===== Order Details =====");
+        System.out.println("Order ID: " + orderId);
+        System.out.println("Order Date: " + orderDate);
+        /*System.out.println("Customer Information: ");
+        if (customer != null) {
+            customer.displayCustomerDetails(); // Gọi phương thức hiển thị thông tin khách hàng
+        } else {
+            System.out.println("No customer information available.");
+        }
+        
+        System.out.println("Product List:");
+        if (productList != null && productList.length > 0) {
+            for (int i = 0; i < productList.length; i++) {
+                if (productList[i] != null) {
+                    System.out.println((i + 1) + ". " + productList[i].getProductName() + " - Price: $" + productList[i].getPrice());
+                } else {
+                    System.out.println((i + 1) + ". No product in this slot.");
+                }
+            }
+        } else {
+            System.out.println("No products in the order.");
+        }
+        
+        System.out.println("Total Amount Before VAT: $" + calculateTotalAmount());
+        System.out.println("VAT (10%): $" + calculateVAT(calculateTotalAmount()));
+        System.out.println("Total Amount After VAT: $" + (calculateTotalAmount() + calculateVAT(calculateTotalAmount())));
+        System.out.println("==========================");
+        */
+    }
 }

@@ -2,74 +2,23 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-
-public class Store {
-    public String storeName, address, phoneNumber;
+public class Store implements QLFile{
     public Staff[] staffList;                   // danh sách nhân viên
     public Product[] inventory;                 // danh sách sản phẩm
     public Transaction[] transactions;          // danh sách giao dịch
     public LoyaltyProgram[] loyaltyProgram;     // danh sách khuyến mãi cho khách hàng thân thiết 
+    public Order[] orderList;                   // danh sách đơn hàng
     public Store(){
+
         String filepath="dsnv.txt";
-        int n=0;
-        try (BufferedReader br= new BufferedReader(new FileReader(filepath))){
-            String Line;
-            while ((Line= br.readLine())!=null){
-                n++;
-            }
-            br.close();
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-        staffList=new Staff[n];
-        int i=0;
-        try (BufferedReader br= new BufferedReader(new FileReader(filepath))){
-            String Line;
-            while ((Line= br.readLine())!=null){
-                staffList[i] = new Staff();
-                String [] parts= Line.split(" ");
-                staffList[i].setStaffID(parts[0]);
-                staffList[i].setName(parts[1] +" "+ parts[2]+ " "+ parts[3]);
-                staffList[i].setSalary(Integer.parseInt(parts[4]));
-                staffList[i].setRole(parts[5]);
-                i++;
-            }
-            br.close();
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
+        readFromFile(filepath);
     }
-    public Store(String storeName, String address, String phoneNumber, Staff[] staffList, Product[] inventory,
+    public Store(Staff[] staffList, Product[] inventory,
         Transaction[] transactions, LoyaltyProgram[] loyaltyProgram) {
-        this.storeName = storeName;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
         this.staffList = staffList;
         this.inventory = inventory;
         this.transactions = transactions;
         this.loyaltyProgram = loyaltyProgram; 
-    }
-    public String getStoreName() {
-        return storeName;
-    }
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
     public Staff[] getStaffList() {
         return staffList;
@@ -127,4 +76,78 @@ public class Store {
     }
     /* các thao tác với staffList END */
 
+    /* các thao tác cho đơn đặt hàng START*/
+    public void xuatOrder(){
+        for(int i=0;i<orderList.length;i++){
+            orderList[i].displayOrderDetails();
+        }
+    }
+    /* các thao tác cho đơn đặt hàng END*/
+
+    @Override
+    public void readFromFile(String filePath){
+        int n=0;
+        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
+            String Line;
+            while ((Line= br.readLine())!=null){
+                n++;
+            }
+            br.close();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        staffList=new Staff[n];
+        int i=0;
+        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
+            String Line;
+            while ((Line= br.readLine())!=null){
+                staffList[i] = new Staff();
+                String [] parts= Line.split(" ");
+                staffList[i].setStaffID(parts[0]);
+                staffList[i].setName(parts[1] +" "+ parts[2]+ " "+ parts[3]);
+                staffList[i].setSalary(Integer.parseInt(parts[4]));
+                staffList[i].setRole(parts[5]);
+                i++;
+            }
+            br.close();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        n=0;
+        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
+            String Line;
+            while ((Line= br.readLine())!=null){
+                n++;
+            }
+            br.close();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        orderList=new Order[n+1];
+        i=0;
+        try (BufferedReader br= new BufferedReader(new FileReader("donhang.txt"))){
+            String Line;
+            while ((Line=br.readLine())!=null){
+                orderList[i] = new Order();
+                String [] parts= Line.split(";");
+                orderList[i].setOrderId(parts[0]);
+                orderList[i].setOrderDate(parts[1]);
+                i++;
+            }
+            br.close();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void writeToFile(String filePath){
+        System.out.println();
+    }
 }
