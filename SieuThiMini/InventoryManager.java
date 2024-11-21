@@ -1,3 +1,4 @@
+package SieuThiMini;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -76,7 +77,7 @@ public class InventoryManager extends Staff {
                 if (parts.length >= 3) {
                     // Lấy các trường từ mảng parts
                     String id = parts[0];
-                    String name = parts[0];
+                    String name = parts[1];
                     productCount = Integer.parseInt(parts[3]);
                     products[i].setProductID(id);
                     products[i].setName(name);

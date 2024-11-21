@@ -1,3 +1,4 @@
+package SieuThiMini;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -66,9 +67,9 @@ public class Department extends Staff {
 
                 if (parts.length >= 3) {
                     // Lấy các trường từ mảng parts
-                    departmentID = parts[0];
-                    departmentName = parts [1];
-                    StaffName = String.join(" ", Arrays.copyOfRange(parts, 3, parts.length - 1));
+                    departmentID = parts[0];    // phần tử đầu là mã phòng ban
+                    departmentName = parts [1]; // phần tử thứ hai là tên phòng ban
+                    StaffName = String.join(" ", Arrays.copyOfRange(parts, 3, parts.length - 1)); // từ phần tử thứ 3 trở đi là tên nhân viên thuộc phòng ban đó
                 }
             }
         } catch (IOException e) {

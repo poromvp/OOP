@@ -1,3 +1,4 @@
+package SieuThiMini;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -59,7 +60,7 @@ public class Cashier extends Staff {
                 while(parts.length >= 2){
                     cashCounterNum = parts[0]; // phần tử đầu tiên là quầy nhân viên sẽ đứng làm việc
                     shiftTiming = parts[1];     //phần tử thứ hai là ca làm việc của nhân viên đó
-                    this.setName(String.join(" ", Arrays.copyOfRange(parts, 2, parts.length - 1))); // phần tử cuối cùng là  tên nhân viên 
+                    this.setName(String.join(" ", Arrays.copyOfRange(parts, 2, parts.length - 1))); // từ phần tử thứ 3 trở đi là tên nhân viên 
                 }
             }
         }catch (IOException e){
