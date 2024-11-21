@@ -6,41 +6,45 @@ public class Transaction {
     private double totalAmount;
     private Item[] items;
     private int itemCount;
-
+    private double customerPaid;
     public Transaction(int id, Date date) {
         this.id = id;
         this.date = date;
         this.totalAmount = 0.0;
         this.items = new Item[100];
         this.itemCount = 0;
+        this.customerPaid = 0.0;
     }
 
     public void addItem(Item item) {
         if (itemCount < items.length) {
             items[itemCount++] = item;
-            totalAmount += item.getPrice();
+            totalAmount += item.getTotalPrice();
         } else {
-            System.out.println("Can't add more items.");
+            System.out.println("Không thể thêm sản phẩm: Đã đạt giới hạn.");
         }
     }
 
-    public void removeItem(Item item) {
-        for (int i = 0; i < itemCount; i++) {
-            if (items[i].equals(item)) {
-                totalAmount -= items[i].getPrice();
-                // Shift items to fill the gap
-                for (int j = i; j < itemCount - 1; j++) {
-                    items[j] = items[j + 1];
-                }
-                items[--itemCount] = null;
-                break;
-            }
-        }
+
+    public void setCustomerPaid(double customerPaid) {
+        this.customerPaid = customerPaid;
     }
+
+
+    public double getCustomerPaid() {
+        return customerPaid;
+    }
+
+
+    public double getChange() {
+        return customerPaid - totalAmount;
+    }
+
 
     public double getTotal() {
         return totalAmount;
     }
+
 
     public int getId() {
         return id;
@@ -50,6 +54,7 @@ public class Transaction {
         this.id = id;
     }
 
+
     public Date getDate() {
         return date;
     }
@@ -57,6 +62,7 @@ public class Transaction {
     public void setDate(Date date) {
         this.date = date;
     }
+
 
     public Item[] getItems() {
         Item[] currentItems = new Item[itemCount];
@@ -67,9 +73,9 @@ public class Transaction {
     public void setItems(Item[] items) {
         this.items = items;
         this.itemCount = items.length;
-        this.totalAmount = 0;
+        this.totalAmount = 0.0;
         for (Item item : items) {
-            this.totalAmount += item.getPrice();
+            this.totalAmount += item.getTotalPrice();
         }
     }
 }

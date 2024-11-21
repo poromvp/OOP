@@ -1,4 +1,5 @@
-
+import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 
 public class Receipt {
     private int receiptId;
@@ -10,17 +11,37 @@ public class Receipt {
     }
 
     public void print() {
-        System.out.println("Receipt ID: " + receiptId);
-        System.out.println("Transaction ID: " + transaction.getId());
-        System.out.println("Date: " + transaction.getDate());
-        System.out.println("Items:");
-        Item[] items = transaction.getItems();
-        for (int i = 0; i < items.length; i++) {
-            System.out.println(" - " + items[i].getName() + ": đ" + items[i].getPrice());
-        }
-        System.out.println("Total Amount: đ" + transaction.getTotal());
-    }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DecimalFormat df = new DecimalFormat("#,###");
 
+        System.out.println("========================================");
+        System.out.println("             SIÊU THỊ MINI              ");
+        System.out.println("            HÓA ĐƠN BÁN HÀNG            ");
+        System.out.println("========================================");
+        System.out.println(String.format("Mã Hóa Đơn: %d", receiptId));
+        System.out.println(String.format("Mã Giao Dịch: %d", transaction.getId()));
+        System.out.println(String.format("Thời Gian: %s", sdf.format(transaction.getDate())));
+        System.out.println("----------------------------------------");
+        System.out.println(String.format("%-20s %5s %10s %10s", "Tên Sản Phẩm", "SL", "Đơn Giá", "Thành Tiền"));
+        System.out.println("----------------------------------------");
+
+        Item[] items = transaction.getItems();
+        for (Item item : items) {
+            System.out.println(String.format("%-20s %5d %10s %10s",
+                    item.getName(),
+                    item.getQuantity(),
+                    df.format(item.getPrice()),
+                    df.format(item.getTotalPrice())));
+        }
+
+        System.out.println("----------------------------------------");
+        System.out.println(String.format("%-30s %10s", "TỔNG CỘNG:", df.format(transaction.getTotal())));
+        System.out.println(String.format("%-30s %10s", "SỐ TIỀN KHÁCH ĐƯA:", df.format(transaction.getCustomerPaid())));
+        System.out.println(String.format("%-30s %10s", "TIỀN TRẢ LẠI:", df.format(transaction.getChange())));
+        System.out.println("========================================");
+        System.out.println("    CẢM ƠN QUÝ KHÁCH! HẸN GẶP LẠI!     ");
+        System.out.println("========================================");
+    }
     public int getReceiptId() {
         return receiptId;
     }
