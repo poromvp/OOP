@@ -1,3 +1,4 @@
+package SieuThiMini;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -42,7 +43,7 @@ public class Manager extends Staff {
             String line;
 
             while ((line = reader.readLine()) != null ) {
-                String[] parts = line.split("\\s+"); // Tách các từ bằng khoảng trắng
+                String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
 
                 if (parts.length >= 6) {
                     // Lấy các trường từ mảng parts
