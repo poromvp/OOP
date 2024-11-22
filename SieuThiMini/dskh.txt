@@ -1,0 +1,11 @@
+Danh sách khách hàng:
+ID: 1000, Tên: Nguyen Thi Mai, Số điện thoại: 0912345678, Điểm thưởng: 1234
+ID: 1001, Tên: Le Thanh Son, Số điện thoại: 0912345679, Điểm thưởng: 2345
+ID: 1002, Tên: Pham Minh Tuan, Số điện thoại: 0912345680, Điểm thưởng: 3456
+ID: 1003, Tên: Truong Thi Lan, Số điện thoại: 0912345681, Điểm thưởng: 4567
+ID: 1004, Tên: Hoang Minh Chau, Số điện thoại: 0912345682, Điểm thưởng: 5678
+ID: 1005, Tên: Nguyen Thanh Hieu, Số điện thoại: 0912345683, Điểm thưởng: 6789
+ID: 1006, Tên: Nguyen Thi Lan, Số điện thoại: 0912345684, Điểm thưởng: 7890
+ID: 1007, Tên: Pham Minh Phat, Số điện thoại: 0912345685, Điểm thưởng: 8901
+ID: 1008, Tên: Tran Thi Lan, Số điện thoại: 0912345686, Điểm thưởng: 1234
+ID: 1009, Tên: Le Thanh Tuan, Số điện thoại: 0912345687, Điểm thưởng: 2345

@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 public class Store implements QLFile{
     public Staff[] staffList;                   // danh sách nhân viên
     public Product[] inventory;                 // danh sách sản phẩm
@@ -79,6 +80,86 @@ public class Store implements QLFile{
     public void xuatOrder(){
         for(int i=0;i<orderList.length;i++){
             orderList[i].displayOrderDetails();
+        }
+    }
+
+    public void addOrder(){
+
+    }
+
+    public void editOrder(Scanner scanner){
+        System.out.print("Nhập mã đơn hàng cần chỉnh sửa: ");
+        String temp=scanner.nextLine();
+        boolean flag=false;
+        byte so_lan_thu=0;
+        do{
+            so_lan_thu++;
+            for(int i=0;i<orderList.length;i++){
+                if(orderList[i].orderId.equals(temp)){
+                    orderList[i].edit(scanner);
+                    flag=true;
+                    break;
+                }
+            }
+            if(!flag){
+                if(so_lan_thu>2){
+                    System.out.println("Bạn đã nhập sai quá nhiều lần. Đang thoát...");
+                    break;
+                }
+                System.out.println("Mã Đơn Hàng Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Chỉnh Sửa Không?\n 1.Có  0.Không");
+                byte choice=Byte.parseByte(scanner.nextLine());
+                if(choice==1){
+                    System.out.println("Vậy Hãy Nhập Lại Mã Đơn Hàng Chính Xác");
+                    System.out.print("--> ");
+                    temp=scanner.nextLine();
+                }
+                else{
+                    System.out.println("Đã thoát!");
+                    flag=true;
+                }
+            }
+        }while(flag!=true);
+    }
+
+    public void thongkeOrder(Scanner scanner){
+        System.out.println("\n--- LỌC ĐƠN HÀNG ---");
+        System.out.println("Nhập tiêu chí để lọc (nhấn Enter để bỏ qua tiêu chí):");
+
+        System.out.print("Ngày đặt hàng (yyyy-MM-dd): ");
+        String orderDate = scanner.nextLine();
+        if (orderDate.isEmpty()) orderDate = null;
+
+        System.out.print("Nhà cung cấp: ");
+        String suppli = scanner.nextLine();
+        if (suppli.isEmpty()) suppli = null;
+        
+        Order[] filteredOrders = new Order[orderList.length]; // Tạo mảng với kích thước tối đa là độ dài của mảng orders
+        int count = 0; // Biến đếm số đơn hàng thỏa mãn điều kiện
+
+        for (Order order : orderList) {
+            boolean matches = true; // Biến kiểm tra điều kiện
+
+            if (orderDate != null && !order.getOrderDate().equals(orderDate)) {
+                matches = false; // Kiểm tra ngày
+            }
+            if (suppli != null && !order.product.getSupplier().equalsIgnoreCase(suppli)) {
+                matches = false; // Kiểm tra tên khách hàng
+            }
+
+            if (matches) {
+                filteredOrders[count++] = order; // Thêm đơn hàng vào mảng
+            }
+    }
+        Order[] result=new Order[count];
+        result=Arrays.copyOf(filteredOrders, count);
+
+        if (result.length == 0) {
+            System.out.println("Không tìm thấy đơn hàng nào khớp với tiêu chí.");
+        } else {
+            System.out.println("Danh sách đơn hàng:");
+            for (Order order : result) {
+                order.displayOrderDetails();
+            }
         }
     }
     /* các thao tác cho ds đơn đặt hàng END*/

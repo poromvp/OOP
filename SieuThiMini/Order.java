@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Order{
     public String orderId;
     public String orderDate;
@@ -69,6 +72,63 @@ public class Order{
         }
         return total;
     }*/
+    public void edit(Scanner scanner){
+        int i=1;
+        do{
+            displayOrderDetails();
+            System.out.println("Ban muốn chỉnh sửa cái nào?");
+            System.out.println("1. Mã Đơn Hàng");
+            System.out.println("2. Ngày Lập Đơn Hàng");
+            System.out.println("3. Mã Sản Phẩm");
+            System.out.println("4. Tên Sản Phẩm");
+            System.out.println("5. Giá Tiền");
+            System.out.println("6. Loại Sản Phẩm");
+            System.out.println("7. Số lượng");
+            System.out.println("8. Nhà Cung Cấp");
+            System.out.println("0. Thoát và Lưu");
+            i=Byte.parseByte(scanner.nextLine());
+            switch (i) {
+                case 1:
+                    System.out.print("--> ");
+                    setOrderId(scanner.nextLine());
+                    break;
+                case 2:
+                    System.out.print("--> ");
+                    setOrderDate(scanner.nextLine());
+                    break;
+                case 3:
+                    System.out.print("--> ");
+                    product.setProductID(scanner.nextLine());
+                    break;
+                case 4:
+                    System.out.print("--> ");
+                    product.setName(scanner.nextLine());
+                    break;
+                case 5:
+                    System.out.print("--> ");
+                    product.setPrice(Integer.parseInt(scanner.nextLine()));
+                    break;
+                case 6:
+                    System.out.print("--> ");
+                    product.setCategory(scanner.nextLine());
+                    break;
+                case 7:
+                    System.out.print("--> ");
+                    product.setQuantity(Integer.parseInt(scanner.nextLine()));
+                    break;
+                case 8:
+                    System.out.print("--> ");
+                    product.setSupplier(scanner.nextLine());
+                    break;
+                case 0:
+                    System.out.println("Đã Cập Nhật Giá Trị Mới");
+                    break;
+                default:
+                    System.out.println("Lỗi, hãy nhập lại!");
+                    break;
+            }
+        }while(i!=0);
+    }
     
     public void displayOrderDetails() {
         System.out.println("===== Chi Tiet Don Hang =====");
@@ -76,5 +136,28 @@ public class Order{
         System.out.println("Order Date: " + orderDate);
         //System.out.println("Mã khách hàng: "+ customer);
         product.getDetails();     
+    }
+
+    public Order[] filtOrders(String orderDate, String suppli, Order[] orderList){
+        Order[] filteredOrders = new Order[orderList.length]; // Tạo mảng với kích thước tối đa là độ dài của mảng orders
+    int count = 0; // Biến đếm số đơn hàng thỏa mãn điều kiện
+
+    for (Order order : orderList) {
+        boolean matches = true; // Biến kiểm tra điều kiện
+
+        if (orderDate != null && !getOrderDate().equals(orderDate)) {
+            matches = false; // Kiểm tra ngày
+        }
+        if (suppli != null && !product.getSupplier().equalsIgnoreCase(suppli)) {
+            matches = false; // Kiểm tra tên khách hàng
+        }
+
+        if (matches) {
+            filteredOrders[count++] = order; // Thêm đơn hàng vào mảng
+        }
+    }
+        Order[] result=new Order[count];
+        result=Arrays.copyOf(filteredOrders, count);
+        return result;
     }
 }
