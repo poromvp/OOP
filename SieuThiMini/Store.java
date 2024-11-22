@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 public class Store implements QLFile{
     public Staff[] staffList;                   // danh sách nhân viên
     public Product[] inventory;                 // danh sách sản phẩm
@@ -80,6 +81,44 @@ public class Store implements QLFile{
         for(int i=0;i<orderList.length;i++){
             orderList[i].displayOrderDetails();
         }
+    }
+
+    public void addOrder(){
+
+    }
+
+    public void editOrder(Scanner scanner){
+        System.out.print("Nhập mã đơn hàng cần chỉnh sửa: ");
+        String temp=scanner.nextLine();
+        boolean flag=false;
+        byte so_lan_thu=0;
+        do{
+            so_lan_thu++;
+            for(int i=0;i<orderList.length;i++){
+                if(orderList[i].orderId.equals(temp)){
+                    orderList[i].edit(scanner);
+                    flag=true;
+                    break;
+                }
+            }
+            if(!flag){
+                if(so_lan_thu>2){
+                    System.out.println("Bạn đã nhập sai quá nhiều lần. Đang thoát...");
+                    break;
+                }
+                System.out.println("Mã Đơn Hàng Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Chỉnh Sửa Không?\n 1.Có  0.Không");
+                byte choice=Byte.parseByte(scanner.nextLine());
+                if(choice==1){
+                    System.out.println("Vậy Hãy Nhập Lại Mã Đơn Hàng Chính Xác");
+                    System.out.print("--> ");
+                    temp=scanner.nextLine();
+                }
+                else{
+                    System.out.println("Đã thoát!");
+                    flag=true;
+                }
+            }
+        }while(flag!=true);
     }
     /* các thao tác cho ds đơn đặt hàng END*/
 
