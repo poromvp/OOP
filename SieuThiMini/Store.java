@@ -109,6 +109,12 @@ public class Store implements QLFile{
                 String [] parts= Line.split(";");
                 orderList[i].setOrderId(parts[0]);
                 orderList[i].setOrderDate(parts[1]);
+                orderList[i].product.setProductID(parts[6]);
+                orderList[i].product.setName(parts[7]);
+                orderList[i].product.setPrice(Integer.parseInt(parts[8]));
+                orderList[i].product.setCategory(parts[9]);
+                orderList[i].product.setQuantity(Integer.parseInt(parts[10]));
+                orderList[i].product.setSupplier(parts[11]);
                 i++;
             }
             br.close();
