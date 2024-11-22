@@ -99,6 +99,6 @@ public class Product {
         System.out.println("Da dieu chinh gia thanh cong.");
     }
     public void getDetails(){
-        System.out.println(productID+" "+name+" "+price+" "+category+" "+quantity+" "+supplier );
+        System.out.printf("%-20s %-20s %-20d %-20s %-20d %-20s",productID,name,price,category,quantity,supplier);
     }
 }
