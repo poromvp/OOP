@@ -2,15 +2,17 @@ public class Order{
     public String orderId;
     public String orderDate;
     public Customer customer;
-    public Product[] productList;
+    public Product product;
     public double totalAmount; //Tổng số tiền
     private static final double VAT=0.1; //Thuế VAT 10%
-    public Order(){}
-    public Order(String orderId, String orderDate, Customer customer, int productCapacity) {
+    public Order(){
+        this.product = new Product();
+    }
+    public Order(String orderId, String orderDate, Customer customer, Product product) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customer = customer;
-        this.productList = new Product[productCapacity];
+        this.product=product;
         this.totalAmount = 0.0;
     }
 
@@ -32,11 +34,11 @@ public class Order{
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-    public Product[] getProductList() {
-        return productList;
+    public Product getProduct() {
+        return product;
     }
-    public void setProductList(Product[] productList) {
-        this.productList = productList;
+    public void setProductList(Product product) {
+        this.product = product;
     }
     public double getTotalAmount() {
         return totalAmount;
@@ -49,7 +51,7 @@ public class Order{
         return amount * VAT;
     }
  
-    public void addProduct(Product product, int index) {
+    /*public void addProduct(Product product, int index) {
         if (index >= 0 && index < productList.length) {
             productList[index] = product;       // thêm sản phẩm vào vị trí index cụ thể
             totalAmount += product.getPrice(); // Cập nhật tổng số tiền ngay khi thêm sản phẩm
@@ -66,36 +68,13 @@ public class Order{
             }
         }
         return total;
-    }
+    }*/
     
     public void displayOrderDetails() {
-        System.out.println("===== Order Details =====");
+        System.out.println("===== Chi Tiet Don Hang =====");
         System.out.println("Order ID: " + orderId);
         System.out.println("Order Date: " + orderDate);
-        /*System.out.println("Customer Information: ");
-        if (customer != null) {
-            customer.displayCustomerDetails(); // Gọi phương thức hiển thị thông tin khách hàng
-        } else {
-            System.out.println("No customer information available.");
-        }
-        
-        System.out.println("Product List:");
-        if (productList != null && productList.length > 0) {
-            for (int i = 0; i < productList.length; i++) {
-                if (productList[i] != null) {
-                    System.out.println((i + 1) + ". " + productList[i].getProductName() + " - Price: $" + productList[i].getPrice());
-                } else {
-                    System.out.println((i + 1) + ". No product in this slot.");
-                }
-            }
-        } else {
-            System.out.println("No products in the order.");
-        }
-        
-        System.out.println("Total Amount Before VAT: $" + calculateTotalAmount());
-        System.out.println("VAT (10%): $" + calculateVAT(calculateTotalAmount()));
-        System.out.println("Total Amount After VAT: $" + (calculateTotalAmount() + calculateVAT(calculateTotalAmount())));
-        System.out.println("==========================");
-        */
+        //System.out.println("Mã khách hàng: "+ customer);
+        product.getDetails();     
     }
 }
