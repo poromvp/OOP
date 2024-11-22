@@ -1,13 +1,22 @@
-package Do_An_OOp;
-
+import java.util.Date;
 public class Discount {
-    private int discountID;
-    private String name;
-    private String description;
-    private double discountPercentage;
-    private Date startDate;
-    private Date endDate;
-    
+    // Thuộc tính
+    private int discountID; // Mã chương trình khuyến mãi
+    private String name; // Tên chương trình khuyến mãi
+    private double discountPercentage; 
+    private Date startDate; // Ngày bắt đầu
+    private Date endDate; // Ngày kết thúc
+
+    // Constructor
+    public Discount(int discountID, String name, double discountPercentage, Date startDate, Date endDate) {
+        this.discountID = discountID;
+        this.name = name;
+        this.discountPercentage = discountPercentage;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    // Phương thức Getter và Setter
     public int getDiscountID() {
         return discountID;
     }
@@ -22,14 +31,6 @@ public class Discount {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public double getDiscountPercentage() {
@@ -56,15 +57,6 @@ public class Discount {
         this.endDate = endDate;
     }
 
-    public Discount() {
-
-    }
-
-    public double applyDiscount() {
-
-    }
-
-    public boolean checkValidity() {
-        
-    }
+  
+    
 }
