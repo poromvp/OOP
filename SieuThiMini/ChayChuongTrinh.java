@@ -137,6 +137,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s| %-2s %-35s |\n","", "4.", "Sửa ĐƠN HÀNG (theo mã)");
             System.out.printf("%-20s| %-2s %-35s |\n","", "5.", "Xóa ĐƠN HÀNG (theo mã)");
             System.out.printf("%-20s| %-2s %-35s |\n","", "6.", "Tìm kiếm ĐƠN HÀNG");
+            System.out.printf("%-20s| %-2s %-35s |\n","", "7.", "Thống kê ĐƠN HÀNG");
             System.out.printf("%-20s| %-2s %-35s |\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","|========================================|\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -152,6 +153,9 @@ public class ChayChuongTrinh {
                 case 4:
                     store.xuatOrder();
                     store.editOrder(scanner);
+                    break;
+                case 7:
+                    store.thongkeOrder(scanner);
                     break;
                 case 0:
                     System.out.println("Đã thoát");

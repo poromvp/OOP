@@ -120,6 +120,48 @@ public class Store implements QLFile{
             }
         }while(flag!=true);
     }
+
+    public void thongkeOrder(Scanner scanner){
+        System.out.println("\n--- LỌC ĐƠN HÀNG ---");
+        System.out.println("Nhập tiêu chí để lọc (nhấn Enter để bỏ qua tiêu chí):");
+
+        System.out.print("Ngày đặt hàng (yyyy-MM-dd): ");
+        String orderDate = scanner.nextLine();
+        if (orderDate.isEmpty()) orderDate = null;
+
+        System.out.print("Nhà cung cấp: ");
+        String suppli = scanner.nextLine();
+        if (suppli.isEmpty()) suppli = null;
+        
+        Order[] filteredOrders = new Order[orderList.length]; // Tạo mảng với kích thước tối đa là độ dài của mảng orders
+        int count = 0; // Biến đếm số đơn hàng thỏa mãn điều kiện
+
+        for (Order order : orderList) {
+            boolean matches = true; // Biến kiểm tra điều kiện
+
+            if (orderDate != null && !order.getOrderDate().equals(orderDate)) {
+                matches = false; // Kiểm tra ngày
+            }
+            if (suppli != null && !order.product.getSupplier().equalsIgnoreCase(suppli)) {
+                matches = false; // Kiểm tra tên khách hàng
+            }
+
+            if (matches) {
+                filteredOrders[count++] = order; // Thêm đơn hàng vào mảng
+            }
+    }
+        Order[] result=new Order[count];
+        result=Arrays.copyOf(filteredOrders, count);
+
+        if (result.length == 0) {
+            System.out.println("Không tìm thấy đơn hàng nào khớp với tiêu chí.");
+        } else {
+            System.out.println("Danh sách đơn hàng:");
+            for (Order order : result) {
+                order.displayOrderDetails();
+            }
+        }
+    }
     /* các thao tác cho ds đơn đặt hàng END*/
 
     @Override
