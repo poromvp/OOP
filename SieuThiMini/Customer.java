@@ -1,3 +1,5 @@
+
+
 // Lớp khách hàng
 public class Customer {
     // Thuộc tính

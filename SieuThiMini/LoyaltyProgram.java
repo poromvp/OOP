@@ -1,3 +1,5 @@
+
+
 public class LoyaltyProgram {
     // Thuộc tính
     private String programName;
