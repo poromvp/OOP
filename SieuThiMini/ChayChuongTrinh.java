@@ -144,16 +144,17 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Nhập tổng số tiền: ");
-                    double totalAmount = Double.parseDouble(scanner.nextLine());
-                    // Order order = new Order(totalAmount); // Tạo đơn hàng
-                    // store.addOrder(order);
-                    System.out.println("Đã thêm đơn hàng.");
+                    
                     break;
                 case 2:
                     store.xuatOrder();
                     break;
+                case 4:
+                    store.xuatOrder();
+                    store.editOrder(scanner);
+                    break;
                 case 0:
+                    System.out.println("Đã thoát");
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
