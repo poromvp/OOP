@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 public class Order{
     public String orderId;
     public String orderDate;

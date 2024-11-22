@@ -9,8 +9,7 @@ public class Store implements QLFile{
     public LoyaltyProgram[] loyaltyProgram;     // danh sách khuyến mãi cho khách hàng thân thiết 
     public Order[] orderList;                   // danh sách đơn hàng
     public Store(){
-
-        String filepath="dsnv.txt";
+        String filepath=null;
         readFromFile(filepath);
     }
     public Store(Staff[] staffList, Product[] inventory,
@@ -76,47 +75,19 @@ public class Store implements QLFile{
     }
     /* các thao tác với staffList END */
 
-    /* các thao tác cho đơn đặt hàng START*/
+    /* các thao tác cho ds đơn đặt hàng START*/
     public void xuatOrder(){
         for(int i=0;i<orderList.length;i++){
             orderList[i].displayOrderDetails();
         }
     }
-    /* các thao tác cho đơn đặt hàng END*/
+    /* các thao tác cho ds đơn đặt hàng END*/
 
     @Override
     public void readFromFile(String filePath){
-        int n=0;
-        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
-            String Line;
-            while ((Line= br.readLine())!=null){
-                n++;
-            }
-            br.close();
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-        staffList=new Staff[n];
-        int i=0;
-        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
-            String Line;
-            while ((Line= br.readLine())!=null){
-                staffList[i] = new Staff();
-                String [] parts= Line.split(" ");
-                staffList[i].setStaffID(parts[0]);
-                staffList[i].setName(parts[1] +" "+ parts[2]+ " "+ parts[3]);
-                staffList[i].setSalary(Integer.parseInt(parts[4]));
-                staffList[i].setRole(parts[5]);
-                i++;
-            }
-            br.close();
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
+        /* Tải danh sách đơn hàng - Kiệt */
+        filePath="C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\donhang.txt";
+        int i, n;
         n=0;
         try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
             String Line;
@@ -129,9 +100,9 @@ public class Store implements QLFile{
             e.printStackTrace();
         }
 
-        orderList=new Order[n+1];
+        orderList=new Order[n];
         i=0;
-        try (BufferedReader br= new BufferedReader(new FileReader("donhang.txt"))){
+        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
             String Line;
             while ((Line=br.readLine())!=null){
                 orderList[i] = new Order();
@@ -145,6 +116,7 @@ public class Store implements QLFile{
         } catch (IOException e){
             e.printStackTrace();
         }
+        /* Tải danh sách đơn hàng - Kiệt end */
     }
     @Override
     public void writeToFile(String filePath){
