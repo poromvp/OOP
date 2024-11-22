@@ -1,4 +1,3 @@
-package SieuThiMini;
 
 import java.util.Scanner;
 
