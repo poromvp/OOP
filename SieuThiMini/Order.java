@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Order{
@@ -135,5 +136,28 @@ public class Order{
         System.out.println("Order Date: " + orderDate);
         //System.out.println("Mã khách hàng: "+ customer);
         product.getDetails();     
+    }
+
+    public Order[] filtOrders(String orderDate, String suppli, Order[] orderList){
+        Order[] filteredOrders = new Order[orderList.length]; // Tạo mảng với kích thước tối đa là độ dài của mảng orders
+    int count = 0; // Biến đếm số đơn hàng thỏa mãn điều kiện
+
+    for (Order order : orderList) {
+        boolean matches = true; // Biến kiểm tra điều kiện
+
+        if (orderDate != null && !getOrderDate().equals(orderDate)) {
+            matches = false; // Kiểm tra ngày
+        }
+        if (suppli != null && !product.getSupplier().equalsIgnoreCase(suppli)) {
+            matches = false; // Kiểm tra tên khách hàng
+        }
+
+        if (matches) {
+            filteredOrders[count++] = order; // Thêm đơn hàng vào mảng
+        }
+    }
+        Order[] result=new Order[count];
+        result=Arrays.copyOf(filteredOrders, count);
+        return result;
     }
 }
