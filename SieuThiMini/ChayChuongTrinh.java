@@ -191,15 +191,17 @@ public class ChayChuongTrinh {
                         choice = Integer.parseInt(scanner.nextLine());
                         switch (choice) {
                             case 1:
-                            String filepath;
+                            String filepath = "dsnv.txt";
                             Staff Mana = new Manager();
                             Mana.readFromFile(filepath);
                             Mana.writeToFile(filepath);
                             break;
                             case 2: 
+                            filepath = "dsnv.txt";
                             Staff Manb = new Manager();
                             Manb.readFromFile(filepath);
                             ((Manager)Manb).removeStaff();
+                            break;
                             case 0:
                             break;
                             default:
@@ -217,15 +219,18 @@ public class ChayChuongTrinh {
                         choice = Integer.parseInt(scanner.nextLine());
                     switch (choice) {
                     case 1:
-                        String filepath;
+                        System.out.println("danh sach hien tai: ");
+                        String filepath = "DepartmentStaffList.txt";
                         Staff DepA = new Department();
                         DepA.readFromFile(filepath);
                         DepA.writeToFile(filepath);
                         break;
                     case 2: 
+                        filepath = "DepartmentStaffList.txt";
                         Staff DepB= new Department();
                         DepB.readFromFile(filepath);
                         ((Department)DepB).removeStaffFromDepartment();
+                        break;
                     case 0:
                         break;
                         default:
@@ -243,15 +248,17 @@ public class ChayChuongTrinh {
                         choice = Integer.parseInt(scanner.nextLine());
                     switch (choice) {
                     case 1:
-                        String filepath;
-                        Staff DepA = new Cashier();
-                        DepA.readFromFile(filepath);
-                        DepA.writeToFile(filepath);
+                        String filepath= "CashierList.txt";
+                        Staff CasA = new Cashier();
+                        CasA.readFromFile(filepath);
+                        CasA.writeToFile(filepath);
                         break;
                     case 2: 
-                        Staff DepB= new Cashier();
-                        DepB.readFromFile(filepath);
-                        ((Cashier)DepB).removeShift();
+                        filepath= "CashierList.txt";
+                        Staff CasB= new Cashier();
+                        CasB.readFromFile(filepath);
+                        ((Cashier)CasB).removeShift();
+                        break;
                     case 0:
                         break;
                         default:
@@ -277,12 +284,13 @@ public class ChayChuongTrinh {
                             choice = Integer.parseInt(scanner.nextLine());
                         switch (choice) {
                             case 1:
-                            String filepath;
+                            String filepath = "Inventory.txt";
                             Staff Ivenadd = new InventoryManager();
                             Ivenadd.readFromFile(filepath);
                             Ivenadd.writeToFile(filepath);
                             break;
                             case 2:
+                            filepath = "Inventory.txt";
                             Staff Ivenrev = new InventoryManager();
                             Ivenrev.readFromFile(filepath);
                             ((InventoryManager)Ivenrev).removeIvenProduct();
@@ -302,14 +310,15 @@ public class ChayChuongTrinh {
                             System.out.printf("%-20s| %-2s %-35s |\n","", "0.", "Thoát");
                             System.out.print("Lựa chọn của bạn: ");
                             choice = Integer.parseInt(scanner.nextLine());
-                        switch (choice) {
+                            switch (choice) {
                             case 1:
-                            String filepath;
+                            String filepath = "OrderInventory.txt";
                             Staff IvenOrderadd = new InventoryManager();
                             ((InventoryManager)IvenOrderadd).readFromFileOrder(filepath);
                             ((InventoryManager)IvenOrderadd).OrderInventory();
                             break;
                             case 2:
+                            filepath = "OrderInventory.txt";
                             Staff IvenOrderrev = new InventoryManager();
                             ((InventoryManager)IvenOrderrev).readFromFileOrder(filepath);
                             ((InventoryManager)IvenOrderrev).removeOrderProduct();
@@ -335,6 +344,7 @@ public class ChayChuongTrinh {
             }
         } while (choice != 0);
     }
+
 
 
     private static void manageReceipt(Scanner scanner, Store store) {
