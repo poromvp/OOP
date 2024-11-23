@@ -49,13 +49,13 @@ public class Store implements QLFile{
         }
     }
 
-    public void addOrder(Scanner scanner){
+    public void addOrder(Scanner scanner){ //thêm đơn hàng
         System.out.print("Bạn muốn thêm bao nhiêu đơn hàng ?: ");
         int n=Integer.parseInt(scanner.nextLine());
         orderList=Arrays.copyOf(orderList, orderList.length+n);
         for(int i=orderList.length-n;i<orderList.length;i++){
             orderList[i]=new Order();
-            System.out.print("Bao nhiêu sản phẩm ?: ");
+            System.out.print("Bao nhiêu sản phẩm ?: "); //bởi vì 1 đơn hàng có nhiều sản phẩm 
             orderList[i].product=new Product[Integer.parseInt(scanner.nextLine())];
             for(int j=0;j<orderList[i].product.length;j++){
                 orderList[i].product[j]=new Product();
@@ -64,7 +64,7 @@ public class Store implements QLFile{
         }
     }
 
-    public void removeOrder(Scanner scanner){
+    public void removeOrder(Scanner scanner){ //xóa đơn hàng theo mã
         System.out.print("Bạn muốn xóa đơn hàng nào ? (Nhập mã đơn hàng): ");
         boolean flag=false; //Tạo lính canh để kiểm tra nếu sau khi duyệt mà nó còn false thì sẽ cho nhập lại cho đúng
         do{
@@ -259,27 +259,31 @@ public class Store implements QLFile{
             Line=Line+"line"; // Để cho nó không hiện broblem isn't used nữa :)))
         } catch (IOException e){
             e.printStackTrace();
-        }
+        } //Đoạn này đọc số dòng để lưu số lượng đơn hàng có trong danh sách
 
         orderList=new Order[n];
         i=0;
         try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
             String Line;
+        //Cấu trúc của file gồm 3 thành phần: thông tin đơn hàng; thông tin khách hàng; thông tin sản phẩm
+        //trong thông tin khách hàng, mỗi thuộc tính cách nhau bằng 1 dấu ","
+        //trong thông tin sản phẩm, cũng cách nhau 1 dấu "," và do 1 đơn hàng có nhiều sản phẩm khác nhau
+        //nên trong 1 hóa đơn sẽ chứa 1 mảng các sản phẩm, các sản phẩm và gồm thông tin của nó cách nhau bằng 1 dấu "|"
             while ((Line=br.readLine())!=null){
                 orderList[i] = new Order();
                 String [] parts= Line.split(";");
                 orderList[i].setOrderId(parts[0]);
                 orderList[i].setOrderDate(parts[1]);
-                String[] customerParts = parts[2].split(",");
+                String[] customerParts = parts[2].split(","); //lưu các phần của khách hàng như id, tên, ...
                 orderList[i].customer.setCustomerID(Integer.parseInt(customerParts[0]));
                 orderList[i].customer.setLoyaltyPoints(Integer.parseInt(customerParts[1]));
                 orderList[i].customer.setName(customerParts[2]);
                 orderList[i].customer.setContactNumber(customerParts[3]);
-                String[] productParts = parts[3].split("\\|");
+                String[] productParts = parts[3].split("\\|"); // tách các sản phẩm cùng thông tin của nó ra
                 orderList[i].product=new Product[productParts.length];
                 for (int j = 0; j < productParts.length; j++) {
                     orderList[i].product[j]=new Product();
-                    String[] ThongTinProduct = productParts[j].split(",");
+                    String[] ThongTinProduct = productParts[j].split(",");//tác các phần của sản phẩm như id, tên,...
                     orderList[i].product[j].setProductID(ThongTinProduct[0]);
                     orderList[i].product[j].setName(ThongTinProduct[1]);
                     orderList[i].product[j].setPrice(Integer.parseInt(ThongTinProduct[2]));

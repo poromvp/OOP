@@ -1,14 +1,14 @@
 import java.util.Scanner;
 
 public class Order{
-    public String orderId;
-    public String orderDate;
-    public Customer customer;
-    public Product[] product;
+    public String orderId; //mã đơn hàng
+    public String orderDate; //ngày lập đơn hàng
+    public Customer customer; //khách hàng
+    public Product[] product;   //danh sách các sản phẩm
     public double totalAmount; //Tổng số tiền
     private static final double VAT=0.1; //Thuế VAT 10%
     public Order(){
-        customer=new Customer();
+        customer=new Customer(); //khởi tạo khách hàng cho hóa đơn
     }
     public Order(String orderId, String orderDate, Customer customer, Product[] product) {
         this.orderId = orderId;
@@ -52,15 +52,6 @@ public class Order{
     public static double calculateVAT(double amount) {
         return amount * VAT;
     }
- 
-    /*public void addProduct(Product product, int index) {
-        if (index >= 0 && index < productList.length) {
-            productList[index] = product;       // thêm sản phẩm vào vị trí index cụ thể
-            totalAmount += product.getPrice(); // Cập nhật tổng số tiền ngay khi thêm sản phẩm
-        } else {
-            System.out.println("Vi tri vuot qua kich thuoc mang");
-        }
-    }*/
 
     public double calculateTotalAmount() { //Tính tổng số tiền của sản phẩm
         double total = 0.0;
