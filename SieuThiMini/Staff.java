@@ -5,16 +5,17 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
-public class Staff {
+public class Staff implements QLFile{
     protected String StaffID;
     protected String Name;
     protected String Role;
-    protected int Salary; 
+    protected double Salary; 
     protected String ContactNum;
+    public Object removeStaff;
 
     
 
-    public Staff(String staffID, String name, String role, int salary, String contactNum) {
+    public Staff(String staffID, String name, String role, Double salary, String contactNum) {
         StaffID = staffID;
         Name = name;
         Role = role;
@@ -53,7 +54,7 @@ public class Staff {
         return Salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(double salary) {
         Salary = salary;
     }
 
@@ -100,4 +101,7 @@ public class Staff {
         System.out.println("Contact Number: " + ContactNum);
         System.out.println("--------------------------");
     }
+    @Override 
+    public void readFromFile(String path){};
+    public void writeToFile(String path){};
 }
