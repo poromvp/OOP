@@ -1,3 +1,5 @@
+
+
 public abstract class Payment {
     protected double amount;
 

@@ -19,7 +19,7 @@ public class InventoryManager extends Staff {
     }
 
     public InventoryManager(String staffID, String name, String role, Double salary, String contactNum,
-            Product[] ivenProducts, Product[] orderProducts, int productCount, int count) {
+                            Product[] ivenProducts, Product[] orderProducts, int productCount, int count) {
         super(staffID, name, role, salary, contactNum);
         IvenProducts = ivenProducts;
         OrderProducts = orderProducts;
@@ -93,6 +93,7 @@ public class InventoryManager extends Staff {
     //đọc dữ liệu từ file Inventory
     @Override
     public void readFromFile(String filepath){
+
         filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\Inventory.txt";
          try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
@@ -117,7 +118,6 @@ public class InventoryManager extends Staff {
                     IvenProducts[countA].setName(name);
                     IvenProducts[countA].setQuantity(productCount);
                 }
-                
                 System.out.printf("%-10s| %-12s| %-10s %n", 
                 IvenProducts[countA].getProductID(),IvenProducts[countA].getName(),IvenProducts[countA].getQuantity() );
                 countA++;
@@ -153,7 +153,6 @@ public class InventoryManager extends Staff {
                     OrderProducts[countB].setName(name);
                     OrderProducts[countB].setQuantity(productCount);
                 }
-                
                 System.out.printf("%-10s| %-12s| %-10s %n", 
                 OrderProducts[countB].getProductID(),OrderProducts[countB].getName(),OrderProducts[countB].getQuantity() );
                 countB++;
@@ -186,10 +185,10 @@ public class InventoryManager extends Staff {
         System.out.println("So luong ban them vao Kho: ");
         String SL=sc.nextLine();
 
-        String newInventory= productidString + " " + Name + " " + SL; 
+        String newInventory= productidString + " " + Name + " " + SL;
         try (
-            BufferedReader br = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(temp))
+                BufferedReader br = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(temp))
         ){
             String line;
             int currentLine = 0; // dòng đang thao tác hiện tại
@@ -197,16 +196,16 @@ public class InventoryManager extends Staff {
                 //chèn dòng mới vào vị trí mong muốn
                 if(currentLine==vitri-1){
                     bw.write(newInventory);
-                   bw.newLine();
+                    bw.newLine();
                 }
-               bw.write(line);
-               bw.newLine();
-               currentLine++;
+                bw.write(line);
+                bw.newLine();
+                currentLine++;
             }
             // nếu vị trí muốn thêm lớn hơn số dòng hiện có thì sẽ thêm mới một dòng ở cuối
             if (vitri >= currentLine){
-            bw.write(newInventory);
-            bw.newLine();
+                bw.write(newInventory);
+                bw.newLine();
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -224,7 +223,7 @@ public class InventoryManager extends Staff {
         }
 
         readFromFile(filepath);
-}
+    }
 
     public void removeIvenProduct(){
         Scanner sc= new Scanner(System.in);
@@ -244,7 +243,7 @@ public class InventoryManager extends Staff {
         } catch (IOException e){
             e.printStackTrace();
         }
-    
+
         try(FileWriter fw = new FileWriter(filepath)){
             fw.write(content.toString());
         } catch (IOException e){
@@ -277,8 +276,8 @@ public class InventoryManager extends Staff {
 
         String newOrder = ProductOrderStringID + " " + name + " " + Sl;
         try (
-            BufferedReader br = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(temp))
+                BufferedReader br = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(temp))
         ){
             String line;
             int currentLine = 0; // dòng đang thao tác hiện tại
@@ -286,16 +285,16 @@ public class InventoryManager extends Staff {
                 //chèn dòng mới vào vị trí mong muốn
                 if(currentLine==vitri-1){
                     bw.write(newOrder);
-                   bw.newLine();
+                    bw.newLine();
                 }
-               bw.write(line);
-               bw.newLine();
-               currentLine++;
+                bw.write(line);
+                bw.newLine();
+                currentLine++;
             }
             // nếu vị trí muốn thêm lớn hơn số dòng hiện có thì sẽ thêm mới một dòng ở cuối
             if (vitri >= currentLine){
-            bw.write(newOrder);
-            bw.newLine();
+                bw.write(newOrder);
+                bw.newLine();
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -313,7 +312,7 @@ public class InventoryManager extends Staff {
         }
 
         readFromFileOrder(filepath);
-}
+    }
 
     // xóa sản phẩm muốn đặt về
     public void removeOrderProduct(){
@@ -334,7 +333,7 @@ public class InventoryManager extends Staff {
         } catch (IOException e){
             e.printStackTrace();
         }
-    
+
         try(FileWriter fw = new FileWriter(filepath)){
             fw.write(content.toString());
         } catch (IOException e){
@@ -344,7 +343,3 @@ public class InventoryManager extends Staff {
         readFromFileOrder(filepath);
     }
 }
-
-
-
-    
