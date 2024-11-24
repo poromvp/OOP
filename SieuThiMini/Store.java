@@ -85,6 +85,10 @@ public class Store{
     public void thongkeOrder(Scanner scanner){
         Order.loc(scanner, orderList);
     }
+
+    public void timkiem(Scanner scanner){
+        Order.statisticalOrders(scanner,orderList);
+    }
     /* các thao tác cho ds đơn đặt hàng END*/
 
     
