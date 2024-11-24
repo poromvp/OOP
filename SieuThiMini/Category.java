@@ -53,7 +53,7 @@ public class Category {
     }
     public void readProductsFromFile(String filePath) {
          
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("Category.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");

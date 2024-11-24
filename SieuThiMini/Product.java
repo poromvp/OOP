@@ -223,14 +223,14 @@ public class Product extends Category{
         System.out.println("Da dieu chinh gia thanh cong.");
     }
     public void getDetails(){
-        String cate=Category.getCategoryById(categoryId).getCategoryName(), suppli=Supplier.getSupplierById(supplierId).getSupplierName();
+        //String cate=Category.getCategoryById(categoryId).getCategoryName(), suppli=Supplier.getSupplierById(supplierId).getSupplierName();
         System.out.printf("%-20s %-20s %-20d %-20d %-20s %-20s",
                 productID,
                 name,
                 price,
                 quantity,
-                cate,
-                suppli);
+                productID,
+                supplierId);
         System.out.println();
     }
     
