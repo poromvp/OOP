@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class Order implements QLFile {
     public String orderId; // mã đơn hàng
@@ -370,6 +371,64 @@ public class Order implements QLFile {
         }
         if(!san_pham_thu_may) return false;
         return true;
+    }
+
+    public static void statisticalOrders(Scanner scanner, Order[] orderList) {
+        // Menu lựa chọn
+        System.out.println("\n--- MENU THỐNG KÊ ĐƠN HÀNG ---");
+        System.out.println("1. Thống kê đơn hàng theo thời gian (ngày/tháng/năm) mới, cũ");
+        System.out.println("2. Thống kê đơn hàng theo tổng số tiền giảm dần, tăng dần");
+        System.out.println("3. Thống kê đơn hàng theo quantity giảm dần, tăng dần");
+        System.out.println("4. Thống kê đơn hàng theo mã đơn hàng tăng dần, giảm dần");
+        System.out.print("Chọn lựa chọn (1-4): ");
+        
+        int choice = Integer.parseInt(scanner.nextLine());
+        
+        // Xử lý theo từng lựa chọn
+        switch (choice) {
+            case 1:
+                // Sắp xếp theo thời gian
+                Arrays.sort(orderList, Comparator.comparing(Order::getOrderDate));
+                System.out.printf("%-15s%-20s\n", "Mã Đơn Hàng", "Ngày Lập Đơn");
+                for (Order order : orderList) {
+                    System.out.printf("%-15s%-20s\n", order.getOrderId(), order.getOrderDate());
+                }
+                break;
+                
+            case 2:
+                // Sắp xếp theo tổng tiền (giảm dần và tăng dần)
+                Arrays.sort(orderList, Comparator.comparingDouble(Order::getTotalAmount).reversed());
+                System.out.printf("%-15s%-15s\n", "Tổng Tiền", "Mã Đơn Hàng");
+                for (Order order : orderList) {
+                    System.out.printf("%-15.2f%-15s\n", order.getTotalAmount(), order.getOrderId());
+                }
+                break;
+                
+            case 3:
+                // Sắp xếp theo quantity (giảm dần và tăng dần)
+                Arrays.sort(orderList, Comparator.comparingInt(o -> Arrays.stream(((Order) o).getProductList())
+                    .mapToInt(Product::getQuantity).sum()).reversed());
+                System.out.printf("%-15s%-20s%-15s\n", "Số Lượng", "Mã Đơn Hàng", "Tổng Tiền");
+                for (Order order : orderList) {
+                    int totalQuantity = Arrays.stream(order.getProductList())
+                        .mapToInt(Product::getQuantity).sum();
+                    System.out.printf("%-15d%-20s%-15.2f\n", totalQuantity, order.getOrderId(), order.getTotalAmount());
+                }
+                break;
+                
+            case 4:
+                // Sắp xếp theo mã đơn hàng (alpha beta)
+                Arrays.sort(orderList, Comparator.comparing(Order::getOrderId));
+                System.out.printf("%-15s%-15s\n", "Mã Đơn Hàng", "Tổng Tiền");
+                for (Order order : orderList) {
+                    System.out.printf("%-15s%-15.2f\n", order.getOrderId(), order.getTotalAmount());
+                }
+                break;
+                
+            default:
+                System.out.println("Lựa chọn không hợp lệ.");
+                break;
+        }
     }
 
     public void nhapdonhang(Scanner scanner, Product[] product) {

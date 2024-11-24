@@ -159,7 +159,7 @@ public class ChayChuongTrinh {
                     store.removeOrder(scanner);
                     break;
                 case 5:
-
+                    store.timkiem(scanner);
                     break;
                 case 6:
                     store.thongkeOrder(scanner);
