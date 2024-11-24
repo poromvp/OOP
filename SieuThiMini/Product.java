@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.io.*;
 
 
-public class Product {
+public class Product extends Category{
     public String productID;
     public String name;
     public int price;
@@ -223,13 +223,15 @@ public class Product {
         System.out.println("Da dieu chinh gia thanh cong.");
     }
     public void getDetails(){
+        String cate=Category.getCategoryById(categoryId).getCategoryName(), suppli=Supplier.getSupplierById(supplierId).getSupplierName();
         System.out.printf("%-20s %-20s %-20d %-20d %-20s %-20s",
                 productID,
                 name,
                 price,
                 quantity,
-                Category.getCategoryById(categoryId).getCategoryName(),
-                Supplier.getSupplierById(supplierId).getSupplierName());
+                cate,
+                suppli);
         System.out.println();
     }
+    
 }

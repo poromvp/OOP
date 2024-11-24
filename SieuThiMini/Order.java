@@ -113,7 +113,7 @@ public class Order{
                     System.out.print("Bạn Muốn Chỉnh Sửa Loại Của Sản Phẩm Thứ Mấy? --> ");
                     index=Integer.parseInt(scanner.nextLine());
                     System.out.print("--> ");
-                    product[index-1].setCategory(scanner.nextLine());
+                    product[index-1].setCategoryId(scanner.nextLine());
                     break;
                 case 7:
                     System.out.print("Bạn Muốn Chỉnh Sửa Số Lượng Của Sản Phẩm Thứ Mấy? --> ");
@@ -125,7 +125,7 @@ public class Order{
                     System.out.print("Bạn Muốn Chỉnh Sửa Nhà Cung Cấp Của Sản Phẩm Thứ Mấy? --> ");
                     index=Integer.parseInt(scanner.nextLine());
                     System.out.print("--> ");
-                    product[index-1].setSupplier(scanner.nextLine());
+                    product[index-1].setSupplierId(scanner.nextLine());
                     break;
                 case 9:
                     System.out.print("--> ");
@@ -193,11 +193,11 @@ public class Order{
             System.out.print("Nhập Giá Tiền: ");
             pro.setPrice(Integer.parseInt(scanner.nextLine()));
             System.out.print("Nhập Loại Sản Phẩm: ");
-            pro.setCategory(scanner.nextLine());
+            pro.setCategoryId(scanner.nextLine());
             System.out.print("Nhập Số Lượng: ");
             pro.setQuantity(Integer.parseInt(scanner.nextLine()));
             System.out.print("Nhập Nhà Cung Cấp: ");
-            pro.setSupplier(scanner.nextLine());
+            pro.setSupplierId(scanner.nextLine());
         }
     }
 }

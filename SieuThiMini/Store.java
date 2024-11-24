@@ -10,6 +10,8 @@ public class Store implements QLFile{
     public Transaction[] transactions;          // danh sách giao dịch
     public LoyaltyProgram[] loyaltyProgram;     // danh sách khuyến mãi cho khách hàng thân thiết 
     public Order[] orderList;                   // danh sách đơn hàng
+    public static Category[] categoryList=new Category[100];
+    public static int cnt=0;
     public Store(){
         String filepath=null;
         readFromFile(filepath);
@@ -234,9 +236,9 @@ public class Store implements QLFile{
             if (productID != null && !order.product[i].getProductID().equalsIgnoreCase(productID)) continue;
             if (productName != null && !order.product[i].getName().equalsIgnoreCase(productName)) continue;
             if (price != 0 && order.product[i].getPrice()!=price) continue;
-            if (productCatelo != null && !order.product[i].getCategory().equalsIgnoreCase(productCatelo)) continue;
+            if (productCatelo != null && !order.product[i].getCategoryId().equalsIgnoreCase(productCatelo)) continue;
             if (productQuanti != 0 && order.product[i].getQuantity()!=productQuanti) continue;
-            if (suppli != null && !order.product[i].getSupplier().equalsIgnoreCase(suppli)) continue;
+            if (suppli != null && !order.product[i].getSupplierId().equalsIgnoreCase(suppli)) continue;
             san_pham_thu_may=true;
             break;
         }
@@ -248,7 +250,7 @@ public class Store implements QLFile{
 
     @Override
     public void readFromFile(String filePath){
-        /* Tải danh sách đơn hàng - Kiệt */
+        /* TẢI DANH SÁCH ĐƠN HÀNG - Kiệt */
         filePath="C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\donhang.txt";
         int i, n;
         n=0;
@@ -289,9 +291,9 @@ public class Store implements QLFile{
                     orderList[i].product[j].setProductID(ThongTinProduct[0]);
                     orderList[i].product[j].setName(ThongTinProduct[1]);
                     orderList[i].product[j].setPrice(Integer.parseInt(ThongTinProduct[2]));
-                    orderList[i].product[j].setCategory(ThongTinProduct[3]);
+                    orderList[i].product[j].setCategoryId(ThongTinProduct[3]);
                     orderList[i].product[j].setQuantity(Integer.parseInt(ThongTinProduct[4]));
-                    orderList[i].product[j].setSupplier(ThongTinProduct[5]);
+                    orderList[i].product[j].setSupplierId(ThongTinProduct[5]);
                 }
                 i++;
             }
@@ -300,8 +302,12 @@ public class Store implements QLFile{
         } catch (IOException e){
             e.printStackTrace();
         }
-        /* Tải danh sách đơn hàng - Kiệt end */
-    }
+        /* TẢI DANH SÁCH ĐƠN HÀNG - Kiệt end */
+
+        /* TẢI DANH SÁCH SẢN PHẨM - Bảo  */
+
+        
+        /* TẢI DANH SÁCH SẢN PHẨM - Bảo END */
     @Override
     public void writeToFile(String filePath){
         System.out.println();
