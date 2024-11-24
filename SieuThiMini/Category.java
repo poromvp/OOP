@@ -6,7 +6,7 @@ import java.io.IOException;
 public class Category {
     public String categoryID;
     public String categoryName;
-    public static Category[] categoryList;
+    public static Category[] categoryList=new Category[100];
     private static int cnt =0;
 
     public Category() {
@@ -52,7 +52,8 @@ public class Category {
         return categoryList[tmp];
     }
     public void readProductsFromFile(String filePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+         
+        try (BufferedReader br = new BufferedReader(new FileReader("Category.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
