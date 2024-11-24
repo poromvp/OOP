@@ -218,27 +218,39 @@ public class Order implements QLFile {
     }
 
     public void displayOrderDetails() {
-        System.out.println("===== Chi Tiet Don Hang =====");
-        System.out.println("Mã đơn hàng: " + orderId);
-        System.out.println("Ngày: " + orderDate);
-        System.out.println("Tên Khách Hàng: " + customer.getName());
-        System.out.println("Điểm Tích Lũy: " + customer.getLoyaltyPoints());
-        System.out.println("Mã Khách Hàng: " + customer.getCustomerID());
-        System.out.println("Số Điện Thoại: " + customer.getContactNumber());
-        System.out.println("Danh sách sản phẩm:");
+        System.out.printf("\n\n%40s╔════════════════════ CHI TIẾT ĐƠN HÀNG ════════════════════╗\n", " ");
+        System.out.printf("%40s║%-20sMã đơn hàng:%-27s║\n","","", orderId);
+        System.out.printf("%40s║   Ngày lập đơn:%41s  ║\n","",orderDate);
+        System.out.printf("%40s║   Mã Khách Hàng: %38s   ║\n", " ", customer.getCustomerID());
+        System.out.printf("%40s║   Tên Khách Hàng: %37s   ║\n", " ", customer.getName());
+        System.out.printf("%40s║   Số Điện Thoại: %38s   ║\n", " ", customer.getContactNumber());
+        System.out.printf("%40s║   Điểm Tích Lũy: %38s   ║\n", " ", customer.getLoyaltyPoints());
+        System.out.printf("%40s║───────────────────────────────────────────────────────────║\n","");
+        System.out.printf("%40s║   Mã     Tên sản phẩm     SL        Giá          Tổng     ║\n", " ");
+
         if (product != null) {
             for (int j = 0; j < product.length; j++) {
-                System.out.print((j + 1) + ". ");
-                product[j].getDetails();
+                System.out.printf("%40s║                                                           ║\n","");
+                System.out.printf("%40s║%d %-8s%-17s%,-8d%,-12d%,-12d║\n",
+                "",
+                (j+1),
+                product[j].getProductID(),
+                product[j].getName(),
+                product[j].getQuantity(),
+                product[j].getPrice(),
+                (product[j].getPrice()*product[j].getQuantity()));
             }
         }
-        System.out.println("Tổng tiền (chưa VAT): " + calculateTotalAmount());
-        System.out.println("Tổng tiền (có VAT): " + (calculateTotalAmount() + calculateVAT(calculateTotalAmount())));
+        System.out.printf("%40s║───────────────────────────────────────────────────────────║\n","");
+        System.out.printf("%40s║  Thành tiền (chưa VAT): %31.2f   ║\n","", calculateTotalAmount());
+        System.out.printf("%40s║───────────────────────────────────────────────────────────║\n","");
+        System.out.printf("%40s║  TỔNG THANH TOÁN (CÓ VAT): %28.2f   ║\n","", (calculateTotalAmount() + calculateVAT(calculateTotalAmount())));
+        System.out.printf("%40s╚═══════════════════════════════════════════════════════════╝\n","");
     }
 
     public static void loc(Scanner scanner, Order[] orderList) {
-        System.out.println("\n--- THỐNG KÊ ĐƠN HÀNG ---");
-        System.out.println("Nhập tiêu chí để lọc (nhấn Enter để bỏ qua tiêu chí):");
+        System.out.println("\n--- TÌM KIẾM ĐƠN HÀNG ---");
+        System.out.println("Nhập tiêu chí để tìm (nhấn Enter để bỏ qua tiêu chí):");
 
         System.out.print("Mã đơn hàng: ");
         String orderID = scanner.nextLine();
