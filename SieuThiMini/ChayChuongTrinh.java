@@ -133,13 +133,12 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","|========================================|\n");
             System.out.printf("%-20s| %-8s %-29s |\n","","" ,"QUẢN LÝ ĐƠN HÀNG");
             System.out.printf("%-20s%s","","|========================================|\n");
-            System.out.printf("%-20s| %-2s %-35s |\n","", "1.", "Nhập n phần tử mới đầu tiên");
+            System.out.printf("%-20s| %-2s %-35s |\n","", "1.", "Thêm mới 1 phần tử, k phần tử");
             System.out.printf("%-20s| %-2s %-35s |\n","", "2.", "Xem danh sách ĐƠN HÀNG");
-            System.out.printf("%-20s| %-2s %-35s |\n","", "3.", "Thêm mới 1 phần tử, k phần tử");
-            System.out.printf("%-20s| %-2s %-35s |\n","", "4.", "Sửa ĐƠN HÀNG (theo mã)");
-            System.out.printf("%-20s| %-2s %-35s |\n","", "5.", "Xóa ĐƠN HÀNG (theo mã)");
-            System.out.printf("%-20s| %-2s %-35s |\n","", "6.", "Tìm kiếm ĐƠN HÀNG");
-            System.out.printf("%-20s| %-2s %-35s |\n","", "7.", "Thống kê ĐƠN HÀNG");
+            System.out.printf("%-20s| %-2s %-35s |\n","", "3.", "Sửa ĐƠN HÀNG (theo mã)");
+            System.out.printf("%-20s| %-2s %-35s |\n","", "4.", "Xóa ĐƠN HÀNG (theo mã)");
+            System.out.printf("%-20s| %-2s %-35s |\n","", "5.", "Tìm kiếm ĐƠN HÀNG");
+            System.out.printf("%-20s| %-2s %-35s |\n","", "6.", "Thống kê ĐƠN HÀNG");
             System.out.printf("%-20s| %-2s %-35s |\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","|========================================|\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -147,16 +146,22 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    
+                    store.addOrder(scanner);
                     break;
                 case 2:
                     store.xuatOrder();
                     break;
-                case 4:
+                case 3:
                     store.xuatOrder();
                     store.editOrder(scanner);
                     break;
-                case 7:
+                case 4:
+                    store.removeOrder(scanner);
+                    break;
+                case 5:
+
+                    break;
+                case 6:
                     store.thongkeOrder(scanner);
                     break;
                 case 0:
@@ -164,6 +169,7 @@ public class ChayChuongTrinh {
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
+                    break;
             }
         } while (choice != 0);
     }
@@ -195,12 +201,12 @@ public class ChayChuongTrinh {
                             case 1:
                             String filepath;
                             Staff Mana = new Manager();
-                            Mana.readFromFile(filepath);
-                            Mana.writeToFile(filepath);
+                            //Mana.readFromFile(filepath);
+                            //Mana.writeToFile(filepath);
                             break;
                             case 2: 
                             Staff Manb = new Manager();
-                            Manb.readFromFile(filepath);
+                            //Manb.readFromFile(filepath);
                             ((Manager)Manb).removeStaff();
                             case 0:
                             break;
@@ -221,12 +227,12 @@ public class ChayChuongTrinh {
                     case 1:
                         String filepath;
                         Staff DepA = new Department();
-                        DepA.readFromFile(filepath);
-                        DepA.writeToFile(filepath);
+                        //DepA.readFromFile(filepath);
+                        //DepA.writeToFile(filepath);
                         break;
                     case 2: 
                         Staff DepB= new Department();
-                        DepB.readFromFile(filepath);
+                        //DepB.readFromFile(filepath);
                         ((Department)DepB).removeStaffFromDepartment();
                     case 0:
                         break;
@@ -247,12 +253,12 @@ public class ChayChuongTrinh {
                     case 1:
                         String filepath;
                         Staff DepA = new Cashier();
-                        DepA.readFromFile(filepath);
-                        DepA.writeToFile(filepath);
+                        //DepA.readFromFile(filepath);
+                        //DepA.writeToFile(filepath);
                         break;
                     case 2: 
                         Staff DepB= new Cashier();
-                        DepB.readFromFile(filepath);
+                        //DepB.readFromFile(filepath);
                         ((Cashier)DepB).removeShift();
                     case 0:
                         break;
@@ -281,12 +287,12 @@ public class ChayChuongTrinh {
                             case 1:
                             String filepath;
                             Staff Ivenadd = new InventoryManager();
-                            Ivenadd.readFromFile(filepath);
-                            Ivenadd.writeToFile(filepath);
+                            //Ivenadd.readFromFile(filepath);
+                            //Ivenadd.writeToFile(filepath);
                             break;
                             case 2:
                             Staff Ivenrev = new InventoryManager();
-                            Ivenrev.readFromFile(filepath);
+                            //Ivenrev.readFromFile(filepath);
                             ((InventoryManager)Ivenrev).removeIvenProduct();
                             break;
                             case 0:
@@ -308,12 +314,12 @@ public class ChayChuongTrinh {
                             case 1:
                             String filepath;
                             Staff IvenOrderadd = new InventoryManager();
-                            ((InventoryManager)IvenOrderadd).readFromFileOrder(filepath);
+                            //((InventoryManager)IvenOrderadd).readFromFileOrder(filepath);
                             ((InventoryManager)IvenOrderadd).OrderInventory();
                             break;
                             case 2:
                             Staff IvenOrderrev = new InventoryManager();
-                            ((InventoryManager)IvenOrderrev).readFromFileOrder(filepath);
+                            //((InventoryManager)IvenOrderrev).readFromFileOrder(filepath);
                             ((InventoryManager)IvenOrderrev).removeOrderProduct();
                             break;
                             case 0:

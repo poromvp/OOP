@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import javax.swing.text.ChangedCharSetException;
 public class Cashier extends Staff {
     protected String cashCounterNum;
     protected String shiftTiming;

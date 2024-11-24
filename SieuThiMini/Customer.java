@@ -8,6 +8,8 @@ public class Customer {
     private String contactNumber; // Số điện thoại của khách
     private int loyaltyPoints; // Điểm tích lũy của khách
 
+    public Customer(){}
+    
     // Constructor có tham số
     public Customer(int customerID, String name, String contactNumber, int loyaltyPoints) {
         this.customerID = customerID;
