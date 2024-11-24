@@ -1,7 +1,7 @@
-package SieuThiMini;
+
 import java.io.*;
 import java.util.Arrays;
-import java.util.Scanner; 
+import java.util.Scanner;
 public class Department extends Staff {
     protected String departmentID;
     protected String departmentName;
@@ -17,7 +17,7 @@ public class Department extends Staff {
     }
 
     public Department(String staffID, String name, String role, Double salary, String contactNum, String departmentID,
-            String departmentName, String staffName, Department[] departmentlist, int count) {
+                      String departmentName, String staffName, Department[] departmentlist, int count) {
         super(staffID, name, role, salary, contactNum);
         this.departmentID = departmentID;
         this.departmentName = departmentName;
@@ -31,7 +31,7 @@ public class Department extends Staff {
         StaffName = staffName;
         this.departmentlist = new Department[100];
     }
-    
+
     public int getCount() {
         return count;
     }
@@ -72,15 +72,15 @@ public class Department extends Staff {
         this.departmentlist = departmentlist;
     }
 
-    @Override 
+    @Override
     public void readFromFile(String filepath){
         filepath="DepartmentStaffList.txt";
-         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             count = 0;
 
-            System.out.printf("%-10s| %-10s| %-12s %n", 
-            "Mã phòng ban","Tên phòng ban","Họ Tên");
+            System.out.printf("%-10s| %-10s| %-12s %n",
+                    "Mã phòng ban","Tên phòng ban","Họ Tên");
             while ((line = reader.readLine()) != null ) {
                 String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
 
@@ -100,7 +100,7 @@ public class Department extends Staff {
             System.out.println("Lỗi khi phân tích dữ liệu: " + e.getMessage());
         }
     }
-    
+
     //them nhan vien vao trong danh sach department
     public void writeToFile(String filepath){
         filepath="DepartmentStaffList.txt";
@@ -118,15 +118,15 @@ public class Department extends Staff {
         System.out.println("nhập vị trí dòng bạn muốn thêm vào: ");
         int vitri = Integer.parseInt(sc.nextLine());
 
-        String departName; 
+        String departName;
 
         if(departID.equals("SER")){
-             departName = "SERVER";
+            departName = "SERVER";
         }
         else if(departID.equals("MAN")){
-             departName="Manage";
+            departName="Manage";
         } else {
-             departName="SAL";
+            departName="SAL";
         }
 
         System.out.print("Nhập họ tên nhân viên bạn muốn thêm vào: ");
@@ -191,7 +191,7 @@ public class Department extends Staff {
         } catch (IOException e){
             e.printStackTrace();
         }
-    
+
         try(FileWriter fw = new FileWriter(filepath)){
             fw.write(content.toString());
         } catch (IOException e){
@@ -200,6 +200,4 @@ public class Department extends Staff {
         readFromFile(filepath);
     }
 }
-
-    
 

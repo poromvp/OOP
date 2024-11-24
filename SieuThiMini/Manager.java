@@ -1,4 +1,4 @@
-package SieuThiMini;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -17,7 +17,7 @@ public class Manager extends Staff {
     }
 
     public Manager(String staffID, String name, String role, Double salary, String contactNum, Staff[] stafflist,
-            int count) {
+                   int count) {
         super(staffID, name, role, salary, contactNum);
         Stafflist = stafflist;
         this.count = count;
@@ -38,13 +38,13 @@ public class Manager extends Staff {
     @Override
     // đọc và lưu lại các phần tử trong file
     public void readFromFile(String filepath){
-            String filePath = "dsnv.txt"; // Đường dẫn tới file
+        String filePath = "dsnv.txt"; // Đường dẫn tới file
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             count = 0;
 
-            System.out.printf("%-5s| %-10s| %-10s| %-10s| %-12s %n", 
-        "Mã NV","Họ Tên", "Lương", "Vai trò", "Số điện thoại");
+            System.out.printf("%-5s| %-10s| %-10s| %-10s| %-12s %n",
+                    "Mã NV","Họ Tên", "Lương", "Vai trò", "Số điện thoại");
             System.out.println();
             while ((line = reader.readLine()) != null ) {
                 String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
@@ -58,8 +58,8 @@ public class Manager extends Staff {
                     Stafflist[count].setName(String.join(" ", Arrays.copyOfRange(parts, 1, parts.length - 3))); // Ghép tên từ các phần tử còn lại
                 }
                 count ++;
-                System.out.printf("%-5s| %-10s| %-10s| %-10s| %-12s %n", 
-                Stafflist[count].getStaffID(), Stafflist[count].getName(), Stafflist[count].getSalary(), Stafflist[count].getRole(), Stafflist[count].getContactNum());
+                System.out.printf("%-5s| %-10s| %-10s| %-10s| %-12s %n",
+                        Stafflist[count].getStaffID(), Stafflist[count].getName(), Stafflist[count].getSalary(), Stafflist[count].getRole(), Stafflist[count].getContactNum());
             }
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
@@ -155,7 +155,7 @@ public class Manager extends Staff {
         } catch (IOException e){
             e.printStackTrace();
         }
-    
+
         try(FileWriter fw = new FileWriter(filepath)){
             fw.write(content.toString());
         } catch (IOException e){
@@ -166,5 +166,5 @@ public class Manager extends Staff {
     }
 
 
-    
+
 }

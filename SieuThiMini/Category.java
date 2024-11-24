@@ -1,18 +1,20 @@
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 public class Category {
     public String categoryID;
     public String categoryName;
-    public Product[] productsList;
-    private int productCount;
+    public static Category[] categoryList;
+    private static int cnt =0;
 
     public Category() {
     }
 
-    public Category(String categoryID, String categoryName, Product[] productsList) {
+    public Category(String categoryID, String categoryName) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
-        this.productsList = productsList;
     }
 
     public String getCategoryID() {
@@ -31,42 +33,40 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public Product[] getProductsList() {
-        return productsList;
+    public static Category[] getCategoryList() {
+        return categoryList;
     }
 
-    public void setProductsList(Product[] productsList) {
-        this.productsList = productsList;
+    public static void setCategoryList(Category[] categoryList) {
+        Category.categoryList = categoryList;
     }
-
-    public void addProduct(Product product) {
-        if (productCount == productsList.length) {
-            // Tăng kích thước mảng khi cần
-            productsList = Arrays.copyOf(productsList, productsList.length * 2);
-        }
-        productsList[productCount++] = product;
-    }
-
-    public void removeProduct(String productID) {
-        for (int i = 0; i < productCount; i++) {
-            if (productsList[i].getProductID().equals(productID)) {
-                // Dịch chuyển các phần tử sau sản phẩm bị xóa lên trước
-                System.arraycopy(productsList, i + 1, productsList, i, productCount - i - 1);
-                productsList[--productCount] = null; // Giảm số lượng sản phẩm và xóa phần tử cuối
+    public static Category getCategoryById(String id){
+        int tmp = 0;
+        int size = categoryList.length;
+        for (int i = 0; i < size; i++) {
+            if (categoryList[i] != null && categoryList[i].getCategoryID().equals(id)) {
+                tmp = i;
                 break;
             }
         }
+        return categoryList[tmp];
     }
-    public void getAllProducts() {
-        System.out.println("Cac san pham co loai "+categoryName+"la :");
-        for(int i=0;i<productCount;i++){
-            productsList[i].getDetails();
+    public void readProductsFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2 && cnt< 100) { // Kiểm tra nếu mảng chưa đầy
+                    Category a = new Category(
+                            parts[0],                // productID
+                            parts[1]               // supplier
+                    );
+                    categoryList[cnt] = a;
+                    cnt++; // Di chuyển đến vị trí tiếp theo trong mảng
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
-    }
-    public void removeCategory() {
-        this.categoryID = null;
-        this.categoryName = null;
-        this.productsList = new Product[0];
-        this.productCount = 0;
     }
 }
