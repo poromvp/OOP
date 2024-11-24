@@ -1,4 +1,4 @@
-package SieuThiMini;
+
 import java.io.*;
 import java.security.PrivateKey;
 import java.util.Arrays;

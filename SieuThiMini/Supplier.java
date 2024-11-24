@@ -1,4 +1,4 @@
-package SieuThiMini;
+
 
 public class Supplier {
     public String supplierID;
