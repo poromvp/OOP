@@ -52,7 +52,7 @@ public class Customer {
         this.loyaltyPoints = loyaltyPoints;
     }
 
-    // Hàm xuất danh sách khách hàng
+    // Phương thức xuất danh sách khách hàng
     public static void output(Customer[] customers) {
         System.out.println("Danh sach khach hang:");
         for (Customer customer : customers) {
@@ -64,7 +64,7 @@ public class Customer {
         }
     }
 
-    // Hàm thêm khách hàng
+    // Phương thức thêm khách hàng
     public static Customer[] addCustomer(Customer[] customers, Customer newCustomer) {
         Customer[] updatedCustomers = new Customer[customers.length + 1];
         for (int i = 0; i < customers.length; i++) {
@@ -75,7 +75,7 @@ public class Customer {
         return updatedCustomers;
     }
 
-    // Hàm tìm khách hàng theo ID
+    // Phương thức tìm khách hàng theo ID
     public static Customer findCustomerByID(Customer[] customers, int customerID) {
         for (Customer customer : customers) {
             if (customer.getCustomerID() == customerID) {
@@ -86,7 +86,7 @@ public class Customer {
         return null;
     }
 
-    // Hàm xóa khách hàng theo ID
+    // Phương thức xóa khách hàng theo ID
     public static Customer[] removeCustomerByID(Customer[] customers, int customerID) {
         int count = 0;
         for (Customer customer : customers) {
@@ -109,7 +109,7 @@ public class Customer {
         return updatedCustomers;
     }
 
-    // Hàm đọc danh sách khách hàng từ file
+    // Phương thức đọc danh sách khách hàng từ file
     public static Customer[] readFromFile(String fileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -144,7 +144,7 @@ public class Customer {
     }
 
 
-    // Hàm ghi danh sách khách hàng ra file
+    // Phương thức ghi danh sách khách hàng ra file
     public static void writeToFile(String fileName, Customer[] customers) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (Customer customer : customers) {
