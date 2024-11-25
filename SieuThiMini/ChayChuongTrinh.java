@@ -38,7 +38,7 @@ public class ChayChuongTrinh {
                     manageStaffs(scanner, sieuthi);
                     break;
                 case 5:
-                    manageReceipt(scanner, sieuthi);
+                    manageInvoice(scanner, sieuthi);
                     break;
                 case 6:
                     manageDiscounnt(scanner, sieuthi);
@@ -430,19 +430,18 @@ public class ChayChuongTrinh {
     }
 
 
-
-    private static void manageReceipt(Scanner scanner, Store store) {
+// minh update
+    private static void manageInvoice(Scanner scanner, Store store) {
+        InvoiceManager manager = new InvoiceManager(100);
         int choice;
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ HÓA ĐƠN");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Nhập n phần tử mới đầu tiên");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách HÓA ĐƠN");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thêm mới 1 phần tử, k phần tử");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa NHÂN SỰ (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Xóa NHÂN SỰ (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm NHÂN SỰ");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thống kê đơn hàng theo thời gian (ngày/tháng/năm) mới, cũ");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê đơn hàng theo tổng số tiền giảm dần, tăng dần");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thống kê đơn hàng theo quantity giảm dần, tăng dần");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Thống kê đơn hàng theo mã đơn hàng tăng dần, giảm dần");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -450,14 +449,28 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Nhập tổng số tiền: ");
-                    double totalAmount = Double.parseDouble(scanner.nextLine());
-                    // Order order = new Order(totalAmount); // Tạo đơn hàng
-                    // store.addOrder(order);
-                    System.out.println("Đã thêm đơn hàng.");
+                    System.out.print("Chọn thứ tự (1: mới -> cũ, 2: cũ -> mới): ");
+                    int order1 = scanner.nextInt();
+                    manager.sortByDate(order1 == 2);
+                    manager.printReceipts();
                     break;
                 case 2:
-                    // store.listOrders();
+                    System.out.print("Chọn thứ tự (1: giảm dần, 2: tăng dần): ");
+                    int order2 = scanner.nextInt();
+                    manager.sortByTotalAmount(order2 == 2);
+                    manager.printReceipts();
+                    break;
+                case 3:
+                    System.out.print("Chọn thứ tự (1: giảm dần, 2: tăng dần): ");
+                    int order3 = scanner.nextInt();
+                    manager.sortByQuantity(order3 == 2);
+                    manager.printReceipts();
+                    break;
+                case 4:
+                    System.out.print("Chọn thứ tự (1: tăng dần, 2: giảm dần): ");
+                    int order4 = scanner.nextInt();
+                    manager.sortByReceiptId(order4 == 1);
+                    manager.printReceipts();
                     break;
                 case 0:
                     break;
@@ -466,4 +479,6 @@ public class ChayChuongTrinh {
             }
         } while (choice != 0);
     }
+
+
 }
