@@ -17,6 +17,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Quản lý đơn hàng");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Quản lý nhân sự");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Quản lý hóa đơn");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Quản lý CTKM");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Nhập lựa chọn của bạn: ");
@@ -39,6 +40,8 @@ public class ChayChuongTrinh {
                 case 5:
                     manageReceipt(scanner, sieuthi);
                     break;
+                case 6:
+                    manageDiscounnt(scanner, sieuthi);
                 case 0:
                     System.out.println("Đã thoát chương trình.");
                     break;
@@ -120,8 +123,69 @@ public class ChayChuongTrinh {
                 case 2:
                      store.xuatDanhSachKhachHang();
                     break;
+                case 3:
+                    // Thêm mới 1 phần tử, k phần tử
+                    break;
+                case 4:
+                    // Sửa khách hàng (theo mã)
+                    break;
+                case 5:
+                    // Xóa khách hàng (theo mã)
+                    break;
                 case 6:
+                    // Tìm kiếm khách hàng (theo mã)
                     store.timKhachHang(scanner);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void manageDiscounnt(Scanner scanner, Store store) {
+        int choice;
+        do {
+            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ CHƯƠNG TRÌNH KHUYẾN MÃI");
+            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Nhập n phần tử mới đầu tiên");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách CTKM");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thêm mới 1 phần tử, k phần tử");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa CTKM (theo mã)");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Xóa CTKM (theo mã)");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm CTKM (theo mã)");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
+            System.out.print("Lựa chọn của bạn: ");
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Nhập tên người dùng: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Nhập mật khẩu: ");
+                    String password = scanner.nextLine();
+                    // UserAccount account = new UserAccount(username, password); // Tạo tài khoản
+                    // store.addUserAccount(account);
+                    System.out.println("Đã thêm tài khoản.");
+                    break;
+                case 2:
+                    // Xem danh sách chương trình khuyến mãi
+                    store.xuatDanhSachChuongTrinhKhuyenMai();
+                    break;
+                case 3:
+                    // Thêm mới 1 phần tử, k phần tử
+                    break;
+                case 4:
+                    // Sửa chương trình khuyến mãi (theo mã)
+                    break;
+                case 5:
+                    // Xóa chương trình khuyến mãi (theo mã)
+                    break;
+                case 6:
+                    // Tìm kiếm chương trình khuyến mãi (theo mã)
                     break;
                 case 0:
                     break;
