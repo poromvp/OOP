@@ -4,11 +4,15 @@ public class Store{
     public Staff[] staffList;                   // danh sách nhân viên
     public Transaction[] transactions;          // danh sách giao dịch
     public Order[] orderList;                   // danh sách đơn hàng
+    public Customer[] customers;                // danh sách khách hàng
+    public Discount[] discount;                 // danh sách chương trình khuyến mãi
 
+    
     public Store(){
         String filepath=null;
         Order order=new Order();
         orderList=order.readFromFile(filepath);
+        customers = Customer.readFromFile("customers.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions, LoyaltyProgram[] loyaltyProgram) {
@@ -90,6 +94,41 @@ public class Store{
         Order.statisticalOrders(scanner,orderList);
     }
     /* các thao tác cho ds đơn đặt hàng END*/
+
+    /* Các thao tác cho danh sách khách hàng */
+    public void themKhachHang(Scanner scanner) {
+        System.out.println("Them khach hang moi:");
+        System.out.print("Nhap ma khach hang: ");
+        int newID = scanner.nextInt();
+        scanner.nextLine(); // Xóa bỏ dòng trống
+        System.out.print("Nhap ten khach hang: ");
+        String newName = scanner.nextLine();
+        System.out.print("Nhap so dien thoai: ");
+        String newContact = scanner.nextLine();
+        System.out.print("Nhap diem tich luy: ");
+        int newPoints = scanner.nextInt();
+        customers = Customer.addCustomer(customers, new Customer(newID, newName, newContact, newPoints));
+    } 
+
+    public void xuatDanhSachKhachHang() {
+        Customer.output(customers);
+    }
+
+    public void timKhachHang (Scanner scanner) {
+        System.out.print("Nhap ma khach hang de tim kiem: ");
+            int searchID = Integer.parseInt(scanner.nextLine());
+            Customer foundCustomer = Customer.findCustomerByID(customers, searchID);
+            if (foundCustomer != null) {
+                System.out.println("Thong tin khach hang:");
+                System.out.println("Ma khach hanh: " + foundCustomer.getCustomerID());
+                System.out.println("Ten khach hang: " + foundCustomer.getName());
+                System.out.println("So dien thoai: " + foundCustomer.getContactNumber());
+                System.out.println("Diem tich luy: " + foundCustomer.getLoyaltyPoints());
+            }
+    }
+
+    /* Các thao tác cho danh sách khách hàng END*/
+
 
     
 }
