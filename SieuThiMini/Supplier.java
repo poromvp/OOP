@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Supplier {
     public String supplierID;
     public String supplierName;
-    public static Supplier[] supplierList;
+    public static Supplier[] supplierList=new Supplier[100];
     public static int cnt;
 
     public Supplier() {
@@ -51,7 +51,7 @@ public class Supplier {
         }
         return supplierList[tmp];
     }
-    public void readProductsFromFile(String filePath) {
+    public static void readSupplierFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {

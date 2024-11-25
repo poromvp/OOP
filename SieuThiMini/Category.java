@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Category {
     public String categoryID;
     public String categoryName;
-    public static Category[] categoryList;
+    public static Category[] categoryList=new Category[100];
     private static int cnt =0;
 
     public Category() {
@@ -40,7 +40,7 @@ public class Category {
         Category.categoryList = categoryList;
     }
     public static Category getCategoryById(String id){
-        int tmp = 0;
+        int tmp = -1;
         int size = categoryList.length;
         for (int i = 0; i < size; i++) {
             if (categoryList[i] != null && categoryList[i].getCategoryID().equals(id)) {
@@ -48,9 +48,12 @@ public class Category {
                 break;
             }
         }
-        return categoryList[tmp];
+        if(tmp==-1){
+            return null;
+        }
+        else return categoryList[tmp];
     }
-    public void readProductsFromFile(String filePath) {
+    public static void readCategoryFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {

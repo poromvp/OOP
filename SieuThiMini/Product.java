@@ -11,7 +11,7 @@ public class Product {
     public int quantity;
     public String supplierId;
     public static Product[] productList = new Product[100];
-    private static int cnt = 0;
+    public static int cnt = 0;
 
     //constructor
 
@@ -76,7 +76,23 @@ public class Product {
         this.supplierId = supplierId;
     }
 
-    private boolean checkIDProduct(String id){
+    public static Product[] getProductList() {
+        return productList;
+    }
+
+    public static void setProductList(Product[] productList) {
+        Product.productList = productList;
+    }
+
+    public static int getCnt() {
+        return cnt;
+    }
+
+    public static void setCnt(int cnt) {
+        Product.cnt = cnt;
+    }
+
+    private static boolean checkIDProduct(String id){
         if(id.length()!=5){
             return false;
         }
@@ -91,16 +107,17 @@ public class Product {
         return true;
     }
     //Kiem tra id co bi trung khong
-    private boolean checkDuplicateID(String id, Product[] productList) {
+    private static boolean checkDuplicateID(String id, Product[] productList) {
         for (Product product : productList) {
-            if (product.getProductID().equals(id)) {
+            if (product!= null && product.getProductID().equals(id)) {
                 return true; // Trùng ID
             }
         }
         return false; // Không trùng
     }
 
-    public void addProduct(Product a){
+    public static void addProduct(){
+        Product a = new Product();
         Scanner sc = new Scanner(System.in);
         int check =0;
         do{
@@ -126,11 +143,12 @@ public class Product {
         sc.nextLine();
         System.out.println("Nhap ma nha cung cap cho san pham: ");
         a.setSupplierId(sc.nextLine());
-        cnt ++;
+        productList[cnt++]=a;
+        System.out.println("Da them san pham thanh cong.");
     }
 
     //Doc san pham tu file
-    public void readProductsFromFile(String filePath) {
+    public static void readProductsFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -154,12 +172,11 @@ public class Product {
     }
 
     //Xoa san pham
-    public void deleteProduct(Product[] productList, String productID) {
-        int size = productList.length;
+    public static void deleteProduct( String productID) {
         int indexToDelete = -1;
 
         // Tìm chỉ mục sản phẩm cần xóa
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < cnt; i++) {
             if (productList[i] != null && productList[i].getProductID().equals(productID)) {
                 indexToDelete = i;
                 break;
@@ -168,10 +185,10 @@ public class Product {
 
         //Xóa sản phẩm và dịch chuyển các phần tử còn lại
         if (indexToDelete != -1) {
-            for (int i = indexToDelete; i < size - 1; i++) {
+            for (int i = indexToDelete; i < cnt - 1; i++) {
                 productList[i] = productList[i + 1];
             }
-            productList[size - 1] = null; // Đặt phần tử cuối cùng thành null
+            productList[--cnt] = null; // Đặt phần tử cuối cùng thành null
             System.out.println("Đã xóa sản phẩm thành công.");
         } else {
             System.out.println("Không tìm thấy sản phẩm với ID: " + productID);
@@ -179,7 +196,7 @@ public class Product {
     }
 
     //Tim kiem
-    public void Find(String name) {
+    public static void Find(String name) {
         boolean found = false;
         for (int i = 0; i < cnt; i++) {
             if (productList[i] != null && productList[i].getName().toLowerCase().contains(name.toLowerCase())) {
@@ -222,6 +239,7 @@ public class Product {
         setPrice(tmp);
         System.out.println("Da dieu chinh gia thanh cong.");
     }
+    //xuat thong tin
     public void getDetails(){
         System.out.printf("%-20s %-20s %-20d %-20d %-20s %-20s",
                 productID,
@@ -231,5 +249,61 @@ public class Product {
                 Category.getCategoryById(categoryId).getCategoryName(),
                 Supplier.getSupplierById(supplierId).getSupplierName());
         System.out.println();
+    }
+    // chinh sua
+    public static void upDateProduct(String id) {
+        int choice;
+        int index = -1;
+        for (int i = 0; i <= cnt; i++) {
+            if (productList[i].getProductID().equals(id)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            Scanner sc = new Scanner(System.in);
+
+            do {
+                System.out.println("------ CHINH SUA SAN PHAM------");
+                System.out.println("1.Chinh sua id san pham. ");
+                System.out.println("2.Chinh sua ten san pham. ");
+                System.out.println("3.Chinh sua gia san pham. ");
+                System.out.println("4.Chinh sua so luong san pham. ");
+                System.out.println("5.Chinh sua id loai san pham. ");
+                System.out.println("6.Chinh sua id nha cung cap san pham. ");
+                System.out.println("Lua chon cua ban: ");
+                choice = new Scanner(System.in).nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("Nhap vao id moi: ");
+                        productList[index].setProductID(sc.nextLine());
+                        break;
+                    case 2:
+                        System.out.println("Nhap vao ten moi: ");
+                        productList[index].setName(sc.nextLine());
+                        break;
+                    case 3:
+                        System.out.println("Nhap vao gia moi: ");
+                        productList[index].setPrice(sc.nextInt());
+                        break;
+                    case 4:
+                        System.out.println("Nhap vao so luong moi: ");
+                        productList[index].setQuantity(sc.nextInt());
+                        break;
+                    case 5:
+                        System.out.println("Nhap vao ma loai moi: ");
+                        productList[index].setCategoryId(sc.nextLine());
+                        break;
+                    case 6:
+                        System.out.println("Nhap vao ma nha cung cap moi: ");
+                        productList[index].setSupplierId(sc.nextLine());
+                        break;
+                }
+            } while (choice != 0);
+
+        } else {
+            System.out.println("Khong tim thay id san pham.");
+            return;
+        }
     }
 }
