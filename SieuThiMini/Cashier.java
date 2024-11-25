@@ -1,9 +1,6 @@
-
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
-
-import javax.swing.text.ChangedCharSetException;
 public class Cashier extends Staff {
     protected String cashCounterNum;
     protected String shiftTiming;
@@ -65,23 +62,31 @@ public class Cashier extends Staff {
 
     @Override
     public void readFromFile (String filepath){
-        filepath="CashierList.txt";
+        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\CashierList.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))){
             String line;
             count =0;
-            System.out.printf("%-10s| %-10s| %-10s| %-10s| %-12s %n",
-                    "Quầy","Ca làm việc", "Họ tên");
+
+            Cashier [] cashier = new Cashier[100];
+            for(int i=0; i<cashier.length; i++){
+                cashier[i] = new Cashier();
+            }
+            System.out.println("danh sach lich lam viec hien tai: ");
+            System.out.printf("%-10s| %-10s| %-12s %n", 
+        "Quầy","Ca làm việc", "Họ tên");
+
             System.out.println();
             while ((line = br.readLine()) != null){
                 String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
 
-                while(parts.length >= 2){
+                if(parts.length >= 2){
                     cashier[count].setCashCounterNum(parts[0]); // phần tử đầu tiên là quầy nhân viên sẽ đứng làm việc
-                    cashier[count].setShiftTiming(parts[1]);     //phần tử thứ hai là ca làm việc của nhân viên đó
-                    cashier[count].setName(String.join(" ", Arrays.copyOfRange(parts, 2, parts.length - 1))); // từ phần tử thứ 3 trở đi là tên nhân viên
+                    cashier[count].setShiftTiming(String.join(" ", Arrays.copyOfRange(parts, 1, 3)));     //phần tử thứ hai là ca làm việc của nhân viên đó
+                    cashier[count].setName(String.join(" ", Arrays.copyOfRange(parts, 3, parts.length))); // từ phần tử thứ 3 trở đi là tên nhân viên 
+
                 }
-                count ++;
                 System.out.printf("%-10s| %-10s| %-12s %n",cashier[count].getCashCounterNum(), cashier[count].getShiftTiming(), cashier[count].getName());
+                count ++;
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -91,27 +96,28 @@ public class Cashier extends Staff {
     // thêm nhân viên vào vị trí thu ngân ở ca nào đó
     public void writeToFile (String filepath){
         Scanner sc = new Scanner (System.in);
-        filepath = "CashierList.txt";
+        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\CashierList.txt";
         File inputFile = new File(filepath);
         String filetemp = "temp.txt";
         File temp = new File(filetemp);
 
         System.out.println("nhập vị trí dòng bạn muốn thêm vào danh sách");
         int vitri = sc.nextInt();
+        sc.nextLine();
 
         System.out.println("Nhập nhân viên bạn muốn xếp lịch làm: ");
         String CashierName = sc.nextLine();
 
-        System.out.println("Bạn muốn nhân viên làm ca nào(Nhập CaA / CaB): ");
+        System.out.println("Bạn muốn nhân viên làm ca nào(Nhập Ca A / Ca B): ");
         String shift = sc.nextLine();
-        while(!shift.equals("SER")||!shift.equals("MAN")||!shift.equals("SAL")){
-            System.out.print("Nhập sai!!! xin nhập lại: ");
+        while(!shift.equals("Ca A")&&!shift.equals("Ca B")){
+            System.out.print("Nhập sai!!! xin nhập lại (xin hãy nhập đúng như trên): ");
             shift = sc.nextLine();
         }
         System.out.println("Bạn muốn nhân viên làm việc ở quầy nào (Nhập QuayA / QuayB): ");
         String CashNumCounter = sc.nextLine();
-        while(!CashNumCounter.equals("SER")||!CashNumCounter.equals("MAN")||!CashNumCounter.equals("SAL")){
-            System.out.print("Nhập sai!!! xin nhập lại: ");
+        while(!CashNumCounter.equals("QuayA")&&!CashNumCounter.equals("QuayB")){
+            System.out.print("Nhập sai!!! xin nhập lại (xin hãy nhập đúng như trên): ");
             CashNumCounter = sc.nextLine();
         }
         String newShift = CashNumCounter + " " + shift + " " + CashierName;
@@ -124,7 +130,7 @@ public class Cashier extends Staff {
             int currentLine = 0; // dòng đang thao tác hiện tại
             while ((line = br.readLine())!=null){
                 //chèn dòng mới vào vị trí mong muốn
-                if(currentLine==vitri){
+                if(currentLine==vitri-1){
                     bw.write(newShift);
                     bw.newLine();
                 }
@@ -143,6 +149,7 @@ public class Cashier extends Staff {
 
         if (!inputFile.delete()){
             System.out.println("bị lỗi !!!");
+            sc.close();
             return;
         }
 
@@ -151,22 +158,23 @@ public class Cashier extends Staff {
         }else {
             System.out.println("đã chèn dòng mới vào");
         }
+    readFromFile(filepath);
+    sc.close();
+}
 
-        readFromFile(filepath);
-    }
 
     public void removeShift(){
         Scanner sc= new Scanner(System.in);
         System.out.print("Nhap ho ten nhan vien ban muon xoa ca lam: ");
         String NameShiftRemove = sc.nextLine();
-        String filepath= "CashierList.txt";
+        String filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\CashierList.txt";
         StringBuilder content = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader( new FileReader(filepath))){
             String line;
             while ((line= br.readLine())!=null){
                 String[] parts = line.split(" ");
-                if(NameShiftRemove==String.join(" ", Arrays.copyOfRange(parts, 3, parts.length - 1))){
+                if(!NameShiftRemove.equals(String.join(" ", Arrays.copyOfRange(parts, 3, parts.length - 1)))){
                     content.append(line).append(System.lineSeparator());            // đọc file và lưu lại các dòng không chứa mã nhân viên cần xoá;
                 }
             }
@@ -179,7 +187,7 @@ public class Cashier extends Staff {
         } catch (IOException e){
             e.printStackTrace();
         }
-
         readFromFile(filepath);
+        sc.close();
     }
 }

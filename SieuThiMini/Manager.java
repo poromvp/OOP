@@ -38,28 +38,32 @@ public class Manager extends Staff {
     @Override
     // đọc và lưu lại các phần tử trong file
     public void readFromFile(String filepath){
-        String filePath = "dsnv.txt"; // Đường dẫn tới file
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\dsnv.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+
             String line;
             count = 0;
+            Staff[] Stafflist = new Staff[100];
+            for(int i=0; i<Stafflist.length; i++){
+                Stafflist[i]= new Staff();
+            }
 
             System.out.printf("%-5s| %-10s| %-10s| %-10s| %-12s %n",
                     "Mã NV","Họ Tên", "Lương", "Vai trò", "Số điện thoại");
             System.out.println();
             while ((line = reader.readLine()) != null ) {
                 String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
-
                 if (parts.length >= 6) {
                     // Lấy các trường từ mảng parts
                     Stafflist[count].setStaffID(parts[0]);
                     Stafflist[count].setContactNum(parts[parts.length - 1]); // Số điện thoại là phần tử cuối
-                    Stafflist[count].setSalary(Double.parseDouble(parts[parts.length - 2])); // Lương là phần tử kế cuối
-                    Stafflist[count].setRole(parts[parts.length - 3]); // Vai trò là phần tử trước lương
+                    Stafflist[count].setSalary(Double.parseDouble(parts[parts.length - 3])); // Lương là phần tử đứng trước Vai trò
+                    Stafflist[count].setRole(parts[parts.length - 2]); // Vai trò là phần tử sau lương
                     Stafflist[count].setName(String.join(" ", Arrays.copyOfRange(parts, 1, parts.length - 3))); // Ghép tên từ các phần tử còn lại
                 }
+                System.out.printf("%-5s| %-10s| %-10s| %-10s| %-12s %n", 
+                Stafflist[count].getStaffID(), Stafflist[count].getName(), Stafflist[count].getSalary(), Stafflist[count].getRole(), Stafflist[count].getContactNum());
                 count ++;
-                System.out.printf("%-5s| %-10s| %-10s| %-10s| %-12s %n",
-                        Stafflist[count].getStaffID(), Stafflist[count].getName(), Stafflist[count].getSalary(), Stafflist[count].getRole(), Stafflist[count].getContactNum());
             }
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
@@ -73,13 +77,14 @@ public class Manager extends Staff {
     //them nhan vien vao danh sach nhan vien
     public void writeToFile (String filepath){
         Scanner sc= new Scanner(System.in);
-        filepath ="dsnv.txt";
+        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\dsnv.txt";
         File inputFile = new File(filepath);
         String filetemp = "temp.txt";
         File temp = new File(filetemp);
 
         System.out.println("nhập vị trí dòng bạn muốn thêm vào danh sách");
         int vitri = sc.nextInt();
+        sc.nextLine();
 
         System.out.print("nhập mã cho nhân viên mới: ");
         String ID=sc.nextLine();
@@ -142,7 +147,7 @@ public class Manager extends Staff {
         Scanner sc= new Scanner(System.in);
         System.out.print("Nhap ma nhan vien ban muon xoa: ");
         String IDremove = sc.nextLine();
-        String filepath= "dsnv.txt";
+        String filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\dsnv.txt";
         StringBuilder content = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader( new FileReader(filepath))){

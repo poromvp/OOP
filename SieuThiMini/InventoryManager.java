@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.security.PrivateKey;
 import java.util.Arrays;
@@ -94,13 +93,18 @@ public class InventoryManager extends Staff {
     //đọc dữ liệu từ file Inventory
     @Override
     public void readFromFile(String filepath){
-        filepath="Inventory.txt";
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+
+        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\Inventory.txt";
+         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             countA = 0;
-
-            System.out.printf("%-10s| %-12s| %-10s %n",
-                    "Mã sản phẩm","Tên sản phẩm", "Số lượng");
+            Product[] IvenProducts = new Product[100];
+            for (int i=0; i<IvenProducts.length; i++){
+                IvenProducts[i] = new Product();
+            }
+            
+            System.out.printf("%-10s| %-12s| %-10s %n", 
+            "Mã sản phẩm","Tên sản phẩm", "Số lượng");
 
             while ((line = reader.readLine()) != null ) {
                 String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
@@ -109,14 +113,14 @@ public class InventoryManager extends Staff {
                     // Lấy các trường từ mảng parts
                     String id = parts[0];
                     String name = parts[1];
-                    productCount = Integer.parseInt(parts[3]);
+                    productCount = Integer.parseInt(parts[2]);
                     IvenProducts[countA].setProductID(id);
                     IvenProducts[countA].setName(name);
                     IvenProducts[countA].setQuantity(productCount);
                 }
+                System.out.printf("%-10s| %-12s| %-10s %n", 
+                IvenProducts[countA].getProductID(),IvenProducts[countA].getName(),IvenProducts[countA].getQuantity() );
                 countA++;
-                System.out.printf("%-10s| %-12s| %-10s %n",
-                        IvenProducts[countA].getProductID(),IvenProducts[countA].getName(),IvenProducts[countA].getQuantity() );
             }
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
@@ -126,12 +130,17 @@ public class InventoryManager extends Staff {
     }
 
     public void readFromFileOrder(String filepath){
-        filepath="OrderInventory.txt";
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\OrderInventory.txt";
+         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             countB = 0;
-            System.out.printf("%-10s| %-12s| %-10s %n",
-                    "Mã sản phẩm","Tên sản phẩm", "Số lượng");
+
+            Product [] OrderProducts = new Product[100];
+            for (int i =0; i<OrderProducts.length; i++){
+                OrderProducts[i]= new Product();
+            }
+            System.out.printf("%-10s| %-12s| %-10s %n", 
+            "Mã sản phẩm","Tên sản phẩm", "Số lượng");
             while ((line = reader.readLine()) != null ) {
                 String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
 
@@ -139,14 +148,14 @@ public class InventoryManager extends Staff {
                     // Lấy các trường từ mảng parts
                     String id = parts[0];
                     String name = parts[1];
-                    productCount = Integer.parseInt(parts[3]);
+                    productCount = Integer.parseInt(parts[2]);
                     OrderProducts[countB].setProductID(id);
                     OrderProducts[countB].setName(name);
                     OrderProducts[countB].setQuantity(productCount);
                 }
+                System.out.printf("%-10s| %-12s| %-10s %n", 
+                OrderProducts[countB].getProductID(),OrderProducts[countB].getName(),OrderProducts[countB].getQuantity() );
                 countB++;
-                System.out.printf("%-10s| %-12s| %-10s %n",
-                        IvenProducts[countB].getProductID(),IvenProducts[countB].getName(),IvenProducts[countB].getQuantity() );
             }
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
@@ -158,13 +167,14 @@ public class InventoryManager extends Staff {
     // them san pham vao trong danh sach kho hang
     public void writeToFile (String filepath){
         Scanner sc= new Scanner(System.in);
-        filepath ="Inventory.txt";
+        filepath ="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\Inventory.txt";
         File inputFile = new File(filepath);
         String filetemp = "temp.txt";
         File temp = new File(filetemp);
 
         System.out.println("nhập vị trí dòng bạn muốn thêm vào danh sách");
         int vitri = sc.nextInt();
+        sc.nextLine();
 
         int length = 9;
         String productidString = generateRandomString(length);
@@ -184,7 +194,7 @@ public class InventoryManager extends Staff {
             int currentLine = 0; // dòng đang thao tác hiện tại
             while ((line = br.readLine())!=null){
                 //chèn dòng mới vào vị trí mong muốn
-                if(currentLine==vitri){
+                if(currentLine==vitri-1){
                     bw.write(newInventory);
                     bw.newLine();
                 }
@@ -219,14 +229,14 @@ public class InventoryManager extends Staff {
         Scanner sc= new Scanner(System.in);
         System.out.print("Nhập tên sản phẩm muốn xóa: ");
         String NameProductRemove = sc.nextLine();
-        String filepath= "CashierList.txt";
+        String filepath ="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\Inventory.txt";
         StringBuilder content = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader( new FileReader(filepath))){
             String line;
             while ((line= br.readLine())!=null){
                 String[] parts = line.split(" ");
-                if(NameProductRemove==parts[2]){
+                if(!NameProductRemove.equals(parts[2])){
                     content.append(line).append(System.lineSeparator());            // đọc file và lưu lại các dòng không chứa mã nhân viên cần xoá;
                 }
             }
@@ -245,7 +255,7 @@ public class InventoryManager extends Staff {
 
     // them san pham muon dat hang ve
     public void OrderInventory (){
-        String filepath = "OrderInventory.txt";
+        String filepath = "D:\\DoAnOOP\\OOP\\SieuThiMiNi\\OrderInventory.txt";
         Scanner sc= new Scanner(System.in);
         File inputFile = new File(filepath);
         String filetemp = "temp.txt";
@@ -253,6 +263,7 @@ public class InventoryManager extends Staff {
 
         System.out.println("nhập vị trí dòng bạn muốn thêm vào danh sách");
         int vitri = sc.nextInt();
+        sc.nextLine();
 
         int length = 9;
         String ProductOrderStringID = generateRandomString(length);
@@ -272,7 +283,7 @@ public class InventoryManager extends Staff {
             int currentLine = 0; // dòng đang thao tác hiện tại
             while ((line = br.readLine())!=null){
                 //chèn dòng mới vào vị trí mong muốn
-                if(currentLine==vitri){
+                if(currentLine==vitri-1){
                     bw.write(newOrder);
                     bw.newLine();
                 }
@@ -308,14 +319,14 @@ public class InventoryManager extends Staff {
         Scanner sc= new Scanner(System.in);
         System.out.print("Nhập tên sản phẩm muốn xóa: ");
         String NameProductOrderRemove = sc.nextLine();
-        String filepath= "CashierList.txt";
+        String filepath = "D:\\DoAnOOP\\OOP\\SieuThiMiNi\\OrderInventory.txt";
         StringBuilder content = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader( new FileReader(filepath))){
             String line;
             while ((line= br.readLine())!=null){
                 String[] parts = line.split(" ");
-                if(NameProductOrderRemove==parts[2]){
+                if(!NameProductOrderRemove.equals(parts[2])){
                     content.append(line).append(System.lineSeparator());            // đọc file và lưu lại các dòng không chứa tên sản phẩm cần xóa
                 }
             }

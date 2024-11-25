@@ -1,26 +1,24 @@
-
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
-public class Store implements QLFile{
+public class Store{
     public Staff[] staffList;                   // danh sách nhân viên
-    public Product[] inventory;                 // danh sách sản phẩm
     public Transaction[] transactions;          // danh sách giao dịch
-    public LoyaltyProgram[] loyaltyProgram;     // danh sách khuyến mãi cho khách hàng thân thiết 
     public Order[] orderList;                   // danh sách đơn hàng
+    public Customer[] customers;                // danh sách khách hàng
+    public Discount[] discounts;                 // danh sách chương trình khuyến mãi
+
+    
     public Store(){
         String filepath=null;
-        readFromFile(filepath);
+        Order order=new Order();
+        orderList=order.readFromFile(filepath);
+        customers = Customer.readFromFile("customers.txt");
+        discounts = Discount.readFromFile("discount.txt");
     }
-    public Store(Staff[] staffList, Product[] inventory,
-        Transaction[] transactions, LoyaltyProgram[] loyaltyProgram) {
+    public Store(Staff[] staffList,
+        Transaction[] transactions) {
         this.staffList = staffList;
-        this.inventory = inventory;
         this.transactions = transactions;
-        this.loyaltyProgram = loyaltyProgram; 
     }
     public Staff[] getStaffList() {
         return staffList;
@@ -28,77 +26,43 @@ public class Store implements QLFile{
     public void setStaffList(Staff[] staffList) {
         this.staffList = staffList;
     }
-    public Product[] getInventory() {
-        return inventory;
-    }
-    public void setInventory(Product[] inventory) {
-        this.inventory = inventory;
-    }
     public Transaction[] getTransactions() {
         return transactions;
     }
     public void setTransactions(Transaction[] transactions) {
         this.transactions = transactions;
     }
-    public LoyaltyProgram[] getLoyaltyProgram() {
-        return loyaltyProgram;
-    }
-    public void setLoyaltyProgram(LoyaltyProgram[] loyaltyProgram) {
-        this.loyaltyProgram = loyaltyProgram;
-    }
     
 
     /* các thao tác với staffList START */
-    public void addStaff(int index){ //index là vị trí muốn thêm vào
-        if (index >= 0 && index < staffList.length) {
-            Staff staff=new Staff();
-            staffList=Arrays.copyOf(staffList, staffList.length+1);
-            for(int i=staffList.length-1;i>index;i--) {
-               staffList[i]=staffList[i-1];
-            }
-            staffList[index]=staff;
-            staff.inputStaff();
-        } else {
-            System.out.println("Vi tri vuot qua kich thuoc mang");
-        } 
-    }
-
-    public void xuatStaff(){
-        for(int i=0;i<staffList.length;i++){
-            staffList[i].displayStaffInfo();
-        }
-    }
-
-    public void addProduct(Product product, int index){
-        if (index >= 0 && index < inventory.length) {
-            inventory[index] = product;
-        } else {
-            System.out.println("Vi tri vuot qua kich thuoc mang");
-        }
-    }
+    
     /* các thao tác với staffList END */
 
     /* các thao tác cho ds đơn đặt hàng START*/
     public void xuatOrder(){
-        for(int i=0;i<orderList.length;i++){
-            orderList[i].displayOrderDetails();
+        for(Order or:orderList){
+            or.displayOrderDetails();
         }
     }
 
-    public void addOrder(){
+    public void addOrder(Scanner scanner){ //thêm đơn hàng
+        orderList=Order.add(scanner, orderList);
+    }
 
+    public void removeOrder(Scanner scanner){ //xóa đơn hàng theo mã
+        orderList=Order.xoa(scanner, orderList);
     }
 
     public void editOrder(Scanner scanner){
         System.out.print("Nhập mã đơn hàng cần chỉnh sửa: ");
         String temp=scanner.nextLine();
-        boolean flag=false;
-        byte so_lan_thu=0;
+        boolean flag=false; //dùng lính canh để lặp lại chương trình nếu nhập sai
+        byte so_lan_thu=0; // nếu số lần nhập sai quá nhiều thì sẽ break 
         do{
             so_lan_thu++;
             for(int i=0;i<orderList.length;i++){
                 if(orderList[i].orderId.equals(temp)){
-                    orderList[i].edit(scanner);
+                    orderList[i].edit(scanner, orderList[i].product); //phương thức chỉnh sửa của class order
                     flag=true;
                     break;
                 }
@@ -123,92 +87,55 @@ public class Store implements QLFile{
         }while(flag!=true);
     }
 
-    public void thongkeOrder(Scanner scanner){
-        System.out.println("\n--- LỌC ĐƠN HÀNG ---");
-        System.out.println("Nhập tiêu chí để lọc (nhấn Enter để bỏ qua tiêu chí):");
-
-        System.out.print("Ngày đặt hàng (yyyy-MM-dd): ");
-        String orderDate = scanner.nextLine();
-        if (orderDate.isEmpty()) orderDate = null;
-
-        System.out.print("Nhà cung cấp: ");
-        String suppli = scanner.nextLine();
-        if (suppli.isEmpty()) suppli = null;
-        
-        Order[] filteredOrders = new Order[orderList.length]; // Tạo mảng với kích thước tối đa là độ dài của mảng orders
-        int count = 0; // Biến đếm số đơn hàng thỏa mãn điều kiện
-
-        for (Order order : orderList) {
-            boolean matches = true; // Biến kiểm tra điều kiện
-
-            if (orderDate != null && !order.getOrderDate().equals(orderDate)) {
-                matches = false; // Kiểm tra ngày
-            }
-            if (suppli != null && !order.product.getSupplier().equalsIgnoreCase(suppli)) {
-                matches = false; // Kiểm tra tên khách hàng
-            }
-
-            if (matches) {
-                filteredOrders[count++] = order; // Thêm đơn hàng vào mảng
-            }
+    public void timkiem(Scanner scanner){
+        Order.loc(scanner, orderList);
     }
-        Order[] result=new Order[count];
-        result=Arrays.copyOf(filteredOrders, count);
 
-        if (result.length == 0) {
-            System.out.println("Không tìm thấy đơn hàng nào khớp với tiêu chí.");
-        } else {
-            System.out.println("Danh sách đơn hàng:");
-            for (Order order : result) {
-                order.displayOrderDetails();
-            }
-        }
+    public void thongkeOrder(Scanner scanner){
+        Order.statisticalOrders(scanner,orderList);
     }
     /* các thao tác cho ds đơn đặt hàng END*/
 
-    @Override
-    public void readFromFile(String filePath){
-        /* Tải danh sách đơn hàng - Kiệt */
-        filePath="C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\donhang.txt";
-        int i, n;
-        n=0;
-        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
-            String Line;
-            while ((Line= br.readLine())!=null){
-                n++;
-            }
-            br.close();
+    /* Các thao tác cho danh sách khách hàng START */
+    public void themKhachHang(Scanner scanner) {
+        System.out.println("Them khach hang moi:");
+        System.out.print("Nhap ma khach hang: ");
+        int newID = scanner.nextInt();
+        scanner.nextLine(); // Xóa bỏ dòng trống
+        System.out.print("Nhap ten khach hang: ");
+        String newName = scanner.nextLine();
+        System.out.print("Nhap so dien thoai: ");
+        String newContact = scanner.nextLine();
+        System.out.print("Nhap diem tich luy: ");
+        int newPoints = scanner.nextInt();
+        customers = Customer.addCustomer(customers, new Customer(newID, newName, newContact, newPoints));
+    } 
 
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-        orderList=new Order[n];
-        i=0;
-        try (BufferedReader br= new BufferedReader(new FileReader(filePath))){
-            String Line;
-            while ((Line=br.readLine())!=null){
-                orderList[i] = new Order();
-                String [] parts= Line.split(";");
-                orderList[i].setOrderId(parts[0]);
-                orderList[i].setOrderDate(parts[1]);
-                orderList[i].product.setProductID(parts[6]);
-                orderList[i].product.setName(parts[7]);
-                orderList[i].product.setPrice(Integer.parseInt(parts[8]));
-                orderList[i].product.setCategory(parts[9]);
-                orderList[i].product.setQuantity(Integer.parseInt(parts[10]));
-                orderList[i].product.setSupplier(parts[11]);
-                i++;
-            }
-            br.close();
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        /* Tải danh sách đơn hàng - Kiệt end */
+    public void xuatDanhSachKhachHang() {
+        Customer.output(customers);
     }
-    @Override
-    public void writeToFile(String filePath){
-        System.out.println();
+
+    public void timKhachHang (Scanner scanner) {
+        System.out.print("Nhap ma khach hang de tim kiem: ");
+            int searchID = Integer.parseInt(scanner.nextLine());
+            Customer foundCustomer = Customer.findCustomerByID(customers, searchID);
+            if (foundCustomer != null) {
+                System.out.println("Thong tin khach hang:");
+                System.out.println("Ma khach hanh: " + foundCustomer.getCustomerID());
+                System.out.println("Ten khach hang: " + foundCustomer.getName());
+                System.out.println("So dien thoai: " + foundCustomer.getContactNumber());
+                System.out.println("Diem tich luy: " + foundCustomer.getLoyaltyPoints());
+            }
     }
+
+    /* Các thao tác cho danh sách khách hàng END */
+
+    /* Các thao tác cho danh sách chương trình khuyến mãi START */
+    public void xuatDanhSachChuongTrinhKhuyenMai() {
+        Discount.outputDiscounts(discounts);
+    }
+    /* Các thao tác cho danh sách chương trình khuyến mãi END */
+
+
+    
 }
