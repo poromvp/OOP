@@ -274,11 +274,16 @@ public class Order implements QLFile {
 
         System.out.print("Nhập Tên Khách Hàng: ");
         String cusName = scanner.nextLine();
+        if (cusName.isEmpty())
+            cusName = null;
 
         System.out.print("Nhập Số Điện Thoại: ");
         String phone = scanner.nextLine();
+        if (phone.isEmpty())
+            phone = null;
 
         System.out.print("Nhập Điểm Tích Lũy: ");
+        in = scanner.nextLine();
         int point;
         if (in.isEmpty())
             point = 0;
@@ -352,8 +357,8 @@ public class Order implements QLFile {
         if (orderID != null && !order.getOrderId().equals(orderID)) return false;
         if (orderDate != null && !order.getOrderDate().equals(orderDate)) return false;
         if (cusID != 0 && order.customer.getCustomerID()!=cusID) return false;
-        if (cusName != null && !order.customer.getName().equals(cusName)) return false;
-        if (phone != null && !order.customer.getContactNumber().equals(phone)) return false;
+        if (cusName != null && !order.customer.getName().equalsIgnoreCase(cusName)) return false;//
+        if (phone != null && !order.customer.getContactNumber().equals(phone)) return false;//
         if (point != 0 && order.customer.getLoyaltyPoints()!=point) return false;
 
         boolean san_pham_thu_may=false;
@@ -464,7 +469,7 @@ public class Order implements QLFile {
     public Order[] readFromFile(String filePath) {
         /* TẢI DANH SÁCH ĐƠN HÀNG - Kiệt */
         Order[] orderList;
-        filePath = "donhang.txt";
+        filePath = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\donhang.txt";
         int i, n;
         n = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {

@@ -205,8 +205,8 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách ĐƠN HÀNG");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Sửa ĐƠN HÀNG (theo mã)");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xóa ĐƠN HÀNG (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm ĐƠN HÀNG");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Thống kê ĐƠN HÀNG");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Thống kê ĐƠN HÀNG");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm ĐƠN HÀNG");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -227,10 +227,10 @@ public class ChayChuongTrinh {
                     store.removeOrder(scanner);
                     break;
                 case 5:
-                    store.timkiem(scanner);
+                    store.thongkeOrder(scanner);
                     break;
                 case 6:
-                    store.thongkeOrder(scanner);
+                    store.timkiem(scanner);
                     break;
                 case 0:
                     System.out.println("Đã thoát");

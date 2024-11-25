@@ -232,7 +232,7 @@ public class Customer {
         Scanner scanner = new Scanner(System.in);
 
         // Đọc danh sách khách hàng từ file
-        String fileName = "customers.txt";
+        String fileName = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt";
         Customer[] customers = readFromFile(fileName);
 
         int choice;
