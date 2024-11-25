@@ -40,7 +40,7 @@ public class Category {
         Category.categoryList = categoryList;
     }
     public static Category getCategoryById(String id){
-        int tmp = -1;
+        int tmp = 0;
         int size = categoryList.length;
         for (int i = 0; i < size; i++) {
             if (categoryList[i] != null && categoryList[i].getCategoryID().equals(id)) {
@@ -48,10 +48,7 @@ public class Category {
                 break;
             }
         }
-        if(tmp==-1){
-            return null;
-        }
-        else return categoryList[tmp];
+        return categoryList[tmp];
     }
     public static void readCategoryFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
