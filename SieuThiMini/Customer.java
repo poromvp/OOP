@@ -7,7 +7,7 @@ public class Customer {
     private String name; // Tên khách hàng
     private String contactNumber; // Số điện thoại của khách
     private int loyaltyPoints; // Điểm tích lũy của khách
-
+    
     // Constructor không tham số
     public Customer() {}
 
