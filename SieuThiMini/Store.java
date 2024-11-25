@@ -12,10 +12,10 @@ public class Store{
         String filepath=null;
         Order order=new Order();
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("customers.txt");
+        customers = Customer.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt");
     }
     public Store(Staff[] staffList,
-        Transaction[] transactions, LoyaltyProgram[] loyaltyProgram) {
+        Transaction[] transactions) {
         this.staffList = staffList;
         this.transactions = transactions;
     }
@@ -86,11 +86,11 @@ public class Store{
         }while(flag!=true);
     }
 
-    public void thongkeOrder(Scanner scanner){
+    public void timkiem(Scanner scanner){
         Order.loc(scanner, orderList);
     }
 
-    public void timkiem(Scanner scanner){
+    public void thongkeOrder(Scanner scanner){
         Order.statisticalOrders(scanner,orderList);
     }
     /* các thao tác cho ds đơn đặt hàng END*/
