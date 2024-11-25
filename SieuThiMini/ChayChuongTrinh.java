@@ -85,6 +85,7 @@ public class ChayChuongTrinh {
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
+                    break;
             }
         } while (choice != 0);
     }
@@ -117,7 +118,10 @@ public class ChayChuongTrinh {
                     System.out.println("Đã thêm tài khoản.");
                     break;
                 case 2:
-                    // store.listUserAccounts();
+                     store.xuatDanhSachKhachHang();
+                    break;
+                case 6:
+                    store.timKhachHang(scanner);
                     break;
                 case 0:
                     break;
