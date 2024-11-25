@@ -1,3 +1,5 @@
+
+
 public class UserAccount {
     public String username, password, email, phoneNumber, role; //role: vai trò(admin, customer, staff)
 

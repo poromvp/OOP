@@ -1,26 +1,27 @@
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Supplier {
     public String supplierID;
     public String supplierName;
-    public Product[] supplierProduct;
-    private int supplierCount;
+    public static Supplier[] supplierList;
+    public static int cnt;
 
     public Supplier() {
     }
 
-    public Supplier(String supplierID, String supplierName, Product[] supplierProduct) {
+    public Supplier(String supplierID, String supplierName) {
         this.supplierID = supplierID;
         this.supplierName = supplierName;
-        this.supplierProduct = supplierProduct;
     }
 
-    public String getSupplierID() {
-        return supplierID;
+    public static Supplier[] getSupplierList() {
+        return supplierList;
     }
 
-    public void setSupplierID(String supplierID) {
-        this.supplierID = supplierID;
+    public static void setSupplierList(Supplier[] supplierList) {
+        Supplier.supplierList = supplierList;
     }
 
     public String getSupplierName() {
@@ -31,24 +32,41 @@ public class Supplier {
         this.supplierName = supplierName;
     }
 
-    public Product[] getSupplierProduct() {
-        return supplierProduct;
+    public String getSupplierID() {
+        return supplierID;
     }
 
-    public void setSupplierProduct(Product[] supplierProduct) {
-        this.supplierProduct = supplierProduct;
+    public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
     }
 
-    public void getSupplierDetail(){
-        System.out.println(supplierID+" "+supplierName+" : ");
-        for(int i=0;i<supplierCount;i++){
-            System.out.println(supplierProduct[i]);
+    public static Supplier getSupplierById(String id){
+        int tmp = 0;
+        int size = supplierList.length;
+        for (int i = 0; i < size; i++) {
+            if (supplierList[i] != null && supplierList[i].getSupplierID().equals(id)) {
+                tmp = i;
+                break;
+            }
         }
+        return supplierList[tmp];
     }
-    public void removeSupplier() {
-        this.supplierID = null;
-        this.supplierName = null;
-        this.supplierProduct = new Product[0];
-        this.supplierCount = 0;
+    public void readProductsFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2 && cnt< 100) { // Kiểm tra nếu mảng chưa đầy
+                    Supplier a = new Supplier(
+                            parts[0],                // productID
+                            parts[1]               // supplier
+                    );
+                    supplierList[cnt] = a;
+                    cnt++; // Di chuyển đến vị trí tiếp theo trong mảng
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi khi đọc file: " + e.getMessage());
+        }
     }
 }
