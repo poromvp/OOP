@@ -69,4 +69,28 @@ public class Supplier {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
     }
+
+    public static boolean checkIDSupplier(String id){
+        if(id.length()!=5){
+            return false;
+        }
+        if(!id.startsWith("SL")){
+            return false;
+        }
+        for(int i=2;i<5;i++){
+            if(!Character.isDigit(id.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+    //Kiem tra id co bi trung khong
+    public static boolean checkDuplicateID(String id) {
+        for (Supplier sl: supplierList) {
+            if (sl!= null && sl.getSupplierID().equals(id)) {
+                return false; // Trùng ID
+            }
+        }
+        return true; // Không trùng
+    }
 }

@@ -71,4 +71,30 @@ public class Category {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
     }
+
+    //Check id
+    //Kiem tra format id
+    public static boolean checkIDCategory(String id){
+        if(id.length()!=5){
+            return false;
+        }
+        if(!id.startsWith("CT")){
+            return false;
+        }
+        for(int i=2;i<5;i++){
+            if(!Character.isDigit(id.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+    //Kiem tra id co bi trung khong
+    public static boolean checkDuplicateID(String id) {
+        for (Category ct : categoryList) {
+            if (ct!= null && ct.getCategoryID().equals(id)) {
+                return false; // Trùng ID
+            }
+        }
+        return true; // Không trùng
+    }
 }
