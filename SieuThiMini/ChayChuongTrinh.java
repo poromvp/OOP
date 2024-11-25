@@ -73,19 +73,41 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Nhập tên sản phẩm: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Nhập giá sản phẩm: ");
-                    double price = Double.parseDouble(scanner.nextLine());
-                    // Product product = new Product(name, price); // Tạo sản phẩm
-                    // store.addProduct(product);
-                    System.out.println("Đã thêm sản phẩm.");
+                    Category.readCategoryFromFile("category.txt");
+                    Supplier.readSupplierFromFile("supplier.txt");
+                    Product.readProductsFromFile("product.txt");
+                    System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
                     break;
                 case 2:
-                    // store.listProducts();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
+                    for (int i=0;i<Product.getCnt();i++){
+                        Product.productList[i].getDetails();
+                    }
                     break;
-                case 0:
+                case 3:
+                    System.out.println("So phan tu ban muon them la: ");
+                    int n=Integer.parseInt(scanner.nextLine());
+                    for (int i=0;i<n;i++){
+                        Product.addProduct();
+                    }
                     break;
+                case 4:
+                    System.out.println("Nhap vao id san pham muon sua.");
+                    String ud= scanner.nextLine();
+                    Product.upDateProduct(ud);
+                case 5:
+                    System.out.println("Nhap vao id san pham muon xoa.");
+                    String rm= scanner.nextLine();
+                    Product.deleteProduct(rm);
+                    break;
+                case 6:
+                    System.out.println("Nhap tu khoa muon tim kiem");
+                    String find= scanner.nextLine();
+                    Product.Find(find);
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
                     break;
