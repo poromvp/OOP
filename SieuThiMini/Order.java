@@ -464,7 +464,7 @@ public class Order implements QLFile {
     public Order[] readFromFile(String filePath) {
         /* TẢI DANH SÁCH ĐƠN HÀNG - Kiệt */
         Order[] orderList;
-        filePath = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\donhang.txt";
+        filePath = "donhang.txt";
         int i, n;
         n = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
