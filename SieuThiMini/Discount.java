@@ -13,7 +13,7 @@ public class Discount {
     private Date endDate;
 
     // Định dạng ngày
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
     // Constructor có tham số
     public Discount(int discountID, String name, double discountPercentage, Date startDate, Date endDate) {
@@ -364,3 +364,5 @@ public class Discount {
         scanner.close();
     }
 }
+
+
