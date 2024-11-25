@@ -5,14 +5,15 @@ public class Store{
     public Transaction[] transactions;          // danh sách giao dịch
     public Order[] orderList;                   // danh sách đơn hàng
     public Customer[] customers;                // danh sách khách hàng
-    public Discount[] discount;                 // danh sách chương trình khuyến mãi
+    public Discount[] discounts;                 // danh sách chương trình khuyến mãi
 
     
     public Store(){
         String filepath=null;
         Order order=new Order();
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt");
+        customers = Customer.readFromFile("customers.txt");
+        discounts = Discount.readFromFile("discount.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -95,7 +96,7 @@ public class Store{
     }
     /* các thao tác cho ds đơn đặt hàng END*/
 
-    /* Các thao tác cho danh sách khách hàng */
+    /* Các thao tác cho danh sách khách hàng START */
     public void themKhachHang(Scanner scanner) {
         System.out.println("Them khach hang moi:");
         System.out.print("Nhap ma khach hang: ");
@@ -127,7 +128,13 @@ public class Store{
             }
     }
 
-    /* Các thao tác cho danh sách khách hàng END*/
+    /* Các thao tác cho danh sách khách hàng END */
+
+    /* Các thao tác cho danh sách chương trình khuyến mãi START */
+    public void xuatDanhSachChuongTrinhKhuyenMai() {
+        Discount.outputDiscounts(discounts);
+    }
+    /* Các thao tác cho danh sách chương trình khuyến mãi END */
 
 
     
