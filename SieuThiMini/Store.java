@@ -15,8 +15,8 @@ public class Store{
         String filepath=null;
         Order order=new Order();
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("customers.txt");
-        discounts = Discount.readFromFile("discount.txt");
+        customers = Customer.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt");
+        discounts = Discount.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {

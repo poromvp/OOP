@@ -1,6 +1,10 @@
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.Date;
 
 public class InvoiceManager {
     private Receipt[] receipts;
@@ -147,6 +151,39 @@ public class InvoiceManager {
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
             }
+        }
+    }
+
+    // Đọc hóa đơn từ file
+    public void loadReceiptsFromFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            while ((line = br.readLine()) != null) {
+                if (line.equals("---")) {
+                    continue;
+                }
+                String[] parts = line.split(",");
+                int id = Integer.parseInt(parts[0]);
+                Date date = sdf.parse(parts[1]);
+                double totalAmount = Double.parseDouble(parts[2]);
+                double customerPaid = Double.parseDouble(parts[3]);
+
+                Transaction transaction = new Transaction(id, date);
+                transaction.setCustomerPaid(customerPaid);
+                while ((line = br.readLine()) != null && !line.equals("---")) {
+                    parts = line.split(",");
+                    String itemName = parts[0];
+                    double itemPrice = Double.parseDouble(parts[1]);
+                    int itemQuantity = Integer.parseInt(parts[2]);
+                    Item item = new Item(itemName, itemPrice, itemQuantity);
+                    transaction.addItem(item);
+                }
+                Receipt receipt = new Receipt(id, transaction);
+                addReceipt(receipt);
+            }
+        } catch (IOException | ParseException e) {
+                e.printStackTrace();
         }
     }
 }
