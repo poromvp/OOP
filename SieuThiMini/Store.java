@@ -4,11 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 public class Store{
-    public Staff[] staffList;                   // danh sách nhân viên
-    public Transaction[] transactions;          // danh sách giao dịch
-    public Order[] orderList;                   // danh sách đơn hàng
-    public Customer[] customers;                // danh sách khách hàng
-    public Discount[] discounts;                 // danh sách chương trình khuyến mãi
+    public Transaction[] transactions;              // danh sách giao dịch
+    public Order[] orderList;                       // danh sách đơn hàng
+    public Customer[] customers;                    // danh sách khách hàng
+    public Discount[] discounts;                    // danh sách chương trình khuyến mãi
 
     
     public Store(){
@@ -20,22 +19,44 @@ public class Store{
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
-        this.staffList = staffList;
         this.transactions = transactions;
         this.discounts = new Discount[0]; // Khởi tạo danh sách trống
     }
-    public Staff[] getStaffList() {
-        return staffList;
-    }
-    public void setStaffList(Staff[] staffList) {
-        this.staffList = staffList;
-    }
+
     public Transaction[] getTransactions() {
         return transactions;
     }
     public void setTransactions(Transaction[] transactions) {
         this.transactions = transactions;
     }
+    /*thao tác nhân viên start */
+    public void xuatDSNV(){
+        Manager Mana = new Manager();
+        Mana.outStaff();
+    }
+
+    public void themNV (){
+        Manager Manb = new Manager();
+        Manb.addStaff();
+    }
+    
+    public void xoaNV (){
+        Manager Manc = new Manager();
+        Manc.removeStaff("dsnv.txt");
+    }
+
+    public void suaNV (){
+        Manager Mand= new Manager();
+        Mand.ChangeInFo();
+    }
+
+    public void timNV(){
+        Manager Mane= new Manager();
+        Mane.searchStaffByCriteria();
+    }
+    
+    /*thao tác nhân viên end */
+
 
     // update Nhân
     public Discount[] getDiscounts() {
@@ -55,12 +76,14 @@ public class Store{
     }
     // 
 
+
     /* các thao tác cho ds đơn đặt hàng START*/
     public void xuatOrder(){
         for(Order or:orderList){
             or.displayOrderDetails();
         }
     }
+
 
     public void addOrder(Scanner scanner){ //thêm đơn hàng
         orderList=Order.add(scanner, orderList);

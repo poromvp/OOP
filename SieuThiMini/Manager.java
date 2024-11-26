@@ -155,7 +155,7 @@ public class Manager extends Staff {
 
     public void removeStaff (String filepath){
         Scanner sc= new Scanner(System.in);
-        System.out.print("Nhap ma nhan vien ban muon xoa: ");
+        System.out.print("Nhập mã nhân viên bạn muốn xoá: ");
         String IDremove = sc.nextLine();
         sc.nextLine();
         StringBuilder content = new StringBuilder();
@@ -227,57 +227,74 @@ public class Manager extends Staff {
 
             System.out.println("Thông tin nhân viên đã được cập nhật.");
             break; // Thoát khỏi vòng lặp khi tìm thấy nhân viên
+            }
+            found = false;
         }
+
+        // Cập nhật lại file sau khi sửa
+        writeToFile("dsnv.txt"); 
+        outStaff();
+        sc.close();
     }
 
-    // Cập nhật lại file sau khi sửa
-    writeToFile("dsnv.txt"); 
-    outStaff();
-    sc.close();
-    }
-
-    public void Search (){
+    public void searchStaffByCriteria() {
         Scanner sc = new Scanner(System.in);
-        count =0;
+        count = 0;
         readFromFile("dsnv.txt");
-
-        System.out.println("\n--- TÌM KIẾM Nhân viên ---");
-        System.out.println("Nhập tiêu chí để tìm (nhấn Enter để bỏ qua tiêu chí):");
-
+    
+        System.out.println("TÌM KIẾM NHÂN VIÊN THEO TIÊU CHÍ");
+        System.out.println("Nhập tiêu chí tìm kiếm (bỏ qua tiêu chí nếu không muốn dùng):");
+    
+        // Nhập tiêu chí
         System.out.print("Mã nhân viên: ");
-        String ID = sc.nextLine().trim();
-        if (ID.isEmpty()) {
-            ID = null;
-        }
-
+        String id = sc.nextLine().trim();
+        if (id.isEmpty()) id = null;
+    
         System.out.print("Tên nhân viên: ");
-        String Name = sc.nextLine().trim();
-        if (Name.isEmpty()) {
-            Name = null;
+        String name = sc.nextLine().trim();
+        if (name.isEmpty()) name = null;
+    
+        System.out.print("Lương nhân viên: ");
+        String salaryInput = sc.nextLine().trim();
+        Double salary = null;
+        if (!salaryInput.isEmpty()) {
+            salary = Double.parseDouble(salaryInput);
         }
-
-        if(Name== null){
-            for(int i =0; i<count; i++){
-                if(ID.equals(Stafflist[i].getStaffID())){
-                    System.out.println("==============================");
-                    System.out.println("Tên nhân viên: "+Stafflist[i].getName());
-                    System.out.println("Lương nhân viên: "+ Stafflist[i].getSalary());
-                    System.out.println("Vai trò: "+ Stafflist[i].getRole());
-                    System.out.println("Số điện thoại: "+Stafflist[i].getContactNum());
-                }
+    
+        System.out.print("Vai trò: ");
+        String role = sc.nextLine().trim();
+        if (role.isEmpty()) role = null;
+    
+        boolean found = false;
+    
+        // Tìm kiếm nhân viên theo tiêu chí
+        for (int i = 0; i < count; i++) {
+            boolean match = true;
+    
+            // Kiểm tra từng tiêu chí
+            if (id != null && !Stafflist[i].getStaffID().equalsIgnoreCase(id)) match = false;
+            if (name != null && !Stafflist[i].getName().equalsIgnoreCase(name)) match = false;
+            if (salary != null && Stafflist[i].getSalary() != salary) match = false;
+            if (role != null && !Stafflist[i].getRole().equalsIgnoreCase(role)) match = false;
+    
+            if (match) {
+                found = true;
+    
+                // In thông tin nhân viên tìm thấy
+                System.out.println("==============================");
+                System.out.println("Mã nhân viên: " + Stafflist[i].getStaffID());
+                System.out.println("Tên nhân viên: " + Stafflist[i].getName());
+                System.out.println("Lương nhân viên: " + Stafflist[i].getSalary());
+                System.out.println("Vai trò: " + Stafflist[i].getRole());
+                System.out.println("Số điện thoại: " + Stafflist[i].getContactNum());
             }
         }
-         else if(ID==null){
-            for(int i =0; i<count; i++){
-                if(Name.equals(Stafflist[i].getName())){
-                    System.out.println("==============================");
-                    System.out.println("Mã nhân viên: "+Stafflist[i].getStaffID());
-                    System.out.println("Lương nhân viên: "+ Stafflist[i].getSalary());
-                    System.out.println("Vai trò: "+ Stafflist[i].getRole());
-                    System.out.println("Số điện thoại: "+Stafflist[i].getContactNum());
-                }
+    
+        if (!found) {
+            System.out.println("Không tìm thấy nhân viên nào theo các tiêu chí đã nhập.");
         }
-        }
+    
+        sc.close();
     }
 }
 
