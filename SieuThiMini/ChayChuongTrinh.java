@@ -7,6 +7,14 @@ public class ChayChuongTrinh {
         int choice;
         Store sieuthi = new Store();
         Scanner scanner = new Scanner(System.in);
+
+        // updat của Nhân
+        String fileName = "discount.txt";
+        sieuthi.setDiscounts(Discount.readFromFile(fileName)); // Khởi tạo danh sách từ file
+
+        String fileName1 = "customers.txt";
+        sieuthi.setCustomers(Customer.readFromFile(fileName1)); // Khởi tạo danh sách từ file
+
         do {
             // Hiển thị menu
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -51,7 +59,12 @@ public class ChayChuongTrinh {
             }
         } while (choice != 0);
 
+        // Ghi vào file trước khi kết thúc chương trình
+        Discount.writeToFile(fileName, sieuthi.getDiscounts());
         scanner.close();
+        Customer.writeToFile(fileName1, sieuthi.getCustomers());
+        scanner.close();
+        //scanner.close();
     }
 
     private static void manageProducts(Scanner scanner, Store store) {
@@ -167,7 +180,6 @@ public class ChayChuongTrinh {
                     System.out.println("Lựa chọn không hợp lệ.");
             }
         } while (choice != 0);
-        
     }
 
     private static void manageDiscounnt(Scanner scanner, Store store) {
@@ -189,6 +201,7 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
+                /* 
                     System.out.print("Nhập tên người dùng: ");
                     String username = scanner.nextLine();
                     System.out.print("Nhập mật khẩu: ");
@@ -197,6 +210,7 @@ public class ChayChuongTrinh {
                     // store.addUserAccount(account);
                     System.out.println("Đã thêm tài khoản.");
                     break;
+                    */
                 case 2:
                     // Xem danh sách chương trình khuyến mãi
                     store.xuatDanhSachChuongTrinhKhuyenMai();
