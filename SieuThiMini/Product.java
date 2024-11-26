@@ -58,11 +58,12 @@ public class Product {
     }
 
     public void setCategoryId(String categoryId) {
-        if(!Category.checkIDCategory(categoryId)||!Supplier.checkDuplicateID(categoryId)){
-            System.out.println("Id nhap vao bi sai, san pham se co id mat dinh.");
-            return;
-        }
-        else this.categoryId=categoryId;
+//        if(!Category.checkIDCategory(categoryId)||!Supplier.checkDuplicateID(categoryId)){
+//            System.out.println("Id nhap vao bi sai, san pham se co id mat dinh.");
+//            return;
+//        }
+//        else this.categoryId=categoryId;
+        this.categoryId=categoryId;
     }
 
     public int getQuantity() {
@@ -78,11 +79,12 @@ public class Product {
     }
 
     public void setSupplierId(String supplierId) {
-        if(!Supplier.checkIDSupplier(supplierId)||!Supplier.checkDuplicateID(supplierId)){
-            System.out.println("Id nhap vao bi sai, san pham se co id mat dinh.");
-            return;
-        }
-        else this.supplierId=supplierId;
+//        if(!Supplier.checkIDSupplier(supplierId)||!Supplier.checkDuplicateID(supplierId)){
+//            System.out.println("Id nhap vao bi sai, san pham se co id mat dinh.");
+//            return;
+//        }
+//        else this.supplierId=supplierId;
+        this.supplierId=supplierId;
     }
 
     public static Product[] getProductList() {
