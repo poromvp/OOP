@@ -412,14 +412,7 @@ public class Order implements QLFile {
                 
             case 3:
                 // Sắp xếp theo quantity (giảm dần và tăng dần)
-                Arrays.sort(orderList, Comparator.comparingInt(o -> Arrays.stream(((Order) o).getProductList())
-                    .mapToInt(Product::getQuantity).sum()).reversed());
-                System.out.printf("%-15s%-20s%-15s\n", "Số Lượng", "Mã Đơn Hàng", "Tổng Tiền");
-                for (Order order : orderList) {
-                    int totalQuantity = Arrays.stream(order.getProductList())
-                        .mapToInt(Product::getQuantity).sum();
-                    System.out.printf("%-15d%-20s%-15.2f\n", totalQuantity, order.getOrderId(), order.getTotalAmount());
-                }
+                sapxepSL(orderList);
                 break;
                 
             case 4:
@@ -526,6 +519,31 @@ public class Order implements QLFile {
         }
     }
 
+    public static void sapxepSL(Order [] orderList){
+        int [] a=new int [orderList.length];
+        int [] vitri=new int [orderList.length];
+        for(int i=0;i<a.length;i++){
+            a[i]=orderList[i].tongQuantity();
+            vitri[i]=i;
+        }
+        for(int i=0;i<a.length-1;i++){
+            for(int j=i+1;j<a.length;j++){
+                if(a[i]>a[j]){
+                    int temp=a[j];
+                    a[j]=a[i];
+                    a[i]=temp;
+                    int t=vitri[j];
+                    vitri[j]=vitri[i];
+                    vitri[i]=t;
+                }
+            }
+        }
+        System.out.printf("%-15s%-20s%-15s\n", "Số Lượng", "Mã Đơn Hàng", "Tổng Tiền");
+        for (int i=0;i<orderList.length;i++) {
+            System.out.printf("%-15d%-20s%-15.2f\n", orderList[vitri[i]].tongQuantity(), orderList[vitri[i]].getOrderId(), orderList[vitri[i]].calculateTotalAmount());
+        }
+    }
+
     public void nhapdonhang(Scanner scanner, Product[] product) {
         System.out.print("Nhập Mã Đơn Hàng: ");
         setOrderId(scanner.nextLine());
@@ -559,7 +577,7 @@ public class Order implements QLFile {
     public Order[] readFromFile(String filePath) {
         /* TẢI DANH SÁCH ĐƠN HÀNG - Kiệt */
         Order[] orderList;
-        filePath = "donhang.txt";
+        filePath = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\donhang.txt";
         int i, n;
         n = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {

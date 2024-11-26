@@ -15,8 +15,8 @@ public class Store{
         String filepath=null;
         Order order=new Order();
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("customers.txt");
-        discounts = Discount.readFromFile("discount.txt");
+        customers = Customer.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt");
+        discounts = Discount.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -36,10 +36,6 @@ public class Store{
         this.transactions = transactions;
     }
     
-
-    /* các thao tác với staffList START */
-    
-    /* các thao tác với staffList END */
 
     /* các thao tác cho ds đơn đặt hàng START*/
     public void xuatOrder(){
