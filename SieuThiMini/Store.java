@@ -15,8 +15,10 @@ public class Store{
         String filepath=null;
         Order order=new Order();
         orderList=order.readFromFile(filepath);
+
         customers = Customer.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt");
         discounts = Discount.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt");
+
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -187,6 +189,52 @@ public class Store{
         }
     }
     /* Các thao tác cho danh sách chương trình khuyến mãi END */
+    /* Cac thao tac voi Product START */
+    //Doc tu file
+    public void readFileProduct(){
+        Category.readCategoryFromFile("category.txt");
+        Supplier.readSupplierFromFile("supplier.txt");
+        Product.readProductsFromFile("product.txt");
+        System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
+    }
+    //Xuat danh sach cac san pham
+    public void productDetail(){
+        System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+        System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                "-------------------", "-------------------", "-------------------",
+                "-------------------", "-------------------", "-------------------");
+        for (int i=0;i<Product.getCnt();i++){
+            Product.productList[i].getDetails();
+        }
+    }
+    //Them san pham
+    public void addProduct(Scanner scanner){
+        System.out.println("So phan tu ban muon them la: ");
+        int n=Integer.parseInt(scanner.nextLine());
+        for (int i=0;i<n;i++){
+            Product.addProduct();
+        }
+    }
+    //Sua san pham
+    public void updateProduct(Scanner scanner){
+        System.out.println("Nhap vao id san pham muon sua.");
+        String ud= scanner.nextLine();
+        Product.upDateProduct(ud);
+    }
+    public void removeProduct(Scanner scanner){
+        System.out.println("Nhap vao id san pham muon xoa.");
+        String rm= scanner.nextLine();
+        Product.deleteProduct(rm);
+    }
+    public void findProduct(Scanner scanner){
+        System.out.println("Nhap tu khoa muon tim kiem");
+        String find= scanner.nextLine();
+        Product.Find(find);
+    }
+
+    /* Cac thao tac voi Product END */
+
 
 
     
