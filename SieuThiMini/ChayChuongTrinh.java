@@ -72,51 +72,42 @@ public class ChayChuongTrinh {
             choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
-                case 0:
-                    System.out.println("Thoat chinh sua san pham.");
                 case 1:
-//                    Category.readCategoryFromFile("category.txt");
-//                    Supplier.readSupplierFromFile("supplier.txt");
-//                    Product.readProductsFromFile("product.txt");
-//                    System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
-                    store.readFileProduct();
+                    Category.readCategoryFromFile("category.txt");
+                    Supplier.readSupplierFromFile("supplier.txt");
+                    Product.readProductsFromFile("product.txt");
+                    System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
                     break;
                 case 2:
-//                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-//                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
-//                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-//                            "-------------------", "-------------------", "-------------------",
-//                            "-------------------", "-------------------", "-------------------");
-//                    for (int i=0;i<Product.getCnt();i++){
-//                        Product.productList[i].getDetails();
-//                    }
-                    store.productDetail();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
+                    for (int i=0;i<Product.getCnt();i++){
+                        Product.productList[i].getDetails();
+                    }
                     break;
                 case 3:
-//                    System.out.println("So phan tu ban muon them la: ");
-//                    int n=Integer.parseInt(scanner.nextLine());
-//                    for (int i=0;i<n;i++){
-//                        Product.addProduct();
-//                    }
-                    store.addProduct(scanner);
+                    System.out.println("So phan tu ban muon them la: ");
+                    int n=Integer.parseInt(scanner.nextLine());
+                    for (int i=0;i<n;i++){
+                        Product.addProduct();
+                    }
                     break;
                 case 4:
-//                    System.out.println("Nhap vao id san pham muon sua.");
-//                    String ud= scanner.nextLine();
-//                    Product.upDateProduct(ud);
-                    store.updateProduct(scanner);
-                    break;
+                    System.out.println("Nhap vao id san pham muon sua.");
+                    String ud= scanner.nextLine();
+                    Product.upDateProduct(ud);
                 case 5:
-//                    System.out.println("Nhap vao id san pham muon xoa.");
-//                    String rm= scanner.nextLine();
-//                    Product.deleteProduct(rm);
-                    store.removeProduct(scanner);
+                    System.out.println("Nhap vao id san pham muon xoa.");
+                    String rm= scanner.nextLine();
+                    Product.deleteProduct(rm);
                     break;
                 case 6:
-//                    System.out.println("Nhap tu khoa muon tim kiem");
-//                    String find= scanner.nextLine();
-//                    Product.Find(find);
-                    store.findProduct(scanner);
+                    System.out.println("Nhap tu khoa muon tim kiem");
+                    String find= scanner.nextLine();
+                    Product.Find(find);
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
                     break;
