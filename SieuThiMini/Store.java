@@ -131,21 +131,21 @@ public class Store{
         String newContact = scanner.nextLine();
         System.out.print("Nhập điểm tích lũy: ");
         int newPoints = Integer.parseInt(scanner.nextLine());
-        Customer.addCustomer(customers, new Customer(newID, newName, newContact, newPoints));
+        this.customers = Customer.addCustomer(customers, new Customer(newID, newName, newContact, newPoints));
     } 
 
     // Chức năng thứ 4 trong menu
     public void capNhatKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để cập nhật: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Customer.updateCustomerByID(customers, updateID);
+        this.customers = Customer.updateCustomerByID(customers, updateID);
     }
 
     // Chức năng thứ 5 trong menu
     public void xoaKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để xóa: ");
         int deleteID = Integer.parseInt(scanner.nextLine());
-        Customer.removeCustomerByID(customers, deleteID);
+        this.customers = Customer.removeCustomerByID(customers, deleteID);
     }
     // Chức năng thứ 6 trong menu
     public void timKhachHang(Scanner scanner) {
