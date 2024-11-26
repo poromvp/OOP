@@ -7,6 +7,14 @@ public class ChayChuongTrinh {
         int choice;
         Store sieuthi = new Store();
         Scanner scanner = new Scanner(System.in);
+
+        // updat của Nhân
+        String fileName = "discount.txt";
+        sieuthi.setDiscounts(Discount.readFromFile(fileName)); // Khởi tạo danh sách từ file
+
+        String fileName1 = "customers.txt";
+        sieuthi.setCustomers(Customer.readFromFile(fileName1)); // Khởi tạo danh sách từ file
+
         do {
             // Hiển thị menu
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -38,7 +46,7 @@ public class ChayChuongTrinh {
                     manageStaffs(scanner, sieuthi);
                     break;
                 case 5:
-                    manageReceipt(scanner, sieuthi);
+                    //manageInvoice(scanner, sieuthi);
                     break;
                 case 6:
                     manageDiscounnt(scanner, sieuthi);
@@ -51,7 +59,12 @@ public class ChayChuongTrinh {
             }
         } while (choice != 0);
 
+        // Ghi vào file trước khi kết thúc chương trình
+        Discount.writeToFile(fileName, sieuthi.getDiscounts());
         scanner.close();
+        Customer.writeToFile(fileName1, sieuthi.getCustomers());
+        scanner.close();
+        //scanner.close();
     }
 
     private static void manageProducts(Scanner scanner, Store store) {
@@ -73,19 +86,41 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Nhập tên sản phẩm: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Nhập giá sản phẩm: ");
-                    double price = Double.parseDouble(scanner.nextLine());
-                    // Product product = new Product(name, price); // Tạo sản phẩm
-                    // store.addProduct(product);
-                    System.out.println("Đã thêm sản phẩm.");
+                    Category.readCategoryFromFile("category.txt");
+                    Supplier.readSupplierFromFile("supplier.txt");
+                    Product.readProductsFromFile("product.txt");
+                    System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
                     break;
                 case 2:
-                    // store.listProducts();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
+                    for (int i=0;i<Product.getCnt();i++){
+                        Product.productList[i].getDetails();
+                    }
                     break;
-                case 0:
+                case 3:
+                    System.out.println("So phan tu ban muon them la: ");
+                    int n=Integer.parseInt(scanner.nextLine());
+                    for (int i=0;i<n;i++){
+                        Product.addProduct();
+                    }
                     break;
+                case 4:
+                    System.out.println("Nhap vao id san pham muon sua.");
+                    String ud= scanner.nextLine();
+                    Product.upDateProduct(ud);
+                case 5:
+                    System.out.println("Nhap vao id san pham muon xoa.");
+                    String rm= scanner.nextLine();
+                    Product.deleteProduct(rm);
+                    break;
+                case 6:
+                    System.out.println("Nhap tu khoa muon tim kiem");
+                    String find= scanner.nextLine();
+                    Product.Find(find);
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
                     break;
@@ -121,16 +156,19 @@ public class ChayChuongTrinh {
                     System.out.println("Đã thêm tài khoản.");
                     break;
                 case 2:
-                     store.xuatDanhSachKhachHang();
+                    store.xuatDanhSachKhachHang();
                     break;
                 case 3:
                     // Thêm mới 1 phần tử, k phần tử
+                    store.themKhachHang(scanner);
                     break;
                 case 4:
                     // Sửa khách hàng (theo mã)
+                    store.capNhatKhachHang(scanner);
                     break;
                 case 5:
                     // Xóa khách hàng (theo mã)
+                    store.xoaKhachHang(scanner);
                     break;
                 case 6:
                     // Tìm kiếm khách hàng (theo mã)
@@ -148,7 +186,7 @@ public class ChayChuongTrinh {
         int choice;
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ CHƯƠNG TRÌNH KHUYẾN MÃI");
+            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ CTKM");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Nhập n phần tử mới đầu tiên");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách CTKM");
@@ -163,6 +201,7 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
+                /* 
                     System.out.print("Nhập tên người dùng: ");
                     String username = scanner.nextLine();
                     System.out.print("Nhập mật khẩu: ");
@@ -171,21 +210,26 @@ public class ChayChuongTrinh {
                     // store.addUserAccount(account);
                     System.out.println("Đã thêm tài khoản.");
                     break;
+                    */
                 case 2:
                     // Xem danh sách chương trình khuyến mãi
                     store.xuatDanhSachChuongTrinhKhuyenMai();
                     break;
                 case 3:
                     // Thêm mới 1 phần tử, k phần tử
+                    store.themChuongTrinhKhuyenMai();
                     break;
                 case 4:
                     // Sửa chương trình khuyến mãi (theo mã)
+                    store.capNhatChuongTrinhKhuyenMai(scanner);
                     break;
                 case 5:
                     // Xóa chương trình khuyến mãi (theo mã)
+                    store.xoaChuongTrinhKhuyenMai(scanner);
                     break;
                 case 6:
                     // Tìm kiếm chương trình khuyến mãi (theo mã)
+                    store.timKiemChuongTrinhKhuyenMai(scanner);
                     break;
                 case 0:
                     break;
@@ -434,41 +478,7 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
+     // minh update
+    
 
-
-    private static void manageReceipt(Scanner scanner, Store store) {
-        int choice;
-        do {
-            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ HÓA ĐƠN");
-            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Nhập n phần tử mới đầu tiên");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách HÓA ĐƠN");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thêm mới 1 phần tử, k phần tử");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa NHÂN SỰ (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Xóa NHÂN SỰ (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm NHÂN SỰ");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
-            System.out.print("Lựa chọn của bạn: ");
-            choice = Integer.parseInt(scanner.nextLine());
-
-            switch (choice) {
-                case 1:
-                    System.out.print("Nhập tổng số tiền: ");
-                    double totalAmount = Double.parseDouble(scanner.nextLine());
-                    // Order order = new Order(totalAmount); // Tạo đơn hàng
-                    // store.addOrder(order);
-                    System.out.println("Đã thêm đơn hàng.");
-                    break;
-                case 2:
-                    // store.listOrders();
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Lựa chọn không hợp lệ.");
-            }
-        } while (choice != 0);
-    }
 }
