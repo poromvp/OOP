@@ -58,7 +58,11 @@ public class Product {
     }
 
     public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+        if(!Category.checkIDCategory(categoryId)||!Supplier.checkDuplicateID(categoryId)){
+            System.out.println("Id nhap vao bi sai, san pham se co id mat dinh.");
+            return;
+        }
+        else this.categoryId=categoryId;
     }
 
     public int getQuantity() {
@@ -74,7 +78,11 @@ public class Product {
     }
 
     public void setSupplierId(String supplierId) {
-        this.supplierId = supplierId;
+        if(!Supplier.checkIDSupplier(supplierId)||!Supplier.checkDuplicateID(supplierId)){
+            System.out.println("Id nhap vao bi sai, san pham se co id mat dinh.");
+            return;
+        }
+        else this.supplierId=supplierId;
     }
 
     public static Product[] getProductList() {
@@ -237,6 +245,7 @@ public class Product {
 
             do {
                 System.out.println("------ CHINH SUA SAN PHAM------");
+                System.out.println("0.Thoat.");
                 System.out.println("1.Chinh sua id san pham. ");
                 System.out.println("2.Chinh sua ten san pham. ");
                 System.out.println("3.Chinh sua gia san pham. ");
@@ -246,6 +255,8 @@ public class Product {
                 System.out.println("Lua chon cua ban: ");
                 choice = new Scanner(System.in).nextInt();
                 switch (choice) {
+                    case 0:
+                        System.out.println("Thoat chinh sua.");
                     case 1:
                         System.out.println("Nhap vao id moi: ");
                         String new_id = sc.nextLine();
@@ -310,6 +321,7 @@ public class Product {
                         }
                 }
             } while (choice != 0);
+
         } else {
             System.out.println("Khong tim thay id san pham.");
             return;
