@@ -70,6 +70,16 @@ public class Order implements QLFile {
         return amount * VAT;
     }
 
+    public int tongQuantity(){
+        int sum = 0;
+        for (Product product : product) { // vòng lặp for each duyệt từng sản phẩm có kdl là Products
+            if (product != null) {
+                sum += product.getQuantity();
+            }
+        }
+        return sum;
+    }
+
     public double calculateTotalAmount() { // Tính tổng số tiền của sản phẩm
         double total = 0.0;
         for (Product product : product) { // vòng lặp for each duyệt từng sản phẩm có kdl là Products
@@ -392,33 +402,17 @@ public class Order implements QLFile {
         // Xử lý theo từng lựa chọn
         switch (choice) {
             case 1:
-                // Sắp xếp theo thời gian
-                Arrays.sort(orderList, Comparator.comparing(Order::getOrderDate));
-                System.out.printf("%-15s%-20s\n", "Mã Đơn Hàng", "Ngày Lập Đơn");
-                for (Order order : orderList) {
-                    System.out.printf("%-15s%-20s\n", order.getOrderId(), order.getOrderDate());
-                }
+                sapxepngay(orderList); //xếp theo mới nhất trước
                 break;
                 
             case 2:
                 // Sắp xếp theo tổng tiền (giảm dần và tăng dần)
-                Arrays.sort(orderList, Comparator.comparingDouble(Order::getTotalAmount).reversed());
-                System.out.printf("%-15s%-15s\n", "Tổng Tiền", "Mã Đơn Hàng");
-                for (Order order : orderList) {
-                    System.out.printf("%-15.2f%-15s\n", order.getTotalAmount(), order.getOrderId());
-                }
+                sapxeptien(orderList);
                 break;
                 
             case 3:
                 // Sắp xếp theo quantity (giảm dần và tăng dần)
-                Arrays.sort(orderList, Comparator.comparingInt(o -> Arrays.stream(((Order) o).getProductList())
-                    .mapToInt(Product::getQuantity).sum()).reversed());
-                System.out.printf("%-15s%-20s%-15s\n", "Số Lượng", "Mã Đơn Hàng", "Tổng Tiền");
-                for (Order order : orderList) {
-                    int totalQuantity = Arrays.stream(order.getProductList())
-                        .mapToInt(Product::getQuantity).sum();
-                    System.out.printf("%-15d%-20s%-15.2f\n", totalQuantity, order.getOrderId(), order.getTotalAmount());
-                }
+                sapxepSL(orderList);
                 break;
                 
             case 4:
@@ -433,6 +427,120 @@ public class Order implements QLFile {
             default:
                 System.out.println("Lựa chọn không hợp lệ.");
                 break;
+        }
+    }
+    public static void sapxepngay(Order[] orderList){
+        int [] a=new int[orderList.length];
+        int [] vitri=new int[orderList.length];
+        int i=0;
+        for(Order or: orderList){
+            String [] part=or.getOrderDate().split("/");
+            a[i]=Integer.parseInt(part[0])*1000000+Integer.parseInt(part[1])*10000+Integer.parseInt(part[2]);
+            vitri[i]=i;
+            i++;
+        }
+        for(int j=0;j<a.length-1;j++){
+            for(int y=j+1;y<a.length;y++){
+                if(a[j]%10000>a[y]%10000){
+                    int temp=a[j];
+                    a[j]=a[y];
+                    a[y]=temp;
+                    temp=vitri[j];
+                    vitri[j]=vitri[y];
+                    vitri[y]=temp;
+                }
+            }
+        }
+        /*for(int j=0;j<a.length;j++){
+            System.out.printf("%d %d\n",a[j],vitri[j]);
+        }*/
+        for(int j=0;j<a.length-1;j++){
+            int y=j+1;
+            while(a[j]%10000==a[y]%10000 && y<a.length){
+                if(a[j]%1000000/10000>a[y]%1000000/10000){
+                    int temp=a[j];
+                    a[j]=a[y];
+                    a[y]=temp;
+                    temp=vitri[j];
+                    vitri[j]=vitri[y];
+                    vitri[y]=temp;
+                }
+                y++;
+            }
+        }
+        /*System.out.println("thang");
+        for(int j=0;j<a.length;j++){
+            System.out.printf("%d %d\n",a[j],vitri[j]);
+        }*/
+        for(int j=0;j<a.length-1;j++){
+            int y=j+1;
+            while(a[j]%1000000==a[y]%1000000 && y<a.length){
+                if(a[j]/1000000>a[y]/1000000){
+                    int temp=a[j];
+                    a[j]=a[y];
+                    a[y]=temp;
+                    temp=vitri[j];
+                    vitri[j]=vitri[y];
+                    vitri[y]=temp;
+                }
+                y++;
+            }
+        }
+        /*System.out.println("day");
+        for(int j=0;j<a.length;j++){
+            System.out.printf("%d %d\n",a[j],vitri[j]);
+        }*/System.out.printf("%-15s%-20s\n", "Mã Đơn Hàng", "Ngày Lập Đơn");
+        for (int j=0;j<orderList.length;j++) {
+            System.out.printf("%-15s%-20s\n", orderList[vitri[j]].getOrderId(), orderList[vitri[j]].getOrderDate());
+        }
+    }
+    public static void sapxeptien(Order[] orderList){
+        double [] a=new double [orderList.length];
+        int [] vitri=new int [orderList.length];
+        for(int i=0;i<a.length;i++){
+            a[i]=orderList[i].calculateTotalAmount();
+            vitri[i]=i;
+        }
+        for(int i=0;i<a.length-1;i++){
+            for(int j=i+1;j<a.length;j++){
+                if(a[i]>a[j]){
+                    double temp=a[j];
+                    a[j]=a[i];
+                    a[i]=temp;
+                    int t=vitri[j];
+                    vitri[j]=vitri[i];
+                    vitri[i]=t;
+                }
+            }
+        }
+        System.out.printf("%-15s%-15s\n", "Tổng Tiền", "Mã Đơn Hàng");
+        for (int i=0;i<orderList.length;i++) {
+            System.out.printf("%-15.2f%-15s\n", orderList[vitri[i]].calculateTotalAmount(), orderList[vitri[i]].getOrderId());
+        }
+    }
+
+    public static void sapxepSL(Order [] orderList){
+        int [] a=new int [orderList.length];
+        int [] vitri=new int [orderList.length];
+        for(int i=0;i<a.length;i++){
+            a[i]=orderList[i].tongQuantity();
+            vitri[i]=i;
+        }
+        for(int i=0;i<a.length-1;i++){
+            for(int j=i+1;j<a.length;j++){
+                if(a[i]>a[j]){
+                    int temp=a[j];
+                    a[j]=a[i];
+                    a[i]=temp;
+                    int t=vitri[j];
+                    vitri[j]=vitri[i];
+                    vitri[i]=t;
+                }
+            }
+        }
+        System.out.printf("%-15s%-20s%-15s\n", "Số Lượng", "Mã Đơn Hàng", "Tổng Tiền");
+        for (int i=0;i<orderList.length;i++) {
+            System.out.printf("%-15d%-20s%-15.2f\n", orderList[vitri[i]].tongQuantity(), orderList[vitri[i]].getOrderId(), orderList[vitri[i]].calculateTotalAmount());
         }
     }
 
