@@ -86,41 +86,49 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    Category.readCategoryFromFile("category.txt");
-                    Supplier.readSupplierFromFile("supplier.txt");
-                    Product.readProductsFromFile("product.txt");
-                    System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
+//                    Category.readCategoryFromFile("category.txt");
+//                    Supplier.readSupplierFromFile("supplier.txt");
+//                    Product.readProductsFromFile("product.txt");
+//                    System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
+                    store.readFileProduct();
                     break;
                 case 2:
-                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
-                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-                            "-------------------", "-------------------", "-------------------",
-                            "-------------------", "-------------------", "-------------------");
-                    for (int i=0;i<Product.getCnt();i++){
-                        Product.productList[i].getDetails();
-                    }
+//                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+//                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+//                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+//                            "-------------------", "-------------------", "-------------------",
+//                            "-------------------", "-------------------", "-------------------");
+//                    for (int i=0;i<Product.getCnt();i++){
+//                        Product.productList[i].getDetails();
+//                    }
+                    store.productDetail();
                     break;
                 case 3:
-                    System.out.println("So phan tu ban muon them la: ");
-                    int n=Integer.parseInt(scanner.nextLine());
-                    for (int i=0;i<n;i++){
-                        Product.addProduct();
-                    }
+//                    System.out.println("So phan tu ban muon them la: ");
+//                    int n=Integer.parseInt(scanner.nextLine());
+//                    for (int i=0;i<n;i++){
+//                        Product.addProduct();
+//                    }
+                    store.addProduct(scanner);
                     break;
                 case 4:
-                    System.out.println("Nhap vao id san pham muon sua.");
-                    String ud= scanner.nextLine();
-                    Product.upDateProduct(ud);
+//                    System.out.println("Nhap vao id san pham muon sua.");
+//                    String ud= scanner.nextLine();
+//                    Product.upDateProduct(ud);
+                    store.updateProduct(scanner);
+                    break;
                 case 5:
-                    System.out.println("Nhap vao id san pham muon xoa.");
-                    String rm= scanner.nextLine();
-                    Product.deleteProduct(rm);
+//                    System.out.println("Nhap vao id san pham muon xoa.");
+//                    String rm= scanner.nextLine();
+//                    Product.deleteProduct(rm);
+                    store.removeProduct(scanner);
                     break;
                 case 6:
-                    System.out.println("Nhap tu khoa muon tim kiem");
-                    String find= scanner.nextLine();
-                    Product.Find(find);
+//                    System.out.println("Nhap tu khoa muon tim kiem");
+//                    String find= scanner.nextLine();
+//                    Product.Find(find);
+                    store.findProduct(scanner);
+                    break;
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
                     break;
