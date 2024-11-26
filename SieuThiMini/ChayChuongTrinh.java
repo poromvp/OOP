@@ -43,7 +43,7 @@ public class ChayChuongTrinh {
                     manageOrders(scanner, sieuthi);
                     break;
                 case 4:
-                    manageStaffs(scanner);
+                    manageStaffs(scanner, sieuthi);
                     break;
                 case 5:
                     //manageInvoice(scanner, sieuthi);
@@ -286,7 +286,7 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
-    private static void manageStaffs(Scanner scanner) {
+    private static void manageStaffs(Scanner scanner, Store store) {
         int choice;
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -304,38 +304,32 @@ public class ChayChuongTrinh {
             switch (choice) {
                 case 1:
                     do{
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Xuất danh sách nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xóa nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm thông tin nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "thống kê");
+                        System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm danh sách nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá nhân viên ra khỏi danh sách");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin nhân viên (theo mã)");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm Nhân viên");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+                        System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                         System.out.print("Lựa chọn của bạn: ");
                         choice = Integer.parseInt(scanner.nextLine());
+
                         switch (choice) {
                             case 1:
-                            Manager Mana = new Manager();
-                            Mana.outStaff();
+                            store.xuatDSNV();
                             break;
                             case 2: 
-                            Manager Manb = new Manager();
-                            Manb.addStaff();
+                            store.themNV();
                             break;
                             case 3:
-                            Manager Manc = new Manager();
-                            Manc.removeStaff("dsnv.txt"); 
+                            store.xoaNV(); 
                             break;
                             case 4:
-                            Manager Mand = new Manager();
-                            Mand.ChangeInFo();
+                            store.suaNV();
                             break;
                             case 5: 
-                            Manager Mane=new Manager();
-                            Mane.Search();
-                            break;
-                            case 6: 
-                            
+                            store.timNV();
                             break;
                             case 0:
                             break;
@@ -347,10 +341,14 @@ public class ChayChuongTrinh {
 
                 case 2:
                     do {
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm nhân viên vào phòng ban");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa nhân viên ra khỏi phòng ban");
+                        System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm danh sách nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá nhân viên ra khỏi danh sách");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin nhân viên (theo mã)");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm Nhân viên");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-                        System.out.print("Lựa chọn của bạn: ");
+                        System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                         choice = Integer.parseInt(scanner.nextLine());
                     switch (choice) {
                     case 1:
