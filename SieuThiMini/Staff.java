@@ -101,6 +101,7 @@ public class Staff implements QLFile{
         System.out.println("--------------------------");
     }
     @Override 
-    public void readFromFile(String path){};
+    public Object readFromFile(String path){Object object = new Object();
+        return object;};
     public void writeToFile(String path){};
 }

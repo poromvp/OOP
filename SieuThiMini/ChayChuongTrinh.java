@@ -35,7 +35,7 @@ public class ChayChuongTrinh {
                     manageOrders(scanner, sieuthi);
                     break;
                 case 4:
-                    manageStaffs(scanner, sieuthi);
+                    manageStaffs(scanner);
                     break;
                 case 5:
                     manageInvoice(scanner, sieuthi);
@@ -272,7 +272,7 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
-    private static void manageStaffs(Scanner scanner, Store store) {
+    private static void manageStaffs(Scanner scanner) {
         int choice;
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -290,23 +290,38 @@ public class ChayChuongTrinh {
             switch (choice) {
                 case 1:
                     do{
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Xuất danh sách nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xóa nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm thông tin nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "thống kê");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                         System.out.print("Lựa chọn của bạn: ");
                         choice = Integer.parseInt(scanner.nextLine());
                         switch (choice) {
                             case 1:
-                            String filepath = "dsnv.txt";
-                            Staff Mana = new Manager();
-                            //Mana.readFromFile(filepath);
-                            //Mana.writeToFile(filepath);
+                            Manager Mana = new Manager();
+                            Mana.outStaff();
                             break;
                             case 2: 
-                            filepath = "dsnv.txt";
-                            Staff Manb = new Manager();
-                            //Manb.readFromFile(filepath);
-                            ((Manager)Manb).removeStaff();
+                            Manager Manb = new Manager();
+                            Manb.addStaff();
+                            break;
+                            case 3:
+                            Manager Manc = new Manager();
+                            Manc.removeStaff("dsnv.txt"); 
+                            break;
+                            case 4:
+                            Manager Mand = new Manager();
+                            Mand.ChangeInFo();
+                            break;
+                            case 5: 
+                            Manager Mane=new Manager();
+                            Mane.Search();
+                            break;
+                            case 6: 
+                            
                             break;
                             case 0:
                             break;
