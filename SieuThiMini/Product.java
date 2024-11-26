@@ -321,7 +321,6 @@ public class Product {
                         }
                 }
             } while (choice != 0);
-
         } else {
             System.out.println("Khong tim thay id san pham.");
             return;
