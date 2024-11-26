@@ -109,7 +109,6 @@ public class Customer {
         } else {
             System.out.println("Không tìm thấy khách hàng với mã: " + customerID);
         }
-        scanner.close();
         return customers;
     }
 

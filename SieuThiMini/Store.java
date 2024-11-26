@@ -15,15 +15,14 @@ public class Store{
         String filepath=null;
         Order order=new Order();
         orderList=order.readFromFile(filepath);
-
-        customers = Customer.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt");
-        discounts = Discount.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt");
-
+        customers = Customer.readFromFile("customers.txt");
+        discounts = Discount.readFromFile("discount.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
         this.staffList = staffList;
         this.transactions = transactions;
+        this.discounts = new Discount[0]; // Khởi tạo danh sách trống
     }
     public Staff[] getStaffList() {
         return staffList;
@@ -37,7 +36,24 @@ public class Store{
     public void setTransactions(Transaction[] transactions) {
         this.transactions = transactions;
     }
-    
+
+    // update Nhân
+    public Discount[] getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(Discount[] discounts) {
+        this.discounts = discounts;
+    }
+
+    public Customer[] getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Customer[] customers) {
+        this.customers = customers;
+    }
+    // 
 
     /* các thao tác cho ds đơn đặt hàng START*/
     public void xuatOrder(){
@@ -115,21 +131,21 @@ public class Store{
         String newContact = scanner.nextLine();
         System.out.print("Nhập điểm tích lũy: ");
         int newPoints = Integer.parseInt(scanner.nextLine());
-        Customer.addCustomer(customers, new Customer(newID, newName, newContact, newPoints));
+        this.customers = Customer.addCustomer(customers, new Customer(newID, newName, newContact, newPoints));
     } 
 
     // Chức năng thứ 4 trong menu
     public void capNhatKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để cập nhật: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Customer.updateCustomerByID(customers, updateID);
+        this.customers = Customer.updateCustomerByID(customers, updateID);
     }
 
     // Chức năng thứ 5 trong menu
     public void xoaKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để xóa: ");
         int deleteID = Integer.parseInt(scanner.nextLine());
-        Customer.removeCustomerByID(customers, deleteID);
+        this.customers = Customer.removeCustomerByID(customers, deleteID);
     }
     // Chức năng thứ 6 trong menu
     public void timKhachHang(Scanner scanner) {
@@ -148,35 +164,36 @@ public class Store{
     /* Các thao tác cho danh sách khách hàng END */
 
     /* Các thao tác cho danh sách chương trình khuyến mãi START */
-    // Chức năng 2
+    // Chức năng 1: Xuất danh sách chương trình khuyến mãi
     public void xuatDanhSachChuongTrinhKhuyenMai() {
         Discount.outputDiscounts(discounts);
     }
 
-    // Chức năng 3
+    // Chức năng 2: Thêm chương trình khuyến mãi
     public void themChuongTrinhKhuyenMai() {
-        Discount.addDiscount(discounts);
+        this.discounts = Discount.addDiscount(discounts); // Cập nhật danh sách
     }
 
-    // Chức năng 4
+    // Chức năng 3: Cập nhật chương trình khuyến mãi
     public void capNhatChuongTrinhKhuyenMai(Scanner scanner) {
         System.out.print("Nhập mã chương trình khuyến mãi cần sửa: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Discount.updateDiscountByID(discounts, updateID);
+        this.discounts = Discount.updateDiscountByID(discounts, updateID); // Cập nhật danh sách
     }
 
-    // Chức năng 5
+    // Chức năng 4: Xóa chương trình khuyến mãi
     public void xoaChuongTrinhKhuyenMai(Scanner scanner) {
         System.out.print("Nhập mã chương trình khuyến mãi cần xóa: ");
         int removeID = Integer.parseInt(scanner.nextLine());
-        Discount.removeDiscountByID(discounts, removeID);
+        this.discounts = Discount.removeDiscountByID(discounts, removeID); // Cập nhật danh sách
     }
 
-    // Chức năng 6
+    // Chức năng 5: Tìm kiếm chương trình khuyến mãi
     public void timKiemChuongTrinhKhuyenMai(Scanner scanner) {
         System.out.print("Nhập mã chương trình khuyến mãi cần tìm: ");
         int searchID = Integer.parseInt(scanner.nextLine());
         Discount foundDiscount = Discount.searchDiscountByID(discounts, searchID);
+
         if (foundDiscount != null) {
             System.out.println("Thông tin chương trình khuyến mãi tìm thấy:");
             System.out.println("Mã chương trình: " + foundDiscount.getDiscountID());
@@ -188,54 +205,6 @@ public class Store{
             System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + searchID);
         }
     }
+
     /* Các thao tác cho danh sách chương trình khuyến mãi END */
-    /* Cac thao tac voi Product START */
-    //Doc tu file
-    public void readFileProduct(){
-        Category.readCategoryFromFile("category.txt");
-        Supplier.readSupplierFromFile("supplier.txt");
-        Product.readProductsFromFile("product.txt");
-        System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
-    }
-    //Xuat danh sach cac san pham
-    public void productDetail(){
-        System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-                "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
-        System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-                "-------------------", "-------------------", "-------------------",
-                "-------------------", "-------------------", "-------------------");
-        for (int i=0;i<Product.getCnt();i++){
-            Product.productList[i].getDetails();
-        }
-    }
-    //Them san pham
-    public void addProduct(Scanner scanner){
-        System.out.println("So phan tu ban muon them la: ");
-        int n=Integer.parseInt(scanner.nextLine());
-        for (int i=0;i<n;i++){
-            Product.addProduct();
-        }
-    }
-    //Sua san pham
-    public void updateProduct(Scanner scanner){
-        System.out.println("Nhap vao id san pham muon sua.");
-        String ud= scanner.nextLine();
-        Product.upDateProduct(ud);
-    }
-    public void removeProduct(Scanner scanner){
-        System.out.println("Nhap vao id san pham muon xoa.");
-        String rm= scanner.nextLine();
-        Product.deleteProduct(rm);
-    }
-    public void findProduct(Scanner scanner){
-        System.out.println("Nhap tu khoa muon tim kiem");
-        String find= scanner.nextLine();
-        Product.Find(find);
-    }
-
-    /* Cac thao tac voi Product END */
-
-
-
-    
 }
