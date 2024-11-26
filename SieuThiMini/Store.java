@@ -108,43 +108,42 @@ public class Store{
 
     // Chức năng thứ 3 trong menu
     public void themKhachHang(Scanner scanner) {
-        System.out.println("Them khach hang moi:");
-        System.out.print("Nhap ma khach hang: ");
-        int newID = scanner.nextInt();
-        scanner.nextLine(); // Xóa bỏ dòng trống
-        System.out.print("Nhap ten khach hang: ");
+        System.out.println("Thêm khách hàng mới:");
+        System.out.print("Nhập mã khách hàng: ");
+        int newID = Integer.parseInt(scanner.nextLine());
+        System.out.print("Nhập tên khách hàng: ");
         String newName = scanner.nextLine();
-        System.out.print("Nhap so dien thoai: ");
+        System.out.print("Nhập số điện thoại: ");
         String newContact = scanner.nextLine();
-        System.out.print("Nhap diem tich luy: ");
-        int newPoints = scanner.nextInt();
+        System.out.print("Nhập điểm tích lũy: ");
+        int newPoints = Integer.parseInt(scanner.nextLine());
         Customer.addCustomer(customers, new Customer(newID, newName, newContact, newPoints));
     } 
 
     // Chức năng thứ 4 trong menu
     public void capNhatKhachHang(Scanner scanner) {
-        System.out.print("Nhap ma khach hang de cap nhat: ");
-        int updateID = scanner.nextInt();
+        System.out.print("Nhập mã khách hàng để cập nhật: ");
+        int updateID = Integer.parseInt(scanner.nextLine());
         Customer.updateCustomerByID(customers, updateID);
     }
 
     // Chức năng thứ 5 trong menu
     public void xoaKhachHang(Scanner scanner) {
-        System.out.print("Nhap ma khach hang de xoa: ");
-        int deleteID = scanner.nextInt();
+        System.out.print("Nhập mã khách hàng để xóa: ");
+        int deleteID = Integer.parseInt(scanner.nextLine());
         Customer.removeCustomerByID(customers, deleteID);
     }
     // Chức năng thứ 6 trong menu
     public void timKhachHang(Scanner scanner) {
-        System.out.print("Nhap ma khach hang de tim kiem: ");
-        int searchID = scanner.nextInt();
+        System.out.print("Nhập mã khách hàng để tìm kiếm: ");
+        int searchID = Integer.parseInt(scanner.nextLine());
         Customer foundCustomer = Customer.findCustomerByID(customers, searchID);
         if (foundCustomer != null) {
-            System.out.println("Thong tin khach hang:");
-            System.out.println("Ma khach hanh: " + foundCustomer.getCustomerID());
-            System.out.println("Ten khach hang: " + foundCustomer.getName());
-            System.out.println("So dien thoai: " + foundCustomer.getContactNumber());
-            System.out.println("Diem tich luy: " + foundCustomer.getLoyaltyPoints());
+            System.out.println("Thông tin khách hàng:");
+            System.out.println("Mã khách hàng: " + foundCustomer.getCustomerID());
+            System.out.println("Tên khách hàng: " + foundCustomer.getName());
+            System.out.println("Số điện thoại: " + foundCustomer.getContactNumber());
+            System.out.println("Điểm tích lũy: " + foundCustomer.getLoyaltyPoints());
         }
     }
 
@@ -163,32 +162,32 @@ public class Store{
 
     // Chức năng 4
     public void capNhatChuongTrinhKhuyenMai(Scanner scanner) {
-        System.out.print("Nhap ma chuong trinh khuyen mai can sua: ");
-        int updateID = scanner.nextInt();
+        System.out.print("Nhập mã chương trình khuyến mãi cần sửa: ");
+        int updateID = Integer.parseInt(scanner.nextLine());
         Discount.updateDiscountByID(discounts, updateID);
     }
 
     // Chức năng 5
     public void xoaChuongTrinhKhuyenMai(Scanner scanner) {
-        System.out.print("Nhap ma chuong trinh khuyen mai can xoa: ");
-        int removeID = scanner.nextInt();
+        System.out.print("Nhập mã chương trình khuyến mãi cần xóa: ");
+        int removeID = Integer.parseInt(scanner.nextLine());
         Discount.removeDiscountByID(discounts, removeID);
     }
 
     // Chức năng 6
     public void timKiemChuongTrinhKhuyenMai(Scanner scanner) {
-        System.out.print("Nhap ma chuong trinh khuyen mai can tim: ");
-        int searchID = scanner.nextInt();
+        System.out.print("Nhập mã chương trình khuyến mãi cần tìm: ");
+        int searchID = Integer.parseInt(scanner.nextLine());
         Discount foundDiscount = Discount.searchDiscountByID(discounts, searchID);
         if (foundDiscount != null) {
-            System.out.println("Thong tin chuong trinh khuyen mai tim thay:");
-            System.out.println("Ma: " + foundDiscount.getDiscountID());
-            System.out.println("Ten: " + foundDiscount.getName());
-            System.out.println("Phan tram giam: " + foundDiscount.getDiscountPercentage() + "%");
-            System.out.println("Ngay bat dau: " + Discount.DATE_FORMAT.format(foundDiscount.getStartDate()));
-            System.out.println("Ngay ket thuc: " + Discount.DATE_FORMAT.format(foundDiscount.getEndDate()));
+            System.out.println("Thông tin chương trình khuyến mãi tìm thấy:");
+            System.out.println("Mã chương trình: " + foundDiscount.getDiscountID());
+            System.out.println("Tên chương trình: " + foundDiscount.getName());
+            System.out.println("Phần trăm giảm: " + foundDiscount.getDiscountPercentage() + "%");
+            System.out.println("Ngày bắt đầu: " + Discount.DATE_FORMAT.format(foundDiscount.getStartDate()));
+            System.out.println("Ngày kết thúc: " + Discount.DATE_FORMAT.format(foundDiscount.getEndDate()));
         } else {
-            System.out.println("Khong tim thay chuong trinh khuyen mai voi ma: " + searchID);
+            System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + searchID);
         }
     }
     /* Các thao tác cho danh sách chương trình khuyến mãi END */

@@ -67,15 +67,15 @@ public class Discount {
 
     // Phương thức xuất danh sách khuyến mãi
     public static void outputDiscounts(Discount[] discounts) {
-        System.out.println("Danh sach chuong trinh khuyen mai:");
+        System.out.println("Danh sách chương trình khuyến mãi:");
         for (Discount discount : discounts) {
             if (discount != null) {
                 System.out.println("==================================");
-                System.out.println("Ma khuyen mai: " + discount.discountID);
-                System.out.println("Ten chuong trinh khuyen mai: " + discount.name);
-                System.out.println("Phan tram giam gia: " + discount.discountPercentage + "%");
-                System.out.println("Ngay bat dau: " + DATE_FORMAT.format(discount.startDate));
-                System.out.println("Ngay ket thuc: " + DATE_FORMAT.format(discount.endDate));
+                System.out.println("Mã chương trình khuyến mãi: " + discount.discountID);
+                System.out.println("Tên chương trình khuyến mãi: " + discount.name);
+                System.out.println("Phần trăm giảm giá: " + discount.discountPercentage + "%");
+                System.out.println("Ngày bắt đầu chương trình: " + DATE_FORMAT.format(discount.startDate));
+                System.out.println("Ngày kết thúc chương trình: " + DATE_FORMAT.format(discount.endDate));
             }
         }
     }
@@ -85,33 +85,33 @@ public class Discount {
         Scanner scanner = new Scanner(System.in);
 
         // Nhập thông tin chương trình khuyến mãi mới
-        System.out.print("Nhap ma khuyen mai: ");
+        System.out.print("Nhập mã khuyến mãi: ");
         int discountID = scanner.nextInt();
         scanner.nextLine();  // Đọc bỏ dòng newline sau khi nhập int
 
-        System.out.print("Nhap ten chuong trinh khuyen mai: ");
+        System.out.print("Nhập tên chương trình khuyến mãi: ");
         String name = scanner.nextLine();
 
-        System.out.print("Nhap phan tram giam gia: ");
+        System.out.print("Nhập phần trăm giảm giá: ");
         double discountPercentage = scanner.nextDouble();
 
-        System.out.print("Nhap ngay bat dau (dd-MM-yyyy): ");
+        System.out.print("Nhập ngày bắt đầu (dd-MM-yyyy): ");
         String startDateStr = scanner.next();
         Date startDate = null;
         try {
             startDate = DATE_FORMAT.parse(startDateStr);
         } catch (ParseException e) {
-            System.out.println("Loi dinh dang bat dau.");
+            System.out.println("Lỗi định dạng ngày bắt đầu.");
             return discounts;
         }
 
-        System.out.print("Nhap ngay ket thuc (dd-MM-yyyy): ");
+        System.out.print("Nhập ngày kết thúc (dd-MM-yyyy): ");
         String endDateStr = scanner.next();
         Date endDate = null;
         try {
             endDate = DATE_FORMAT.parse(endDateStr);
         } catch (ParseException e) {
-            System.out.println("Loi dinh dang ngay ket thuc.");
+            System.out.println("Lỗi định dạng ngày kết thúc.");
             return discounts;
         }
 
@@ -123,7 +123,7 @@ public class Discount {
         System.arraycopy(discounts, 0, updatedDiscounts, 0, discounts.length);
         updatedDiscounts[discounts.length] = newDiscount;
 
-        System.out.println("Da them chuong trinh khuyen mai: " + name);
+        System.out.println("Đã thêm chương trình khuyến mãi: " + name);
         return updatedDiscounts;   
     }
 
@@ -143,9 +143,9 @@ public class Discount {
         }
 
         if (found) {
-            System.out.println("Da xoa chuong trinh khuyen mai voi ma: " + removeID);
+            System.out.println("Đã xóa chương trình khuyến mãi: " + removeID);
         } else {
-            System.out.println("Khong tim thay chuong trinh khuyen mai voi ma: " + removeID);
+            System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + removeID);
         }
         return updatedDiscounts;
     }
@@ -172,7 +172,7 @@ public class Discount {
                 }
                 String[] parts = line.split(",");
                 if (parts.length != 5) {
-                    System.out.println("Dong khong hop le: " + line);
+                    System.out.println("Dòng không hợp lệ: " + line);
                     continue;
                 }
                 try {
@@ -189,11 +189,11 @@ public class Discount {
                     newDiscounts[discounts.length] = newDiscount;
                     discounts = newDiscounts;
                 } catch (NumberFormatException | ParseException e) {
-                    System.out.println("Loi chuyen doi du lieu: " + line);
+                    System.out.println("Lỗi chuyển đổi dữ liệu: " + line);
                 }
             }
         } catch (IOException e) {
-            System.out.println("Loi khi doc file: " + e.getMessage());
+            System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
         return discounts;
     }
@@ -206,9 +206,9 @@ public class Discount {
                         + DATE_FORMAT.format(discount.startDate) + "," + DATE_FORMAT.format(discount.endDate));
                 writer.newLine();
             }
-            System.out.println("Danh sach da duoc ghi vao file.");
+            System.out.println("Danh sách đã được ghi vào file.");
         } catch (IOException e) {
-            System.out.println("Loi khi ghi file: " + e.getMessage());
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
 
@@ -227,34 +227,34 @@ public class Discount {
 
         if (discountToUpdate != null) {
             // Hiển thị thông tin hiện tại của chương trình khuyến mãi
-            System.out.println("Thong tin chuong trinh khuyen mai hien tai:");
-            System.out.println("Ma khuyen mai: " + discountToUpdate.getDiscountID());
-            System.out.println("Ten chuong trinh: " + discountToUpdate.getName());
-            System.out.println("Phan tram giam gia: " + discountToUpdate.getDiscountPercentage() + "%");
-            System.out.println("Ngay bat dau: " + DATE_FORMAT.format(discountToUpdate.getStartDate()));
-            System.out.println("Ngày ket thuc: " + DATE_FORMAT.format(discountToUpdate.getEndDate()));
+            System.out.println("Thông tin chương trình khuyến mãi hiện tại:");
+            System.out.println("Mã chương trình khuyến mãi: " + discountToUpdate.getDiscountID());
+            System.out.println("Tên chương trình khuyến mãi: " + discountToUpdate.getName());
+            System.out.println("Phần trăm giảm giá: " + discountToUpdate.getDiscountPercentage() + "%");
+            System.out.println("Ngày bắt đầu: " + DATE_FORMAT.format(discountToUpdate.getStartDate()));
+            System.out.println("Ngày kết thúc: " + DATE_FORMAT.format(discountToUpdate.getEndDate()));
 
             // Nhập thông tin mới (hoặc giữ nguyên nếu để trống)
-            System.out.println("Nhap thong tin moi (nhan Enter de giu nguyen):");
+            System.out.println("Nhập thông tin mới (nhấn Enter để giữ nguyên):");
 
-            System.out.print("Ten chuong trinh moi: ");
+            System.out.print("Tên chương trình khuyến mãi mới: ");
             String newName = scanner.nextLine();
             if (!newName.trim().isEmpty()) {
                 discountToUpdate.setName(newName);
             }
 
-            System.out.print("Phan tram giam gia moi: ");
+            System.out.print("Phần trăm giảm giá mới: ");
             String newDiscountPercentageStr = scanner.nextLine();
             if (!newDiscountPercentageStr.trim().isEmpty()) {
                 try {
                     double newDiscountPercentage = Double.parseDouble(newDiscountPercentageStr);
                     discountToUpdate.setDiscountPercentage(newDiscountPercentage);
                 } catch (NumberFormatException e) {
-                    System.out.println("Loi: Phan tram giam gia khong hop le.");
+                    System.out.println("Lỗi: phần trăm giảm giá không hợp lệ.");
                 }   
             }
 
-            System.out.print("Ngay bat dau moi: (dd-MM-yyyy): ");
+            System.out.print("Ngày bắt đầu mới: (dd-MM-yyyy): ");
             String newStartDateStr = scanner.nextLine();
             if (!newStartDateStr.trim().isEmpty()) {
                 try {
@@ -262,25 +262,25 @@ public class Discount {
                     discountToUpdate.setStartDate(newStartDate);
                 } 
                 catch (ParseException e) {
-                System.out.println("Loi: Ngay bat dau khong hop le.");
+                System.out.println("Lỗi: Ngày bắt đầu không hợp lệ.");
                 }
             }
 
-            System.out.print("Ngay ket thuc moi: (dd-MM-yyyy): ");
+            System.out.print("Ngày kết thúc mới: (dd-MM-yyyy): ");
             String newEndDateStr = scanner.nextLine();
             if (!newEndDateStr.trim().isEmpty()) {
                 try {
                     Date newEndDate = DATE_FORMAT.parse(newEndDateStr);
                     discountToUpdate.setEndDate(newEndDate);
                 } catch (ParseException e) {
-                    System.out.println("Loi: Ngay ket thuc khong hop le.");
+                    System.out.println("Lỗi: Ngày kết thúc không hợp lệ.");
                 }
             }
 
-            System.out.println("Thong tin chuong trinh khuyen mai da duoc cap nhat.");
+            System.out.println("Thông tin chương trình khuyến mãi đã được cập nhật.");
         } 
         else {
-            System.out.println("Khong tim thay chuong trinh khuyen mai voi ma: " + discountID);
+            System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + discountID);
         }
 
         return discounts; // Trả về danh sách đã được cập nhật
@@ -295,17 +295,16 @@ public class Discount {
         int choice;
 
         do {
-            System.out.println("========= MENU CHUONG TRINH KHUYEN MAI =========");
-            System.out.println("1. Xem danh sach khuyen mai");
-            System.out.println("2. Them chuong trinh khuyen mai moi");
-            System.out.println("3. Tim kiem chuong trinh khuyen mai theo ID");
-            System.out.println("4. Xoa chuong trinh khuyen mai theo ID");
-            System.out.println("5. Sua chuong trinh khuyen mai theo ID");
-            System.out.println("0. Thoat (tu dong ghi vao file)");
+            System.out.println("========= MENU CHƯƠNG TRÌNH KHUYẾN MÃI =========");
+            System.out.println("1. Xem danh sách khuyến mãi");
+            System.out.println("2. Thêm chương trình khuyến mãi mới");
+            System.out.println("3. Tìm kiếm chương trình khuyến mãi theo ID");
+            System.out.println("4. Xóa chương trình khuyến mãi theo ID");
+            System.out.println("5. Sửa chương trình khuyến mãi theo ID");
+            System.out.println("0. Thoát (Tự động ghi vào file)");
             System.out.println("===============================================");
-            System.out.print("Nhap lua chon cua ban: ");
-            choice = scanner.nextInt();
-            scanner.nextLine(); // Đọc bỏ dòng newline sau khi nhập int
+            System.out.print("Nhập lựa chọn của bạn: ");
+            choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1:
@@ -320,41 +319,41 @@ public class Discount {
 
                 case 3:
                     // Tìm kiếm chương trình khuyến mãi
-                    System.out.print("Nhap ma chuong trinh khuyen mai can tim: ");
-                    int searchID = scanner.nextInt();
+                    System.out.print("Nhập mã chương trình khuyến mãi cần tìm: ");
+                    int searchID = Integer.parseInt(scanner.nextLine());
                     Discount foundDiscount = Discount.searchDiscountByID(discounts, searchID);
                     if (foundDiscount != null) {
-                        System.out.println("Thong tin chuong trinh khuyen mai tim thay:");
-                        System.out.println("Ma: " + foundDiscount.getDiscountID());
-                        System.out.println("Ten: " + foundDiscount.getName());
-                        System.out.println("Phan tram giam: " + foundDiscount.getDiscountPercentage() + "%");
-                        System.out.println("Ngay bat dau: " + Discount.DATE_FORMAT.format(foundDiscount.getStartDate()));
-                        System.out.println("Ngay ket thuc: " + Discount.DATE_FORMAT.format(foundDiscount.getEndDate()));
+                        System.out.println("Thông tin chương trình khuyến mãi tìm thấy:");
+                        System.out.println("Mã chương trình khuyến mãi: " + foundDiscount.getDiscountID());
+                        System.out.println("Tên chương trình khuyến mãi: " + foundDiscount.getName());
+                        System.out.println("Phần trăm giảm giá: " + foundDiscount.getDiscountPercentage() + "%");
+                        System.out.println("Ngày bắt đầu: " + Discount.DATE_FORMAT.format(foundDiscount.getStartDate()));
+                        System.out.println("Ngày kết thúc: " + Discount.DATE_FORMAT.format(foundDiscount.getEndDate()));
                     } else {
-                        System.out.println("Khong tim thay chuong trinh khuyen mai voi ma: " + searchID);
+                        System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + searchID);
                     }
                     break;
 
                 case 4:
                     // Xóa chương trình khuyến mãi
-                    System.out.print("Nhap ma chuong trinh khuyen mai can xoa: ");
-                    int removeID = scanner.nextInt();
+                    System.out.print("Nhập mã chương trình khuyến mãi cần xóa: ");
+                    int removeID = Integer.parseInt(scanner.nextLine());
                     discounts = Discount.removeDiscountByID(discounts, removeID);
                     break;
 
                 case 5:
                     // Sửa thông tin chương trình khuyến mãi
-                    System.out.print("Nhap ma chuong trinh khuyen mai can sua: ");
-                    int updateID = scanner.nextInt();
+                    System.out.print("Nhập mã chương trình khuyến mãi cần sửa: ");
+                    int updateID = Integer.parseInt(scanner.nextLine());
                     discounts = Discount.updateDiscountByID(discounts, updateID);
                     break;
 
                 case 0:
                     // Thoát chương trình
-                    System.out.println("Cam on ban da su dung chuong trinh!");
+                    System.out.println("Cảm ơn bạn đã sử dụng chương trình");
                     break;
                 default:
-                    System.out.println("Lua chon khong hop le. Vui long nhap lai.");
+                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
             }
             System.out.println(); // Dòng trống để tách các thao tác
         } while (choice != 0);
