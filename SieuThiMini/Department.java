@@ -118,76 +118,23 @@ public class Department extends Staff {
         }
     }
 
-    //them nhan vien vao trong danh sach department
-    public void writeToFile(String filepath){
-        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\DepartmentStaffList.txt";
-        Scanner sc= new Scanner(System.in);
-        File inputFile = new File(filepath);
-        String filetemp = "temp.txt";
-        File temp = new File(filetemp);
-        System.out.print("Nhập mã phòng ban bạn muốn thêm vào(SER, MAN, SAL): ");
-        String departID=sc.nextLine();
-        while(!departID.equals("SER")&&!departID.equals("MAN")&&!departID.equals("SAL")){
-            System.out.print("Nhập sai!!! xin nhập lại: ");
-            departID = sc.nextLine();
-        }
-
-        System.out.println("nhập vị trí dòng bạn muốn thêm vào: ");
-        int vitri = Integer.parseInt(sc.nextLine());
-
-        String departName;
-
-        if(departID.equals("SER")){
-            departName = "SERVER";
-        }
-        else if(departID.equals("MAN")){
-            departName="Manage";
-        } else {
-            departName="SAL";
-        }
-
-        System.out.print("Nhập họ tên nhân viên bạn muốn thêm vào: ");
-        String newName = sc.nextLine();
-
-        String newDepart = departID + " " + departName + " " + newName;
-
-        try (
-                BufferedReader br = new BufferedReader(new FileReader(inputFile));
-                BufferedWriter bw = new BufferedWriter(new FileWriter(temp))
-        ){
+    public void writeToFile (String filepath){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))){
             String line;
-            int currentLine = 0; // dòng đang thao tác hiện tại
-            while ((line = br.readLine())!=null){
-                //chèn dòng mới vào vị trí mong muốn
-                if(currentLine==vitri-1){
-                    bw.write(newDepart);
-                    bw.newLine();
-                }
+            for(int i=0; i<count; i++){
+                line = departmentlist[i].getDepartmentID() + " " + departmentlist[i].getDepartmentName() + " " + departmentlist[i].getName();
                 bw.write(line);
                 bw.newLine();
-                currentLine++;
+                line ="";
             }
-            // nếu vị trí muốn thêm lớn hơn số dòng hiện có thì sẽ thêm mới một dòng ở cuối
-            if (vitri >= currentLine){
-                bw.write(newDepart);
-                bw.newLine();
+
+        }catch (IOException e){
+                e.printStackTrace();
             }
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+    }
 
-        if (!inputFile.delete()){
-            System.out.println("bị lỗi !!!");
-            return;
-        }
-
-        if(!temp.renameTo(inputFile)){
-            System.out.println("không thể đổi tên file");
-        }else {
-            System.out.println("đã chèn dòng mới vào");
-        }
-
-        readFromFile(filepath);
+    public void addStafftoDepartment(){
+        
     }
 
     public void removeStaffFromDepartment(){

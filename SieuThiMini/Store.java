@@ -50,6 +50,11 @@ public class Store{
         Manager Mane= new Manager();
         Mane.searchStaffByCriteria();
     }
+
+    public void xuatPBan(){{
+        Department Depa =new Department();
+        Depa.addStafftoDepartment();
+    }}
     
     /*thao tác nhân viên end */
 
