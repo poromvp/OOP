@@ -9,10 +9,10 @@ public class ChayChuongTrinh {
         Scanner scanner = new Scanner(System.in);
 
         // updat của Nhân
-        String fileName = "discount.txt";
+        String fileName = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt";
         sieuthi.setDiscounts(Discount.readFromFile(fileName)); // Khởi tạo danh sách từ file
 
-        String fileName1 = "customers.txt";
+        String fileName1 = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt";
         sieuthi.setCustomers(Customer.readFromFile(fileName1)); // Khởi tạo danh sách từ file
 
         do {
