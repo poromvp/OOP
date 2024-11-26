@@ -34,10 +34,6 @@ public class Store{
     }
     
 
-    /* các thao tác với staffList START */
-    
-    /* các thao tác với staffList END */
-
     /* các thao tác cho ds đơn đặt hàng START*/
     public void xuatOrder(){
         for(Order or:orderList){
