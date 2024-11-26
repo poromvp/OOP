@@ -8,6 +8,8 @@ public class Store{
     public Order[] orderList;                       // danh sách đơn hàng
     public Customer[] customers;                    // danh sách khách hàng
     public Discount[] discounts;                    // danh sách chương trình khuyến mãi
+    public Manager managers;
+    public Department departments;
 
     
     public Store(){
@@ -16,6 +18,10 @@ public class Store{
         orderList=order.readFromFile(filepath);
         customers = Customer.readFromFile("customers.txt");
         discounts = Discount.readFromFile("discount.txt");
+        managers = new Manager();
+        managers.readFromFile("dsnv.txt");
+        departments = new Department();
+        departments.readFromFile("DepartmentList.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -30,35 +36,45 @@ public class Store{
         this.transactions = transactions;
     }
     /*thao tác nhân viên start */
-    public void xuatDSNV(){
-        Manager Mana = new Manager();
-        Mana.outStaff();
+    public void xuatNV(){
+        managers.getdetail();
     }
 
-    public void themNV (){
-        Manager Manb = new Manager();
-        Manb.addStaff();
-    }
-    
-    public void xoaNV (){
-        Manager Manc = new Manager();
-        Manc.removeStaff("dsnv.txt");
+    public void ThemNV(){
+        managers.add();
     }
 
-    public void suaNV (){
-        Manager Mand= new Manager();
-        Mand.ChangeInFo();
+    public void XoaNV(){
+        managers.remove();
     }
 
-    public void timNV(){
-        Manager Mane= new Manager();
-        Mane.searchStaffByCriteria();
+    public void SuaNV(){
+        managers.ChangeInFo();
     }
 
-    public void xuatPBan(){{
-        Department Depa =new Department();
-        Depa.addStafftoDepartment();
-    }}
+    public void TimNV(){
+        managers.search();
+    }
+
+    public void XuatPBan(){
+        departments.getdetail();
+    }
+
+    public void ThemQLPB(){
+        departments.add();
+    }
+
+    public void XoaPB(){
+        departments.remove();
+    }
+
+    public void SuaPB(){
+        departments.ChangeInFo();
+    }
+
+    public void TimPB(){
+        departments.search();
+    }
     
     /*thao tác nhân viên end */
 
