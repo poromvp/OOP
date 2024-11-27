@@ -1,10 +1,8 @@
-import java.io.BufferedReader; 
-import java.io.FileReader; 
-import java.io.IOException;
+
 import java.util.Scanner;
 
 
-public class Staff implements QLFile{
+public abstract class Staff implements QLFile{
     protected String StaffID;
     protected String Name;
     protected String Role;
@@ -65,41 +63,15 @@ public class Staff implements QLFile{
         ContactNum = contactNum;
     }
 
-    public void getdetail(){
-        System.out.println("Ma nhan vien: "+ StaffID);
-        System.out.println("Ho ten nhan vien: "+Name);
-        System.out.println("Luong: "+ Salary);
-        System.out.println("Vai tro: "+Role);
-        System.out.println("So dien thoai"+ContactNum);
-    }
+    public abstract void getdetail();
+    public abstract void add();
+    public abstract void remove();
+    public abstract void ChangeInFo();
+    public abstract void search();
 
-  
-    public void inputStaff() {
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter Staff ID: ");
-        StaffID = scanner.nextLine();
 
-        System.out.print("Enter Name: ");
-        Name = scanner.nextLine();
 
-        System.out.print("Enter Role: ");
-        Role = scanner.nextLine();
-
-        System.out.print("Enter Salary: ");
-        Salary = Integer.parseInt(scanner.nextLine());
-        System.out.print("Enter Contact Number: ");
-        ContactNum = scanner.nextLine();
-    }
-
-    public void displayStaffInfo() {
-        System.out.println("Staff ID: " + StaffID);
-        System.out.println("Name: " + Name);
-        System.out.println("Role: " + Role);
-        System.out.println("Salary: " + Salary);
-        System.out.println("Contact Number: " + ContactNum);
-        System.out.println("--------------------------");
-    }
     @Override 
     public Object readFromFile(String path){Object object = new Object();
         return object;};
