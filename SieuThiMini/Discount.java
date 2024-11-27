@@ -1,6 +1,7 @@
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -22,6 +23,9 @@ public class Discount {
         this.discountPercentage = discountPercentage;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+    public Discount() {
+
     }
 
     // Getter và Setter
@@ -81,51 +85,60 @@ public class Discount {
     }
 
     // Phương thức thêm chương trình khuyến mãi mới từ bàn phím
-    public static Discount[] addDiscount(Discount[] discounts) {
+    public static Discount[] addDiscounts(Discount[] discounts) {
         Scanner scanner = new Scanner(System.in);
-
-        // Nhập thông tin chương trình khuyến mãi mới
-        System.out.print("Nhập mã khuyến mãi: ");
-        int discountID = scanner.nextInt();
-        scanner.nextLine();  // Đọc bỏ dòng newline sau khi nhập int
-
-        System.out.print("Nhập tên chương trình khuyến mãi: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Nhập phần trăm giảm giá: ");
-        double discountPercentage = scanner.nextDouble();
-
-        System.out.print("Nhập ngày bắt đầu (dd-MM-yyyy): ");
-        String startDateStr = scanner.next();
-        Date startDate = null;
-        try {
-            startDate = DATE_FORMAT.parse(startDateStr);
-        } catch (ParseException e) {
-            System.out.println("Lỗi định dạng ngày bắt đầu.");
-            return discounts;
-        }
-
-        System.out.print("Nhập ngày kết thúc (dd-MM-yyyy): ");
-        String endDateStr = scanner.next();
-        Date endDate = null;
-        try {
-            endDate = DATE_FORMAT.parse(endDateStr);
-        } catch (ParseException e) {
-            System.out.println("Lỗi định dạng ngày kết thúc.");
-            return discounts;
-        }
-
-        // Tạo đối tượng mới và thêm vào danh sách
-        Discount newDiscount = new Discount(discountID, name, discountPercentage, startDate, endDate);
-
-        // Tạo mảng mới với kích thước lớn hơn
-        Discount[] updatedDiscounts = new Discount[discounts.length + 1];
+    
+        System.out.print("Nhập số lượng chương trình khuyến mãi cần thêm: ");
+        int n = Integer.parseInt(scanner.nextLine());
+    
+        // Tạo một mảng mới với kích thước đủ lớn
+        Discount[] updatedDiscounts = new Discount[discounts.length + n];
         System.arraycopy(discounts, 0, updatedDiscounts, 0, discounts.length);
-        updatedDiscounts[discounts.length] = newDiscount;
-
-        System.out.println("Đã thêm chương trình khuyến mãi: " + name);
-        return updatedDiscounts;   
+    
+        for (int i = 0; i < n; i++) {
+            System.out.println("\nNhập thông tin cho chương trình khuyến mãi thứ " + (i + 1) + ":");
+    
+            // Nhập thông tin chương trình khuyến mãi mới
+            System.out.print("Nhập mã khuyến mãi: ");
+            int discountID = Integer.parseInt(scanner.nextLine());
+    
+            System.out.print("Nhập tên chương trình khuyến mãi: ");
+            String name = scanner.nextLine();
+    
+            System.out.print("Nhập phần trăm giảm giá: ");
+            double discountPercentage = Integer.parseInt(scanner.nextLine());
+    
+            System.out.print("Nhập ngày bắt đầu (dd-MM-yyyy): ");
+            String startDateStr = scanner.nextLine();
+            Date startDate = null;
+            try {
+                startDate = DATE_FORMAT.parse(startDateStr);
+            } catch (ParseException e) {
+                System.out.println("Lỗi định dạng ngày bắt đầu. Bỏ qua chương trình này.");
+                i--; // Lùi lại để nhập lại chương trình khuyến mãi
+                continue;
+            }
+    
+            System.out.print("Nhập ngày kết thúc (dd-MM-yyyy): ");
+            String endDateStr = scanner.nextLine();
+            Date endDate = null;
+            try {
+                endDate = DATE_FORMAT.parse(endDateStr);
+            } catch (ParseException e) {
+                System.out.println("Lỗi định dạng ngày kết thúc. Bỏ qua chương trình này.");
+                i--; // Lùi lại để nhập lại chương trình khuyến mãi
+                continue;
+            }
+    
+            // Tạo đối tượng mới và thêm vào mảng
+            Discount newDiscount = new Discount(discountID, name, discountPercentage, startDate, endDate);
+            updatedDiscounts[discounts.length + i] = newDiscount;
+    
+            System.out.println("Đã thêm chương trình khuyến mãi: " + name);
+        }
+        return updatedDiscounts;
     }
+    
 
     // Phương thức xóa chương trình khuyến mãi theo ID
     public static Discount[] removeDiscountByID(Discount[] discounts, int removeID) {
@@ -151,13 +164,89 @@ public class Discount {
     }
 
     // Phương thức tìm kiếm chương trình khuyến mãi theo ID
-    public static Discount searchDiscountByID(Discount[] discounts, int searchID) {
-        for (Discount discount : discounts) {
-            if (discount.getDiscountID() == searchID) {
-                return discount;
+    public static Discount[] searchDiscounts(Scanner scanner, Discount[] discounts) {
+        System.out.println("\n--- TÌM KIẾM CHƯƠNG TRÌNH KHUYẾN MÃI ---");
+        System.out.println("Nhập tiêu chí để tìm (nhấn Enter để bỏ qua tiêu chí):");
+    
+        System.out.print("Mã khuyến mãi: ");
+        String discountIDStr = scanner.nextLine();
+        int discountID = discountIDStr.isEmpty() ? 0 : Integer.parseInt(discountIDStr);
+    
+        System.out.print("Tên khuyến mãi: ");
+        String name = scanner.nextLine();
+        if (name.isEmpty()) {
+            name = null;
+        }
+    
+        System.out.print("Phần trăm giảm giá: ");
+        String discountPercentageStr = scanner.nextLine();
+        double discountPercentage = discountPercentageStr.isEmpty() ? 0 : Double.parseDouble(discountPercentageStr);
+    
+        System.out.print("Ngày bắt đầu (dd-MM-yyyy): ");
+        String startDateStr = scanner.nextLine();
+        Date startDate = null;
+        if (!startDateStr.isEmpty()) {
+            try {
+                startDate = DATE_FORMAT.parse(startDateStr);
+            } catch (ParseException e) {
+                System.out.println("Ngày bắt đầu không hợp lệ.");
             }
         }
-        return null;
+    
+        System.out.print("Ngày kết thúc (dd-MM-yyyy): ");
+        String endDateStr = scanner.nextLine();
+        Date endDate = null;
+        if (!endDateStr.isEmpty()) {
+            try {
+                endDate = DATE_FORMAT.parse(endDateStr);
+            } catch (ParseException e) {
+                System.out.println("Ngày kết thúc không hợp lệ.");
+            }
+        }
+    
+        // Lọc danh sách khuyến mãi theo các tiêu chí
+        Discount[] filteredDiscounts = new Discount[discounts.length];
+        int count = 0;
+    
+        for (Discount discount : discounts) {
+            if (isDiscountMatch(discount, discountID, name, discountPercentage, startDate, endDate)) {
+                filteredDiscounts[count++] = discount;
+            }
+        }
+    
+        Discount[] result = Arrays.copyOf(filteredDiscounts, count);
+    
+        // Hiển thị kết quả
+        if (result.length == 0) {
+            System.out.println("Không tìm thấy chương trình khuyến mãi nào khớp với tiêu chí.");
+        } else {
+            System.out.println("\nDanh sách chương trình khuyến mãi tìm thấy:");
+            for (Discount discount : result) {
+                discount.displayDetails(); // Hiển thị chi tiết mỗi Discount
+            }
+        }
+    
+        // Đảm bảo luôn trả về một mảng Discount[]
+        return result;
+    }
+    
+    private static boolean isDiscountMatch(Discount discount, int discountID, String name, double discountPercentage, Date startDate, Date endDate) {
+        if (discountID != 0 && discount.getDiscountID() != discountID) {
+            return false;
+        }
+        if (name != null && !discount.getName().toLowerCase().contains(name.toLowerCase())) {
+            return false;
+        }
+        if (discountPercentage != 0 && discount.getDiscountPercentage() != discountPercentage) {
+            return false;
+        }
+        if (startDate != null && discount.getStartDate().before(startDate)) {
+            return false;
+        }
+        if (endDate != null && discount.getEndDate().after(endDate)) {
+            return false;
+        }
+        return true;
     }
 
     // Phương thức đọc danh sách từ file
@@ -286,81 +375,18 @@ public class Discount {
         return discounts; // Trả về danh sách đã được cập nhật
     }
 
-    public static void main(String[] args) {
-        // Đọc danh sách khuyến mãi từ file
-        String fileName = "discount.txt";
-        Discount[] discounts = Discount.readFromFile(fileName);
+    // Thêm phương thức hiển thị chi tiết khuyến mãi
+    public void displayDetails() {
+        System.out.println("==================================");
+        System.out.println("Mã chương trình khuyến mãi: " + this.discountID);
+        System.out.println("Tên chương trình khuyến mãi: " + this.name);
+        System.out.println("Phần trăm giảm giá: " + this.discountPercentage + "%");
+        System.out.println("Ngày bắt đầu: " + DATE_FORMAT.format(this.startDate));
+        System.out.println("Ngày kết thúc: " + DATE_FORMAT.format(this.endDate));
+    }
 
-        Scanner scanner = new Scanner(System.in);
-        int choice;
-
-        do {
-            System.out.println("========= MENU CHƯƠNG TRÌNH KHUYẾN MÃI =========");
-            System.out.println("1. Xem danh sách khuyến mãi");
-            System.out.println("2. Thêm chương trình khuyến mãi mới");
-            System.out.println("3. Tìm kiếm chương trình khuyến mãi theo ID");
-            System.out.println("4. Xóa chương trình khuyến mãi theo ID");
-            System.out.println("5. Sửa chương trình khuyến mãi theo ID");
-            System.out.println("0. Thoát (Tự động ghi vào file)");
-            System.out.println("===============================================");
-            System.out.print("Nhập lựa chọn của bạn: ");
-            choice = Integer.parseInt(scanner.nextLine());
-
-            switch (choice) {
-                case 1:
-                    // Xuất danh sách khuyến mãi
-                    Discount.outputDiscounts(discounts);
-                    break;
-
-                case 2:
-                    // Thêm chương trình khuyến mãi mới
-                    discounts = Discount.addDiscount(discounts);
-                    break;
-
-                case 3:
-                    // Tìm kiếm chương trình khuyến mãi
-                    System.out.print("Nhập mã chương trình khuyến mãi cần tìm: ");
-                    int searchID = Integer.parseInt(scanner.nextLine());
-                    Discount foundDiscount = Discount.searchDiscountByID(discounts, searchID);
-                    if (foundDiscount != null) {
-                        System.out.println("Thông tin chương trình khuyến mãi tìm thấy:");
-                        System.out.println("Mã chương trình khuyến mãi: " + foundDiscount.getDiscountID());
-                        System.out.println("Tên chương trình khuyến mãi: " + foundDiscount.getName());
-                        System.out.println("Phần trăm giảm giá: " + foundDiscount.getDiscountPercentage() + "%");
-                        System.out.println("Ngày bắt đầu: " + Discount.DATE_FORMAT.format(foundDiscount.getStartDate()));
-                        System.out.println("Ngày kết thúc: " + Discount.DATE_FORMAT.format(foundDiscount.getEndDate()));
-                    } else {
-                        System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + searchID);
-                    }
-                    break;
-
-                case 4:
-                    // Xóa chương trình khuyến mãi
-                    System.out.print("Nhập mã chương trình khuyến mãi cần xóa: ");
-                    int removeID = Integer.parseInt(scanner.nextLine());
-                    discounts = Discount.removeDiscountByID(discounts, removeID);
-                    break;
-
-                case 5:
-                    // Sửa thông tin chương trình khuyến mãi
-                    System.out.print("Nhập mã chương trình khuyến mãi cần sửa: ");
-                    int updateID = Integer.parseInt(scanner.nextLine());
-                    discounts = Discount.updateDiscountByID(discounts, updateID);
-                    break;
-
-                case 0:
-                    // Thoát chương trình
-                    System.out.println("Cảm ơn bạn đã sử dụng chương trình");
-                    break;
-                default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
-            }
-            System.out.println(); // Dòng trống để tách các thao tác
-        } while (choice != 0);
-
-        // Ghi danh sách khách hàng vào file khi kết thúc chương trình
-        Discount.writeToFile(fileName, discounts);
-        scanner.close();
+    public double applyDiscount(double total) {
+        return 0;
     }
 }
 
