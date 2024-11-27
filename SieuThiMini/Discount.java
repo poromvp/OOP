@@ -24,6 +24,10 @@ public class Discount {
         this.endDate = endDate;
     }
 
+    public Discount() {
+
+    }
+
     // Getter và Setter
     public int getDiscountID() {
         return discountID;
@@ -362,6 +366,10 @@ public class Discount {
         // Ghi danh sách khách hàng vào file khi kết thúc chương trình
         Discount.writeToFile(fileName, discounts);
         scanner.close();
+    }
+
+    public double applyDiscount(double total) {
+        return 0;
     }
 }
 

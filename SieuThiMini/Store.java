@@ -194,5 +194,102 @@ public class Store{
     /* Các thao tác cho danh sách chương trình khuyến mãi END */
 
 
-    
+    /* Các thao tác giao dịch Start */
+
+    InvoiceManager invoice = new InvoiceManager();
+    Receipt receipt =new Receipt();
+    Order order = new Order();
+    //khởi tạo 1 giao dịch mới
+
+    public void taoGiaoDichMoi() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Chọn phương thức thanh toán:");
+        System.out.println("1. Tiền mặt");
+        System.out.println("2. Thẻ");
+        int paymentMethod = scanner.nextInt();
+        scanner.nextLine();
+        Cashier cashier = new Cashier();
+        if (paymentMethod == 1) {
+            System.out.print("Nhập số tiền khách đưa: ");
+            double customerPaid = scanner.nextDouble();
+            scanner.nextLine();
+
+            Transaction transaction = new Transaction(Integer.parseInt(order.getOrderId()), new SimpleDateFormat("dd/MM/yyyy").parse(order.getOrderDate()));
+            for (Product product : order.getProductList()) {
+                Item item = new Item(product.name, product.price, product.quantity);
+                transaction.addItem(item);
+            }
+            transaction.setCustomerPaid(customerPaid);
+
+            invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction,cashier));
+            System.out.println("Giao dịch đã được tạo thành công bằng tiền mặt!");
+        } else if (paymentMethod == 2) {
+            CardPayment cardPayment = new CardPayment();
+            cardPayment.inputCardDetails();
+
+            Transaction transaction = new Transaction(Integer.parseInt(order.getOrderId()), new SimpleDateFormat("dd/MM/yyyy").parse(order.getOrderDate()));
+            for (Product product : order.getProductList()) {
+                Item item = new Item(product.name, product.price, product.quantity);
+                transaction.addItem(item);
+            }
+            transaction.setCustomerPaid(order.getTotalAmount() + Order.calculateVAT(order.getTotalAmount()));
+
+            invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction,cashier));
+            System.out.println("Giao dịch đã được tạo thành công bằng thẻ!");
+        } else {
+            System.out.println("Phương thức thanh toán không hợp lệ.");
+        }
+    }
+    }
+
+    // Sửa hóa đơn
+    public void suaHoaDon(){
+        invoice.editReceiptById();
+    }
+    // Xóa hóa đơn
+    public void xoaHoaDon(){
+        invoice.deleteReceiptById();
+    }
+   // Xuất hóa đơn + in biên lai
+    public void xuatHoaDon(Scanner scanner) {
+        invoice.exportinvoice();
+    }
+
+    // Tìm kiếm hóa đơn
+    public void timKiemHoaDon() {
+    invoice.searchAndPrintReceipt();
+
 }
+
+    /* Các thao tác giao dịch End */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
