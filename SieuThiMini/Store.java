@@ -87,6 +87,7 @@ public class Store{
 
     public void addOrder(Scanner scanner){ //thêm đơn hàng
         orderList=Order.add(scanner, orderList);
+        System.out.println("Thêm Đơn Hàng Mới Thành Công!");
     }
 
     public void removeOrder(Scanner scanner){ //xóa đơn hàng theo mã
@@ -98,11 +99,12 @@ public class Store{
         String temp=scanner.nextLine();
         boolean flag=false; //dùng lính canh để lặp lại chương trình nếu nhập sai
         byte so_lan_thu=0; // nếu số lần nhập sai quá nhiều thì sẽ break 
+        byte choice=0; // Lụa chọn có tiếp tục chỉnh sửa không hay thoát
         do{
             so_lan_thu++;
             for(int i=0;i<orderList.length;i++){
-                if(orderList[i].orderId.equals(temp)){
-                    orderList[i].edit(scanner, orderList[i].product); //phương thức chỉnh sửa của class order
+                if(orderList[i].orderId.equals(temp)){            
+                    orderList[i].edit(scanner, orderList[i].product, orderList, i); //phương thức chỉnh sửa của class order
                     flag=true;
                     break;
                 }
@@ -113,21 +115,29 @@ public class Store{
                     break;
                 }
                 System.out.println("Mã Đơn Hàng Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Chỉnh Sửa Không?\n 1.Có  0.Không");
-                byte choice=Byte.parseByte(scanner.nextLine());
-                if(choice==1){
-                    System.out.println("Vậy Hãy Nhập Lại Mã Đơn Hàng Chính Xác");
-                    System.out.print("--> ");
-                    temp=scanner.nextLine();
-                }
-                else{
-                    System.out.println("Đã thoát!");
-                    flag=true;
-                }
+                do{
+                    System.out.print("→ ");
+                    choice=Byte.parseByte(scanner.nextLine());
+                    switch (choice) {
+                        case 1:
+                            System.out.println("Vậy Hãy Nhập Lại Mã Đơn Hàng Chính Xác");
+                            System.out.print("→ ");
+                            temp=scanner.nextLine();
+                            break;
+                        case 0:
+                            System.out.println("Đã thoát!");
+                            flag=true;
+                            break;
+                        default:
+                            System.out.println("Không hợp lệ hãy nhập lại!");
+                            break;
+                    }
+                }while(choice!=0 && choice!=1);
             }
         }while(flag!=true);
     }
 
-    public void timkiem(Scanner scanner){
+    public void timkiem(Scanner scanner){ //Tìm kiếm đơn hàng theo nhiều khóa
         Order.loc(scanner, orderList);
     }
 
@@ -233,9 +243,9 @@ public class Store{
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("category.txt");
-        Supplier.readSupplierFromFile("supplier.txt");
-        Product.readProductsFromFile("product.txt");
+        Category.readCategoryFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\category.txt");
+        Supplier.readSupplierFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\supplier.txt");
+        Product.readProductsFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
     //Xuat danh sach cac san pham

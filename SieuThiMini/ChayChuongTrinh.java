@@ -272,7 +272,7 @@ public class ChayChuongTrinh {
                     store.xuatOrder();
                     break;
                 case 3:
-                    store.xuatOrder();
+                    //store.xuatOrder();
                     store.editOrder(scanner);
                     break;
                 case 4:
@@ -344,7 +344,7 @@ public class ChayChuongTrinh {
                             default:
                             System.out.println("Lựa chọn không hợp lệ.");
                         }
-                    } while (choice != 0);
+                    } while (choice != 8);
                     break;
 
                 case 2:
@@ -377,7 +377,7 @@ public class ChayChuongTrinh {
                         default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    } while (choice != 0);
+                    } while (choice != 8);
                     break;
                     
                 case 3:
@@ -405,7 +405,7 @@ public class ChayChuongTrinh {
                         default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    } while (choice != 0);
+                    } while (choice != 8);
                     break;
                 
                 case 4:     
@@ -441,7 +441,7 @@ public class ChayChuongTrinh {
                             default:
                                 System.out.println("Lựa chọn không hợp lệ.");
                             }
-                        } while (choice != 0);
+                        } while (choice != 8);
                         break;
 
                     case 2: 
@@ -469,14 +469,14 @@ public class ChayChuongTrinh {
                             default:
                                 System.out.println("Lựa chọn không hợp lệ.");
                             }
-                        } while (choice != 0);
+                        } while (choice != 8);
                         break;
                     case 0:
                         break;
                     default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    }while(choice!=0);
+                    }while(choice != 8);
                     break;
                 case 0:
                     break;

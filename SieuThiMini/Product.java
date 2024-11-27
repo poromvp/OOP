@@ -104,7 +104,7 @@ public class Product {
     }
 
     //Kiem tra format id
-    private static boolean checkIDProduct(String id){
+    protected static  boolean checkIDProduct(String id){
         if(id.length()!=5){
             return false;
         }
@@ -119,7 +119,8 @@ public class Product {
         return true;
     }
     //Kiem tra id co bi trung khong
-    private static boolean checkDuplicateID(String id) {
+    protected static boolean checkDuplicateID(String id) {
+        
         for (Product product : productList) {
             if (product!= null && product.getProductID().equals(id)) {
                 return false; // Trùng ID
