@@ -9,10 +9,10 @@ public class ChayChuongTrinh {
         Scanner scanner = new Scanner(System.in);
 
         // updat của Nhân
-        String fileName = "discount.txt";
+        String fileName = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt";
         sieuthi.setDiscounts(Discount.readFromFile(fileName)); // Khởi tạo danh sách từ file
 
-        String fileName1 = "customers.txt";
+        String fileName1 = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt";
         sieuthi.setCustomers(Customer.readFromFile(fileName1)); // Khởi tạo danh sách từ file
 
         do {
@@ -272,7 +272,7 @@ public class ChayChuongTrinh {
                     store.xuatOrder();
                     break;
                 case 3:
-                    store.xuatOrder();
+                    //store.xuatOrder();
                     store.editOrder(scanner);
                     break;
                 case 4:
@@ -344,7 +344,7 @@ public class ChayChuongTrinh {
                             default:
                             System.out.println("Lựa chọn không hợp lệ.");
                         }
-                    } while (choice != 0);
+                    } while (choice != 8);
                     break;
 
                 case 2:
@@ -377,7 +377,7 @@ public class ChayChuongTrinh {
                         default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    } while (choice != 0);
+                    } while (choice != 8);
                     break;
                     
                 case 3:
@@ -405,7 +405,7 @@ public class ChayChuongTrinh {
                         default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    } while (choice != 0);
+                    } while (choice != 8);
                     break;
                 
                 case 4:     
@@ -441,7 +441,7 @@ public class ChayChuongTrinh {
                             default:
                                 System.out.println("Lựa chọn không hợp lệ.");
                             }
-                        } while (choice != 0);
+                        } while (choice != 8);
                         break;
 
                     case 2: 
@@ -469,14 +469,14 @@ public class ChayChuongTrinh {
                             default:
                                 System.out.println("Lựa chọn không hợp lệ.");
                             }
-                        } while (choice != 0);
+                        } while (choice != 8);
                         break;
                     case 0:
                         break;
                     default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    }while(choice!=0);
+                    }while(choice != 8);
                     break;
                 case 0:
                     break;
