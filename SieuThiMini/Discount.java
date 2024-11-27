@@ -24,8 +24,6 @@ public class Discount {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
-    // Constructor không tham số
     public Discount() {
 
     }
@@ -385,6 +383,10 @@ public class Discount {
         System.out.println("Phần trăm giảm giá: " + this.discountPercentage + "%");
         System.out.println("Ngày bắt đầu: " + DATE_FORMAT.format(this.startDate));
         System.out.println("Ngày kết thúc: " + DATE_FORMAT.format(this.endDate));
+    }
+
+    public double applyDiscount(double total) {
+        return 0;
     }
 }
 
