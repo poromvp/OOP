@@ -26,6 +26,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Quản lý nhân sự");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Quản lý hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Quản lý CTKM");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "7.", "Thống kê");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Nhập lựa chọn của bạn: ");
@@ -50,6 +51,11 @@ public class ChayChuongTrinh {
                     break;
                 case 6:
                     manageDiscounnt(scanner, sieuthi);
+                    break;
+                case 7:
+                    // Thống kê
+                    manageThongKe(scanner, sieuthi);
+                    break;
                 case 0:
                     System.out.println("Đã thoát chương trình.");
                     break;
@@ -142,43 +148,34 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ KHÁCH HÀNG");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Nhập n phần tử mới đầu tiên");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm mới 1 phần tử, k phần tử");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách KHÁCH HÀNG");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thêm mới 1 phần tử, k phần tử");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa khách hàng (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Xóa khách hàng (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm khách hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xóa khách hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa khách hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm khách hàng");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
             choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
+               
                 case 1:
-                    System.out.print("Nhập tên người dùng: ");
-                    String username = scanner.nextLine();
-                    System.out.print("Nhập mật khẩu: ");
-                    String password = scanner.nextLine();
-                    // UserAccount account = new UserAccount(username, password); // Tạo tài khoản
-                    // store.addUserAccount(account);
-                    System.out.println("Đã thêm tài khoản.");
+                    // Thêm mới 1 phần tử, k phần tử
+                    store.themKhachHang(scanner);
                     break;
                 case 2:
                     store.xuatDanhSachKhachHang();
                     break;
                 case 3:
-                    // Thêm mới 1 phần tử, k phần tử
-                    store.themKhachHang(scanner);
+                    // Xóa khách hàng (theo mã)
+                    store.xoaKhachHang(scanner);
                     break;
                 case 4:
                     // Sửa khách hàng (theo mã)
                     store.capNhatKhachHang(scanner);
                     break;
                 case 5:
-                    // Xóa khách hàng (theo mã)
-                    store.xoaKhachHang(scanner);
-                    break;
-                case 6:
                     // Tìm kiếm khách hàng (theo mã)
                     store.timKhachHang(scanner);
                     break;
@@ -196,48 +193,73 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ CTKM");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Nhập n phần tử mới đầu tiên");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm mới 1 phần tử, k phần tử");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách CTKM");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thêm mới 1 phần tử, k phần tử");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa CTKM (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Xóa CTKM (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm CTKM (theo mã)");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xóa CTKM");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa CTKM");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm CTKM");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
             choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
+                
                 case 1:
-                /* 
-                    System.out.print("Nhập tên người dùng: ");
-                    String username = scanner.nextLine();
-                    System.out.print("Nhập mật khẩu: ");
-                    String password = scanner.nextLine();
-                    // UserAccount account = new UserAccount(username, password); // Tạo tài khoản
-                    // store.addUserAccount(account);
-                    System.out.println("Đã thêm tài khoản.");
+                    // Thêm mới 1 phần tử, k phần tử
+                    store.themChuongTrinhKhuyenMai();
                     break;
-                    */
                 case 2:
                     // Xem danh sách chương trình khuyến mãi
                     store.xuatDanhSachChuongTrinhKhuyenMai();
                     break;
                 case 3:
-                    // Thêm mới 1 phần tử, k phần tử
-                    store.themChuongTrinhKhuyenMai();
+                    // Xóa chương trình khuyến mãi (theo mã)
+                    store.xoaChuongTrinhKhuyenMai(scanner);
                     break;
                 case 4:
                     // Sửa chương trình khuyến mãi (theo mã)
                     store.capNhatChuongTrinhKhuyenMai(scanner);
                     break;
                 case 5:
-                    // Xóa chương trình khuyến mãi (theo mã)
-                    store.xoaChuongTrinhKhuyenMai(scanner);
-                    break;
-                case 6:
                     // Tìm kiếm chương trình khuyến mãi (theo mã)
                     store.timKiemChuongTrinhKhuyenMai(scanner);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void manageThongKe(Scanner scanner, Store store) {
+        int choice;
+        do {
+            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"Thống kê");
+            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
+            System.out.print("Lựa chọn của bạn: ");
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
                     break;
                 case 0:
                     break;
