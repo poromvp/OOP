@@ -72,8 +72,7 @@ public class Department extends Staff {
     }
 
     @Override
-    public void readFromFile(String filepath){
-        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\DepartmentStaffList.txt";
+    public Department[] readFromFile(String filepath){
          try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             count = 0;
@@ -81,9 +80,6 @@ public class Department extends Staff {
             for (int i = 0; i < departmentlist.length; i++) {
                  departmentlist[i] = new Department(); 
                 }
-
-            System.out.printf("%-10s| %-10s| %-12s %n",
-                    "Mã phòng ban","Tên phòng ban","Họ Tên");
             while ((line = reader.readLine()) != null ) {
                 String[] parts = line.split(" ");       // Tách các từ bằng khoảng trắng
                 if (parts.length >= 3) {
@@ -92,8 +88,6 @@ public class Department extends Staff {
                     departmentlist[count].setDepartmentName(parts [1]);     // phần tử thứ hai là tên phòng ban
                     departmentlist[count].setStaffName(String.join(" ", Arrays.copyOfRange(parts, 2, parts.length)));   // từ phần tử thứ 3 trở đi là tên nhân viên thuộc phòng ban đó
                 }
-                System.out.printf("%-10s| %-10s| %-12s %n",
-                departmentlist[count].getDepartmentID(), departmentlist[count].getDepartmentName(), departmentlist[count].getStaffName());
                 count ++;
             }
 
@@ -101,6 +95,26 @@ public class Department extends Staff {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("Lỗi khi phân tích dữ liệu: " + e.getMessage());
+        }
+        return departmentlist;
+    }
+
+    public void outDepartment (){
+        count = 0;
+        Department[] temp =readFromFile("DepartmentList.txt");
+        if(temp==null){
+            System.out.println("khong luu vao temp được");
+        }
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
+        System.out.printf("║ %-10s │ %-10s │ %-20s ║\n", "Mã NV", "Họ Tên", "Lương (VND)");
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
+
+        // Dữ liệu trong bảng
+        for (int i = 0; i < count; i++) {
+            System.out.printf("║ %-10s │ %-10s │ %-20f ║\n",
+                temp[i].getDepartmentID(),
+                temp[i].getDepartmentName(),
+                temp[i].getName());
         }
     }
 

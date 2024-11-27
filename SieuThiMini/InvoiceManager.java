@@ -202,7 +202,5 @@ public Receipt searchReceiptById(int receiptId) {
             e.printStackTrace();
         }
     }
-}
-
 public void main() {
 }
