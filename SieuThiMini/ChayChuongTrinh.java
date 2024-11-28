@@ -9,10 +9,10 @@ public class ChayChuongTrinh {
         Scanner scanner = new Scanner(System.in);
 
         // updat của Nhân
-        String fileName = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt";
+        String fileName = "discount.txt";
         sieuthi.setDiscounts(Discount.readFromFile(fileName)); // Khởi tạo danh sách từ file
 
-        String fileName1 = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt";
+        String fileName1 = "customers.txt";
         sieuthi.setCustomers(Customer.readFromFile(fileName1)); // Khởi tạo danh sách từ file
 
         do {
@@ -241,7 +241,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thống kê theo ....");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Thống kê theo ....");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Thống kê theo ....");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
@@ -256,6 +256,7 @@ public class ChayChuongTrinh {
                 case 2:
                     break;
                 case 3:
+                    store.thongKeCustomer();
                     break;
                 case 4:
                     break;
