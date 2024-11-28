@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Supplier {
     public String supplierID;
@@ -55,11 +56,17 @@ public class Supplier {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
+                if (cnt == supplierList.length) {
+                    // Mở rộng mảng khi đạt giới hạn
+                    Supplier[] newSupplierList= new Supplier[supplierList.length*2];
+                    System.arraycopy(supplierList, 0, newSupplierList, 0, supplierList.length);
+                    supplierList=newSupplierList;
+                }
                 String[] parts = line.split(",");
-                if (parts.length == 2 && cnt< 100) { // Kiểm tra nếu mảng chưa đầy
+                if (parts.length == 2 ) { // Kiểm tra nếu mảng chưa đầy
                     Supplier a = new Supplier(
-                            parts[0],                // productID
-                            parts[1]               // supplier
+                            parts[0],
+                            parts[1]
                     );
                     supplierList[cnt] = a;
                     cnt++; // Di chuyển đến vị trí tiếp theo trong mảng
@@ -68,6 +75,30 @@ public class Supplier {
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
+    }
+    public static void addSupplier(){
+        if (cnt == supplierList.length) {
+            // Mở rộng mảng khi đạt giới hạn
+            Supplier[] newSupplierList= new Supplier[supplierList.length*2];
+            System.arraycopy(supplierList, 0, newSupplierList, 0, supplierList.length);
+            supplierList=newSupplierList;
+        }
+        Supplier a = new Supplier();
+        Scanner sc = new Scanner(System.in);
+        int check =0;
+        do{
+            System.out.println("Nhap supplier id: ");
+            String tmp= sc.nextLine();
+            if(!checkIDSupplier(tmp) || !checkDuplicateID(tmp)){
+                System.out.println("Ban da nhap sai id. Vui long nhap lai");
+            }
+            else {
+                a.setSupplierID(tmp);
+                check=1;
+            }
+        } while(check ==0);
+        System.out.println("Nhap gia ten nha cung cap: ");
+        a.setSupplierName(sc.nextLine());
     }
 
     public static boolean checkIDSupplier(String id){
