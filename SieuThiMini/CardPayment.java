@@ -1,56 +1,67 @@
+import java.util.Scanner;
 
-public class CardPayment extends Payment {
-
+public class CardPayment {
     private String cardNumber;
+    private String cardHolderName;
     private String expiryDate;
-    private String cardHolder;
+    private String cvv;
 
-
-    public CardPayment(double amount, String cardNumber, String expiryDate, String cardHolder) {
-        super(amount);
-        this.cardNumber = cardNumber;
-        this.expiryDate = expiryDate;
-        this.cardHolder = cardHolder;
+    public CardPayment() {
     }
-
-    @Override
-    public void pay(){
-        if (authorize()) {
-            System.out.println("Payment of đ" + amount + " made using card: " + cardNumber);
-        } else {
-            System.out.println("Card authorization failed.");
-        }
-    }
-
-    public boolean authorize (){
-        return true;
-    }
-
 
     public String getCardNumber() {
-        return this.cardNumber;
+        return cardNumber;
     }
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
+    }
+
     public String getExpiryDate() {
-        return this.expiryDate;
+        return expiryDate;
     }
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public String getCardHolder() {
-        return this.cardHolder;
+    public String getCvv() {
+        return cvv;
     }
 
-    public void setCardHolder(String cardHolder) {
-        this.cardHolder = cardHolder;
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
     }
 
+    public void inputCardDetails() {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.print("Nhập số thẻ: ");
+        this.cardNumber = scanner.nextLine();
+
+        System.out.print("Nhập tên chủ thẻ: ");
+        this.cardHolderName = scanner.nextLine();
+
+        System.out.print("Nhập ngày hết hạn (MM/YY): ");
+        this.expiryDate = scanner.nextLine();
+        System.out.print("Nhập CVV: ");
+        this.cvv = scanner.nextLine();
+        scanner.close();
+    }
+
+    public void displayCardDetails() {
+        System.out.println("Thông tin thẻ:");
+        System.out.println("Số thẻ: " + cardNumber);
+        System.out.println("Tên chủ thẻ: " + cardHolderName);
+        System.out.println("Ngày hết hạn: " + expiryDate);
+        System.out.println("CVV: " + cvv);
+    }
 }
-

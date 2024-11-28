@@ -1,5 +1,3 @@
-
-
 import java.util.Date;
 
 public class Transaction {
@@ -9,6 +7,7 @@ public class Transaction {
     private Item[] items;
     private int itemCount;
     private double customerPaid;
+
     public Transaction(int id, Date date) {
         this.id = id;
         this.date = date;
@@ -27,26 +26,21 @@ public class Transaction {
         }
     }
 
-
     public void setCustomerPaid(double customerPaid) {
         this.customerPaid = customerPaid;
     }
-
 
     public double getCustomerPaid() {
         return customerPaid;
     }
 
-
     public double getChange() {
         return customerPaid - totalAmount;
     }
 
-
     public double getTotal() {
         return totalAmount;
     }
-
 
     public int getId() {
         return id;
@@ -56,7 +50,6 @@ public class Transaction {
         this.id = id;
     }
 
-
     public Date getDate() {
         return date;
     }
@@ -64,7 +57,6 @@ public class Transaction {
     public void setDate(Date date) {
         this.date = date;
     }
-
 
     public Item[] getItems() {
         Item[] currentItems = new Item[itemCount];
