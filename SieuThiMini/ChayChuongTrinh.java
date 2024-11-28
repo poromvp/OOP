@@ -385,6 +385,7 @@ public class ChayChuongTrinh {
                     switch (subchoice) {
                     case 1:
                         store.XuatPBan();
+                        break;
                     case 2: 
                         store.ThemQLPB();
                         break;
