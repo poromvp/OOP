@@ -386,6 +386,7 @@ public class ChayChuongTrinh {
                     switch (subchoice) {
                     case 1:
                         store.XuatPBan();
+                        break;
                     case 2: 
                         store.ThemQLPB();
                         break;
@@ -421,6 +422,7 @@ public class ChayChuongTrinh {
                     switch (subchoice) {
                     case 1:
                         store.xuatThuNgan();
+                        break;
                     case 2: 
                         store.themThuNgan();
                         break;
@@ -464,6 +466,7 @@ public class ChayChuongTrinh {
                         switch (subchoice) {
                         case 1:
                             store.xuatKho();
+                            break;
                         case 2: 
                             store.themKho();
                             break;
@@ -499,6 +502,7 @@ public class ChayChuongTrinh {
                         switch (subchoice) {
                         case 1:
                             store.xuatNhapKho();
+                            break;
                         case 2: 
                             store.themNhapKho();
                             break;
