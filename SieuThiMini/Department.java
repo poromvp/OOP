@@ -91,7 +91,7 @@ public class Department extends Staff {
     }
 
     public void getdetail (){
-        Department[] temp =readFromFile("DepartmentList.txt");
+        Department[] temp =readFromFile("SieuThiMini\\DepartmentList.txt");
         if (temp == null || temp.length == 0) {
             System.out.println("Không có dữ liệu nhân viên");
             return;
@@ -135,7 +135,7 @@ public class Department extends Staff {
         Scanner sc = new Scanner(System.in);
     
         // Đọc danh sách phòng ban hiện tại từ file
-        Department[] departments = readFromFile("DepartmentList.txt");
+        Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
         // Hỏi vị trí dòng cần thêm
         System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
@@ -169,7 +169,7 @@ public class Department extends Staff {
         }
     
         // Ghi lại dữ liệu vào file
-        writeToFile("DepartmentList.txt", departments);
+        writeToFile("SieuThiMini\\DepartmentList.txt", departments);
     
         // Hiển thị danh sách phòng ban sau khi cập nhật
         System.out.println("Danh sách phòng ban sau khi cập nhật: ");
@@ -189,7 +189,7 @@ public class Department extends Staff {
         String IDremove = sc.nextLine();
     
         // Đọc danh sách phòng ban từ file
-        Department[] departments = readFromFile("DepartmentList.txt");
+        Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
         // Kiểm tra nếu không tìm thấy phòng ban
         boolean found = false;
@@ -217,7 +217,7 @@ public class Department extends Staff {
             }
     
             // Ghi lại danh sách mới vào file
-            writeToFile("DepartmentList.txt", updatedDepartments);
+            writeToFile("SieuThiMini\\DepartmentList.txt", updatedDepartments);
             System.out.println("Phòng ban với mã " + IDremove + " đã được xoá.");
         }
     
@@ -235,7 +235,7 @@ public class Department extends Staff {
         Scanner sc = new Scanner(System.in);
     
         // Đọc danh sách phòng ban hiện tại từ file
-        Department[] departments = readFromFile("DepartmentList.txt");
+        Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
         System.out.println("Nhập mã phòng ban bạn muốn thay đổi thông tin: ");
         String departmentID = sc.nextLine();
@@ -274,7 +274,7 @@ public class Department extends Staff {
         }
     
         // Cập nhật lại dữ liệu vào file
-        writeToFile("DepartmentList.txt", departments);
+        writeToFile("SieuThiMini\\DepartmentList.txt", departments);
     
         // Hiển thị lại danh sách phòng ban sau khi cập nhật
         getdetail();
@@ -284,7 +284,7 @@ public class Department extends Staff {
     @Override
     public void search() {
         Scanner sc = new Scanner(System.in);
-        Department[] departments = readFromFile("DepartmentList.txt");
+        Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
         // Yêu cầu nhập các tiêu chí tìm kiếm
         System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");

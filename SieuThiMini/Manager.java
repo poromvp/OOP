@@ -69,7 +69,7 @@ public class Manager extends Staff {
 @Override
     public void getdetail() {
         // Gọi phương thức readFromFile để đọc dữ liệu từ file và trả về mảng các đối tượng Manager
-        Manager[] managers = readFromFile("dsnv.txt");
+        Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
     
         // Kiểm tra nếu không có dữ liệu
         if (managers == null || managers.length == 0) {
@@ -105,7 +105,7 @@ public class Manager extends Staff {
 
 
     // Đọc danh sách nhân viên hiện tại từ file
-    Manager[] managers = readFromFile("dsnv.txt");
+    Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
 
     // Hỏi vị trí dòng cần thêm
     System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
@@ -145,8 +145,8 @@ public class Manager extends Staff {
     // Cập nhật lại số lượng nhân viên
     count = managers.length;
 
-    // Ghi lại dữ liệu vào file dsnv.txt
-    writeToFile("dsnv.txt", managers);
+    // Ghi lại dữ liệu vào file SieuThiMini\\dsnv.txt
+    writeToFile("SieuThiMini\\dsnv.txt", managers);
 
     // Hiển thị danh sách nhân viên sau khi cập nhật
     System.out.println("Danh sách sau khi cập nhật: ");
@@ -177,7 +177,7 @@ public void writeToFile(String fileName, Manager[] managers) {
         String IDremove = sc.nextLine();
 
         // Đọc danh sách nhân viên từ file
-        Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
+        Manager[] managers = readFromFile("SieuThiMini\\SieuThiMini\\dsnv.txt");
 
         // Kiểm tra nếu không tìm thấy nhân viên
         boolean found = false;
@@ -205,7 +205,7 @@ public void writeToFile(String fileName, Manager[] managers) {
             }
 
             // Ghi lại danh sách mới vào file
-            writeToFile("dsnv.txt", updatedManagers);
+            writeToFile("SieuThiMini\\dsnv.txt", updatedManagers);
             System.out.println("Nhân viên với mã " + IDremove + " đã được xoá.");
         }
 
@@ -219,7 +219,7 @@ public void writeToFile(String fileName, Manager[] managers) {
         Scanner sc = new Scanner(System.in);
     
         // Đọc dữ liệu từ file vào mảng managers
-        Manager[] managers = readFromFile("dsnv.txt");
+        Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
     
         System.out.println("Nhập mã nhân viên bạn muốn đổi thông tin: ");
         String id = sc.nextLine();
@@ -273,7 +273,7 @@ public void writeToFile(String fileName, Manager[] managers) {
         }
     
         // Cập nhật lại dữ liệu vào file
-        writeToFile("dsnv.txt", managers);
+        writeToFile("SieuThiMini\\dsnv.txt", managers);
     
         // Hiển thị lại danh sách nhân viên sau khi cập nhật
         getdetail();
@@ -283,7 +283,7 @@ public void writeToFile(String fileName, Manager[] managers) {
         // Phương thức tìm kiếm nhân viên theo các tiêu chí
         public void search() {
             Scanner sc = new Scanner(System.in);
-            Manager[] managers = readFromFile("dsnv.txt");
+            Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
     
             // Yêu cầu nhập các tiêu chí tìm kiếm
             System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
