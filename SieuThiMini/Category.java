@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
 public class Category {
     public String categoryID;
     public String categoryName;
@@ -51,9 +50,8 @@ public class Category {
         }
         return categoryList[tmp];
     }
-    public void readProductsFromFile(String filePath) {
-         
-        try (BufferedReader br = new BufferedReader(new FileReader("Category.txt"))) {
+    public static void readCategoryFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -69,5 +67,31 @@ public class Category {
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
+    }
+
+    //Check id
+    //Kiem tra format id
+    public static boolean checkIDCategory(String id){
+        if(id.length()!=5){
+            return false;
+        }
+        if(!id.startsWith("CT")){
+            return false;
+        }
+        for(int i=2;i<5;i++){
+            if(!Character.isDigit(id.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+    //Kiem tra id co bi trung khong
+    public static boolean checkDuplicateID(String id) {
+        for (Category ct : categoryList) {
+            if (ct!= null && ct.getCategoryID().equals(id)) {
+                return false; // Trùng ID
+            }
+        }
+        return true; // Không trùng
     }
 }

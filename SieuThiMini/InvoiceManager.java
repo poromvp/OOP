@@ -91,10 +91,12 @@ public class InvoiceManager {
                 }
 
                 System.out.println("Hóa đơn đã được sửa thành công.");
+                
                 return;
             }
         }
         System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
+        scanner.close();
     }
 
     public void deleteReceiptById() {
@@ -102,6 +104,7 @@ public class InvoiceManager {
         System.out.print("Nhập mã hóa đơn cần xóa: ");
         int receiptId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
+        scanner.close();
 
         for (int i = 0; i < count; i++) {
             if (receipts[i].getReceiptId() == receiptId) {
@@ -114,7 +117,7 @@ public class InvoiceManager {
             }
         }
         System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
-        scanner.close();
+        
     }
 
 // tìm kiếm hóa đơn
@@ -139,6 +142,7 @@ public void searchAndPrintReceipt() {
     } else {
         System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
     }
+    scanner.close();
 }
 
 

@@ -55,6 +55,7 @@ public class CardPayment {
 
         System.out.print("Nhập CVV: ");
         this.cvv = scanner.nextLine();
+        scanner.close();
     }
 
     public void displayCardDetails() {
