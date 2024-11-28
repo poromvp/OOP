@@ -9,10 +9,10 @@ public class ChayChuongTrinh {
         Scanner scanner = new Scanner(System.in);
 
         // updat của Nhân
-        String fileName = "discount.txt";
+        String fileName = "SieuThiMini\\discount.txt";
         sieuthi.setDiscounts(Discount.readFromFile(fileName)); // Khởi tạo danh sách từ file
 
-        String fileName1 = "customers.txt";
+        String fileName1 = "SieuThiMini\\customers.txt";
         sieuthi.setCustomers(Customer.readFromFile(fileName1)); // Khởi tạo danh sách từ file
 
         do {
@@ -236,24 +236,26 @@ public class ChayChuongTrinh {
     private static void manageThongKe(Scanner scanner, Store store) {
         int choice;
         do {
-            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"Thống kê");
-            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
+            System.out.printf("%-20s%s","","╔═════════════════════════════════════════════════╗\n");
+            System.out.printf("%-20s║ %-18s %-28s ║\n",""," " ,"Thống kê");
+            System.out.printf("%-20s%s","","╠═════════════════════════════════════════════════╣\n");
+            System.out.printf("%-20s║ %-2s %-44s ║\n","", "1.", "Thống kê doanh thu theo quý");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo top các sản phẩm bán chạy nhất");
+            System.out.printf("%-20s║ %-2s %-44s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
+            System.out.printf("%-20s║ %-2s %-44s ║\n","", "4.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-44s ║\n","", "5.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-44s ║\n","", "0.", "Thoát");
+            System.out.printf("%-20s%s","","╚═════════════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
             choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 
                 case 1:
+                    store.thongkeDoanhThu();
                     break;
                 case 2:
+                    store.thongkeSpBanChay(scanner);
                     break;
                 case 3:
                     store.thongKeCustomer();
@@ -302,7 +304,7 @@ public class ChayChuongTrinh {
                     store.removeOrder(scanner);
                     break;
                 case 5:
-                    store.thongkeOrder(scanner);
+                    //store.thongkeOrder(scanner);
                     break;
                 case 6:
                     store.timkiem(scanner);
@@ -386,6 +388,7 @@ public class ChayChuongTrinh {
                     switch (subchoice) {
                     case 1:
                         store.XuatPBan();
+                        break;
                     case 2: 
                         store.ThemQLPB();
                         break;
