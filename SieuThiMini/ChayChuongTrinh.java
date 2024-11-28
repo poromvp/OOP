@@ -9,10 +9,10 @@ public class ChayChuongTrinh {
         Scanner scanner = new Scanner(System.in);
 
         // updat của Nhân
-        String fileName = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt";
+        String fileName = "discount.txt";
         sieuthi.setDiscounts(Discount.readFromFile(fileName)); // Khởi tạo danh sách từ file
 
-        String fileName1 = "C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt";
+        String fileName1 = "customers.txt";
         sieuthi.setCustomers(Customer.readFromFile(fileName1)); // Khởi tạo danh sách từ file
 
         do {
@@ -47,7 +47,7 @@ public class ChayChuongTrinh {
                     manageStaffs(scanner, sieuthi);
                     break;
                 case 5:
-                    manageInvoice(scanner, sieuthi);
+                    //manageInvoice(scanner, sieuthi);
                     break;
                 case 6:
                     manageDiscounnt(scanner, sieuthi);
@@ -241,7 +241,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thống kê theo ....");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Thống kê theo ....");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Thống kê theo ....");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
@@ -256,6 +256,7 @@ public class ChayChuongTrinh {
                 case 2:
                     break;
                 case 3:
+                    store.thongKeCustomer();
                     break;
                 case 4:
                     break;
@@ -318,6 +319,7 @@ public class ChayChuongTrinh {
 
     private static void manageStaffs(Scanner scanner, Store store) {
         int choice;
+        int subchoice;
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ NHÂN SỰ");
@@ -343,63 +345,65 @@ public class ChayChuongTrinh {
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                         System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                         System.out.print("Lựa chọn của bạn: ");
-                        choice = Integer.parseInt(scanner.nextLine());
+                        subchoice = Integer.parseInt(scanner.nextLine());
 
-                        switch (choice) {
+                        switch (subchoice) {
                             case 1:
-                            store.xuatDSNV();
+                            store.xuatNV();
                             break;
                             case 2: 
-                            store.themNV();
+                            store.ThemNV();
                             break;
                             case 3:
-                            store.xoaNV(); 
+                            store.XoaNV(); 
                             break;
                             case 4:
-                            store.suaNV();
+                            store.SuaNV();
                             break;
                             case 5: 
-                            store.timNV();
+                            store.TimNV();
                             break;
                             case 0:
                             break;
                             default:
                             System.out.println("Lựa chọn không hợp lệ.");
                         }
-                    } while (choice != 8);
+                    } while (subchoice != 0);
                     break;
 
                 case 2:
                     do {
                         System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm danh sách nhân viên");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá nhân viên ra khỏi danh sách");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin nhân viên (theo mã)");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm Nhân viên");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách phòng ban");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm quản lý phòng ban");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá phòng ban");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin phòng ban ");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm phòng ban");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                         System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
-                        choice = Integer.parseInt(scanner.nextLine());
-                    switch (choice) {
+                        System.out.print("Lựa chọn của bạn: ");
+                        subchoice = Integer.parseInt(scanner.nextLine());
+                    switch (subchoice) {
                     case 1:
-                        System.out.println("danh sach hien tai: ");
-                        String filepath = "DepartmentStaffList.txt";
-                        Staff DepA = new Department();
-                        //DepA.readFromFile(filepath);
-                        //DepA.writeToFile(filepath);
-                        break;
+                        store.XuatPBan();
                     case 2: 
-                        filepath = "DepartmentStaffList.txt";
-                        Staff DepB= new Department();
-                        //DepB.readFromFile(filepath);
-                        ((Department)DepB).removeStaffFromDepartment();
+                        store.ThemQLPB();
+                        break;
+                    case 3:
+                        store.XoaPB();
+                        break;
+                    case 4: 
+                        store.SuaPB();
+                        break;
+                    case 5: 
+                        store.TimPB();
                         break;
                     case 0:
                         break;
                         default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    } while (choice != 8);
+                    } while (subchoice != 0);
                     break;
                     
                 case 3:
@@ -408,8 +412,8 @@ public class ChayChuongTrinh {
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa lịch làm");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                         System.out.print("Lựa chọn của bạn: ");
-                        choice = Integer.parseInt(scanner.nextLine());
-                    switch (choice) {
+                        subchoice = Integer.parseInt(scanner.nextLine());
+                    switch (subchoice) {
                     case 1:
                         String filepath= "CashierList.txt";
                         Staff CasA = new Cashier();
@@ -427,7 +431,7 @@ public class ChayChuongTrinh {
                         default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    } while (choice != 8);
+                    } while (subchoice != 0);
                     break;
                 
                 case 4:     
@@ -436,8 +440,8 @@ public class ChayChuongTrinh {
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Đặt hàng");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                         System.out.print("Lựa chọn của bạn: ");
-                        choice = Integer.parseInt(scanner.nextLine());
-                    switch (choice) {
+                        subchoice = Integer.parseInt(scanner.nextLine());
+                    switch (subchoice) {
                     case 1:
                         do {
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm hàng trong kho");
@@ -463,7 +467,7 @@ public class ChayChuongTrinh {
                             default:
                                 System.out.println("Lựa chọn không hợp lệ.");
                             }
-                        } while (choice != 8);
+                        } while (subchoice != 0);
                         break;
 
                     case 2: 
@@ -472,8 +476,8 @@ public class ChayChuongTrinh {
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa hàng trong danh sách đặt hàng");
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                             System.out.print("Lựa chọn của bạn: ");
-                            choice = Integer.parseInt(scanner.nextLine());
-                            switch (choice) {
+                            subchoice = Integer.parseInt(scanner.nextLine());
+                            switch (subchoice) {
                             case 1:
                             String filepath = "OrderInventory.txt";
                             Staff IvenOrderadd = new InventoryManager();
@@ -491,14 +495,14 @@ public class ChayChuongTrinh {
                             default:
                                 System.out.println("Lựa chọn không hợp lệ.");
                             }
-                        } while (choice != 8);
+                        } while (subchoice != 0);
                         break;
                     case 0:
                         break;
                     default:
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
-                    }while(choice != 8);
+                    }while(subchoice!=0);
                     break;
                 case 0:
                     break;
@@ -510,7 +514,7 @@ public class ChayChuongTrinh {
 
      // minh update
 // minh update
-    private static void manageInvoice(Scanner scanner, Store store) {
+    /*private static void manageInvoice(Scanner scanner, Store store) {
         InvoiceManager manager = new InvoiceManager(100);
         int choice;
         do {
@@ -605,5 +609,5 @@ public class ChayChuongTrinh {
         } while (choice != 0);
 
 
-    }
+    }*/
 }

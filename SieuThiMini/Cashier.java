@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
-public class Cashier extends Staff {
+public class Cashier extends Staff implements QLFile {
     protected String cashCounterNum;
     protected String shiftTiming;
     protected Cashier[] cashier;

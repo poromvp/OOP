@@ -52,7 +52,6 @@ public class CardPayment {
 
         System.out.print("Nhập ngày hết hạn (MM/YY): ");
         this.expiryDate = scanner.nextLine();
-
         System.out.print("Nhập CVV: ");
         this.cvv = scanner.nextLine();
         scanner.close();
