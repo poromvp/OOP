@@ -47,7 +47,7 @@ public class ChayChuongTrinh {
                     manageStaffs(scanner, sieuthi);
                     break;
                 case 5:
-                    manageInvoice(scanner, sieuthi);
+                    //manageInvoice(scanner, sieuthi);
                     break;
                 case 6:
                     manageDiscounnt(scanner, sieuthi);
@@ -513,7 +513,7 @@ public class ChayChuongTrinh {
 
      // minh update
 // minh update
-    private static void manageInvoice(Scanner scanner, Store store) {
+    /*private static void manageInvoice(Scanner scanner, Store store) {
         InvoiceManager manager = new InvoiceManager(100);
         int choice;
         do {
@@ -608,5 +608,5 @@ public class ChayChuongTrinh {
         } while (choice != 0);
 
 
-    }
+    }*/
 }

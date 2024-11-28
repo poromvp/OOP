@@ -177,7 +177,7 @@ public void writeToFile(String fileName, Manager[] managers) {
         String IDremove = sc.nextLine();
 
         // Đọc danh sách nhân viên từ file
-        Manager[] managers = readFromFile("dsnv.txt");
+        Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
 
         // Kiểm tra nếu không tìm thấy nhân viên
         boolean found = false;

@@ -71,6 +71,8 @@
             System.out.println("Ngày hết hạn: " + expiryDate);
             System.out.println("CVV: " + cvv);
         }
+        @Override
+        public void pay(){};
     }
 
 

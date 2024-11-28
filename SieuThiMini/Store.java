@@ -16,12 +16,12 @@ public class Store{
         Order order=new Order();
         String filepath=null;
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\customers.txt");
-        discounts = Discount.readFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\discount.txt");
+        customers = Customer.readFromFile("SieuThiMini\\customers.txt");
+        discounts = Discount.readFromFile("SieuThiMini\\discount.txt");
         managers = new Manager();
-        managers.readFromFile("dsnv.txt");
+        managers.readFromFile("SieuThiMini\\dsnv.txt");
         departments = new Department();
-        departments.readFromFile("DepartmentList.txt");
+        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -235,9 +235,9 @@ public class Store{
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\category.txt");
-        Supplier.readSupplierFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\supplier.txt");
-        Product.readProductsFromFile("C:\\Users\\Dell\\OneDrive\\Desktop\\Java\\OOP_DOAN\\SieuThiMini\\product.txt");
+        Category.readCategoryFromFile("SieuThiMini\\category.txt");
+        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
+        Product.readProductsFromFile("SieuThiMini\\product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
     //Xuat danh sach cac san pham
@@ -276,7 +276,7 @@ public class Store{
         Product.Find(find);
     }
     /* Các thao tác giao dịch Start */
-    InvoiceManager invoice = new InvoiceManager();
+    /*InvoiceManager invoice = new InvoiceManager();
     Receipt receipt =new Receipt();
     Order order = new Order();
     //khởi tạo 1 giao dịch mới
