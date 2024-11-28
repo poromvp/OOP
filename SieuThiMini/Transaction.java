@@ -1,5 +1,3 @@
-
-
 import java.util.Date;
 
 public class Transaction {
@@ -9,6 +7,7 @@ public class Transaction {
     private Item[] items;
     private int itemCount;
     private double customerPaid;
+
     public Transaction(int id, Date date) {
         this.id = id;
         this.date = date;
@@ -27,26 +26,21 @@ public class Transaction {
         }
     }
 
-
     public void setCustomerPaid(double customerPaid) {
         this.customerPaid = customerPaid;
     }
-
 
     public double getCustomerPaid() {
         return customerPaid;
     }
 
-
     public double getChange() {
         return customerPaid - totalAmount;
     }
 
-
     public double getTotal() {
         return totalAmount;
     }
-
 
     public int getId() {
         return id;
@@ -56,7 +50,6 @@ public class Transaction {
         this.id = id;
     }
 
-
     public Date getDate() {
         return date;
     }
@@ -65,7 +58,6 @@ public class Transaction {
         this.date = date;
     }
 
-// set thủ công
     public Item[] getItems() {
         Item[] currentItems = new Item[itemCount];
         System.arraycopy(items, 0, currentItems, 0, itemCount);
@@ -79,18 +71,5 @@ public class Transaction {
         for (Item item : items) {
             this.totalAmount += item.getTotalPrice();
         }
-    }
-    // set theo dữ liệu lấy từ order
-    public void setItemsFromProducts(Product[] products) {
-        Item[] items = new Item[products.length];
-        for (int i = 0; i < products.length; i++) {
-            items[i] = new Item(products[i].name, products[i].price, products[i].quantity);
-            items[i].setFromProduct(products[i]);
-        }
-        setItems(items);
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
     }
 }

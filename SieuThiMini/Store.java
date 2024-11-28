@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 public class Store{
     public Transaction[] transactions;              // danh sách giao dịch
     public Order[] orderList;                       // danh sách đơn hàng
@@ -16,12 +17,12 @@ public class Store{
         Order order=new Order();
         String filepath=null;
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("SieuThiMini\\customers.txt");
-        discounts = Discount.readFromFile("SieuThiMini\\discount.txt");
+        customers = Customer.readFromFile("customers.txt");
+        discounts = Discount.readFromFile("discount.txt");
         managers = new Manager();
-        managers.readFromFile("SieuThiMini\\dsnv.txt");
+        managers.readFromFile("dsnv.txt");
         departments = new Department();
-        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
+        departments.readFromFile("DepartmentList.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -198,6 +199,11 @@ public class Store{
         Customer.searchCustomers(scanner, customers);
     } 
 
+    // Thống kê Khách hàng mua nhiều nhất (theo điểm tích lũy)
+    public void thongKeCustomer() {
+        Customer.rankCustomersByLoyaltyPointsWithFile(customers);
+    }
+
     /* Các thao tác cho danh sách khách hàng END */
 
     /* Các thao tác cho danh sách chương trình khuyến mãi START */
@@ -279,67 +285,78 @@ public class Store{
     /*InvoiceManager invoice = new InvoiceManager();
     Receipt receipt =new Receipt();
     Order order = new Order();
-    //khởi tạo 1 giao dịch mới
-
+    // Khởi tạo 1 giao dịch mới
     public void taoGiaoDichMoi() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Chọn phương thức thanh toán:");
         System.out.println("1. Tiền mặt");
         System.out.println("2. Thẻ");
         int paymentMethod = scanner.nextInt();
-        scanner.nextLine();
-        Cashier cashier = new Cashier();
-        if (paymentMethod == 1) {
-            System.out.print("Nhập số tiền khách đưa: ");
-            double customerPaid = scanner.nextDouble();
-            scanner.nextLine();
+        scanner.nextLine(); // Consume newline
 
+        Cashier cashier = new Cashier("C001", "Nguyen Van A", "Cashier", 5000.0, "0123456789", "Counter 1", "Morning", null, 0);
+
+        try {
             Transaction transaction = new Transaction(Integer.parseInt(order.getOrderId()), new SimpleDateFormat("dd/MM/yyyy").parse(order.getOrderDate()));
             for (Product product : order.getProductList()) {
                 Item item = new Item(product.name, product.price, product.quantity);
                 transaction.addItem(item);
             }
-            transaction.setCustomerPaid(customerPaid);
 
-            invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction,cashier));
-            System.out.println("Giao dịch đã được tạo thành công bằng tiền mặt!");
-        } else if (paymentMethod == 2) {
-            CardPayment cardPayment = new CardPayment();
-            cardPayment.inputCardDetails();
-
-            Transaction transaction = new Transaction(Integer.parseInt(order.getOrderId()), new SimpleDateFormat("dd/MM/yyyy").parse(order.getOrderDate()));
-            for (Product product : order.getProductList()) {
-                Item item = new Item(product.name, product.price, product.quantity);
-                transaction.addItem(item);
+            if (paymentMethod == 1) {
+                System.out.print("Nhập số tiền khách đưa: ");
+                double customerPaid = scanner.nextDouble();
+                scanner.nextLine(); // Consume newline
+                transaction.setCustomerPaid(customerPaid);
+                invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction, cashier));
+                System.out.println("Giao dịch đã được tạo thành công bằng tiền mặt!");
+            } else if (paymentMethod == 2) {
+                CardPayment cardPayment = new CardPayment();
+                cardPayment.inputCardDetails();
+                transaction.setCustomerPaid(order.getTotalAmount() + Order.calculateVAT(order.getTotalAmount()));
+                invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction, cashier));
+                System.out.println("Giao dịch đã được tạo thành công bằng thẻ!");
+            } else {
+                System.out.println("Phương thức thanh toán không hợp lệ.");
             }
-            transaction.setCustomerPaid(order.getTotalAmount() + Order.calculateVAT(order.getTotalAmount()));
-
-            invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction,cashier));
-            System.out.println("Giao dịch đã được tạo thành công bằng thẻ!");
-        } else {
-            System.out.println("Phương thức thanh toán không hợp lệ.");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
+        scanner.close();
     }
 
     // Sửa hóa đơn
-    public void suaHoaDon(){
+    public void suaHoaDon() {
         invoice.editReceiptById();
     }
+
     // Xóa hóa đơn
-    public void xoaHoaDon(){
+    public void xoaHoaDon() {
         invoice.deleteReceiptById();
     }
-   // Xuất hóa đơn + in biên lai
-    public void xuatHoaDon(Scanner scanner) {
-        invoice.exportinvoice();
+
+    // Xuất hóa đơn + in biên lai
+    public void xuatHoaDon() {
+        invoice.exportInvoice();
     }
 
     // Tìm kiếm hóa đơn
     public void timKiemHoaDon() {
-    invoice.searchAndPrintReceipt();
-}
+        invoice.searchAndPrintReceipt();
+    }
 
+   
+
+       /*
+        Gọi trong chạy chương trình
+        var.taoGiaoDichMoi();
+        var.suaHoaDon();
+        var.xoaHoaDon();
+        var.xuatHoaDon();
+        var.timKiemHoaDon();
+        */
+        
+    
     /* Các thao tác giao dịch End */
 }
 

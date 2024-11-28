@@ -115,7 +115,6 @@ public class Customer {
             }
         }
 
-
         if (customerToUpdate != null) {
             System.out.println("Thông tin khách hàng hiện tại:");
             System.out.println("Mã khách hàng: " + customerToUpdate.getCustomerID());
@@ -253,8 +252,6 @@ public class Customer {
         return true;
     }
     
-
-
     // Phương thức đọc file
     public static Customer[] readFromFile(String fileName) {
         Customer[] customers = new Customer[0]; // Khởi tạo mảng rỗng
@@ -308,6 +305,35 @@ public class Customer {
         } 
         catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
+    
+    // Phương thức thống kê khách hàng có lượt mua hàng nhiều nhất dựa trên điểm tích lũy
+    public static void rankCustomersByLoyaltyPointsWithFile(Customer[] FileName) {
+        if (FileName == null || FileName.length == 0) {
+            System.out.println("Danh sách khách hàng rỗng. Không thể thực hiện thống kê.");
+            return;
+        }
+    
+        // Tạo một bản sao của mảng FileName để tránh thay đổi mảng gốc
+        Customer[] customerCopy = new Customer[FileName.length];
+        System.arraycopy(FileName, 0, customerCopy, 0, FileName.length);
+    
+        // Sắp xếp mảng customerCopy theo điểm tích lũy giảm dần (bubble sort)
+        for (int i = 0; i < customerCopy.length - 1; i++) {
+            for (int j = 0; j < customerCopy.length - 1 - i; j++) {
+                if (customerCopy[j].getLoyaltyPoints() < customerCopy[j + 1].getLoyaltyPoints()) {
+                    Customer temp = customerCopy[j];
+                    customerCopy[j] = customerCopy[j + 1];
+                    customerCopy[j + 1] = temp;
+                }
+            }
+        }
+    
+        // Hiển thị danh sách đã sắp xếp
+        System.out.println("Danh sách khách hàng sắp xếp theo điểm tích lũy (giảm dần):");
+        for (Customer customer : customerCopy) {
+            customer.displayDetails();
         }
     }
     

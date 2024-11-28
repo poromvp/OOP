@@ -4,13 +4,14 @@ import java.text.DecimalFormat;
 public class Receipt {
     private int receiptId;
     private Transaction transaction;
-    private Cashier cashier; // Thêm thuộc tính Cashier
+    private Cashier cashier;
 
     public Receipt(int receiptId, Transaction transaction, Cashier cashier) {
         this.receiptId = receiptId;
         this.transaction = transaction;
         this.cashier = cashier;
     }
+    public Receipt(){}
 
     public void print() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -23,7 +24,7 @@ public class Receipt {
         System.out.println(String.format("Mã Hóa Đơn: %d", receiptId));
         System.out.println(String.format("Mã Giao Dịch: %d", transaction.getId()));
         System.out.println(String.format("Thời Gian: %s", sdf.format(transaction.getDate())));
-        System.out.println(String.format("Thu Ngân: %s", cashier.getName())); // In tên nhân viên thu ngân
+        System.out.println(String.format("Thu Ngân: %s", cashier.getName()));
         System.out.println("----------------------------------------");
         System.out.println(String.format("%-20s %5s %10s %10s", "Tên Sản Phẩm", "SL", "Đơn Giá", "Thành Tiền"));
         System.out.println("----------------------------------------");
@@ -46,7 +47,6 @@ public class Receipt {
         System.out.println("========================================");
     }
 
-    // Getters and setters
     public int getReceiptId() {
         return receiptId;
     }
