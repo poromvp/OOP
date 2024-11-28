@@ -242,8 +242,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-44s ║\n","", "1.", "Thống kê doanh thu theo quý");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo top các sản phẩm bán chạy nhất");
             System.out.printf("%-20s║ %-2s %-44s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "4.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "5.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-44s ║\n","", "4.", "Thống kê theo nhân viên xuất sắc nhất theo thang/nam");
             System.out.printf("%-20s║ %-2s %-44s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚═════════════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -261,8 +260,7 @@ public class ChayChuongTrinh {
                     store.thongKeCustomer();
                     break;
                 case 4:
-                    break;
-                case 5:
+                    store.thongKeNhanVien();
                     break;
                 case 0:
                     break;

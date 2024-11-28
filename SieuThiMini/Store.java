@@ -169,6 +169,12 @@ public class Store{
     }
     // 
 
+    
+    // Thống kê nhân viên suất sắc nhất theo tháng/năm
+    public void thongKeNhanVien() {
+        cashiers.statisticBestCashier();
+    }
+    
 
     /* các thao tác cho ds đơn đặt hàng START*/
     public void xuatOrder(){
