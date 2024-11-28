@@ -242,8 +242,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-44s ║\n","", "1.", "Thống kê doanh thu theo quý");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo top các sản phẩm bán chạy nhất");
             System.out.printf("%-20s║ %-2s %-44s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "4.", "Thống kê theo ....");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "5.", "Thống kê theo ....");
+            System.out.printf("%-20s║ %-2s %-44s ║\n","", "4.", "Thống kê theo nhân viên xuất sắc nhất theo thang/nam");
             System.out.printf("%-20s║ %-2s %-44s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚═════════════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -261,8 +260,7 @@ public class ChayChuongTrinh {
                     store.thongKeCustomer();
                     break;
                 case 4:
-                    break;
-                case 5:
+                    store.thongKeNhanVien();
                     break;
                 case 0:
                     break;
@@ -411,23 +409,31 @@ public class ChayChuongTrinh {
                     
                 case 3:
                     do {
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Sắp xếp lịch làm");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa lịch làm");
+                        System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách ca làm");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm thu ngân vào danh sách");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá thu ngân khỏi danh sách");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin ca làm ");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm thu ngân trong danh sách");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+                        System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                         System.out.print("Lựa chọn của bạn: ");
                         subchoice = Integer.parseInt(scanner.nextLine());
                     switch (subchoice) {
                     case 1:
-                        String filepath= "CashierList.txt";
-                        Staff CasA = new Cashier();
-                        CasA.readFromFile(filepath);
-                        CasA.writeToFile(filepath);
+                        store.xuatThuNgan();
                         break;
                     case 2: 
-                        filepath= "CashierList.txt";
-                        Staff CasB= new Cashier();
-                        CasB.readFromFile(filepath);
-                        ((Cashier)CasB).removeShift();
+                        store.themThuNgan();
+                        break;
+                    case 3:
+                        store.xoaThuNgan();
+                        break;
+                    case 4: 
+                        store.suaThuNgan();
+                        break;
+                    case 5: 
+                        store.timThuNgan();
                         break;
                     case 0:
                         break;
@@ -447,57 +453,73 @@ public class ChayChuongTrinh {
                     switch (subchoice) {
                     case 1:
                         do {
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm hàng trong kho");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa hàng trong kho");
+                            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách kho hàng");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm sản phẩm vào kho hàng");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá sản phẩm khỏi kho hàng");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin kho hàng ");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm sản phẩm trong kho hàng");
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+                            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                             System.out.print("Lựa chọn của bạn: ");
-                            choice = Integer.parseInt(scanner.nextLine());
-                        switch (choice) {
-                            case 1:
-                            String filepath = "Inventory.txt";
-                            Staff Ivenadd = new InventoryManager();
-                            //Ivenadd.readFromFile(filepath);
-                            //Ivenadd.writeToFile(filepath);
+                            subchoice = Integer.parseInt(scanner.nextLine());
+                        switch (subchoice) {
+                        case 1:
+                            store.xuatKho();
                             break;
-                            case 2:
-                            filepath = "Inventory.txt";
-                            Staff Ivenrev = new InventoryManager();
-                            //Ivenrev.readFromFile(filepath);
-                            ((InventoryManager)Ivenrev).removeIvenProduct();
+                        case 2: 
+                            store.themKho();
                             break;
-                            case 0:
-                                 break;
+                        case 3:
+                            store.xoaKho();
+                            break;
+                        case 4: 
+                            store.suaKho();
+                            break;
+                        case 5: 
+                            store.timKho();
+                            break;
+                        case 0:
+                            break;
                             default:
-                                System.out.println("Lựa chọn không hợp lệ.");
-                            }
+                            System.out.println("Lựa chọn không hợp lệ.");
+                        }
                         } while (subchoice != 0);
                         break;
 
                     case 2: 
                         do {
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm hàng trong danh sách đặt hàng");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa hàng trong danh sách đặt hàng");
+                            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách nhập kho");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm sản phẩm nhập kho");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá sản phẩm nhập kho");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin nhập kho ");
+                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm sản phẩm trong danh sách");
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+                            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                             System.out.print("Lựa chọn của bạn: ");
                             subchoice = Integer.parseInt(scanner.nextLine());
-                            switch (subchoice) {
-                            case 1:
-                            String filepath = "OrderInventory.txt";
-                            Staff IvenOrderadd = new InventoryManager();
-                            //((InventoryManager)IvenOrderadd).readFromFileOrder(filepath);
-                            ((InventoryManager)IvenOrderadd).OrderInventory();
+                        switch (subchoice) {
+                        case 1:
+                            store.xuatNhapKho();
                             break;
-                            case 2:
-                            filepath = "OrderInventory.txt";
-                            Staff IvenOrderrev = new InventoryManager();
-                            //((InventoryManager)IvenOrderrev).readFromFileOrder(filepath);
-                            ((InventoryManager)IvenOrderrev).removeOrderProduct();
+                        case 2: 
+                            store.themNhapKho();
                             break;
-                            case 0:
-                                 break;
+                        case 3:
+                            store.xoaNhapKho();
+                            break;
+                        case 4: 
+                            store.suaNhapKho();
+                            break;
+                        case 5: 
+                            store.timNhapKho();
+                            break;
+                        case 0:
+                            break;
                             default:
-                                System.out.println("Lựa chọn không hợp lệ.");
-                            }
+                            System.out.println("Lựa chọn không hợp lệ.");
+                        }
                         } while (subchoice != 0);
                         break;
                     case 0:
