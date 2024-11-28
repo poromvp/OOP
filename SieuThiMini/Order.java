@@ -90,65 +90,147 @@ public class Order implements QLFile {
         return total;
     }
 
+    public void nhapdonhang(Scanner scanner, Product[] product, Order[] orderList, int vitrior) {
+        byte dem = 0, i = 0;
+        System.out.print("Nhập Mã Đơn Hàng: ");
+        String id = scanner.nextLine();
+        while (!checkIDOrder(id) || !checkDuplicateOrdID(id, orderList, vitrior)) {
+            if (!checkIDOrder(id)) {
+                System.out.printf("%30sMã Đơn Hàng Phải Bắt Đầu Từ ORD... Và Có Độ Dài Là 10 Ký Tự, Hãy Nhập Lại\n",
+                        " ");
+                System.out.printf("%30s→ ", " ");
+            }
+            if (!checkDuplicateOrdID(id, orderList, vitrior)) {
+                System.out.printf("%30sĐã Có Mã Đơn Hàng Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
+                System.out.printf("%30s→ ", " ");
+            }
+            id = scanner.nextLine();
+        }
+        setOrderId(id);
+
+        System.out.print("Nhập Ngày Lập Đơn Hàng (dd/mm/yy): ");
+        setOrderDate(scanner.nextLine());
+        System.out.print("Nhập Mã Khách Hàng: ");
+        customer.setCustomerID(Integer.parseInt(scanner.nextLine()));
+        System.out.print("Nhập Tên Khách Hàng: ");
+        customer.setName(scanner.nextLine());
+        System.out.print("Nhập Số Điện Thoại: ");
+        customer.setContactNumber(scanner.nextLine());
+        System.out.print("Nhập Điểm Tích Lũy: ");
+        customer.setLoyaltyPoints(Integer.parseInt(scanner.nextLine()));
+        for (Product pro : product) {
+            dem++;
+            System.out.println();
+            System.out.print("Nhập Mã Sản Phẩm Thứ " + dem + ": ");
+            id = scanner.nextLine();
+            while (!Product.checkIDProduct(id) || !checkx2IDpro(id, product, i)) {
+                if (!Product.checkIDProduct(id)) {
+                    System.out.printf("%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
+                            " ");
+                    System.out.printf("%30s→ ", " ");
+                }
+                if (!checkx2IDpro(id, product, i)) {
+                    System.out.printf("%30sĐã Có Mã Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
+                    System.out.printf("%30s→ ", " ");
+                }
+                id = scanner.nextLine();
+            }
+            pro.setProductID(id);
+            System.out.print("Nhập Tên Sản Phẩm: ");
+            id = scanner.nextLine();
+            while (!checknamepro(id, product, i)) {
+                System.out.printf("%30sĐã Có Tên Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
+                System.out.printf("%30s→ ", " ");
+                id = scanner.nextLine();
+            }
+            pro.setName(id);
+            System.out.print("Nhập Giá Tiền: ");
+            pro.setPrice(Integer.parseInt(scanner.nextLine()));
+            System.out.print("Nhập Mã Loại Sản Phẩm: ");
+            id = scanner.nextLine();
+            while (!Category.checkIDCategory(id)) {
+                System.out.printf("%30sMã Loại Sản Phẩm Phải Bắt Đầu Từ CT... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
+                        " ");
+                System.out.printf("%30s→ ", " ");
+                id = scanner.nextLine();
+            }
+            pro.setCategoryId(id);
+            System.out.print("Nhập Số Lượng: ");
+            pro.setQuantity(Integer.parseInt(scanner.nextLine()));
+            System.out.print("Nhập Mã Nhà Cung Cấp: ");
+            id = scanner.nextLine();
+            while (!Supplier.checkIDSupplier(id)) {
+                System.out.printf("%30sMã Nhà Cung Cấp Phải Bắt Đầu Từ SL... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
+                        " ");
+                System.out.printf("%30s→ ", " ");
+                id = scanner.nextLine();
+            }
+            pro.setSupplierId(id);
+            i++;
+        }
+    }
+
     public static Order[] add(Scanner scanner, Order[] orderList) { // thêm đơn hàng
         System.out.print("Bạn muốn thêm bao nhiêu đơn hàng ?: ");
         int n = Integer.parseInt(scanner.nextLine());
         orderList = Arrays.copyOf(orderList, orderList.length + n);
-        byte cnt=0; //Dùng để xuất cho người nhập dễ theo dõi là đang hỏi bao nhiêu sản phẩm của đơn hàng nào
+        byte cnt = 0; // Dùng để xuất cho người nhập dễ theo dõi là đang hỏi bao nhiêu sản phẩm của
+                      // đơn hàng nào
         for (int i = orderList.length - n; i < orderList.length; i++) {
             cnt++;
             orderList[i] = new Order();
-            System.out.print("\nĐơn Hàng Thứ "+(cnt)+" Bao nhiêu sản phẩm ?: "); // bởi vì 1 đơn hàng có nhiều sản phẩm
+            System.out.print("\nĐơn Hàng Thứ " + (cnt) + " Bao nhiêu sản phẩm ?: "); // bởi vì 1 đơn hàng có nhiều sản
+                                                                                     // phẩm
             orderList[i].product = new Product[Integer.parseInt(scanner.nextLine())];
             for (int j = 0; j < orderList[i].product.length; j++) {
                 orderList[i].product[j] = new Product();
             }
-            orderList[i].nhapdonhang(scanner, orderList[i].product, orderList,i);
+            orderList[i].nhapdonhang(scanner, orderList[i].product, orderList, i);
         }
         return orderList;
     }
 
-    
-    //Kiem tra format id
-    protected boolean checkIDOrder(String id){
-        if(id.length()!=10){
+    // Kiem tra format id
+    protected boolean checkIDOrder(String id) {
+        if (id.length() != 10) {
             return false;
         }
-        if(!id.startsWith("ORD")){
+        if (!id.startsWith("ORD")) {
             return false;
         }
         return true;
     }
-    //Kiem tra id co bi trung khong
-    protected boolean checkDuplicateOrdID(String id, Order[] orderList, int vitrior) {
-        for(int i=0;i<vitrior;i++){
-            if (id!= null && orderList[i].getOrderId().equals(id)) {
-                return false; // Trùng ID
-                }
-        }
-        return true; // Không trùng
-    }                           //vitrior để lưu vị trí hiện tại của cái đơn hàng trong mảng
-                            //để khi nếu người dùng muốn chỉnh sửa đơn hàng, mà lại nhập lại mã cũ, thì vẫn lưu đc
-    
-    
-    protected boolean checkx2IDpro(String id, Product[] product, int vitrior) { //kiểm tra trùng của id sản phẩm của đơn hàng
-        for(int i=0;i<product.length;i++){
-            if (id!= null && product[i].getProductID().equals(id) && vitrior!=i) {
-                return false; // Trùng ID
-                }
-        }
-        return true; // Không trùng
-    } 
 
-    protected boolean checknamepro(String name, Product[] product, int vitrior){
-        for(int i=0;i<product.length;i++){
-            if (name!= null && product[i].getName().equals(name) && vitrior!=i) {
-                return false; // Trùng tên trong cùng 1 đơn hàng
-                }
+    // Kiem tra id co bi trung khong
+    protected boolean checkDuplicateOrdID(String id, Order[] orderList, int vitrior) {
+        for (int i = 0; i < vitrior; i++) {
+            if (id != null && orderList[i].getOrderId().equals(id)) {
+                return false; // Trùng ID
+            }
+        }
+        return true; // Không trùng
+    } // vitrior để lưu vị trí hiện tại của cái đơn hàng trong mảng
+    // để khi nếu người dùng muốn chỉnh sửa đơn hàng, mà lại nhập lại mã cũ, thì vẫn
+    // lưu đc
+
+    protected boolean checkx2IDpro(String id, Product[] product, int vitrior) { // kiểm tra trùng của id sản phẩm của
+                                                                                // đơn hàng
+        for (int i = 0; i < vitrior; i++) {
+            if (id != null && product[i].getProductID().equals(id)) {
+                return false; // Trùng ID
+            }
         }
         return true; // Không trùng
     }
-     
+
+    protected boolean checknamepro(String name, Product[] product, int vitrior) {
+        for (int i = 0; i < vitrior; i++) {
+            if (name != null && product[i].getName().equals(name)) {
+                return false; // Trùng tên trong cùng 1 đơn hàng
+            }
+        }
+        return true; // Không trùng
+    }
 
     public void edit(Scanner scanner, Product[] product, Order[] orderList, int vitrior) {
         int i = 1, index = 0; // i là choice, index dùng để chỉnh sửa đúng vị trí của ds sản phẩm
@@ -171,155 +253,174 @@ public class Order implements QLFile {
             System.out.printf("%55s║  12. Điểm Tích Lũy%14s║\n", " ", " ");
             System.out.printf("%55s║   0. Thoát và Lưu%15s║\n", " ", " ");
             System.out.printf("%55s╚═════════════════════════════════╝\n", " ");
-            System.out.printf("%55s→ "," ");
+            System.out.printf("%55s→ ", " ");
             i = Byte.parseByte(scanner.nextLine());
             switch (i) {
                 case 1:
-                    System.out.printf("%40sNhập Mã Đơn Hàng MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
-                    String id=scanner.nextLine();
-                    while(!checkIDOrder(id)){
-                        System.out.printf("%30sMã Đơn Hàng Phải Bắt Đầu Từ ORD... Và Có Độ Dài Là 10 Ký Tự, Hãy Nhập Lại\n"," ");
-                        System.out.printf("%30s→ "," ");
-                        id=scanner.nextLine();
-                    }
-                    while(!checkDuplicateOrdID(id,orderList,vitrior)){
-                        System.out.printf("%30sĐã Có Mã Đơn Hàng Này Trước Đó Rồi, Hãy Nhập Lại\n"," ");
-                        System.out.printf("%30s→ "," ");
-                        id=scanner.nextLine();
+                    System.out.printf("%40sNhập Mã Đơn Hàng MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
+                    String id = scanner.nextLine();
+                    while (!checkIDOrder(id) || !checkDuplicateOrdID(id, orderList, orderList.length)) {
+                        if (id.equals(orderId)) {
+                            break;
+                        }
+                        if (!checkIDOrder(id)) {
+                            System.out.printf(
+                                    "%30sMã Đơn Hàng Phải Bắt Đầu Từ ORD... Và Có Độ Dài Là 10 Ký Tự, Hãy Nhập Lại\n",
+                                    " ");
+                            System.out.printf("%30s→ ", " ");
+                        }
+                        if (!checkDuplicateOrdID(id, orderList, orderList.length)) {
+                            System.out.printf("%30sĐã Có Mã Đơn Hàng Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
+                            System.out.printf("%30s→ ", " ");
+                        }
+                        id = scanner.nextLine();
                     }
                     setOrderId(id);
                     break;
                 case 2:
-                    System.out.printf("%40sNhập Ngày Lập Đơn Hàng MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sNhập Ngày Lập Đơn Hàng MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     setOrderDate(scanner.nextLine());
                     break;
                 case 3:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Của Sản Phẩm Thứ Mấy?\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Của Sản Phẩm Thứ Mấy?\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     index = Integer.parseInt(scanner.nextLine());
-                    while(index>product.length || index<=0){
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n"," ");
-                        System.out.printf("%40s→ "," ");
+                    while (index > product.length || index <= 0) {
+                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
+                        System.out.printf("%40s→ ", " ");
                         index = Integer.parseInt(scanner.nextLine());
                     }
-                    System.out.printf("%40sNhập Mã Sản Phẩm MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
-                    id=scanner.nextLine();
-                    while(!Product.checkIDProduct(id)){
-                        System.out.printf("%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n"," ");
-                        System.out.printf("%30s→ "," ");
-                        id=scanner.nextLine();
-                    }
-                    while(!checkx2IDpro(id,product,index-1)){
-                        System.out.printf("%30sĐã Có Mã Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n"," ");
-                        System.out.printf("%30s→ "," ");
-                        id=scanner.nextLine();
+                    System.out.printf("%40sNhập Mã Sản Phẩm MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
+                    id = scanner.nextLine();
+                    while (!Product.checkIDProduct(id) || !checkx2IDpro(id, product, product.length)) {
+                        if (id.equals(product[index - 1].getProductID())) {
+                            break;
+                        }
+                        if (!Product.checkIDProduct(id)) {
+                            System.out.printf(
+                                    "%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
+                                    " ");
+                            System.out.printf("%30s→ ", " ");
+                        }
+                        if (!checkx2IDpro(id, product, product.length)) {
+                            System.out.printf("%30sĐã Có Mã Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
+                            System.out.printf("%30s→ ", " ");
+                        }
+                        id = scanner.nextLine();
                     }
                     product[index - 1].setProductID(id);
                     break;
                 case 4:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Tên Của Sản Phẩm Thứ Mấy?\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Tên Của Sản Phẩm Thứ Mấy?\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     index = Integer.parseInt(scanner.nextLine());
-                    while(index>product.length || index<=0){
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n"," ");
-                        System.out.printf("%40s→ "," ");
+                    while (index > product.length || index <= 0) {
+                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
+                        System.out.printf("%40s→ ", " ");
                         index = Integer.parseInt(scanner.nextLine());
                     }
-                    System.out.printf("%40sNhập Tên Sản Phẩm MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
-                    id=scanner.nextLine();
-                    while(!checknamepro(id, product, index-1)){
-                        System.out.printf("%30sĐã Có Tên Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n"," ");
-                        System.out.printf("%30s→ "," ");
-                        id=scanner.nextLine();
+                    System.out.printf("%40sNhập Tên Sản Phẩm MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
+                    id = scanner.nextLine();
+                    while (!checknamepro(id, product, product.length)) {
+                        if (id.equals(product[index - 1].getName())) {
+                            break;
+                        }
+                        System.out.printf("%30sĐã Có Tên Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
+                        System.out.printf("%30s→ ", " ");
+                        id = scanner.nextLine();
                     }
                     product[index - 1].setName(id);
                     break;
                 case 5:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Giá Của Sản Phẩm Thứ Mấy?\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Giá Của Sản Phẩm Thứ Mấy?\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     index = Integer.parseInt(scanner.nextLine());
-                    while(index>product.length || index<=0){
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n"," ");
-                        System.out.printf("%40s→ "," ");
+                    while (index > product.length || index <= 0) {
+                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
+                        System.out.printf("%40s→ ", " ");
                         index = Integer.parseInt(scanner.nextLine());
                     }
-                    System.out.printf("%40sNhập Giá Sản Phẩm MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sNhập Giá Sản Phẩm MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     product[index - 1].setPrice(Integer.parseInt(scanner.nextLine()));
                     break;
                 case 6:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Loại Của Sản Phẩm Thứ Mấy?\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Loại Của Sản Phẩm Thứ Mấy?\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     index = Integer.parseInt(scanner.nextLine());
-                    while(index>product.length || index<=0){
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n"," ");
-                        System.out.printf("%40s→ "," ");
+                    while (index > product.length || index <= 0) {
+                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
+                        System.out.printf("%40s→ ", " ");
                         index = Integer.parseInt(scanner.nextLine());
                     }
-                    System.out.printf("%40sNhập Mã Loại Sản Phẩm MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
-                    id=scanner.nextLine();
-                    while(!Category.checkIDCategory(id)){
-                        System.out.printf("%30sMã Loại Sản Phẩm Phải Bắt Đầu Từ CT... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n"," ");
-                        System.out.printf("%30s→ "," ");
-                        id=scanner.nextLine();
+                    System.out.printf("%40sNhập Mã Loại Sản Phẩm MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
+                    id = scanner.nextLine();
+                    while (!Category.checkIDCategory(id)) {
+                        System.out.printf(
+                                "%30sMã Loại Sản Phẩm Phải Bắt Đầu Từ CT... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
+                                " ");
+                        System.out.printf("%30s→ ", " ");
+                        id = scanner.nextLine();
                     }
                     product[index - 1].setCategoryId(id);
                     break;
                 case 7:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Số Lượng Của Sản Phẩm Thứ Mấy?\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Số Lượng Của Sản Phẩm Thứ Mấy?\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     index = Integer.parseInt(scanner.nextLine());
-                    while(index>product.length || index<=0){
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n"," ");
-                        System.out.printf("%40s→ "," ");
+                    while (index > product.length || index <= 0) {
+                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
+                        System.out.printf("%40s→ ", " ");
                         index = Integer.parseInt(scanner.nextLine());
                     }
-                    System.out.printf("%40sNhập Số Lượng Sản Phẩm MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sNhập Số Lượng Sản Phẩm MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     product[index - 1].setQuantity(Integer.parseInt(scanner.nextLine()));
                     break;
                 case 8:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Nhà Cung Cấp Của Sản Phẩm Thứ Mấy?\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Nhà Cung Cấp Của Sản Phẩm Thứ Mấy?\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     index = Integer.parseInt(scanner.nextLine());
-                    while(index>product.length || index<=0){
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n"," ");
-                        System.out.printf("%40s→ "," ");
+                    while (index > product.length || index <= 0) {
+                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
+                        System.out.printf("%40s→ ", " ");
                         index = Integer.parseInt(scanner.nextLine());
                     }
-                    System.out.printf("%40sNhập Mã Nhà Cung Cấp Sản Phẩm MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
-                    id=scanner.nextLine();
-                    while(!Supplier.checkIDSupplier(id)){
-                        System.out.printf("%30sMã Nhà Cung Cấp Phải Bắt Đầu Từ SL... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n"," ");
-                        System.out.printf("%30s→ "," ");
-                        id=scanner.nextLine();
+                    System.out.printf("%40sNhập Mã Nhà Cung Cấp Sản Phẩm MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
+                    id = scanner.nextLine();
+                    while (!Supplier.checkIDSupplier(id)) {
+                        System.out.printf(
+                                "%30sMã Nhà Cung Cấp Phải Bắt Đầu Từ SL... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
+                                " ");
+                        System.out.printf("%30s→ ", " ");
+                        id = scanner.nextLine();
                     }
                     product[index - 1].setSupplierId(id);
                     break;
                 case 9:
-                    System.out.printf("%40sNhập Mã Khách Hàng MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sNhập Mã Khách Hàng MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     customer.setCustomerID(Integer.parseInt(scanner.nextLine()));
                     break;
                 case 10:
-                    System.out.printf("%40sNhập Tên Khách Hàng MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sNhập Tên Khách Hàng MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     customer.setName(scanner.nextLine());
                     break;
                 case 11:
-                    System.out.printf("%40sNhập Số Điện Thoại MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sNhập Số Điện Thoại MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     customer.setContactNumber(scanner.nextLine());
                     break;
                 case 12:
-                    System.out.printf("%40sNhập Điểm Tích Lũy MỚI\n"," ");
-                    System.out.printf("%40s→ "," ");
+                    System.out.printf("%40sNhập Điểm Tích Lũy MỚI\n", " ");
+                    System.out.printf("%40s→ ", " ");
                     customer.setLoyaltyPoints(Integer.parseInt(scanner.nextLine()));
                     break;
                 case 0:
@@ -336,7 +437,7 @@ public class Order implements QLFile {
         System.out.print("Bạn muốn xóa đơn hàng nào ? (Nhập mã đơn hàng): ");
         boolean flag = false; // Tạo lính canh để kiểm tra nếu sau khi duyệt mà nó còn false thì sẽ cho nhập
                               // lại cho đúng
-        byte choice=0, so_lan_thu=0;
+        byte choice = 0, so_lan_thu = 0;
         do {
             so_lan_thu++;
             String temp = scanner.nextLine();
@@ -361,15 +462,16 @@ public class Order implements QLFile {
                 }
                 break;
             }
-            if(so_lan_thu>2){
+            if (so_lan_thu > 2) {
                 System.out.println("Bạn đã nhập sai quá nhiều lần. Đang thoát...");
                 break;
             }
-            System.out.print("Mã Đơn Hàng Mà Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Xóa Đơn Hàng Không?\n "
-            +"1.Có    0.Không");
-            do{
+            System.out.print(
+                    "Mã Đơn Hàng Mà Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Xóa Đơn Hàng Không?\n "
+                            + "1.Có    0.Không");
+            do {
                 System.out.print("\n→ ");
-                choice=Byte.parseByte(scanner.nextLine());
+                choice = Byte.parseByte(scanner.nextLine());
                 switch (choice) {
                     case 1:
                         System.out.println("Vậy Hãy Nhập Lại Mã Đơn Hàng Chính Xác");
@@ -377,13 +479,13 @@ public class Order implements QLFile {
                         break;
                     case 0:
                         System.out.println("Đã thoát!");
-                        flag=true;
+                        flag = true;
                         break;
                     default:
                         System.out.println("Không hợp lệ hãy nhập lại!");
                         break;
                 }
-            }while(choice!=0 && choice!=1);
+            } while (choice != 0 && choice != 1);
         } while (!flag);
         return orderList;
     }
@@ -423,8 +525,8 @@ public class Order implements QLFile {
     public static void loc(Scanner scanner, Order[] orderList) {
         System.out.println();
         System.out.printf("%20s╔═════════════════════════════════════════════════════════════════╗\n", "");
-        System.out.printf("%20s║                        TÌM KIẾM ĐƠN HÀNG                        ║\n","");
-        System.out.printf("%20s║      Nhập tiêu chí để tìm (nhấn Enter để bỏ qua tiêu chí)       ║\n","");
+        System.out.printf("%20s║                        TÌM KIẾM ĐƠN HÀNG                        ║\n", "");
+        System.out.printf("%20s║      Nhập tiêu chí để tìm (nhấn Enter để bỏ qua tiêu chí)       ║\n", "");
         System.out.printf("%20s╚═════════════════════════════════════════════════════════════════╝\n", "");
 
         System.out.print("Mã đơn hàng: ");
@@ -570,6 +672,55 @@ public class Order implements QLFile {
         if (!san_pham_thu_may)
             return false;
         return true;
+    }
+
+    public static double[] thongkeQUY(Order[] orderList) {
+        double[] mangQUY = new double[4]; // Mảng lưu doanh thu 4 quý, mặc định giá trị ban đầu là 0.0
+
+        for (Order or : orderList) {
+            String[] ngaythangnam = or.getOrderDate().split("/"); // Định dạng ngày là "dd/mm/yyyy"
+            int month = Integer.parseInt(ngaythangnam[1]); // Lấy tháng từ chuỗi ngày
+
+            int QUY = (month - 1) / 3; // Xác định quý (0: Q1, 1: Q2, 2: Q3, 3: Q4)
+            if (QUY >= 0 && QUY < 4) {
+                mangQUY[QUY] += or.calculateTotalAmount();
+            }
+        }
+
+        return mangQUY;
+    }
+
+    public static Product[] thongkeBanChay(Order[] orderList) {
+        Product[] mangSP = new Product[100];
+        int index = 0;
+        for (Order or : orderList) {
+            for (Product pr : or.getProductList()) {
+                boolean ton_tai = false;
+                for (int i = 0; i < index; i++) {
+                    if (pr.getProductID().equals(mangSP[i].getProductID())) {
+                        mangSP[i].setQuantity(mangSP[i].getQuantity() + pr.getQuantity());
+                        ton_tai = true;
+                        break;
+                    }
+                }
+                if (!ton_tai) {
+                    mangSP[index] = new Product(pr.getProductID(), pr.getName(), pr.getPrice(), pr.getCategoryId(),
+                            pr.getQuantity(), pr.getSupplierId());
+                    index++;
+                }
+            }
+        }
+        for (int i=0;i<index-1;i++) {
+            for(int j=i+1;j<index;j++){
+                if(mangSP[i].getQuantity()<mangSP[j].getQuantity()){
+                    Product temp=new Product();
+                    temp=mangSP[j];
+                    mangSP[j]=mangSP[i];
+                    mangSP[i]=temp;
+                }
+            }
+        }
+        return Arrays.copyOf(mangSP, index);
     }
 
     public static void statisticalOrders(Scanner scanner, Order[] orderList) {
@@ -738,57 +889,13 @@ public class Order implements QLFile {
         }
     }
 
-    public void nhapdonhang(Scanner scanner, Product[] product, Order[] orderList, int vitrior) {
-        byte dem = 0;
-        System.out.print("Nhập Mã Đơn Hàng: ");
-        String id=scanner.nextLine();
-        while(!checkIDOrder(id)){
-            System.out.printf("%30sMã Đơn Hàng Phải Bắt Đầu Từ ORD... Và Có Độ Dài Là 10 Ký Tự, Hãy Nhập Lại\n"," ");
-            System.out.printf("%30s→ "," ");
-            id=scanner.nextLine();
-        }
-        while(!checkDuplicateOrdID(id,orderList,vitrior)){
-            System.out.printf("%30sĐã Có Mã Đơn Hàng Này Trước Đó Rồi, Hãy Nhập Lại\n"," ");
-            System.out.printf("%30s→ "," ");
-            id=scanner.nextLine();
-        }
-        setOrderId(id);
-        
-        System.out.print("Nhập Ngày Lập Đơn Hàng (dd/mm/yy): ");
-        setOrderDate(scanner.nextLine());
-        System.out.print("Nhập Mã Khách Hàng: ");
-        customer.setCustomerID(Integer.parseInt(scanner.nextLine()));
-        System.out.print("Nhập Tên Khách Hàng: ");
-        customer.setName(scanner.nextLine());
-        System.out.print("Nhập Số Điện Thoại: ");
-        customer.setContactNumber(scanner.nextLine());
-        System.out.print("Nhập Điểm Tích Lũy: ");
-        customer.setLoyaltyPoints(Integer.parseInt(scanner.nextLine()));
-        for (Product pro : product) {
-            dem++;
-            System.out.println();
-            System.out.print("Nhập Mã Sản Phẩm Thứ " + dem + ": ");
-            pro.setProductID(scanner.nextLine());
-            System.out.print("Nhập Tên Sản Phẩm: ");
-            pro.setName(scanner.nextLine());
-            System.out.print("Nhập Giá Tiền: ");
-            pro.setPrice(Integer.parseInt(scanner.nextLine()));
-            System.out.print("Nhập Loại Sản Phẩm: ");
-            pro.setCategoryId(scanner.nextLine());
-            System.out.print("Nhập Số Lượng: ");
-            pro.setQuantity(Integer.parseInt(scanner.nextLine()));
-            System.out.print("Nhập Nhà Cung Cấp: ");
-            pro.setSupplierId(scanner.nextLine());
-        }
-    }
-
     @Override
     public Order[] readFromFile(String filePath) {
         /* TẢI DANH SÁCH ĐƠN HÀNG - Kiệt */
         Order[] orderList;
         int i, n;
         n = 0;
-        filePath = "donhang.txt";
+        filePath = "SieuThiMini\\donhang.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String Line;
             while ((Line = br.readLine()) != null) {
