@@ -11,6 +11,9 @@ public class Store{
     public Discount[] discounts;                    // danh sách chương trình khuyến mãi
     public Manager managers;
     public Department departments;
+    public Cashier cashiers;
+    public InventoryManager IvenProduct;
+    public InventoryManager OrderProduct;
 
     
     public Store(){
@@ -20,9 +23,10 @@ public class Store{
         customers = Customer.readFromFile("customers.txt");
         discounts = Discount.readFromFile("discount.txt");
         managers = new Manager();
-        managers.readFromFile("dsnv.txt");
         departments = new Department();
-        departments.readFromFile("DepartmentList.txt");
+        cashiers = new Cashier();
+        IvenProduct = new InventoryManager();
+        OrderProduct = new InventoryManager();
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -36,48 +40,108 @@ public class Store{
     public void setTransactions(Transaction[] transactions) {
         this.transactions = transactions;
     }
-    /*thao tác nhân viên start */
-    public void xuatNV(){
+
+    /* thao tác nhân viên start */
+    public void xuatNV() {
         managers.getdetail();
     }
 
-    public void ThemNV(){
+    public void ThemNV() {
         managers.add();
     }
 
-    public void XoaNV(){
+    public void XoaNV() {
         managers.remove();
     }
 
-    public void SuaNV(){
+    public void SuaNV() {
         managers.ChangeInFo();
     }
 
-    public void TimNV(){
+    public void TimNV() {
         managers.search();
     }
 
-    public void XuatPBan(){
+    public void XuatPBan() {
         departments.getdetail();
     }
 
-    public void ThemQLPB(){
+    public void ThemQLPB() {
         departments.add();
     }
 
-    public void XoaPB(){
+    public void XoaPB() {
         departments.remove();
     }
 
-    public void SuaPB(){
+    public void SuaPB() {
         departments.ChangeInFo();
     }
 
-    public void TimPB(){
+    public void TimPB() {
         departments.search();
     }
-    
-    /*thao tác nhân viên end */
+
+    public void xuatThuNgan() {
+        cashiers.getdetail();
+    }
+
+    public void themThuNgan() {
+        cashiers.add();
+    }
+
+    public void xoaThuNgan() {
+        cashiers.remove();
+    }
+
+    public void timThuNgan() {
+        cashiers.search();
+    }
+
+    public void suaThuNgan() {
+        cashiers.ChangeInFo();
+    }
+
+    public void xuatKho() {
+        IvenProduct.getdetail();
+    }
+
+    public void themKho() {
+        IvenProduct.add();
+    }
+
+    public void xoaKho() {
+        IvenProduct.remove();
+    }
+
+    public void suaKho() {
+        IvenProduct.ChangeInFo();
+    }
+
+    public void timKho() {
+        IvenProduct.search();
+    }
+
+    public void xuatNhapKho() {
+        OrderProduct.getdetailOrder();
+    }
+
+    public void themNhapKho() {
+        OrderProduct.addOrder();
+    }
+
+    public void xoaNhapKho() {
+        OrderProduct.removeOrder();
+    }
+
+    public void suaNhapKho() {
+        OrderProduct.ChangeInFoOrder();
+    }
+
+    public void timNhapKho() {
+        OrderProduct.searchOrder();
+    }
+    /* thao tác nhân viên end */
 
 
     // update Nhân

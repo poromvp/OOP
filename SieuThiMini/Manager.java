@@ -131,16 +131,21 @@ public class Manager extends Staff {
     Manager newManager = new Manager(ID, Ten, role, Luong, PhoneNum);
 
     // Mở rộng mảng managers để chứa nhân viên mới
-    if (vitri - 1 < managers.length) {
-        // Di chuyển các phần tử từ vị trí vitri trở đi
+    if (vitri -1 > managers.length) {
+        // Nếu vị trí lớn hơn 3, thêm nhân viên vào cuối danh sách
         managers = Arrays.copyOf(managers, managers.length + 1); // Mở rộng mảng
-        for (int i = managers.length - 1; i > vitri - 1; i--) {
-            managers[i] = managers[i - 1]; // Di chuyển các phần tử phía sau
+        managers[managers.length - 1] = newManager; // Thêm nhân viên mới vào cuối
+    } else {
+        // Nếu vị trí hợp lệ, chèn nhân viên vào vị trí chỉ định
+        if (vitri - 1 < managers.length) {
+            managers = Arrays.copyOf(managers, managers.length + 1); // Mở rộng mảng
+            for (int i = managers.length - 1; i > vitri - 1; i--) {
+                managers[i] = managers[i - 1]; // Di chuyển các phần tử phía sau
+            }
         }
+        // Thêm nhân viên mới vào mảng tại vị trí vitri - 1
+        managers[vitri - 1] = newManager;
     }
-
-    // Thêm nhân viên mới vào mảng tại vị trí vitri - 1
-    managers[vitri - 1] = newManager;
 
     // Cập nhật lại số lượng nhân viên
     count = managers.length;
@@ -151,8 +156,6 @@ public class Manager extends Staff {
     // Hiển thị danh sách nhân viên sau khi cập nhật
     System.out.println("Danh sách sau khi cập nhật: ");
     getdetail();
-
-    ;
 }
 
 // Phương thức ghi lại dữ liệu vào file
@@ -177,7 +180,7 @@ public void writeToFile(String fileName, Manager[] managers) {
         String IDremove = sc.nextLine();
 
         // Đọc danh sách nhân viên từ file
-        Manager[] managers = readFromFile("SieuThiMini\\SieuThiMini\\dsnv.txt");
+        Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
 
         // Kiểm tra nếu không tìm thấy nhân viên
         boolean found = false;

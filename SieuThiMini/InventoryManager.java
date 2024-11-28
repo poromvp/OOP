@@ -5,13 +5,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class InventoryManager extends Staff {
-    private Product[] IvenProducts; // Danh sách sản phẩm trong kho
-    private Product[] OrderProducts; // danh sách sản phẩm đặt về
-    private int productCount;   // Số lượng sản phẩm hiện tại
-    private int countA;
-    private int countB;
+    private String ProductID; // Danh sách sản phẩm trong kho
+    private String ProductName; // Danh sách sản phẩm đặt về
+    private int Count;   // Số lượng sản phẩm hiện tại
 
-    public InventoryManager(String staffID, String name, String role, Double salary, String contactNum, int count) {
+    public InventoryManager(String staffID, String name, String role, Double salary, String contactNum) {
         super(staffID, name, role, salary, contactNum);
     }
 
@@ -19,327 +17,557 @@ public class InventoryManager extends Staff {
     }
 
     public InventoryManager(String staffID, String name, String role, Double salary, String contactNum,
-                            Product[] ivenProducts, Product[] orderProducts, int productCount, int count) {
+                            String productID, String productName, int count) {
         super(staffID, name, role, salary, contactNum);
-        IvenProducts = ivenProducts;
-        OrderProducts = orderProducts;
-        this.productCount = productCount;
-        this.countA = countA;
+        ProductID = productID;
+        ProductName = productName;
+        Count = count;
     }
 
-    public InventoryManager(Product[] ivenProducts, Product[] orderProducts, int productCount, int count) {
-        IvenProducts = ivenProducts;
-        OrderProducts = orderProducts;
-        this.productCount = productCount;
-        this.countB = countB;
+    public InventoryManager(String productID, String productName, int count) {
+        ProductID = productID;
+        ProductName = productName;
+        Count = count;
     }
 
-    public Product[] getIvenProducts() {
-        return IvenProducts;
+    public String getProductID() {
+        return ProductID;
     }
 
-    public void setIvenProducts(Product[] ivenProducts) {
-        IvenProducts = ivenProducts;
+    public void setProductID(String productID) {
+        ProductID = productID;
     }
 
-    public Product[] getOrderProducts() {
-        return OrderProducts;
+    public String getProductName() {
+        return ProductName;
     }
 
-    public void setOrderProducts(Product[] orderProducts) {
-        OrderProducts = orderProducts;
+    public void setProductName(String productName) {
+        ProductName = productName;
     }
 
-    public int getProductCount() {
-        return productCount;
+    public int getCount() {
+        return Count;
     }
 
-    public void setProductCount(int productCount) {
-        this.productCount = productCount;
+    public void setCount(int count) {
+        Count = count;
     }
 
-    public int getCountA() {
-        return countA;
-    }
-
-    public void setCount(int countA) {
-        this.countA = countA;
-    }
-
-    public int getCountB() {
-        return countB;
-    }
-
-    public void setCountB(int countB) {
-        this.countB = countB;
-    }
-
-    // tạo ngẫu nhiên productid
+    // Tạo ngẫu nhiên productID
     public static String generateRandomString(int length) {
-        // Các ký tự có thể xuất hiện trong chuỗi ngẫu nhiên
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
 
         StringBuilder randomString = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            // Chọn ngẫu nhiên một ký tự từ mảng characters
             int index = random.nextInt(characters.length());
             randomString.append(characters.charAt(index));
         }
 
-        return randomString.toString(); // Trả về chuỗi ngẫu nhiên
+        return randomString.toString();
     }
 
-    //đọc dữ liệu từ file Inventory
+    // Đọc dữ liệu từ file Inventory
     @Override
-    public void readFromFile(String filepath){
-
-        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\Inventory.txt";
-         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+    public InventoryManager[] readFromFile(String filepath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
-            countA = 0;
-            Product[] IvenProducts = new Product[100];
-            for (int i=0; i<IvenProducts.length; i++){
-                IvenProducts[i] = new Product();
-            }
-            
-            System.out.printf("%-10s| %-12s| %-10s %n", 
-            "Mã sản phẩm","Tên sản phẩm", "Số lượng");
+            InventoryManager[] IvenProducts = new InventoryManager[0];
 
-            while ((line = reader.readLine()) != null ) {
-                String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
-
-                if (parts.length >= 3) {
-                    // Lấy các trường từ mảng parts
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" ");
+                if (parts.length == 3) {
                     String id = parts[0];
                     String name = parts[1];
-                    productCount = Integer.parseInt(parts[2]);
-                    IvenProducts[countA].setProductID(id);
-                    IvenProducts[countA].setName(name);
-                    IvenProducts[countA].setQuantity(productCount);
+                    int SL = Integer.parseInt(parts[2]);
+                    InventoryManager newIvenProduct = new InventoryManager(id, name, SL);
+                    IvenProducts = Arrays.copyOf(IvenProducts, IvenProducts.length + 1);
+                    IvenProducts[IvenProducts.length - 1] = newIvenProduct;
+                } else if (parts.length > 3) {
+                    String id = parts[0];
+                    String name = String.join(" ", Arrays.copyOfRange(parts, 1, parts.length - 1));
+                    int SL = Integer.parseInt(parts[parts.length - 1]);
+                    InventoryManager newIvenProduct = new InventoryManager(id, name, SL);
+                    IvenProducts = Arrays.copyOf(IvenProducts, IvenProducts.length + 1);
+                    IvenProducts[IvenProducts.length - 1] = newIvenProduct;
                 }
-                System.out.printf("%-10s| %-12s| %-10s %n", 
-                IvenProducts[countA].getProductID(),IvenProducts[countA].getName(),IvenProducts[countA].getQuantity() );
-                countA++;
             }
+            return IvenProducts;
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Lỗi khi phân tích dữ liệu: " + e.getMessage());
+            return new InventoryManager[0];
         }
     }
 
-    public void readFromFileOrder(String filepath){
-        filepath="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\OrderInventory.txt";
-         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
-            String line;
-            countB = 0;
-
-            Product [] OrderProducts = new Product[100];
-            for (int i =0; i<OrderProducts.length; i++){
-                OrderProducts[i]= new Product();
-            }
-            System.out.printf("%-10s| %-12s| %-10s %n", 
-            "Mã sản phẩm","Tên sản phẩm", "Số lượng");
-            while ((line = reader.readLine()) != null ) {
-                String[] parts = line.split(" "); // Tách các từ bằng khoảng trắng
-
-                if (parts.length >= 3) {
-                    // Lấy các trường từ mảng parts
-                    String id = parts[0];
-                    String name = parts[1];
-                    productCount = Integer.parseInt(parts[2]);
-                    OrderProducts[countB].setProductID(id);
-                    OrderProducts[countB].setName(name);
-                    OrderProducts[countB].setQuantity(productCount);
-                }
-                System.out.printf("%-10s| %-12s| %-10s %n", 
-                OrderProducts[countB].getProductID(),OrderProducts[countB].getName(),OrderProducts[countB].getQuantity() );
-                countB++;
+    public void writeToFile(String fileName, InventoryManager[] IvenProducts) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (InventoryManager IvenProduct : IvenProducts) {
+                writer.write(IvenProduct.getProductID() + " " + IvenProduct.getProductName() + " " + IvenProduct.getCount());
+                writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("Lỗi khi đọc file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Lỗi khi phân tích dữ liệu: " + e.getMessage());
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
 
-    // them san pham vao trong danh sach kho hang
-    public void writeToFile (String filepath){
-        Scanner sc= new Scanner(System.in);
-        filepath ="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\Inventory.txt";
-        File inputFile = new File(filepath);
-        String filetemp = "temp.txt";
-        File temp = new File(filetemp);
-
-        System.out.println("nhập vị trí dòng bạn muốn thêm vào danh sách");
-        int vitri = sc.nextInt();
-        sc.nextLine();
-
-        int length = 9;
-        String productidString = generateRandomString(length);
-
-        System.out.println("San pham ban muon them vao kho: ");
-        String Name =  sc.nextLine();
-
-        System.out.println("So luong ban them vao Kho: ");
-        String SL=sc.nextLine();
-
-        String newInventory= productidString + " " + Name + " " + SL;
-        try (
-                BufferedReader br = new BufferedReader(new FileReader(inputFile));
-                BufferedWriter bw = new BufferedWriter(new FileWriter(temp))
-        ){
-            String line;
-            int currentLine = 0; // dòng đang thao tác hiện tại
-            while ((line = br.readLine())!=null){
-                //chèn dòng mới vào vị trí mong muốn
-                if(currentLine==vitri-1){
-                    bw.write(newInventory);
-                    bw.newLine();
-                }
-                bw.write(line);
-                bw.newLine();
-                currentLine++;
-            }
-            // nếu vị trí muốn thêm lớn hơn số dòng hiện có thì sẽ thêm mới một dòng ở cuối
-            if (vitri >= currentLine){
-                bw.write(newInventory);
-                bw.newLine();
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        if (!inputFile.delete()){
-            System.out.println("bị lỗi !!!");
+    @Override
+    public void getdetail() {
+        InventoryManager[] temp = readFromFile("Inventory.txt");
+        if (temp == null || temp.length == 0) {
+            System.out.println("Không có dữ liệu nhân viên");
             return;
         }
+        System.out.println("Danh sách tồn kho");
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
+        System.out.printf("║ %-10s │ %-15s │ %-20s ║\n", "Mã sản phẩm", "Tên sản phẩm", "Số lượng");
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
 
-        if(!temp.renameTo(inputFile)){
-            System.out.println("không thể đổi tên file");
-        }else {
-            System.out.println("đã chèn dòng mới vào");
+        for (InventoryManager IvenProduct : temp) {
+            System.out.printf("║ %-10s │ %-15s │ %-20s ║\n",
+                    IvenProduct.getProductID(),
+                    IvenProduct.getProductName(),
+                    IvenProduct.getCount());
         }
-
-        readFromFile(filepath);
+        System.out.printf("╚════════════╧═══════════════╧════════════════════════════╝\n");
+        System.out.println("");
     }
 
-    public void removeIvenProduct(){
-        Scanner sc= new Scanner(System.in);
-        System.out.print("Nhập tên sản phẩm muốn xóa: ");
-        String NameProductRemove = sc.nextLine();
-        String filepath ="D:\\DoAnOOP\\OOP\\SieuThiMiNi\\Inventory.txt";
-        StringBuilder content = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader( new FileReader(filepath))){
-            String line;
-            while ((line= br.readLine())!=null){
-                String[] parts = line.split(" ");
-                if(!NameProductRemove.equals(parts[2])){
-                    content.append(line).append(System.lineSeparator());            // đọc file và lưu lại các dòng không chứa mã nhân viên cần xoá;
-                }
-            }
-        } catch (IOException e){
-            e.printStackTrace();
+    public void getdetailOrder() {
+        InventoryManager[] temp = readFromFile("OrderInventory.txt");
+        if (temp == null || temp.length == 0) {
+            System.out.println("Không có dữ liệu nhân viên");
+            return;
         }
+        System.out.println("Danh sách nhập hàng");
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
+        System.out.printf("║ %-10s │ %-15s │ %-20s ║\n", "Mã sản phẩm", "Tên sản phẩm", "Số lượng");
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
 
-        try(FileWriter fw = new FileWriter(filepath)){
-            fw.write(content.toString());
-        } catch (IOException e){
-            e.printStackTrace();
+        for (InventoryManager IvenProduct : temp) {
+            System.out.printf("║ %-10s │ %-15s │ %-20s ║\n",
+                    IvenProduct.getProductID(),
+                    IvenProduct.getProductName(),
+                    IvenProduct.getCount());
         }
-
-        readFromFile(filepath);
+        System.out.printf("╚════════════╧═══════════════╧════════════════════════════╝\n");
+        System.out.println("");
     }
 
-    // them san pham muon dat hang ve
-    public void OrderInventory (){
-        String filepath = "D:\\DoAnOOP\\OOP\\SieuThiMiNi\\OrderInventory.txt";
-        Scanner sc= new Scanner(System.in);
-        File inputFile = new File(filepath);
-        String filetemp = "temp.txt";
-        File temp = new File(filetemp);
+    @Override
+    public void add() {
+        getdetail();
 
-        System.out.println("nhập vị trí dòng bạn muốn thêm vào danh sách");
-        int vitri = sc.nextInt();
-        sc.nextLine();
+        Scanner sc = new Scanner(System.in);
 
-        int length = 9;
-        String ProductOrderStringID = generateRandomString(length);
+        InventoryManager[] IvenProduct = readFromFile("Inventory.txt");
 
-        System.out.println("Ban muon dat mat hang nao cho kho: ");
+        System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
+        int vitri = Integer.parseInt(sc.nextLine());
+
+        String id = InventoryManager.generateRandomString(8);
+
+        System.out.print("Nhập sản phẩm bạn muốn thêm vào kho: ");
         String name = sc.nextLine();
 
-        System.out.println("So luong ban muon nhap ve: ");
-        String Sl = sc.nextLine();
+        System.out.println("Nhập Số lượng sản phẩm đó: ");
+        String SL = sc.nextLine();
 
-        String newOrder = ProductOrderStringID + " " + name + " " + Sl;
-        try (
-                BufferedReader br = new BufferedReader(new FileReader(inputFile));
-                BufferedWriter bw = new BufferedWriter(new FileWriter(temp))
-        ){
-            String line;
-            int currentLine = 0; // dòng đang thao tác hiện tại
-            while ((line = br.readLine())!=null){
-                //chèn dòng mới vào vị trí mong muốn
-                if(currentLine==vitri-1){
-                    bw.write(newOrder);
-                    bw.newLine();
+        InventoryManager newIvenProduct = new InventoryManager(id, name, Integer.parseInt(SL));
+
+        if (vitri > IvenProduct.length) {
+            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
+            IvenProduct[IvenProduct.length - 1] = newIvenProduct;
+        } else {
+            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
+            for (int i = IvenProduct.length - 1; i > vitri - 1; i--) {
+                IvenProduct[i] = IvenProduct[i - 1];
+            }
+            IvenProduct[vitri - 1] = newIvenProduct;
+        }
+
+        writeToFile("Inventory.txt", IvenProduct);
+        System.out.println("Thêm sản phẩm thành công!");
+    }
+    public void addOrder() {
+        // Hiển thị danh sách Nhập hàng hiện tại
+        getdetailOrder();
+        
+        // Khởi tạo scanner để nhập dữ liệu
+        Scanner sc = new Scanner(System.in);
+        
+        // Đọc danh sách nhập hàng hiện tại từ file
+        InventoryManager[] IvenProduct = readFromFile("OrderInventory.txt");
+        
+        // Hỏi vị trí dòng cần thêm
+        System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
+        int vitri = Integer.parseInt(sc.nextLine());
+        
+        String id = InventoryManager.generateRandomString(vitri); // mã sản phẩm ngẫu nhiên
+    
+        // Nhập thông tin nhập hàng mới
+        System.out.print("Nhập sản phẩm bạn muốn thêm vào kho: ");
+        String name = sc.nextLine();
+        
+        System.out.println("Nhập Số lượng sản phẩm đó: ");
+        String SL = sc.nextLine();
+        
+        // Tạo nhập hàng mới
+        InventoryManager newIvenProduct = new InventoryManager(id, name, Integer.parseInt(SL));
+        
+        // Kiểm tra nếu vitri lớn hơn hoặc bằng kích thước mảng, thêm vào cuối mảng
+        if (vitri > IvenProduct.length) {
+            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
+            IvenProduct[IvenProduct.length - 1] = newIvenProduct;
+        } else {
+            // Mở rộng mảng departments để chứa nhập hàng mới
+            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1); // Mở rộng mảng
+            for (int i = IvenProduct.length - 1; i > vitri - 1; i--) {
+                IvenProduct[i] = IvenProduct[i - 1]; // Di chuyển các phần tử phía sau
+            }
+            // Thêm nhập hàng mới vào mảng tại vị trí vitri - 1
+            IvenProduct[vitri - 1] = newIvenProduct;
+        }
+        // Ghi lại dữ liệu vào file
+        writeToFile("OrderInventory.txt", IvenProduct);
+    
+        // Hiển thị danh sách nhập hàng sau khi cập nhật
+        System.out.println("Danh sách nhập hàng sau khi cập nhật: ");
+        getdetail();
+    }
+    
+    @Override
+    public void remove() {
+        // Hiển thị danh sách kho
+        getdetail();
+        
+        // Nhập mã kho muốn xóa
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập mã sản phẩm bạn muốn xoá: ");
+        String IDremove = sc.nextLine();
+        
+        // Đọc danh sách kho từ file
+        InventoryManager[] IvenProducts = readFromFile("Inventory.txt");
+        
+        // Kiểm tra nếu không tìm thấy kho
+        boolean found = false;
+        
+        // Duyệt qua mảng departments và đếm số lượng kho cần giữ lại
+        int newSize = 0;
+        for (InventoryManager IvenProduct : IvenProducts) {
+            if (!IvenProduct.getProductID().equals(IDremove)) {
+                newSize++; // Nếu kho không phải là kho cần xóa, tăng kích thước mảng
+            }
+        }
+        
+        if (newSize == IvenProducts.length) {
+            System.out.println("Không tìm thấy kho với mã: " + IDremove);
+        } else {
+            // Tạo một mảng mới với kích thước giảm đi 1
+            InventoryManager[] updatedIvenProduct = new InventoryManager[newSize];
+            int index = 0;
+    
+            // Duyệt qua mảng departments và sao chép các kho không bị xóa vào mảng mới
+            for (InventoryManager IvenProduct : IvenProducts) {
+                if (!IvenProduct.getProductID().equals(IDremove)) {
+                    updatedIvenProduct[index++] = IvenProduct;
                 }
-                bw.write(line);
-                bw.newLine();
-                currentLine++;
             }
-            // nếu vị trí muốn thêm lớn hơn số dòng hiện có thì sẽ thêm mới một dòng ở cuối
-            if (vitri >= currentLine){
-                bw.write(newOrder);
-                bw.newLine();
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
+    
+            // Ghi lại danh sách mới vào file
+            writeToFile("Inventory.txt", updatedIvenProduct);
+            System.out.println("kho với mã " + IDremove + " đã được xoá.");
         }
-
-        if (!inputFile.delete()){
-            System.out.println("bị lỗi !!!");
-            return;
-        }
-
-        if(!temp.renameTo(inputFile)){
-            System.out.println("không thể đổi tên file");
-        }else {
-            System.out.println("đã chèn dòng mới vào");
-        }
-
-        readFromFileOrder(filepath);
+    
+        // Hiển thị lại danh sách kho sau khi xoá
+        getdetail();
     }
 
-    // xóa sản phẩm muốn đặt về
-    public void removeOrderProduct(){
-        Scanner sc= new Scanner(System.in);
-        System.out.print("Nhập tên sản phẩm muốn xóa: ");
-        String NameProductOrderRemove = sc.nextLine();
-        String filepath = "D:\\DoAnOOP\\OOP\\SieuThiMiNi\\OrderInventory.txt";
-        StringBuilder content = new StringBuilder();
+    public void removeOrder() {
+        // Hiển thị danh sách kho
+        getdetail();
 
-        try (BufferedReader br = new BufferedReader( new FileReader(filepath))){
-            String line;
-            while ((line= br.readLine())!=null){
-                String[] parts = line.split(" ");
-                if(!NameProductOrderRemove.equals(parts[2])){
-                    content.append(line).append(System.lineSeparator());            // đọc file và lưu lại các dòng không chứa tên sản phẩm cần xóa
+        // Nhập mã kho muốn xóa
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập mã sản phẩm bạn muốn xoá: ");
+        String IDremove = sc.nextLine();
+
+        // Đọc danh sách kho từ file
+        InventoryManager[] IvenProducts = readFromFile("OrderInventory.txt");
+
+        // Kiểm tra nếu không tìm thấy kho
+        boolean found = false;
+
+        // Duyệt qua mảng departments và đếm số lượng kho cần giữ lại
+        int newSize = 0;
+        for (InventoryManager IvenProduct : IvenProducts) {
+            if (!IvenProduct.getProductID().equals(IDremove)) {
+                newSize++; // Nếu kho không phải là kho cần xóa, tăng kích thước mảng
+            }
+        }
+
+        if (newSize == IvenProducts.length) {
+            System.out.println("Không tìm thấy nhập hàng với mã: " + IDremove);
+        } else {
+            // Tạo một mảng mới với kích thước giảm đi 1
+            InventoryManager[] updatedIvenProduct = new InventoryManager[newSize];
+            int index = 0;
+
+            // Duyệt qua mảng departments và sao chép các kho không bị xóa vào mảng mới
+            for (InventoryManager IvenProduct : IvenProducts) {
+                if (!IvenProduct.getProductID().equals(IDremove)) {
+                    updatedIvenProduct[index++] = IvenProduct;
                 }
             }
-        } catch (IOException e){
-            e.printStackTrace();
+
+            // Ghi lại danh sách mới vào file
+            writeToFile("OrderInventory.txt", updatedIvenProduct);
+            System.out.println("Nhập hàng với mã " + IDremove + " đã được xoá.");
         }
 
-        try(FileWriter fw = new FileWriter(filepath)){
-            fw.write(content.toString());
-        } catch (IOException e){
-            e.printStackTrace();
+        // Hiển thị lại danh sách kho sau khi xoá
+        getdetail();
+    }
+
+    @Override
+    public void ChangeInFo() {
+        // Hiển thị danh sách kho hiện tại
+        getdetail();
+
+        // Khởi tạo scanner để nhập dữ liệu
+        Scanner sc = new Scanner(System.in);
+
+        // Đọc danh sách kho hiện tại từ file
+        InventoryManager[] IvenProduct= readFromFile("Inventory.txt");
+
+        System.out.println("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
+        String Id = sc.nextLine();
+
+        boolean found = false;
+
+        // Duyệt qua mảng departments để tìm kho cần thay đổi thông tin
+        for (int i = 0; i < IvenProduct.length; i++) {
+            if (IvenProduct[i].getProductID().equals(Id)) {
+                // kho được tìm thấy, tiến hành sửa thông tin
+                found = true;
+
+                System.out.println("Nhập thông tin mới cho sản phẩm (bỏ qua nếu không muốn thay đổi):");
+
+                // Cập nhật tên kho
+                System.out.print("Nhập tên sản phẩm mới: ");
+                String Name = sc.nextLine();
+                if (!Name.isEmpty()) {
+                    IvenProduct[i].setProductName(Name); // Nếu không để trống, cập nhật tên kho mới
+                }
+
+                // Cập nhật tên người quản lý
+                System.out.print("Nhập số lượng mới: ");
+                String SL = sc.nextLine();
+                if (!SL.isEmpty()) {
+                    IvenProduct[i].setCount(Integer.parseInt(SL)); // Nếu không để trống, cập nhật tên người quản lý mới
+                }
+
+                System.out.println("Thông tin kho đã được cập nhật.");
+                break; // Thoát khỏi vòng lặp khi tìm thấy kho
+            }
         }
 
-        readFromFileOrder(filepath);
+        if (!found) {
+            System.out.println("Không tìm thấy kho với mã: " + Id);
+        }
+
+        // Cập nhật lại dữ liệu vào file
+        writeToFile("Inventory.txt", IvenProduct);
+
+        // Hiển thị lại danh sách kho sau khi cập nhật
+        getdetail();
+    }
+    public void ChangeInFoOrder() {
+        // Hiển thị danh sách kho hiện tại
+        getdetail();
+
+        // Khởi tạo scanner để nhập dữ liệu
+        Scanner sc = new Scanner(System.in);
+
+        // Đọc danh sách nhập hàng hiện tại từ file
+        InventoryManager[] IvenProduct= readFromFile("OrderInventory.txt");
+
+        System.out.println("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
+        String Id = sc.nextLine();
+
+        boolean found = false;
+
+        // Duyệt qua mảng để tìm danh sách nhập hàng cần thay đổi thông tin
+        for (int i = 0; i < IvenProduct.length; i++) {
+            if (IvenProduct[i].getProductID().equals(Id)) {
+                // nhập hàng được tìm thấy, tiến hành sửa thông tin
+                found = true;
+
+                System.out.println("Nhập thông tin mới cho danh sách nhập hàng (bỏ qua nếu không muốn thay đổi):");
+
+                // Cập nhật tên kho
+                System.out.print("Nhập tên sản phẩm mới: ");
+                String Name = sc.nextLine();
+                if (!Name.isEmpty()) {
+                    IvenProduct[i].setProductName(Name); // Nếu không để trống, cập nhật tên sản phẩm mới
+                }
+
+                // Cập nhật tên người quản lý
+                System.out.print("Nhập số lượng mới: ");
+                String SL = sc.nextLine();
+                if (!SL.isEmpty()) {
+                    IvenProduct[i].setCount(Integer.parseInt(SL)); // Nếu không để trống, cập nhật tên người quản lý mới
+                }
+
+                System.out.println("Thông tin kho đã được cập nhật.");
+                break; // Thoát khỏi vòng lặp khi tìm thấy kho
+            }
+        }
+
+        if (!found) {
+            System.out.println("Không tìm thấy sản phẩm với mã: " + Id);
+        }
+
+        // Cập nhật lại dữ liệu vào file
+        writeToFile("Inventory.txt", IvenProduct);
+
+        // Hiển thị lại danh sách kho sau khi cập nhật
+        getdetail();
+    }
+
+    @Override
+    public void search() {
+        Scanner sc = new Scanner(System.in);
+        InventoryManager[] IvenProducts = readFromFile("Inventory.txt");
+
+        // Yêu cầu nhập các tiêu chí tìm kiếm
+        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
+
+        // Tiêu chí tìm kiếm theo mã sản phẩm
+        System.out.print("Nhập mã sản phẩm (hoặc nhấn Enter để bỏ qua): ");
+        String ID = sc.nextLine().trim();
+
+        // Tiêu chí tìm kiếm theo tên sản phẩm
+        System.out.print("Nhập tên sản phẩm (hoặc nhấn Enter để bỏ qua): ");
+        String Name = sc.nextLine().trim();
+
+        // Tiêu chí tìm kiếm theo số lượng sản phẩm
+        System.out.print("Nhập số lượng (hoặc nhấn Enter để bỏ qua): ");
+        String SL = sc.nextLine().trim();
+
+        // Kiểm tra nếu không có tiêu chí nào được nhập
+        boolean found = false;
+
+        // In ra tiêu đề bảng
+        System.out.printf("╔════════════╤══════════════╤══════════════════════════════╤══════════════════╗\n");
+        System.out.printf("║ %-10s │ %-15s │ %-20s ║\n", "Mã sản phẩm", "Tên sản phẩm", "Số lượng");
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╪══════════════════╣\n");
+
+        // Duyệt qua mảng và tìm sản phẩm thỏa mãn ít nhất một tiêu chí
+        for (InventoryManager IvenProduct : IvenProducts) {
+            boolean match = false;
+
+            // Kiểm tra mã sản phẩm nếu có
+            if (!ID.isEmpty() && IvenProduct.getProductID().equalsIgnoreCase(ID)) {
+                match = true;
+            }
+
+            // Kiểm tra tên sản phẩm nếu có
+            if (!Name.isEmpty() && IvenProduct.getProductName().toLowerCase().contains(Name.toLowerCase())) {
+                match = true;
+            }
+
+            // Kiểm tra Sản phẩm nếu có
+            if (!SL.isEmpty() && IvenProduct.getCount()==Integer.parseInt(SL)) {
+                match = true;
+            }
+
+            // Nếu có ít nhất một tiêu chí trùng khớp
+            if (match) {
+                found = true;
+                // In ra thông tin sản phẩm
+                System.out.printf("║ %-10s │ %-15s │ %-20s ║\n",
+                    IvenProduct.getProductID(),
+                    IvenProduct.getProductName(),
+                    IvenProduct.getCount());
+
+            }
+        }
+
+        // Nếu không tìm thấy sản phẩm nào nào
+        if (!found) {
+            System.out.println("Không tìm thấy sản phẩm thỏa mãn điều kiện tìm kiếm.");
+        }
+
+        // Đường viền cuối bảng
+        System.out.printf("╚════════════╧══════════════╧══════════════════════════════╧══════════════════╝\n");
+    }
+
+    public void searchOrder() {
+        Scanner sc = new Scanner(System.in);
+        InventoryManager[] IvenProducts = readFromFile("OrderInventory.txt");
+
+        // Yêu cầu nhập các tiêu chí tìm kiếm
+        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
+
+        // Tiêu chí tìm kiếm theo mã sản phẩm
+        System.out.print("Nhập mã sản phẩm (hoặc nhấn Enter để bỏ qua): ");
+        String ID = sc.nextLine().trim();
+
+        // Tiêu chí tìm kiếm theo tên sản phẩm
+        System.out.print("Nhập tên sản phẩm (hoặc nhấn Enter để bỏ qua): ");
+        String Name = sc.nextLine().trim();
+
+        // Tiêu chí tìm kiếm theo số lượng sản phẩm
+        System.out.print("Nhập số lượng (hoặc nhấn Enter để bỏ qua): ");
+        String SL = sc.nextLine().trim();
+
+        // Kiểm tra nếu không có tiêu chí nào được nhập
+        boolean found = false;
+
+        // In ra tiêu đề bảng
+        System.out.printf("╔════════════╤══════════════╤══════════════════════════════╤══════════════════╗\n");
+        System.out.printf("║ %-10s │ %-15s │ %-20s ║\n", "Mã sản phẩm", "Tên sản phẩm", "Số lượng");
+        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╪══════════════════╣\n");
+
+        // Duyệt qua mảng và tìm sản phẩm thỏa mãn ít nhất một tiêu chí
+        for (InventoryManager IvenProduct : IvenProducts) {
+            boolean match = false;
+
+            // Kiểm tra mã sản phẩm nếu có
+            if (!ID.isEmpty() && IvenProduct.getProductID().equalsIgnoreCase(ID)) {
+                match = true;
+            }
+
+            // Kiểm tra tên sản phẩm nếu có
+            if (!Name.isEmpty() && IvenProduct.getProductName().toLowerCase().contains(Name.toLowerCase())) {
+                match = true;
+            }
+
+            // Kiểm tra Sản phẩm nếu có
+            if (!SL.isEmpty() && IvenProduct.getCount()==Integer.parseInt(SL)) {
+                match = true;
+            }
+
+            // Nếu có ít nhất một tiêu chí trùng khớp
+            if (match) {
+                found = true;
+                // In ra thông tin sản phẩm
+                System.out.printf("║ %-10s │ %-15s │ %-20s ║\n",
+                    IvenProduct.getProductID(),
+                    IvenProduct.getProductName(),
+                    IvenProduct.getCount());
+
+            }
+        }
+
+        // Nếu không tìm thấy sản phẩm nào nào
+        if (!found) {
+            System.out.println("Không tìm thấy sản phẩm thỏa mãn điều kiện tìm kiếm.");
+        }
+
+        // Đường viền cuối bảng
+        System.out.printf("╚════════════╧══════════════╧══════════════════════════════╧══════════════════╝\n");
     }
 }
+
