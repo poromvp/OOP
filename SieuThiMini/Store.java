@@ -16,12 +16,12 @@ public class Store{
         Order order=new Order();
         String filepath=null;
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("SieuThiMini\\customers.txt");
-        discounts = Discount.readFromFile("SieuThiMini\\discount.txt");
+        customers = Customer.readFromFile("customers.txt");
+        discounts = Discount.readFromFile("discount.txt");
         managers = new Manager();
-        managers.readFromFile("SieuThiMini\\dsnv.txt");
+        managers.readFromFile("dsnv.txt");
         departments = new Department();
-        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
+        departments.readFromFile("DepartmentList.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -197,6 +197,11 @@ public class Store{
     public void timKhachHang(Scanner scanner) {
         Customer.searchCustomers(scanner, customers);
     } 
+
+    // Thống kê Khách hàng mua nhiều nhất (theo điểm tích lũy)
+    public void thongKeCustomer() {
+        Customer.rankCustomersByLoyaltyPointsWithFile(customers);
+    }
 
     /* Các thao tác cho danh sách khách hàng END */
 
