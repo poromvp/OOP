@@ -5,17 +5,16 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 import java.util.Date;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class InvoiceManager {
     private Receipt[] receipts;
     private int count;
+    private Discount[] discounts;
+    private Cashier cashier;
 
     public InvoiceManager(int size) {
         receipts = new Receipt[size];
         count = 0;
+        discounts = new Discount[10]; 
     }
 
     public InvoiceManager() {
@@ -31,56 +30,33 @@ public class InvoiceManager {
         }
     }
 
-    // Xuất danh sách hóa đơn
-    public void exportinvoice(Scanner scanner) {
-        Discount discount = new Discount();
-        System.out.print("Nhập mã hóa đơn: ");
+    // Xuất hóa đơn
+   
+    
+    public void exportInvoice() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập mã hóa đơn cần xuất: ");
         int receiptId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
-        Receipt receipt = null;
-        for (int i = 0; i < count; i++) {
-            if (receipts[i].getReceiptId() == receiptId) {
-                receipt = receipts[i];
-                break;
-            }
-        }
-
-        if (receipt == null) {
-            System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
-            return;
-        }
-
-        System.out.print("Nhập mã chương trình giảm giá: ");
-        int discountId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-
-        Discount discount = null;
-        for (Discount d : discounts) {
-            if (d != null && d.getDiscountID() == discountId) {
-                discount = d;
-                break;
-            }
-        }
-
-        if (discount != null) {
-            double discountAmount = discount.applyDiscount(receipt.getTransaction().getTotal());
-            receipt.getTransaction().setTotal(receipt.getTransaction().getTotal() - discountAmount);
-            System.out.println("Đã áp dụng giảm giá: " + discountAmount);
+        Receipt receipt = searchReceiptById(receiptId);
+        if (receipt != null) {
+            receipt.print();
         } else {
-            System.out.println("Không tìm thấy chương trình giảm giá với mã: " + discountId);
+            System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
         }
 
+    }
     // Sửa hóa đơn
     public void editReceiptById() {
-            scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.print("Nhập mã hóa đơn cần sửa: ");
-            receiptId = scanner.nextInt();
+        int receiptId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
         for (int i = 0; i < count; i++) {
             if (receipts[i].getReceiptId() == receiptId) {
-                receipt = receipts[i];
+                Receipt receipt = receipts[i];
                 Transaction transaction = receipt.getTransaction();
 
                 System.out.print("Nhập mã giao dịch mới (hiện tại: " + transaction.getId() + "): ");
@@ -121,10 +97,12 @@ public class InvoiceManager {
         System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
     }
 
-    // Xóa hóa đơn
-   
+    public void deleteReceiptById() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập mã hóa đơn cần xóa: ");
+        int receiptId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
-    public void deleteReceipt( int receiptId) {
         for (int i = 0; i < count; i++) {
             if (receipts[i].getReceiptId() == receiptId) {
                 for (int j = i; j < count - 1; j++) {
@@ -136,13 +114,7 @@ public class InvoiceManager {
             }
         }
         System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
-    }
-}
-    public void deleteReceiptById() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Nhập mã hóa đơn cần xóa: ");
-        int receiptId = scanner.nextInt();
-        deleteReceipt(receiptId);
+        scanner.close();
     }
 
 // tìm kiếm hóa đơn
@@ -155,20 +127,20 @@ public Receipt searchReceiptById(int receiptId) {
     return null;
 }
 
-    public void searchAndPrintReceipt() {
-        Scanner scanner= new Scanner(System.in);
-        System.out.print("Nhập mã hóa đơn cần tìm: ");
-        int receiptId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+public void searchAndPrintReceipt() {
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Nhập mã hóa đơn cần tìm: ");
+    int receiptId = scanner.nextInt();
+    scanner.nextLine(); // Consume newline
 
-        Receipt receipt = searchReceiptById(receiptId);
-        if (receipt != null) {
-            receipt.print();
-        } else {
-            System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
-        }
+    Receipt receipt = searchReceiptById(receiptId);
+    if (receipt != null) {
+        receipt.print();
+    } else {
+        System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
     }
 }
+
 
     // Đọc hóa đơn từ file
     public void loadReceiptsFromFile(String filename) {
@@ -195,14 +167,11 @@ public Receipt searchReceiptById(int receiptId) {
                     Item item = new Item(itemName, itemPrice, itemQuantity);
                     transaction.addItem(item);
                 }
-                Receipt receipt = new Receipt(id, transaction);
+                Receipt receipt = new Receipt(id, transaction, cashier);
                 addReceipt(receipt);
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
-}
-
-public void main() {
 }
