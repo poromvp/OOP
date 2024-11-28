@@ -1,8 +1,10 @@
 import java.util.Arrays;
 import java.util.Scanner;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Store{
     public Transaction[] transactions;              // danh sách giao dịch
@@ -17,12 +19,12 @@ public class Store{
         Order order=new Order();
         String filepath=null;
         orderList=order.readFromFile(filepath);
-        customers = Customer.readFromFile("customers.txt");
-        discounts = Discount.readFromFile("discount.txt");
+        customers = Customer.readFromFile("SieuThiMini\\customers.txt");
+        discounts = Discount.readFromFile("SieuThiMini\\discount.txt");
         managers = new Manager();
-        managers.readFromFile("dsnv.txt");
+        managers.readFromFile("SieuThiMini\\dsnv.txt");
         departments = new Department();
-        departments.readFromFile("DepartmentList.txt");
+        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
     }
     public Store(Staff[] staffList,
         Transaction[] transactions) {
@@ -163,8 +165,29 @@ public class Store{
         Order.loc(scanner, orderList);
     }
 
-    public void thongkeOrder(Scanner scanner){
-        Order.statisticalOrders(scanner,orderList);
+    public void thongkeDoanhThu(){
+        byte i=0;
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); //chuyển định dạng xuất có , ngăn cách hàng nghìn, trăm, triệu
+        for(double mang : Order.thongkeQUY(orderList)){             //Quý 1: từ tháng 1 tới tháng 3
+            String formattedAmount = numberFormat.format(mang);     //Quý 2: từ tháng 4 tới tháng 6
+            System.out.println("Quý "+(i+1)+": "+formattedAmount+" VND");  //Quý 3: từ tháng 7 tới tháng 9
+            i++;                                                    //Quý 4: từ tháng 10 tới tháng 12
+        }
+    }
+
+    public void thongkeSpBanChay(Scanner scanner){
+        System.out.print("Bạn Muốn Xem Top Bao Nhiêu Sản Phẩm Bán Chạy Nhất: ");
+        int n=Integer.parseInt(scanner.nextLine());
+        System.out.println("╔══════════════════════╦══════════════════════╗");
+        System.out.println("║     Tên Sản Phẩm     ║     Số Lượng Bán     ║");
+        System.out.println("╠══════════════════════╬══════════════════════╣");
+        for(int i=0;i<n;i++){
+            System.out.printf("║   %-19s║           %-11s║\n",Order.thongkeBanChay(orderList)[i].getName(),Order.thongkeBanChay(orderList)[i].getQuantity());
+            if (i < n - 1) {
+                System.out.println("╠══════════════════════╬══════════════════════╣");
+            }
+        }
+        System.out.println("╚══════════════════════╩══════════════════════╝");
     }
     /* các thao tác cho ds đơn đặt hàng END*/
 
