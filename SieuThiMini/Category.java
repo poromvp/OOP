@@ -1,12 +1,13 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Category {
     public String categoryID;
     public String categoryName;
     public static Category[] categoryList=new Category[100];
-    private static int cnt =0;
+    public static int cnt =0;
 
     public Category() {
     }
@@ -54,11 +55,17 @@ public class Category {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
+                if (cnt == categoryList.length) {
+                    // Mở rộng mảng khi đạt giới hạn
+                    Category[] newCategoryList= new Category[categoryList.length*2];
+                    System.arraycopy(categoryList, 0, newCategoryList, 0, categoryList.length);
+                    categoryList=newCategoryList;
+                }
                 String[] parts = line.split(",");
                 if (parts.length == 2 && cnt< 100) { // Kiểm tra nếu mảng chưa đầy
                     Category a = new Category(
-                            parts[0],                // productID
-                            parts[1]               // supplier
+                            parts[0],
+                            parts[1]
                     );
                     categoryList[cnt] = a;
                     cnt++; // Di chuyển đến vị trí tiếp theo trong mảng
@@ -68,7 +75,30 @@ public class Category {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
     }
-
+    public static void addCategory(){
+        if (cnt == categoryList.length) {
+            // Mở rộng mảng khi đạt giới hạn
+            Category[] newCategoryList= new Category[categoryList.length*2];
+            System.arraycopy(categoryList, 0, newCategoryList, 0, categoryList.length);
+            categoryList=newCategoryList;
+        }
+        Category a = new Category();
+        Scanner sc = new Scanner(System.in);
+        int check =0;
+        do{
+            System.out.println("Nhap category id: ");
+            String tmp= sc.nextLine();
+            if(!checkIDCategory(tmp) || !checkDuplicateID(tmp)){
+                System.out.println("Ban da nhap sai id. Vui long nhap lai");
+            }
+            else {
+                a.setCategoryID(tmp);
+                check=1;
+            }
+        } while(check ==0);
+        System.out.println("Nhap gia ten nha cung cap: ");
+        a.setCategoryName(sc.nextLine());
+    }
     //Check id
     //Kiem tra format id
     public static boolean checkIDCategory(String id){

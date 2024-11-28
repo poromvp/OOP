@@ -375,10 +375,41 @@ public class Store{
         Product.deleteProduct(rm);
     }
     public void findProduct(Scanner scanner){
-        System.out.println("Nhap tu khoa muon tim kiem");
-        String find= scanner.nextLine();
-        Product.Find(find);
+        int choice;
+        String find="";
+        do {
+            System.out.println("------TIM KIEM SAN PHAM------");
+            System.out.println("0.Thoat.");
+            System.out.println("1.Tim kiem theo ten. ");
+            System.out.println("2.Tim kiem theo loai. ");
+            System.out.println("3.Tim kiem theo nha cung cap. ");
+            choice = new Scanner(System.in).nextInt();
+            switch (choice) {
+                case 0:
+                    System.out.println("Thoat chinh sua.");
+                    break;
+                case 1:
+                    System.out.println("Nhap tu khoa muon tim kiem: ");
+                     find= scanner.nextLine();
+                    Product.findById(find);
+                    break;
+                case 2:
+                    System.out.println("Nhap ten loai san pham muon tim kiem: ");
+                    find= scanner.nextLine();
+                    Product.findByCategory(find);
+                    break;
+                case 3:
+                    System.out.println("Nhap ten nha cung cap muon tim kiem");
+                    find= scanner.nextLine();
+                    Product.findBySupplier(find);
+                    break;
+                default:
+                    System.out.println("Lua chon sai. Vui long chon lai.");
+            }
+        } while (choice != 0);
+
     }
+    /* Cac thao tac voi Product END */
     /* Các thao tác giao dịch Start */
     /*InvoiceManager invoice = new InvoiceManager();
     Receipt receipt =new Receipt();
