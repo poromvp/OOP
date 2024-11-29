@@ -5,7 +5,7 @@ public class CashPayment extends Payment {
         super(amount);
     }
 
-    @Override 
+    @Override
     public void pay(){
         System.out.println("Payment of $" + amount + " made in cash.");
 
@@ -14,5 +14,5 @@ public class CashPayment extends Payment {
     public double caculateChange(double cashGiven){
         return cashGiven - amount;
     }
-    
+
 }

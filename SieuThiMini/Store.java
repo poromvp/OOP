@@ -339,9 +339,9 @@ public class Store{
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("SieuThiMini\\category.txt");
-        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
-        Product.readProductsFromFile("SieuThiMini\\product.txt");
+        Category.readCategoryFromFile("category.txt");
+        Supplier.readSupplierFromFile("supplier.txt");
+        Product.readProductsFromFile("product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
     //Xuat danh sach cac san pham

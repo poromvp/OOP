@@ -66,7 +66,12 @@ public class InvoiceManager {
 
                 System.out.print("Nhập ngày giao dịch mới (dd/MM/yyyy) (hiện tại: " + new SimpleDateFormat("dd/MM/yyyy").format(transaction.getDate()) + "): ");
                 String newDateString = scanner.nextLine();
-                Date newDate = new SimpleDateFormat("dd/MM/yyyy").parse(newDateString);
+                Date newDate = null;
+                try {
+                    newDate = new SimpleDateFormat("dd/MM/yyyy").parse(newDateString);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
                 transaction.setDate(newDate);
 
                 System.out.print("Nhập số tiền khách đưa mới (hiện tại: " + transaction.getCustomerPaid() + "): ");
