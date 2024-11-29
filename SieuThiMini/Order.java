@@ -709,8 +709,8 @@ public class Order implements QLFile {
                     }
                 }
                 if (!ton_tai) {
-                    mangSP[index] = new Product(pr.getProductID(), pr.getName(), pr.getPrice(), pr.getCategoryId(),
-                            pr.getQuantity(), pr.getSupplierId());
+                    mangSP[index] = new Product(pr.getProductID(), pr.getName(), pr.getPrice(),pr.getQuantity(), pr.getCategoryId(),
+                             pr.getSupplierId());
                     index++;
                 }
             }
@@ -900,7 +900,7 @@ public class Order implements QLFile {
         Order[] orderList;
         int i, n;
         n = 0;
-        filePath = "SieuThiMini\\donhang.txt";
+        filePath = "donhang.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String Line;
             while ((Line = br.readLine()) != null) {

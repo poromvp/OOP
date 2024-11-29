@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Category {
@@ -75,6 +73,22 @@ public class Category {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
     }
+    public static void writeCategoryFromFile(String filePath){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (int i = 0; i < cnt; i++) {
+                Category c = categoryList[i];
+                if (c != null) {
+                    // Ghi thông tin sản phẩm vào file, cách nhau bởi dấu phẩy
+                    writer.write(c.getCategoryID()+','+c.getCategoryName());
+                    writer.newLine(); // Xuống dòng cho sản phẩm tiếp theo
+                }
+            }
+            System.out.println("Đã ghi các loại sản phẩm vào file thành công.");
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
+    //Them
     public static void addCategory(){
         if (cnt == categoryList.length) {
             // Mở rộng mảng khi đạt giới hạn
@@ -96,8 +110,33 @@ public class Category {
                 check=1;
             }
         } while(check ==0);
-        System.out.println("Nhap gia ten nha cung cap: ");
+        System.out.println("Nhap vao ten loai san pham: ");
         a.setCategoryName(sc.nextLine());
+        categoryList[cnt++]=a;
+        System.out.println("Them loai san pham thanh cong.");
+    }
+    //Xoa
+    public static void deleteCategory( String categoryID) {
+        int indexToDelete = -1;
+
+        // Tìm chỉ mục sản phẩm cần xóa
+        for (int i = 0; i < cnt; i++) {
+            if (categoryList[i] != null && categoryList[i].getCategoryID().equals(categoryID)) {
+                indexToDelete = i;
+                break;
+            }
+        }
+
+        //Xóa sản phẩm và dịch chuyển các phần tử còn lại
+        if (indexToDelete != -1) {
+            for (int i = indexToDelete; i < cnt - 1; i++) {
+                categoryList[i] = categoryList[i + 1];
+            }
+            categoryList[--cnt] = null; // Đặt phần tử cuối cùng thành null
+            System.out.println("Đã xóa sản phẩm thành công.");
+        } else {
+            System.out.println("Không tìm thấy sản phẩm với ID: " + categoryID);
+        }
     }
     //Check id
     //Kiem tra format id

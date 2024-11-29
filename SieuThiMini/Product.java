@@ -17,7 +17,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productID, String name, int price, String categoryId, int quantity, String supplierId) {
+    public Product(String productID, String name, int price,int quantity, String categoryId,  String supplierId) {
         this.productID = productID;
         this.name = name;
         this.price = price;
@@ -181,8 +181,8 @@ public class Product {
                             parts[0],                // productID
                             parts[1],                // name
                             Integer.parseInt(parts[2]), // price
-                            parts[3],                // categoryId
-                            Integer.parseInt(parts[4]), // quantity
+                            Integer.parseInt(parts[3]), // quantity
+                            parts[4],                // categoryId
                             parts[5]                 // supplier
                     );
                     productList[cnt] = product;
@@ -193,7 +193,26 @@ public class Product {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
     }
-
+    public static void writeProductsToFile(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (int i = 0; i < cnt; i++) {
+                Product product = productList[i];
+                if (product != null) {
+                    // Ghi thông tin sản phẩm vào file, cách nhau bởi dấu phẩy
+                    writer.write(product.getProductID() + "," +
+                            product.getName() + "," +
+                            product.getPrice() + "," +
+                            product.getQuantity() + "," +
+                            product.getCategoryId()+ "," +
+                            product.getSupplierId());
+                    writer.newLine(); // Xuống dòng cho sản phẩm tiếp theo
+                }
+            }
+            System.out.println("Đã ghi sản phẩm vào file thành công.");
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
     //Xoa san pham
     public static void deleteProduct( String productID) {
         int indexToDelete = -1;
