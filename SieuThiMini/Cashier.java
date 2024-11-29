@@ -135,33 +135,64 @@ public class Cashier extends Staff {
     public void add() {
         // Hiển thị danh sách thu ngân hiện tại
         Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
-        getdetail();;;
+        getdetail();
 
         // Khởi tạo scanner để nhập dữ liệu
         Scanner sc = new Scanner(System.in);
 
-        // Nhập thông tin thu ngân mới
-        System.out.print("Nhập mã thu ngân mới: ");
-        String cashierID = sc.nextLine();
+        System.out.print("Nhập số lượng thu ngân bạn muốn thêm vào ca làm: ");
+        int n =Integer.parseInt(sc.nextLine());
+        while (n<0){
+            System.out.print("Số lượng không hợp lệ !!!! vui lòng nhập lại: ");
+            n = Integer.parseInt(sc.nextLine());
+        }
 
-        System.out.print("Nhập tên thu ngân mới: ");
-        String cashierName = sc.nextLine();
+        System.out.println("=================================================================");
+        for(int j=0; j<n; j++){
+            // Nhập thông tin thu ngân mới
+            System.out.print("Nhập vị trí bạn muốn thêm vào danh sách: ");
+            int vitri = Integer.parseInt(sc.nextLine());
 
-        System.out.print("Nhập vai trò thu ngân mới: ");
-        String role = sc.nextLine();
+            System.out.print("Nhập mã thu ngân mới: ");
+            String cashierID = sc.nextLine();
 
-        System.out.print("Nhập ca làm việc của thu ngân mới: ");
-        String shift = sc.nextLine();
+            System.out.print("Nhập tên thu ngân mới: ");
+            String cashierName = sc.nextLine();
 
-        System.out.print("Nhập số ngày công của thu ngân mới: ");
-        int numWorkingDays = Integer.parseInt(sc.nextLine());
+            System.out.print("Nhập vai trò thu ngân mới: ");
+            String role = sc.nextLine();
 
-        // Tạo một đối tượng Cashier mới
-        Cashier newCashier = new Cashier(cashierID, cashierName, role, shift, numWorkingDays);
+            System.out.print("Nhập ca làm việc của thu ngân mới (A(ca sáng) hoặc B(ca chiều)): ");
+            String shift = sc.nextLine();
+            while(!shift.equalsIgnoreCase("A") && !shift.equalsIgnoreCase("B")){
+                System.out.print("Ca làm không hợp lệ !!! vui lòng nhập lại:  ");
+                shift = sc.nextLine();
+            }
 
-        // Thêm thu ngân mới vào danh sách và ghi lại vào file
-        cashiers = Arrays.copyOf(cashiers, cashiers.length + 1);
-        cashiers[cashiers.length - 1] = newCashier;
+            System.out.print("Nhập số ngày công của thu ngân mới: ");
+            int numWorkingDays = Integer.parseInt(sc.nextLine());
+
+            // Tạo một đối tượng Cashier mới
+            Cashier newCashier = new Cashier(cashierID, cashierName, role, shift.toUpperCase(), numWorkingDays);
+
+                // Mở rộng mảng managers để chứa nhân viên mới
+            if (vitri  > cashiers.length) {
+                // Nếu vị trí lớn hơn 3, thêm nhân viên vào cuối danh sách
+                cashiers = Arrays.copyOf(cashiers, cashiers.length + 1); // Mở rộng mảng
+                cashiers[cashiers.length - 1] = newCashier; // Thêm nhân viên mới vào cuối
+            } else {
+                    // Nếu vị trí hợp lệ, chèn nhân viên vào vị trí chỉ định
+                    if (vitri - 1 < cashiers.length) {
+                        cashiers = Arrays.copyOf(cashiers, cashiers.length + 1); // Mở rộng mảng
+                        for (int i = cashiers.length - 1; i > vitri - 1; i--) {
+                            cashiers[i] = cashiers[i - 1]; // Di chuyển các phần tử phía sau
+                        }
+                    }
+                    // Thêm nhân viên mới vào mảng tại vị trí vitri - 1
+                    cashiers[vitri - 1] = newCashier;
+                    }
+                System.out.println("=================================================================");
+        }
         writeToFile("SieuThiMini\\CashierList.txt", cashiers);
 
         // In danh sách thu ngân sau khi cập nhật
@@ -267,58 +298,78 @@ public class Cashier extends Staff {
     
         // Khởi tạo scanner để nhập từ bàn phím
         Scanner sc = new Scanner(System.in);
-        
-        // Hỏi người dùng chọn tìm kiếm theo mã hay tên
-        System.out.println("Bạn muốn tìm kiếm theo (1) Mã thu ngân, (2) Tên thu ngân?");
-        int choice = Integer.parseInt(sc.nextLine());
     
+        // Yêu cầu nhập các tiêu chí tìm kiếm
+        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
+    
+        // Tiêu chí tìm kiếm theo mã thu ngân
+        System.out.print("Nhập mã thu ngân (hoặc nhấn Enter để bỏ qua): ");
+        String cashierID = sc.nextLine().trim();
+    
+        // Tiêu chí tìm kiếm theo tên
+        System.out.print("Nhập tên thu ngân (hoặc nhấn Enter để bỏ qua): ");
+        String cashierName = sc.nextLine().trim();
+    
+        // Tiêu chí tìm kiếm theo vai trò
+        System.out.print("Nhập vai trò (hoặc nhấn Enter để bỏ qua): ");
+        String role = sc.nextLine().trim();
+    
+        // Tiêu chí tìm kiếm theo ca làm
+        System.out.print("Nhập ca làm (hoặc nhấn Enter để bỏ qua): ");
+        String shift = sc.nextLine().trim();
+    
+        // Tiêu chí tìm kiếm theo số ngày công
+        System.out.print("Nhập số ngày công (hoặc nhấn Enter để bỏ qua): ");
+        String workingDaysInput = sc.nextLine().trim();
+        Integer numWorkingDays = workingDaysInput.isEmpty() ? null : Integer.parseInt(workingDaysInput);
+    
+        // Kiểm tra nếu không có tiêu chí nào được nhập
         boolean found = false;
     
-        // Nếu tìm kiếm theo mã thu ngân
-        if (choice == 1) {
-            System.out.print("Nhập mã thu ngân: ");
-            String cashierID = sc.nextLine();
+        // Định dạng tiêu đề bảng
+        System.out.printf("╔════════════╤══════════════════════════════╤══════════════╤════════════╤══════════════════╗\n");
+        System.out.printf("║ %-10s │ %-30s │ %-12s │ %-10s │ %-15s ║\n", "Mã NV", "Tên thu ngân", "Vai trò", "Ca làm", "Số ngày công");
+        System.out.printf("╠════════════╪══════════════════════════════╪══════════════╪════════════╪══════════════════╣\n");
     
-            // Duyệt qua mảng các thu ngân và tìm theo mã
-            for (Cashier cashier : cashiers) {
-                if (cashier.getCashierID().equals(cashierID)) {
-                    System.out.println("Thu ngân tìm thấy:");
-                    System.out.println("Mã NV: " + cashier.getCashierID());
-                    System.out.println("Tên: " + cashier.getCashierName());
-                    System.out.println("Vai trò: " + cashier.getRole());
-                    System.out.println("Ca làm: " + cashier.getShift());
-                    System.out.println("Số ngày công: " + cashier.getNumWorkingDays());
-                    found = true;
-                    break;
-                }
-            }
-        }
-        // Nếu tìm kiếm theo tên thu ngân
-        else if (choice == 2) {
-            System.out.print("Nhập tên thu ngân: ");
-            String cashierName = sc.nextLine().toLowerCase(); // Chuyển tên nhập vào thành chữ thường
+        // Duyệt qua danh sách các thu ngân và tìm kiếm
+        for (Cashier cashier : cashiers) {
+            boolean match = true;
     
-            // Duyệt qua mảng các thu ngân và tìm theo tên
-            for (Cashier cashier : cashiers) {
-                if (cashier.getCashierName().toLowerCase().contains(cashierName)) {
-                    System.out.println("Thu ngân tìm thấy:");
-                    System.out.println("Mã NV: " + cashier.getCashierID());
-                    System.out.println("Tên: " + cashier.getCashierName());
-                    System.out.println("Vai trò: " + cashier.getRole());
-                    System.out.println("Ca làm: " + cashier.getShift());
-                    System.out.println("Số ngày công: " + cashier.getNumWorkingDays());
-                    found = true;
-                }
+            // Kiểm tra từng tiêu chí (bỏ qua nếu không được nhập)
+            if (!cashierID.isEmpty() && !cashier.getCashierID().equalsIgnoreCase(cashierID)) {
+                match = false;
             }
-        }
-        // Nếu lựa chọn không hợp lệ
-        else {
-            System.out.println("Lựa chọn không hợp lệ!");
+            if (!cashierName.isEmpty() && !cashier.getCashierName().toLowerCase().contains(cashierName.toLowerCase())) {
+                match = false;
+            }
+            if (!role.isEmpty() && !cashier.getRole().toLowerCase().contains(role.toLowerCase())) {
+                match = false;
+            }
+            if (!shift.isEmpty() && !cashier.getShift().equalsIgnoreCase(shift)) {
+                match = false;
+            }
+            if (numWorkingDays != null && cashier.getNumWorkingDays() != numWorkingDays) {
+                match = false;
+            }
+    
+            // Nếu tất cả tiêu chí khớp, in ra thông tin thu ngân
+            if (match) {
+                found = true;
+                System.out.printf("║ %-10s │ %-30s │ %-12s │ %-10s │ %-15d ║\n",
+                    cashier.getCashierID(),
+                    cashier.getCashierName(),
+                    cashier.getRole(),
+                    cashier.getShift(),
+                    cashier.getNumWorkingDays());
+            }
         }
     
         // Nếu không tìm thấy thu ngân nào
         if (!found) {
-            System.out.println("Không tìm thấy thu ngân nào.");
+            System.out.println("Không tìm thấy thu ngân thỏa mãn điều kiện tìm kiếm.");
         }
+    
+        // Đường viền cuối bảng
+        System.out.printf("╚════════════╧══════════════════════════════╧══════════════╧════════════╧══════════════════╝\n");
     }
 }

@@ -446,10 +446,13 @@ public class ChayChuongTrinh {
                     break;
                 
                 case 4:     
+                    int subsubchoice;
                     do {
+                        System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Hàng trong kho");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Đặt hàng");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+                        System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                         System.out.print("Lựa chọn của bạn: ");
                         subchoice = Integer.parseInt(scanner.nextLine());
                     switch (subchoice) {
@@ -464,8 +467,8 @@ public class ChayChuongTrinh {
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                             System.out.print("Lựa chọn của bạn: ");
-                            subchoice = Integer.parseInt(scanner.nextLine());
-                        switch (subchoice) {
+                            subsubchoice = Integer.parseInt(scanner.nextLine());
+                        switch (subsubchoice) {
                         case 1:
                             store.xuatKho();
                             break;
@@ -486,7 +489,7 @@ public class ChayChuongTrinh {
                             default:
                             System.out.println("Lựa chọn không hợp lệ.");
                         }
-                        } while (subchoice != 0);
+                        } while (subsubchoice != 0);
                         break;
 
                     case 2: 

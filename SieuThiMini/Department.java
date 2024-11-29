@@ -136,36 +136,48 @@ public class Department extends Staff {
     
         // Đọc danh sách phòng ban hiện tại từ file
         Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
+
+        System.out.print("Số lượng phong ban bạn muốn thêm vào: ");
+        int n =Integer.parseInt(sc.nextLine());
+        while (n<=0){
+            System.out.print("Số lượng thêm không hợp lệ !!! vui lòng nhập lại: ");
+            n= Integer.parseInt(sc.nextLine());
+        }
+        System.out.println("=================================================================");
+
+        for(int j=0; j<n; j++){
     
-        // Hỏi vị trí dòng cần thêm
-        System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
-        int vitri = Integer.parseInt(sc.nextLine());
-    
-        // Nhập thông tin phòng ban mới
-        System.out.print("Nhập mã cho phòng ban mới: ");
-        String departmentID = sc.nextLine();
-    
-        System.out.println("Nhập tên phòng ban mới: ");
-        String departmentName = sc.nextLine();
-    
-        System.out.println("Nhập tên người quản lý của phòng ban mới: ");
-        String managerName = sc.nextLine();
-    
-        // Tạo phòng ban mới
-        Department newDepartment = new Department(departmentID, departmentName, managerName);
-    
-        // Kiểm tra nếu vitri lớn hơn hoặc bằng kích thước mảng, thêm vào cuối mảng
-        if (vitri > departments.length) {
-            departments = Arrays.copyOf(departments, departments.length + 1);
-            departments[departments.length - 1] = newDepartment;
-        } else {
-            // Mở rộng mảng departments để chứa phòng ban mới
-            departments = Arrays.copyOf(departments, departments.length + 1); // Mở rộng mảng
-            for (int i = departments.length - 1; i > vitri - 1; i--) {
-                departments[i] = departments[i - 1]; // Di chuyển các phần tử phía sau
+            // Hỏi vị trí dòng cần thêm
+            System.out.print("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
+            int vitri = Integer.parseInt(sc.nextLine());
+        
+            // Nhập thông tin phòng ban mới
+            System.out.print("Nhập mã cho phòng ban mới: ");
+            String departmentID = sc.nextLine();
+        
+            System.out.print("Nhập tên phòng ban mới: ");
+            String departmentName = sc.nextLine();
+        
+            System.out.print("Nhập tên người quản lý của phòng ban mới: ");
+            String managerName = sc.nextLine();
+        
+            // Tạo phòng ban mới
+            Department newDepartment = new Department(departmentID, departmentName, managerName);
+        
+            // Kiểm tra nếu vitri lớn hơn hoặc bằng kích thước mảng, thêm vào cuối mảng
+            if (vitri-1 > departments.length) {
+                departments = Arrays.copyOf(departments, departments.length + 1);
+                departments[departments.length - 1] = newDepartment;
+            } else {
+                // Mở rộng mảng departments để chứa phòng ban mới
+                departments = Arrays.copyOf(departments, departments.length + 1); // Mở rộng mảng
+                for (int i = departments.length - 1; i > vitri - 1; i--) {
+                    departments[i] = departments[i - 1]; // Di chuyển các phần tử phía sau
+                }
+                // Thêm phòng ban mới vào mảng tại vị trí vitri - 1
+                departments[vitri - 1] = newDepartment;
             }
-            // Thêm phòng ban mới vào mảng tại vị trí vitri - 1
-            departments[vitri - 1] = newDepartment;
+            System.out.println("=================================================================");
         }
     
         // Ghi lại dữ liệu vào file
@@ -237,7 +249,7 @@ public class Department extends Staff {
         // Đọc danh sách phòng ban hiện tại từ file
         Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
-        System.out.println("Nhập mã phòng ban bạn muốn thay đổi thông tin: ");
+        System.out.print("Nhập mã phòng ban bạn muốn thay đổi thông tin: ");
         String departmentID = sc.nextLine();
     
         boolean found = false;
@@ -248,7 +260,7 @@ public class Department extends Staff {
                 // Phòng ban được tìm thấy, tiến hành sửa thông tin
                 found = true;
     
-                System.out.println("Nhập thông tin mới cho phòng ban (bỏ qua nếu không muốn thay đổi):");
+                System.out.println("Nhập thông tin mới cho phòng ban (bỏ qua nếu không muốn thay đổi)");
     
                 // Cập nhật tên phòng ban
                 System.out.print("Nhập tên phòng ban mới: ");
@@ -287,7 +299,7 @@ public class Department extends Staff {
         Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
         // Yêu cầu nhập các tiêu chí tìm kiếm
-        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
+        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
     
         // Tiêu chí tìm kiếm theo mã phòng ban
         System.out.print("Nhập mã phòng ban (hoặc nhấn Enter để bỏ qua): ");
