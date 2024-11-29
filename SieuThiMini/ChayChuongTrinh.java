@@ -78,16 +78,20 @@ public class ChayChuongTrinh {
         int choice;
         //store.readFileProduct();
         do {
-            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ SẢN PHẨM");
-            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm mới 1 phần tử, k phần tử.");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách sản phẩm.");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Sửa sản phẩm (theo mã).");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xóa sản phẩm (theo mã).");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm sản phẩm (theo tên,loại,nhà cung cấp)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
+            System.out.printf("%-20s%s","","╔═══════════════════════════════════════════════════════╗\n");
+            System.out.printf("%-20s║ %-8s %-44s ║\n","","" ,"QUẢN LÝ SẢN PHẨM");
+            System.out.printf("%-20s%s","","╠═══════════════════════════════════════════════════════╣\n");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "1.", "Thêm mới 1 sản phẩm, k ản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "2.", "Xem danh sách sản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "3.", "Sửa sản phẩm (theo mã).");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "4.", "Xóa sản phẩm (theo mã).");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "5.", "Tìm kiếm sản phẩm (theo tên,loại,nhà cung cấp)");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "6.", "Thêm loại sản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "7.", "Thêm nhà cung cấp sản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "8.", "Xóa loại sản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "9.", "Xóa nhà cung cấp sản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "0.", "Thoát");
+            System.out.printf("%-20s%s","","╚═══════════════════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
             choice = Integer.parseInt(scanner.nextLine());
 
@@ -97,35 +101,37 @@ public class ChayChuongTrinh {
                     break;
                 case 1:
                     store.addProduct(scanner);
+                    store.writeFileProduct();
                     break;
                 case 2:
-//                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-//                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
-//                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
-//                            "-------------------", "-------------------", "-------------------",
-//                            "-------------------", "-------------------", "-------------------");
-//                    for (int i=0;i<Product.getCnt();i++){
-//                        Product.productList[i].getDetails();
-//                    }
                     store.productDetail();
                     break;
                 case 3:
-//                    System.out.println("Nhap vao id san pham muon sua.");
-//                    String ud= scanner.nextLine();
-//                    Product.upDateProduct(ud);
                     store.updateProduct(scanner);
+                    store.writeFileProduct();
                     break;
                 case 4:
-//                    System.out.println("Nhap vao id san pham muon xoa.");
-//                    String rm= scanner.nextLine();
-//                    Product.deleteProduct(rm);
                     store.removeProduct(scanner);
+                    store.writeFileProduct();
                     break;
                 case 5:
-//                    System.out.println("Nhap tu khoa muon tim kiem");
-//                    String find= scanner.nextLine();
-//                    Product.Find(find);
                     store.findProduct(scanner);
+                    break;
+                case 6:
+                    store.addCategory(scanner);
+                    store.writeFileCategory();
+                    break;
+                case 7:
+                    store.addSupplier(scanner);
+                    store.writeFileSupplier();
+                    break;
+                case 8:
+                    store.removeCategory(scanner);
+                    store.writeFileCategory();
+                    break;
+                case 9:
+                    store.removeSupplier(scanner);
+                    store.writeFileSupplier();
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
