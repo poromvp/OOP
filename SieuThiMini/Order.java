@@ -951,9 +951,9 @@ public class Order implements QLFile {
         }
         return orderList;
     }
-
-    public void writeToFile(String filePath, Order[] orderList) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+    @Override
+    public void writeToFile(String filePath) {
+        /*try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Order or : orderList) {
                 int i=0;
                 writer.write(or.orderId + ";"
@@ -976,6 +976,6 @@ public class Order implements QLFile {
         } 
         catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
-        }
+        }*/
     }
 }

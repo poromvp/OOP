@@ -272,7 +272,7 @@ public class Store {
     public void ghifile(){
         Order temp=new Order();
         String filename="SieuThiMini\\donhang.txt";
-        temp.writeToFile(filename, orderList);
+        //temp.writeToFile(filename, orderList);
         System.out.println("Đã ghi vào file donhang.txt");
     }
     /* các thao tác cho ds đơn đặt hàng END */
@@ -347,12 +347,12 @@ public class Store {
 
     /* Các thao tác cho danh sách chương trình khuyến mãi END */
     /* Cac thao tac voi Product START */
-    // Doc tu file
-    public void readFileProduct() {
-        Category.readCategoryFromFile("SieuThiMini\\category.txt");
-        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
-        Product.readProductsFromFile("SieuThiMini\\product.txt");
-        System.out.println("Đã thêm " + Product.getCnt() + " sản phẩm.");
+    //Doc tu file
+    public void readFileProduct(){
+        Category.readCategoryFromFile("category.txt");
+        Supplier.readSupplierFromFile("supplier.txt");
+        Product.readProductsFromFile("product.txt");
+        System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
 
     // Xuat danh sach cac san pham
@@ -388,12 +388,42 @@ public class Store {
         String rm = scanner.nextLine();
         Product.deleteProduct(rm);
     }
+    public void findProduct(Scanner scanner){
+        int choice;
+        String find="";
+        do {
+            System.out.println("------TIM KIEM SAN PHAM------");
+            System.out.println("0.Thoat.");
+            System.out.println("1.Tim kiem theo ten. ");
+            System.out.println("2.Tim kiem theo loai. ");
+            System.out.println("3.Tim kiem theo nha cung cap. ");
+            choice = new Scanner(System.in).nextInt();
+            switch (choice) {
+                case 0:
+                    System.out.println("Thoat chinh sua.");
+                    break;
+                case 1:
+                    System.out.println("Nhap tu khoa muon tim kiem: ");
+                     find= scanner.nextLine();
+                    Product.findById(find);
+                    break;
+                case 2:
+                    System.out.println("Nhap ten loai san pham muon tim kiem: ");
+                    find= scanner.nextLine();
+                    Product.findByCategory(find);
+                    break;
+                case 3:
+                    System.out.println("Nhap ten nha cung cap muon tim kiem");
+                    find= scanner.nextLine();
+                    Product.findBySupplier(find);
+                    break;
+                default:
+                    System.out.println("Lua chon sai. Vui long chon lai.");
+            }
+        } while (choice != 0);
 
-    public void findProduct(Scanner scanner) {
-        System.out.println("Nhap tu khoa muon tim kiem");
-        String find = scanner.nextLine();
-        Product.Find(find);
     }
+    /* Cac thao tac voi Product END */
     /* Các thao tác giao dịch Start */
     /*
      * InvoiceManager invoice = new InvoiceManager();
