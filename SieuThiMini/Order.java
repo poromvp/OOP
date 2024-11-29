@@ -949,7 +949,15 @@ public class Order implements QLFile {
         }
         return orderList;
     }
-
+//minh
+public Item[] toItemList() {
+    Item[] items = new Item[product.length];
+    for (int i = 0; i < product.length; i++) {
+        items[i] = new Item(product[i].name, product[i].price, product[i].quantity);
+    }
+    return items;
+}
+//minh end
     public void writeToFile(String filePath) {
 
     }

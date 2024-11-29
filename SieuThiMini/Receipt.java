@@ -11,7 +11,7 @@ public class Receipt {
         this.transaction = transaction;
         this.cashier = cashier;
     }
-    public Receipt(){}
+    
 
     public void print() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

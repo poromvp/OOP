@@ -411,9 +411,8 @@ public class Store{
     }
     /* Cac thao tac voi Product END */
     /* Các thao tác giao dịch Start */
-    /*InvoiceManager invoice = new InvoiceManager();
-    Receipt receipt =new Receipt();
-    Order order = new Order();
+    InvoiceManager invoice = new InvoiceManager();
+    
     // Khởi tạo 1 giao dịch mới
     public void taoGiaoDichMoi() {
         Scanner scanner = new Scanner(System.in);
@@ -422,38 +421,54 @@ public class Store{
         System.out.println("2. Thẻ");
         int paymentMethod = scanner.nextInt();
         scanner.nextLine(); // Consume newline
-
-        Cashier cashier = new Cashier("C001", "Nguyen Van A", "Cashier", 5000.0, "0123456789", "Counter 1", "Morning", null, 0);
-
+    
+        Cashier cashier = new Cashier();  
+    
+        Order order = new Order(); 
+    
         try {
-            Transaction transaction = new Transaction(Integer.parseInt(order.getOrderId()), new SimpleDateFormat("dd/MM/yyyy").parse(order.getOrderDate()));
+            // Tạo giao dịch mới từ Order
+            Transaction transaction = new Transaction(
+                Integer.parseInt(order.getOrderId()), 
+                new SimpleDateFormat("dd/MM/yyyy").parse(order.getOrderDate())
+            );
+    
+            // Thêm các sản phẩm từ đơn hàng vào giao dịch
             for (Product product : order.getProductList()) {
                 Item item = new Item(product.name, product.price, product.quantity);
                 transaction.addItem(item);
             }
-
+          
+    
+            // Xử lý thanh toán
             if (paymentMethod == 1) {
                 System.out.print("Nhập số tiền khách đưa: ");
                 double customerPaid = scanner.nextDouble();
-                scanner.nextLine(); // Consume newline
                 transaction.setCustomerPaid(customerPaid);
-                invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction, cashier));
+                // Tạo hóa đơn cho thanh toán tiền mặt
+                Receipt receipt = new Receipt(Integer.parseInt(order.getOrderId()), transaction, cashier);
+                invoice.addReceipt(receipt);  
                 System.out.println("Giao dịch đã được tạo thành công bằng tiền mặt!");
             } else if (paymentMethod == 2) {
+                // Thanh toán thẻ
                 CardPayment cardPayment = new CardPayment();
-                cardPayment.inputCardDetails();
+                cardPayment.inputCardDetails();  
                 transaction.setCustomerPaid(order.getTotalAmount() + Order.calculateVAT(order.getTotalAmount()));
-                invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()), transaction, cashier));
+                // Tạo hóa đơn cho thanh toán thẻ
+                Receipt receipt = new Receipt(Integer.parseInt(order.getOrderId()), transaction, cashier);
+                invoice.addReceipt(receipt);
                 System.out.println("Giao dịch đã được tạo thành công bằng thẻ!");
             } else {
                 System.out.println("Phương thức thanh toán không hợp lệ.");
             }
+    
         } catch (Exception e) {
             e.printStackTrace();
         }
+    
         scanner.close();
     }
-
+    
     // Sửa hóa đơn
     public void suaHoaDon() {
         invoice.editReceiptById();

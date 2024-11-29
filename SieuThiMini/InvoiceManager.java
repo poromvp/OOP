@@ -1,8 +1,6 @@
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Scanner;
 import java.util.Date;
 public class InvoiceManager {
@@ -63,11 +61,25 @@ public class InvoiceManager {
                 int newTransactionId = scanner.nextInt();
                 scanner.nextLine(); // Consume newline
                 transaction.setId(newTransactionId);
-
-                System.out.print("Nhập ngày giao dịch mới (dd/MM/yyyy) (hiện tại: " + new SimpleDateFormat("dd/MM/yyyy").format(transaction.getDate()) + "): ");
+                System.out.print("Nhập ngày giao dịch mới (dd/MM/yyyy) (hiện tại: " 
+                + new SimpleDateFormat("dd/MM/yyyy").format(transaction.getDate()) + "): ");
                 String newDateString = scanner.nextLine();
-                Date newDate = new SimpleDateFormat("dd/MM/yyyy").parse(newDateString);
-                transaction.setDate(newDate);
+        
+                Date newDate = null;  
+                try {
+                    newDate = new SimpleDateFormat("dd/MM/yyyy").parse(newDateString);
+                    System.out.println("Ngày đã parse: " + newDate);
+                } catch (ParseException e) {
+                    System.out.println("Lỗi định dạng ngày: " + e.getMessage());
+                    e.printStackTrace(); 
+                }
+        
+                if (newDate != null) {  
+                    transaction.setDate(newDate);
+                    System.out.println("Ngày giao dịch mới đã được cập nhật!");
+                } else {
+                    System.out.println("Ngày giao dịch không được cập nhật do lỗi định dạng.");
+                }
 
                 System.out.print("Nhập số tiền khách đưa mới (hiện tại: " + transaction.getCustomerPaid() + "): ");
                 double newCustomerPaid = scanner.nextDouble();
