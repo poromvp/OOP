@@ -70,13 +70,13 @@ public class ChayChuongTrinh {
         scanner.close();
         Customer.writeToFile(fileName1, sieuthi.getCustomers());
         scanner.close();
-        //sieuthi.ghifile();
+        sieuthi.ghifile();
         //scanner.close();
     }
 
     private static void manageProducts(Scanner scanner, Store store) {
         int choice;
-        store.readFileProduct();
+        //store.readFileProduct();
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ SẢN PHẨM");

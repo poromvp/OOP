@@ -15,6 +15,7 @@ public class Order implements QLFile {
     public Product[] product; // danh sách các sản phẩm
     public double totalAmount; // Tổng số tiền
     private static final double VAT = 0.1; // Thuế VAT 10%
+    protected static byte cnt_ghi_file=0,aaaa=0;
 
     public Order() {
         customer = new Customer(); // khởi tạo khách hàng cho hóa đơn
@@ -175,6 +176,7 @@ public class Order implements QLFile {
     public static Order[] add(Scanner scanner, Order[] orderList) { // thêm đơn hàng
         System.out.print("Bạn muốn thêm bao nhiêu đơn hàng ?: ");
         int n = Integer.parseInt(scanner.nextLine());
+        cnt_ghi_file+=n;
         orderList = Arrays.copyOf(orderList, orderList.length + n);
         byte cnt = 0; // Dùng để xuất cho người nhập dễ theo dõi là đang hỏi bao nhiêu sản phẩm của
                       // đơn hàng nào
@@ -436,6 +438,7 @@ public class Order implements QLFile {
     }
 
     public static Order[] xoa(Scanner scanner, Order[] orderList) {
+        cnt_ghi_file--;
         System.out.print("Bạn muốn xóa đơn hàng nào ? (Nhập mã đơn hàng): ");
         boolean flag = false; // Tạo lính canh để kiểm tra nếu sau khi duyệt mà nó còn false thì sẽ cho nhập
                               // lại cho đúng
@@ -908,7 +911,7 @@ public class Order implements QLFile {
         } catch (IOException e) {
             e.printStackTrace();
         } // Đoạn này đọc số dòng để lưu số lượng đơn hàng có trong danh sách
-
+        cnt_ghi_file=(byte)n;
         orderList = new Order[n];
         i = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -951,31 +954,37 @@ public class Order implements QLFile {
         }
         return orderList;
     }
+    public void xoaNoiDungFile(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
+            // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+        } catch (IOException e) {
+            System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
+        }
+    }
     @Override
     public void writeToFile(String filePath) {
-        /*try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (Order or : orderList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath,true))) {
                 int i=0;
-                writer.write(or.orderId + ";"
-                + or.orderDate
-                + ";" + or.customer.getCustomerID()
-                + "," + or.customer.getLoyaltyPoints()
-                + "," + or.customer.getName()
-                + "," + or.customer.getContactNumber() + ";");
+                writer.write(orderId + ";"
+                + orderDate
+                + ";" + customer.getCustomerID()
+                + "," + customer.getLoyaltyPoints()
+                + "," + customer.getName()
+                + "," + customer.getContactNumber() + ";");
                 for(Product pr: product){
-                    pr=new Product();
                     writer.write(pr.getProductID()+ "," + pr.getName() + "," + pr.getPrice() + "," +pr.getCategoryId()+ "," +pr.getQuantity()+","+pr.getSupplierId());
                     if(i<product.length-1){
                         writer.write("|");
                     }
                     i++;
                 }
-                writer.newLine();
-            }
-            System.out.println("Đã ghi dữ liệu vào file: " + filePath);
+                if(aaaa<cnt_ghi_file-1){
+                    writer.newLine();
+                }
+                aaaa++;
         } 
         catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
-        }*/
+        }
     }
 }

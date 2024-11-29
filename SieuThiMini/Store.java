@@ -32,6 +32,7 @@ public class Store {
         managers.readFromFile("SieuThiMini\\dsnv.txt");
         departments = new Department();
         departments.readFromFile("SieuThiMini\\DepartmentList.txt");
+        readFileProduct();
 
     }
 
@@ -271,9 +272,12 @@ public class Store {
 
     public void ghifile(){
         Order temp=new Order();
-        String filename="SieuThiMini\\donhang.txt";
-        //temp.writeToFile(filename, orderList);
-        System.out.println("Đã ghi vào file donhang.txt");
+        String filename="SieuThiMini\\ghidonhang.txt";
+        temp.xoaNoiDungFile(filename);
+        for(Order or : orderList){
+            or.writeToFile(filename);
+        }
+        System.out.println("Đã ghi vào file ghidonhang.txt");
     }
     /* các thao tác cho ds đơn đặt hàng END */
 
@@ -349,9 +353,9 @@ public class Store {
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("category.txt");
-        Supplier.readSupplierFromFile("supplier.txt");
-        Product.readProductsFromFile("product.txt");
+        Category.readCategoryFromFile("SieuThiMini\\category.txt");
+        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
+        Product.readProductsFromFile("SieuThiMini\\product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
 
