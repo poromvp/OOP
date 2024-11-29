@@ -134,7 +134,7 @@ public class Cashier extends Staff {
     // Phương thức thêm một Cashier mới vào danh sách
     public void add() {
         // Hiển thị danh sách thu ngân hiện tại
-        Cashier[] cashiers = readFromFile("CashierList.txt");
+        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
         getdetail();;;
 
         // Khởi tạo scanner để nhập dữ liệu
@@ -162,7 +162,7 @@ public class Cashier extends Staff {
         // Thêm thu ngân mới vào danh sách và ghi lại vào file
         cashiers = Arrays.copyOf(cashiers, cashiers.length + 1);
         cashiers[cashiers.length - 1] = newCashier;
-        writeToFile("CashierList.txt", cashiers);
+        writeToFile("SieuThiMini\\CashierList.txt", cashiers);
 
         // In danh sách thu ngân sau khi cập nhật
         System.out.println("Danh sách thu ngân sau khi cập nhật: ");
@@ -173,7 +173,7 @@ public class Cashier extends Staff {
     // Phương thức xóa một Cashier khỏi danh sách
     public void remove() {
         // Hiển thị danh sách thu ngân
-        Cashier[] cashiers = readFromFile("CashierList.txt");
+        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
         getdetail();
 
         // Khởi tạo scanner để nhập mã thu ngân cần xóa
@@ -204,7 +204,7 @@ public class Cashier extends Staff {
             }
 
             // Ghi lại dữ liệu vào file
-            writeToFile("CashierList.txt", updatedCashiers);
+            writeToFile("SieuThiMini\\CashierList.txt", updatedCashiers);
             System.out.println("Thu ngân với mã " + cashierID + " đã được xóa.");
         }
 
@@ -217,7 +217,7 @@ public class Cashier extends Staff {
     // Phương thức thay đổi thông tin thu ngân
     public void ChangeInFo() {
         // Hiển thị danh sách thu ngân
-        Cashier[] cashiers = readFromFile("CashierList.txt");
+        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
         getdetail();
 
         // Khởi tạo scanner để nhập thông tin thu ngân cần sửa
@@ -250,7 +250,7 @@ public class Cashier extends Staff {
 
         if (found) {
             // Ghi lại dữ liệu vào file
-            writeToFile("CashierList.txt", cashiers);
+            writeToFile("SieuThiMini\\CashierList.txt", cashiers);
             System.out.println("Thông tin thu ngân đã được cập nhật.");
         } else {
             System.out.println("Không tìm thấy thu ngân với mã: " + cashierID);
@@ -263,7 +263,7 @@ public class Cashier extends Staff {
     @Override
     public void search() {
         // Đọc dữ liệu từ file
-        Cashier[] cashiers = readFromFile("CashierList.txt");
+        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
     
         // Khởi tạo scanner để nhập từ bàn phím
         Scanner sc = new Scanner(System.in);
