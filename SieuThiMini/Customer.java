@@ -55,14 +55,23 @@ public class Customer {
 
     // Phương thức xem danh sách khách hàng (2)
     public static void outputCustomer(Customer[] customers) {
-        System.out.println("Danh sách khách hàng:");
-        for (Customer customer : customers) {
-            System.out.println("==================================");
-            System.out.println("Mã khách hàng: " + customer.customerID);
-            System.out.println("Tên khách hàng: " + customer.name);
-            System.out.println("Số điện thoại: " + customer.contactNumber);
-            System.out.println("Điểm tích lũy: " + customer.loyaltyPoints);
+        System.out.printf("%-53s╔══════════════════════════════════════════╗\n", " ");
+        System.out.printf("%-53s║           DANH SÁCH KHÁCH HÀNG           ║\n"," ");
+        System.out.printf("%-53s╚══════════════════════════════════════════╝\n\n", " ");
+        System.out.printf(
+            "%40s╔═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
+            " ");
+        System.out.printf(
+            "%40s║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
+            " ");
+            for (Customer customer : customers) {
+            System.out.printf(
+                "%40s╠═══════════╬══════════════════╬═══════════════╬═════════════════╣\n"," ");
+            System.out.printf("%40s║ %-10s║ %-17s║ %-14s║ %-16s║\n"," ",customer.customerID,customer.name,customer.contactNumber,customer.loyaltyPoints);
         }
+        System.out.printf(
+            "%40s╚═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
+            " ");
     }
 
     // Phương thức thêm khách hàng vào danh sách (3)
@@ -116,12 +125,19 @@ public class Customer {
         }
 
         if (customerToUpdate != null) {
-            System.out.println("Thông tin khách hàng hiện tại:");
-            System.out.println("Mã khách hàng: " + customerToUpdate.getCustomerID());
-            System.out.println("Tên khách hàng: " + customerToUpdate.getName());
-            System.out.println("Số điện thoại: " + customerToUpdate.getContactNumber());
-            System.out.println("Điểm tích lũy: " + customerToUpdate.getLoyaltyPoints());
-    
+            System.out.printf(
+            "%40s╔═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
+            " ");
+            System.out.printf(
+            "%40s║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
+            " ");
+            System.out.printf(
+                "%40s╠═══════════╬══════════════════╬═══════════════╬═════════════════╣\n"," ");
+            System.out.printf("%40s║ %-10s║ %-17s║ %-14s║ %-16s║\n"," ",customerToUpdate.customerID,customerToUpdate.name,customerToUpdate.contactNumber,customerToUpdate.loyaltyPoints);
+            System.out.printf(
+            "%40s╚═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
+            " ");
+
             System.out.println("\nNhấn Enter để giữ nguyên thông tin hiện tại.");
     
             // Cập nhật tên khách hàng
@@ -223,9 +239,7 @@ public class Customer {
             System.out.println("Không tìm thấy khách hàng nào khớp với tiêu chí.");
         } else {
             System.out.println("\nDanh sách khách hàng tìm thấy:");
-            for (Customer customer : result) {
-                customer.displayDetails(); // Hiển thị chi tiết mỗi Customer
-            }
+            Customer.outputCustomer(result);; // Hiển thị chi tiết mỗi Customer
         }
     }
 
