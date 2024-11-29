@@ -1,7 +1,9 @@
 
 import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -210,8 +212,8 @@ public class Order implements QLFile {
         }
         return true; // Không trùng
     } // vitrior để lưu vị trí hiện tại của cái đơn hàng trong mảng
-    // để khi nếu người dùng muốn chỉnh sửa đơn hàng, mà lại nhập lại mã cũ, thì vẫn
-    // lưu đc
+      // để khi nếu người dùng muốn chỉnh sửa đơn hàng, mà lại nhập lại mã cũ, thì vẫn
+      // lưu đc
 
     protected boolean checkx2IDpro(String id, Product[] product, int vitrior) { // kiểm tra trùng của id sản phẩm của
                                                                                 // đơn hàng
@@ -491,35 +493,35 @@ public class Order implements QLFile {
     }
 
     public void displayOrderDetails() {
-        System.out.printf("\n\n%40s╔════════════════════ CHI TIẾT ĐƠN HÀNG ════════════════════╗\n", " ");
-        System.out.printf("%40s║%-20sMã đơn hàng:%-27s║\n", "", "", orderId);
-        System.out.printf("%40s║   Ngày lập đơn:%41s  ║\n", "", orderDate);
-        System.out.printf("%40s║   Mã Khách Hàng: %38s   ║\n", " ", customer.getCustomerID());
-        System.out.printf("%40s║   Tên Khách Hàng: %37s   ║\n", " ", customer.getName());
-        System.out.printf("%40s║   Số Điện Thoại: %38s   ║\n", " ", customer.getContactNumber());
-        System.out.printf("%40s║   Điểm Tích Lũy: %38s   ║\n", " ", customer.getLoyaltyPoints());
-        System.out.printf("%40s║───────────────────────────────────────────────────────────║\n", "");
-        System.out.printf("%40s║   Mã     Tên sản phẩm     SL        Giá          Tổng     ║\n", " ");
-
-        if (product != null) {
-            for (int j = 0; j < product.length; j++) {
-                System.out.printf("%40s║                                                           ║\n", "");
-                System.out.printf("%40s║%d %-8s%-17s%,-8d%,-12d%,-12d║\n",
-                        "",
-                        (j + 1),
-                        product[j].getProductID(),
-                        product[j].getName(),
-                        product[j].getQuantity(),
-                        product[j].getPrice(),
-                        (product[j].getPrice() * product[j].getQuantity()));
-            }
+        System.out.printf(
+                "%20s╔═════════════════╦══════════════════════╦═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
+                " ");
+        System.out.printf(
+                "%20s║   Mã Đơn Hàng   ║    Ngày Đặt Hàng     ║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
+                " ");
+        System.out.printf(
+                "%20s╠═════════════════╬══════════════════════╬═══════════╬══════════════════╬═══════════════╬═════════════════╣\n",
+                " ");
+        System.out.printf("%20s║ %-16s║ %-21s║ %-10d║ %-17s║ %-14s║ %-16s║\n",
+                " ", orderId, orderDate, customer.getCustomerID(), customer.getName(), customer.getContactNumber(),
+                customer.getLoyaltyPoints());
+        System.out.printf(
+                "%20s╠═════════════════╬══════════════════════╬═══════════╬══════════════════╬═══════════════╬═════════════════╣\n",
+                " ");
+        System.out.printf(
+                "%20s║   Mã Sản Phẩm   ║     Tên Sản Phẩm     ║  Mã Loại  ║   Giá Sản Phẩm   ║   Số Lượng    ║ Mã Nhà Cung Cấp ║\n",
+                " ");
+        for (int i = 0; i < product.length; i++) {
+            System.out.printf(
+                    "%20s╠═════════════════╬══════════════════════╬═══════════╬══════════════════╬═══════════════╬═════════════════╣\n",
+                    " ");
+            System.out.printf("%20s║ %d. %-13s║ %-21s║ %-10s║ %-17s║ %-14s║ %-16s║\n",
+                    " ", (i + 1), product[i].getProductID(), product[i].getName(), product[i].getCategoryId(),
+                    product[i].getPrice(), product[i].getQuantity(), product[i].getSupplierId());
         }
-        System.out.printf("%40s║───────────────────────────────────────────────────────────║\n", "");
-        System.out.printf("%40s║  Thành tiền (chưa VAT): %31.2f   ║\n", "", calculateTotalAmount());
-        System.out.printf("%40s║───────────────────────────────────────────────────────────║\n", "");
-        System.out.printf("%40s║  TỔNG THANH TOÁN (CÓ VAT): %28.2f   ║\n", "",
-                (calculateTotalAmount() + calculateVAT(calculateTotalAmount())));
-        System.out.printf("%40s╚═══════════════════════════════════════════════════════════╝\n", "");
+        System.out.printf(
+                "%20s╚═════════════════╩══════════════════════╩═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
+                " ");
     }
 
     public static void loc(Scanner scanner, Order[] orderList) {
@@ -710,13 +712,13 @@ public class Order implements QLFile {
                 }
             }
         }
-        for (int i=0;i<index-1;i++) {
-            for(int j=i+1;j<index;j++){
-                if(mangSP[i].getQuantity()<mangSP[j].getQuantity()){
-                    Product temp=new Product();
-                    temp=mangSP[j];
-                    mangSP[j]=mangSP[i];
-                    mangSP[i]=temp;
+        for (int i = 0; i < index - 1; i++) {
+            for (int j = i + 1; j < index; j++) {
+                if (mangSP[i].getQuantity() < mangSP[j].getQuantity()) {
+                    Product temp = new Product();
+                    temp = mangSP[j];
+                    mangSP[j] = mangSP[i];
+                    mangSP[i] = temp;
                 }
             }
         }
@@ -950,7 +952,30 @@ public class Order implements QLFile {
         return orderList;
     }
 
-    public void writeToFile(String filePath) {
-
+    public void writeToFile(String filePath, Order[] orderList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Order or : orderList) {
+                int i=0;
+                writer.write(or.orderId + ";"
+                + or.orderDate
+                + ";" + or.customer.getCustomerID()
+                + "," + or.customer.getLoyaltyPoints()
+                + "," + or.customer.getName()
+                + "," + or.customer.getContactNumber() + ";");
+                for(Product pr: product){
+                    pr=new Product();
+                    writer.write(pr.getProductID()+ "," + pr.getName() + "," + pr.getPrice() + "," +pr.getCategoryId()+ "," +pr.getQuantity()+","+pr.getSupplierId());
+                    if(i<product.length-1){
+                        writer.write("|");
+                    }
+                    i++;
+                }
+                writer.newLine();
+            }
+            System.out.println("Đã ghi dữ liệu vào file: " + filePath);
+        } 
+        catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
     }
 }

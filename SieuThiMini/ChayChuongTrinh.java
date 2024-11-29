@@ -70,6 +70,7 @@ public class ChayChuongTrinh {
         scanner.close();
         Customer.writeToFile(fileName1, sieuthi.getCustomers());
         scanner.close();
+        //sieuthi.ghifile();
         //scanner.close();
     }
 
