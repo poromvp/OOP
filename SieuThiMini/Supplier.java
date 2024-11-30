@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Supplier {
     public String supplierID;
     public String supplierName;
-    public static Supplier[] supplierList=new Supplier[100];
+    public static Supplier[] supplierList=new Supplier[10];
     public static int cnt;
 
     public Supplier() {
@@ -161,5 +161,60 @@ public class Supplier {
             }
         }
         return true; // Không trùng
+    }
+    // Sua Supplier
+    public static void updateSupplier(String id) {
+        int choice;
+        int index = -1;
+
+        // Tìm vị trí của danh mục cần cập nhật
+        for (int i = 0; i < cnt; i++) {
+            if (supplierList[i] != null && supplierList[i].getSupplierID().equals(id)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            Scanner sc = new Scanner(System.in);
+            do {
+                System.out.println("------ CHINH SUA NHA CUNG CAP SAN PHAM ------");
+                System.out.println("0. Thoát.");
+                System.out.println("1. Chinh sua id nha cung cap san pham.");
+                System.out.println("2. Chinh sua ten nha cung cap san pham.");
+                System.out.print("Lua chon cua ban: ");
+                try {
+                    choice = Integer.parseInt(sc.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Lua chon phai la mot so nguyen hop le.");
+                    return;
+                }
+                switch (choice) {
+                    case 0:
+                        System.out.println("Thoát chỉnh sửa.");
+                        break;
+                    case 1:
+                        System.out.println("Nhap vao id moi(co dang SL___). ");
+                        String newId = sc.nextLine();
+                        if (!checkIDSupplier(newId) || !checkDuplicateID(newId)) {
+                            System.out.println("ID nhap vao khong dung dinh dang hoac bi trung !!!");
+                        } else {
+                            supplierList[index].setSupplierID(newId);
+                            System.out.println("Da chinh sua ID thanh cong.");
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Nhap vao ten moi. ");
+                        String newName = sc.nextLine();
+                        supplierList[index].setSupplierName(newName);
+                        System.out.println("Da chinh sua ten thanh cong.");
+                        break;
+                    default:
+                        System.out.println("Lua chon sai. Vui long chon lai.");
+                }
+            } while (choice != 0);
+
+        } else {
+            System.out.println("Khong tim thay nha cung cap san pham voi ID: " + id);
+        }
     }
 }

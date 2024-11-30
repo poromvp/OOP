@@ -418,13 +418,13 @@ public class Store {
 
     // Sua san pham
     public void updateProduct(Scanner scanner) {
-        System.out.println("Nhap vao id san pham muon sua.");
+        System.out.println("Nhap vao id san pham muon sua (Id co dang SP___).");
         String ud = scanner.nextLine();
         Product.upDateProduct(ud);
     }
 
     public void removeProduct(Scanner scanner) {
-        System.out.println("Nhap vao id san pham muon xoa.");
+        System.out.println("Nhap vao id san pham muon xoa (Id co dang SP___).");
         String rm = scanner.nextLine();
         Product.deleteProduct(rm);
     }
@@ -479,16 +479,25 @@ public class Store {
     }
     //Xoa loai san pham va nha cung cap
     public void removeCategory(Scanner scanner){
-        System.out.println("Nhap vao id loai san pham muon xoa.");
+        System.out.println("Nhap vao id loai san pham muon xoa (Id co dang CT___).");
         String rm = scanner.nextLine();
         Category.deleteCategory(rm);
     }
     public void removeSupplier(Scanner scanner){
-        System.out.println("Nhap vao id nha cung cap muon xoa.");
+        System.out.println("Nhap vao id nha cung cap muon xoa (Id co dang SL___).");
         String rm = scanner.nextLine();
         Supplier.deleteSupplier(rm);
     }
-  
+    //Sua loai san pham va nha cung cap
+    public void updateCategory(Scanner scanner){
+        System.out.println("Nhap vao id loai san pham muon sua (Id co dang CT___).");
+        String ud = scanner.nextLine();
+        Category.updateCategory(ud);
+    }
+    public void updateSupplier(Scanner scanner){
+        System.out.println("Nhap vao id nha cung cap san pham muon sua (Id co dang SL___).");
+        String ud = scanner.nextLine();
+        Supplier.updateSupplier(ud);
     public void xuatHoaDon(){
         for(Receipt rc: receipts){
             rc.inHoaDon();
