@@ -9,7 +9,7 @@ public class Product {
     public String categoryId;
     public int quantity;
     public String supplierId;
-    public static Product[] productList = new Product[100];
+    public static Product[] productList = new Product[10];
     public static int cnt = 0;
 
     //constructor
@@ -138,7 +138,7 @@ public class Product {
         Scanner sc = new Scanner(System.in);
         int check =0;
         do{
-            System.out.println("Nhap product id: ");
+            System.out.println("Nhap product id (co dang SP___): ");
             String tmp= sc.nextLine();
             if(!checkIDProduct(tmp) || !checkDuplicateID(tmp)){
                 System.out.println("Ban da nhap sai id. Vui long nhap lai");
@@ -151,13 +151,21 @@ public class Product {
         System.out.println("Nhap ten san pham: ");
         a.setName(sc.nextLine());
         System.out.println("Nhap gia san pham: ");
-        a.setPrice(sc.nextInt());
-        sc.nextLine();
+        try {
+            a.setPrice(Integer.parseInt(sc.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("Gia nhap vao phai la mot so nguyen hop le.");
+            return;
+        }
         System.out.println("Nhap ma loai san pham");
         a.setCategoryId(sc.nextLine());
-        System.out.println("Nhap so luong san pham");
-        a.setQuantity(sc.nextInt());
-        sc.nextLine();
+        System.out.println("Nhap so luong san pham: ");
+        try {
+            a.setQuantity(Integer.parseInt(sc.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("So luong nhap vao phai la mot so nguyen hop le.");
+            return;
+        }
         System.out.println("Nhap ma nha cung cap cho san pham: ");
         a.setSupplierId(sc.nextLine());
         productList[cnt++]=a;
@@ -176,7 +184,7 @@ public class Product {
                     productList = newProductList;
                 }
                 String[] parts = line.split(",");
-                if (parts.length == 6 && cnt< 100) { // Kiểm tra nếu mảng chưa đầy
+                if (parts.length == 6 ) { // Kiểm tra nếu mảng chưa đầy
                     Product product = new Product(
                             parts[0],                // productID
                             parts[1],                // name
@@ -337,13 +345,18 @@ public class Product {
                 System.out.println("5.Chinh sua id loai san pham. ");
                 System.out.println("6.Chinh sua id nha cung cap san pham. ");
                 System.out.println("Lua chon cua ban: ");
-                choice = new Scanner(System.in).nextInt();
+                try {
+                    choice = Integer.parseInt(sc.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Lua chon phai la mot so nguyen hop le.");
+                    return;
+                }
                 switch (choice) {
                     case 0:
                         System.out.println("Thoat chinh sua.");
                         break;
                     case 1:
-                        System.out.println("Nhap vao id moi: ");
+                        System.out.println("Nhap vao id moi (co dang SP___): ");
                         String new_id = sc.nextLine();
                         if (!checkIDProduct(new_id) || !checkDuplicateID(new_id)){
                             System.out.println("Id nhap vao bi sai !!!");
@@ -360,26 +373,32 @@ public class Product {
                         break;
                     case 3:
                         System.out.println("Nhap vao gia moi: ");
-                        int p=Integer.parseInt(sc.nextLine());
-                        if(p<0){
-                            System.out.println("Gia phai lon hon 0 !!!");
-                        }
-                        else {
-                            productList[index].setPrice(p);
+                        try {
+                            int p = Integer.parseInt(sc.nextLine());
+                            if (p < 0) {
+                                System.out.println("Gia phai lon hon 0 !!!");
+                            } else {
+                                productList[index].setPrice(p);
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Gia nhap vao phai la mot so nguyen hop le.");
                         }
                         break;
                     case 4:
                         System.out.println("Nhap vao so luong moi: ");
-                        int x = Integer.parseInt(sc.nextLine());
-                        if(x<0){
-                            System.out.println("So luong san pham phai lon hon 0 !!!");
-                        }
-                        else {
-                            productList[index].setQuantity(x);
+                        try {
+                            int x = Integer.parseInt(sc.nextLine());
+                            if (x < 0) {
+                                System.out.println("So luong san pham phai lon hon 0 !!!");
+                            } else {
+                                productList[index].setQuantity(x);
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("So luong nhap vao phai la mot so nguyen hop le.");
                         }
                         break;
                     case 5:
-                        System.out.println("Nhap vao id loai moi: ");
+                        System.out.println("Nhap vao id loai moi (co dang CT___): ");
                         String new_ct = sc.nextLine();
                         if (!Category.checkIDCategory(new_ct) || !Category.checkDuplicateID(new_ct)){
                             System.out.println("Id nhap vao bi sai !!!");
@@ -390,6 +409,7 @@ public class Product {
                         }
                         break;
                     case 6:
+                        System.out.println("Nhap vao id nha cung cap moi (co dang SL___): ");
                         String new_sl = sc.nextLine();
                         if (!Supplier.checkIDSupplier(new_sl) || !Supplier.checkDuplicateID(new_sl)){
                             System.out.println("Id nhap vao bi sai !!!");

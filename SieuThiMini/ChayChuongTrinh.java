@@ -81,6 +81,8 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "7.", "Thêm nhà cung cấp sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "8.", "Xóa loại sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "9.", "Xóa nhà cung cấp sản phẩm.");
+            System.out.printf("%-20s║ %-3s %-49s ║\n","", "10.","Sửa loại sản phẩm (theo mã).");
+            System.out.printf("%-20s║ %-3s %-49s ║\n","", "11.","Sửa nhà cung cấp sản phẩm (theo mã).");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚═══════════════════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -122,6 +124,14 @@ public class ChayChuongTrinh {
                     break;
                 case 9:
                     store.removeSupplier(scanner);
+                    store.writeFileSupplier();
+                    break;
+                case 10:
+                    store.updateCategory(scanner);
+                    store.writeFileCategory();
+                    break;
+                case 11:
+                    store.updateSupplier(scanner);
                     store.writeFileSupplier();
                     break;
                 default:
@@ -490,8 +500,8 @@ public class ChayChuongTrinh {
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                             System.out.print("Lựa chọn của bạn: ");
-                            subchoice = Integer.parseInt(scanner.nextLine());
-                        switch (subchoice) {
+                            subsubchoice = Integer.parseInt(scanner.nextLine());
+                        switch (subsubchoice) {
                         case 1:
                             store.xuatNhapKho();
                             break;
@@ -512,7 +522,7 @@ public class ChayChuongTrinh {
                             default:
                             System.out.println("Lựa chọn không hợp lệ.");
                         }
-                        } while (subchoice != 0);
+                        } while (subsubchoice != 0);
                         break;
                     case 0:
                         break;

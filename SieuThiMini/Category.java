@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Category {
     public String categoryID;
     public String categoryName;
-    public static Category[] categoryList=new Category[100];
+    public static Category[] categoryList=new Category[10];
     public static int cnt =0;
 
     public Category() {
@@ -60,7 +60,7 @@ public class Category {
                     categoryList=newCategoryList;
                 }
                 String[] parts = line.split(",");
-                if (parts.length == 2 && cnt< 100) { // Kiểm tra nếu mảng chưa đầy
+                if (parts.length == 2 ) { // Kiểm tra nếu mảng chưa đầy
                     Category a = new Category(
                             parts[0],
                             parts[1]
@@ -162,5 +162,60 @@ public class Category {
             }
         }
         return true; // Không trùng
+    }
+    // Sua category
+    public static void updateCategory(String id) {
+        int choice;
+        int index = -1;
+
+        // Tìm vị trí của danh mục cần cập nhật
+        for (int i = 0; i < cnt; i++) {
+            if (categoryList[i] != null && categoryList[i].getCategoryID().equals(id)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            Scanner sc = new Scanner(System.in);
+            do {
+                System.out.println("------ CHINH SUA LOAI SAN PHAM ------");
+                System.out.println("0. Thoát.");
+                System.out.println("1. Chinh sua id loai san pham.");
+                System.out.println("2. Chinh sua ten loai san pham.");
+                System.out.print("Lua chon cua ban: ");
+                try {
+                    choice = Integer.parseInt(sc.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Lua chon phai la mot so nguyen hop le.");
+                    return;
+                }
+                switch (choice) {
+                    case 0:
+                        System.out.println("Thoát chỉnh sửa.");
+                        break;
+                    case 1:
+                        System.out.println("Nhap vao id moi(co dang CT___). ");
+                        String newId = sc.nextLine();
+                        if (!checkIDCategory(newId) || !checkDuplicateID(newId)) {
+                            System.out.println("ID nhap vao khong dung dinh dang hoac bi trung !!!");
+                        } else {
+                            categoryList[index].setCategoryID(newId);
+                            System.out.println("Da chinh sua ID thanh cong.");
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Nhap vao ten moi. ");
+                        String newName = sc.nextLine();
+                        categoryList[index].setCategoryName(newName);
+                        System.out.println("Da chinh sua ten thanh cong.");
+                        break;
+                    default:
+                        System.out.println("Lua chon sai. Vui long chon lai.");
+                }
+            } while (choice != 0);
+
+        } else {
+            System.out.println("Khong tim thay loai san pham voi ID: " + id);
+        }
     }
 }

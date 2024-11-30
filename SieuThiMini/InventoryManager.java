@@ -175,7 +175,7 @@ public class InventoryManager extends Staff {
             System.out.print("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
             int vitri = Integer.parseInt(sc.nextLine());
 
-            String id = InventoryManager.generateRandomString(8);
+            String id = InventoryManager.generateRandomString(4);
 
             System.out.print("Nhập sản phẩm bạn muốn thêm vào kho: ");
             String name = sc.nextLine();
@@ -225,7 +225,7 @@ public class InventoryManager extends Staff {
             System.out.print("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
             int vitri = Integer.parseInt(sc.nextLine());
             
-            String id = InventoryManager.generateRandomString(vitri); // mã sản phẩm ngẫu nhiên
+            String id = InventoryManager.generateRandomString(4); // mã sản phẩm ngẫu nhiên
         
             // Nhập thông tin nhập hàng mới
             System.out.print("Nhập sản phẩm bạn muốn thêm vào danh sách: ");
@@ -309,7 +309,7 @@ public class InventoryManager extends Staff {
 
     public void removeOrder() {
         // Hiển thị danh sách kho
-        getdetail();
+        getdetailOrder();
 
         // Nhập mã kho muốn xóa
         Scanner sc = new Scanner(System.in);
@@ -350,7 +350,7 @@ public class InventoryManager extends Staff {
         }
 
         // Hiển thị lại danh sách kho sau khi xoá
-        getdetail();
+        getdetailOrder();
     }
 
     @Override
@@ -408,7 +408,7 @@ public class InventoryManager extends Staff {
     }
     public void ChangeInFoOrder() {
         // Hiển thị danh sách kho hiện tại
-        getdetail();
+        getdetailOrder();
 
         // Khởi tạo scanner để nhập dữ liệu
         Scanner sc = new Scanner(System.in);
@@ -453,10 +453,10 @@ public class InventoryManager extends Staff {
         }
 
         // Cập nhật lại dữ liệu vào file
-        writeToFile("SieuThiMini\\Inventory.txt", IvenProduct);
+        writeToFile("SieuThiMini\\OrderInventory.txt", IvenProduct);
 
         // Hiển thị lại danh sách kho sau khi cập nhật
-        getdetail();
+        getdetailOrder();
     }
 
     @Override
