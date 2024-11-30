@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Discount {
+public class Discount implements QLFile{
     // Thuộc tính
     private int discountID;
     private String name;
@@ -248,9 +248,9 @@ public class Discount {
         }
         return true;
     }
-
+    @Override
     // Phương thức đọc danh sách từ file
-    public static Discount[] readFromFile(String fileName) {
+    public Discount[] readFromFile(String fileName) {
         Discount[] discounts = new Discount[0];
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -286,16 +286,20 @@ public class Discount {
         }
         return discounts;
     }
-
+    public void xoaNoiDungFile(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
+            // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+        } catch (IOException e) {
+            System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
+        }
+    }
+    @Override
     // Phương thức ghi danh sách vào file
-    public static void writeToFile(String fileName, Discount[] discounts) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (Discount discount : discounts) {
-                writer.write(discount.discountID + "," + discount.name + "," + discount.discountPercentage + ","
-                        + DATE_FORMAT.format(discount.startDate) + "," + DATE_FORMAT.format(discount.endDate));
+    public void writeToFile(String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName,true))) {
+                writer.write(discountID + "," + name + "," + discountPercentage + ","
+                        + DATE_FORMAT.format(startDate) + "," + DATE_FORMAT.format(endDate));
                 writer.newLine();
-            }
-            System.out.println("Danh sách đã được ghi vào file.");
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }

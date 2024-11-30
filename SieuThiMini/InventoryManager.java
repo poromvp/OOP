@@ -113,7 +113,7 @@ public class InventoryManager extends Staff {
 
     @Override
     public void getdetail() {
-        InventoryManager[] temp = readFromFile("Inventory.txt");
+        InventoryManager[] temp = readFromFile("SieuThiMini\\Inventory.txt");
         if (temp == null || temp.length == 0) {
             System.out.println("Không có dữ liệu nhân viên");
             return;
@@ -134,7 +134,7 @@ public class InventoryManager extends Staff {
     }
 
     public void getdetailOrder() {
-        InventoryManager[] temp = readFromFile("OrderInventory.txt");
+        InventoryManager[] temp = readFromFile("SieuThiMini\\OrderInventory.txt");
         if (temp == null || temp.length == 0) {
             System.out.println("Không có dữ liệu nhân viên");
             return;
@@ -160,7 +160,7 @@ public class InventoryManager extends Staff {
 
         Scanner sc = new Scanner(System.in);
 
-        InventoryManager[] IvenProduct = readFromFile("Inventory.txt");
+        InventoryManager[] IvenProduct = readFromFile("SieuThiMini\\Inventory.txt");
 
         System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
         int vitri = Integer.parseInt(sc.nextLine());
@@ -186,7 +186,7 @@ public class InventoryManager extends Staff {
             IvenProduct[vitri - 1] = newIvenProduct;
         }
 
-        writeToFile("Inventory.txt", IvenProduct);
+        writeToFile("SieuThiMini\\Inventory.txt", IvenProduct);
         System.out.println("Thêm sản phẩm thành công!");
     }
     public void addOrder() {
@@ -197,7 +197,7 @@ public class InventoryManager extends Staff {
         Scanner sc = new Scanner(System.in);
         
         // Đọc danh sách nhập hàng hiện tại từ file
-        InventoryManager[] IvenProduct = readFromFile("OrderInventory.txt");
+        InventoryManager[] IvenProduct = readFromFile("SieuThiMini\\OrderInventory.txt");
         
         // Hỏi vị trí dòng cần thêm
         System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
@@ -229,7 +229,7 @@ public class InventoryManager extends Staff {
             IvenProduct[vitri - 1] = newIvenProduct;
         }
         // Ghi lại dữ liệu vào file
-        writeToFile("OrderInventory.txt", IvenProduct);
+        writeToFile("SieuThiMini\\OrderInventory.txt", IvenProduct);
     
         // Hiển thị danh sách nhập hàng sau khi cập nhật
         System.out.println("Danh sách nhập hàng sau khi cập nhật: ");
@@ -247,7 +247,7 @@ public class InventoryManager extends Staff {
         String IDremove = sc.nextLine();
         
         // Đọc danh sách kho từ file
-        InventoryManager[] IvenProducts = readFromFile("Inventory.txt");
+        InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\Inventory.txt");
         
         // Kiểm tra nếu không tìm thấy kho
         boolean found = false;
@@ -275,7 +275,7 @@ public class InventoryManager extends Staff {
             }
     
             // Ghi lại danh sách mới vào file
-            writeToFile("Inventory.txt", updatedIvenProduct);
+            writeToFile("SieuThiMini\\Inventory.txt", updatedIvenProduct);
             System.out.println("kho với mã " + IDremove + " đã được xoá.");
         }
     
@@ -293,7 +293,7 @@ public class InventoryManager extends Staff {
         String IDremove = sc.nextLine();
 
         // Đọc danh sách kho từ file
-        InventoryManager[] IvenProducts = readFromFile("OrderInventory.txt");
+        InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\OrderInventory.txt");
 
         // Kiểm tra nếu không tìm thấy kho
         boolean found = false;
@@ -321,7 +321,7 @@ public class InventoryManager extends Staff {
             }
 
             // Ghi lại danh sách mới vào file
-            writeToFile("OrderInventory.txt", updatedIvenProduct);
+            writeToFile("SieuThiMini\\OrderInventory.txt", updatedIvenProduct);
             System.out.println("Nhập hàng với mã " + IDremove + " đã được xoá.");
         }
 
@@ -338,7 +338,7 @@ public class InventoryManager extends Staff {
         Scanner sc = new Scanner(System.in);
 
         // Đọc danh sách kho hiện tại từ file
-        InventoryManager[] IvenProduct= readFromFile("Inventory.txt");
+        InventoryManager[] IvenProduct= readFromFile("SieuThiMini\\Inventory.txt");
 
         System.out.println("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
         String Id = sc.nextLine();
@@ -377,7 +377,7 @@ public class InventoryManager extends Staff {
         }
 
         // Cập nhật lại dữ liệu vào file
-        writeToFile("Inventory.txt", IvenProduct);
+        writeToFile("SieuThiMini\\Inventory.txt", IvenProduct);
 
         // Hiển thị lại danh sách kho sau khi cập nhật
         getdetail();
@@ -390,7 +390,7 @@ public class InventoryManager extends Staff {
         Scanner sc = new Scanner(System.in);
 
         // Đọc danh sách nhập hàng hiện tại từ file
-        InventoryManager[] IvenProduct= readFromFile("OrderInventory.txt");
+        InventoryManager[] IvenProduct= readFromFile("SieuThiMini\\OrderInventory.txt");
 
         System.out.println("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
         String Id = sc.nextLine();
@@ -429,7 +429,7 @@ public class InventoryManager extends Staff {
         }
 
         // Cập nhật lại dữ liệu vào file
-        writeToFile("Inventory.txt", IvenProduct);
+        writeToFile("SieuThiMini\\Inventory.txt", IvenProduct);
 
         // Hiển thị lại danh sách kho sau khi cập nhật
         getdetail();
@@ -438,7 +438,7 @@ public class InventoryManager extends Staff {
     @Override
     public void search() {
         Scanner sc = new Scanner(System.in);
-        InventoryManager[] IvenProducts = readFromFile("Inventory.txt");
+        InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\Inventory.txt");
 
         // Yêu cầu nhập các tiêu chí tìm kiếm
         System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
@@ -505,7 +505,7 @@ public class InventoryManager extends Staff {
 
     public void searchOrder() {
         Scanner sc = new Scanner(System.in);
-        InventoryManager[] IvenProducts = readFromFile("OrderInventory.txt");
+        InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\OrderInventory.txt");
 
         // Yêu cầu nhập các tiêu chí tìm kiếm
         System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");

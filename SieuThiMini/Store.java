@@ -11,6 +11,7 @@ public class Store {
     public Order[] orderList; // danh sách đơn hàng
     public Customer[] customers; // danh sách khách hàng
     public Discount[] discounts; // danh sách chương trình khuyến mãi
+    public Receipt[] receipts;
     public Manager managers;
     public Department departments;
     public Cashier cashiers;
@@ -19,12 +20,18 @@ public class Store {
 
     public Store() {
         Order order = new Order();
-        String filepath = null;
-        orderList = order.readFromFile(filepath);
-        customers = Customer.readFromFile("SieuThiMini\\customers.txt");
-        discounts = Discount.readFromFile("SieuThiMini\\discount.txt");
-        managers = new Manager();
+        orderList = order.readFromFile("SieuThiMini\\donhang.txt");
+        
+        Customer cus=new Customer();
+        customers = cus.readFromFile("SieuThiMini\\customers.txt");
+        
+        Discount dis=new Discount();
+        discounts = dis.readFromFile("SieuThiMini\\discount.txt");
 
+        Receipt rc=new Receipt();
+        receipts =rc.readFromFile("SieuThiMini\\ghihoadon.txt");
+
+        managers = new Manager();
         departments = new Department();
         cashiers = new Cashier();
         IvenProduct = new InventoryManager();
@@ -270,7 +277,8 @@ public class Store {
         System.out.println("╚══════════════════════╩══════════════════════╝");
     }
 
-    public void ghifile(){
+
+    public void ghifileord(){
         Order temp=new Order();
         String filename="SieuThiMini\\ghidonhang.txt";
         temp.xoaNoiDungFile(filename);
@@ -347,6 +355,26 @@ public class Store {
     // Chức năng 5: Tìm kiếm chương trình khuyến mãi
     public void timKiemChuongTrinhKhuyenMai(Scanner scanner) {
         Discount.searchDiscounts(scanner, discounts);
+    }
+
+    public void ghifilectkm(){
+        Discount temp =new Discount();
+        String filename = "SieuThiMini\\discount.txt";
+        temp.xoaNoiDungFile(filename);
+        for(Discount dis: discounts){
+            dis.writeToFile(filename);
+        }
+        System.out.println("Đã ghi vào file discount.txt");
+    }
+
+    public void ghifilecus(){
+        Customer temp =new Customer();
+        String filename = "SieuThiMini\\customers.txt";
+        temp.xoaNoiDungFile(filename);
+        for(Customer cus: customers){
+            cus.writeToFile(filename);
+        }
+        System.out.println("Đã ghi vào file customers.txt");
     }
 
     /* Các thao tác cho danh sách chương trình khuyến mãi END */
@@ -427,88 +455,36 @@ public class Store {
         } while (choice != 0);
 
     }
-    /* Cac thao tac voi Product END */
-    /* Các thao tác giao dịch Start */
-    /*
-     * InvoiceManager invoice = new InvoiceManager();
-     * Receipt receipt =new Receipt();
-     * Order order = new Order();
-     * // Khởi tạo 1 giao dịch mới
-     * public void taoGiaoDichMoi() {
-     * Scanner scanner = new Scanner(System.in);
-     * System.out.println("Chọn phương thức thanh toán:");
-     * System.out.println("1. Tiền mặt");
-     * System.out.println("2. Thẻ");
-     * int paymentMethod = scanner.nextInt();
-     * scanner.nextLine(); // Consume newline
-     * 
-     * Cashier cashier = new Cashier("C001", "Nguyen Van A", "Cashier", 5000.0,
-     * "0123456789", "Counter 1", "Morning", null, 0);
-     * 
-     * try {
-     * Transaction transaction = new
-     * Transaction(Integer.parseInt(order.getOrderId()), new
-     * SimpleDateFormat("dd/MM/yyyy").parse(order.getOrderDate()));
-     * for (Product product : order.getProductList()) {
-     * Item item = new Item(product.name, product.price, product.quantity);
-     * transaction.addItem(item);
-     * }
-     * 
-     * if (paymentMethod == 1) {
-     * System.out.print("Nhập số tiền khách đưa: ");
-     * double customerPaid = scanner.nextDouble();
-     * scanner.nextLine(); // Consume newline
-     * transaction.setCustomerPaid(customerPaid);
-     * invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()),
-     * transaction, cashier));
-     * System.out.println("Giao dịch đã được tạo thành công bằng tiền mặt!");
-     * } else if (paymentMethod == 2) {
-     * CardPayment cardPayment = new CardPayment();
-     * cardPayment.inputCardDetails();
-     * transaction.setCustomerPaid(order.getTotalAmount() +
-     * Order.calculateVAT(order.getTotalAmount()));
-     * invoice.addReceipt(new Receipt(Integer.parseInt(order.getOrderId()),
-     * transaction, cashier));
-     * System.out.println("Giao dịch đã được tạo thành công bằng thẻ!");
-     * } else {
-     * System.out.println("Phương thức thanh toán không hợp lệ.");
-     * }
-     * } catch (Exception e) {
-     * e.printStackTrace();
-     * }
-     * scanner.close();
-     * }
-     * 
-     * // Sửa hóa đơn
-     * public void suaHoaDon() {
-     * invoice.editReceiptById();
-     * }
-     * 
-     * // Xóa hóa đơn
-     * public void xoaHoaDon() {
-     * invoice.deleteReceiptById();
-     * }
-     * 
-     * // Xuất hóa đơn + in biên lai
-     * public void xuatHoaDon() {
-     * invoice.exportInvoice();
-     * }
-     * 
-     * // Tìm kiếm hóa đơn
-     * public void timKiemHoaDon() {
-     * invoice.searchAndPrintReceipt();
-     * }
-     * 
-     * 
-     * 
-     * /*
-     * Gọi trong chạy chương trình
-     * var.taoGiaoDichMoi();
-     * var.suaHoaDon();
-     * var.xoaHoaDon();
-     * var.xuatHoaDon();
-     * var.timKiemHoaDon();
-     */
+    
+    public void xuatHoaDon(){
+        for(Receipt rc: receipts){
+            rc.inHoaDon();
+        }
+    }
 
-    /* Các thao tác giao dịch End */
+    public void themHoaDon(Scanner scanner){
+        receipts=Receipt.themhoadon(receipts, scanner, orderList);
+    }
+
+    public void xoaHoaDon(Scanner scanner){
+        receipts=Receipt.xoahoadon(receipts, scanner);
+    }
+
+    public void suaHoaDon(Scanner scanner){
+        System.out.print("Nhập id hóa đơn mà bạn muốn chỉnh sửa: ");
+        receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner);
+    }
+
+    public void timHoaDon(Scanner scanner){
+        Receipt.locHoaDon(scanner, receipts);
+    }
+
+    public void ghihoadon(){
+        String filename="SieuThiMini\\ghihoadon.txt";
+        Receipt.xoaNoiDungFile(filename);
+        for(Receipt rc:receipts){
+            rc.writeToFile(filename);
+        }
+        System.out.println("Đã ghi vào file ghihoadon.txt");
+    }
 }

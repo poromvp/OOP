@@ -1,3 +1,4 @@
+u 12 1
 nymr4AmRV abc 3
 abs1234as Carrot 100
 fdsha123s VinaMilk 50
