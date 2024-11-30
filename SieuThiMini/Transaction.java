@@ -1,75 +1,64 @@
-import java.util.Date;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Transaction {
-    private int id;
-    private Date date;
-    private double totalAmount;
-    private Item[] items;
-    private int itemCount;
-    private double customerPaid;
-
-    public Transaction(int id, Date date) {
-        this.id = id;
-        this.date = date;
-        this.totalAmount = 0.0;
-        this.items = new Item[100];
-        this.itemCount = 0;
-        this.customerPaid = 0.0;
+    public Order donhang;
+    public String tenNhanVien;
+    public Payment phuongThucThanhToan;
+    public Transaction(){
+        donhang=new Order();
     }
 
-    public void addItem(Item item) {
-        if (itemCount < items.length) {
-            items[itemCount++] = item;
-            totalAmount += item.getTotalPrice();
-        } else {
-            System.out.println("Không thể thêm sản phẩm: Đã đạt giới hạn.");
-        }
+    
+
+    public Transaction(Order donhang, String tenNhanVien, Payment phuongThucThanhToan) {
+        this.donhang = donhang;
+        this.tenNhanVien = tenNhanVien;
+        this.phuongThucThanhToan = phuongThucThanhToan;
     }
 
-    public void setCustomerPaid(double customerPaid) {
-        this.customerPaid = customerPaid;
+
+
+    public Order getDonhang() {
+        return donhang;
     }
 
-    public double getCustomerPaid() {
-        return customerPaid;
+
+
+    public void setDonhang(Order donhang) {
+        this.donhang = donhang;
     }
 
-    public double getChange() {
-        return customerPaid - totalAmount;
+
+
+    public String getTenNhanVien() {
+        return tenNhanVien;
     }
 
-    public double getTotal() {
-        return totalAmount;
+
+
+    public void setTenNhanVien(String tenNhanVien) {
+        this.tenNhanVien = tenNhanVien;
     }
 
-    public int getId() {
-        return id;
+
+
+    public Payment getPhuongThucThanhToan() {
+        return phuongThucThanhToan;
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+
+    public void setPhuongThucThanhToan(Payment phuongThucThanhToan) {
+        this.phuongThucThanhToan = phuongThucThanhToan;
     }
 
-    public Date getDate() {
-        return date;
-    }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Item[] getItems() {
-        Item[] currentItems = new Item[itemCount];
-        System.arraycopy(items, 0, currentItems, 0, itemCount);
-        return currentItems;
-    }
-
-    public void setItems(Item[] items) {
-        this.items = items;
-        this.itemCount = items.length;
-        this.totalAmount = 0.0;
-        for (Item item : items) {
-            this.totalAmount += item.getTotalPrice();
+    public void luuGiaoDich() {
+        try (FileWriter writer = new FileWriter("transaction.txt", true)) {
+            writer.write(this.toString() + "\n");
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi giao dịch: " + e.getMessage());
         }
     }
 }

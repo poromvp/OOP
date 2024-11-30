@@ -1,10 +1,9 @@
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Scanner;
 import java.util.Date;
+
 public class InvoiceManager {
     private Receipt[] receipts;
     private int count;
@@ -14,7 +13,7 @@ public class InvoiceManager {
     public InvoiceManager(int size) {
         receipts = new Receipt[size];
         count = 0;
-        discounts = new Discount[10]; 
+        discounts = new Discount[10];
     }
 
     public InvoiceManager() {
@@ -31,8 +30,7 @@ public class InvoiceManager {
     }
 
     // Xuất hóa đơn
-   
-    
+
     public void exportInvoice() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nhập mã hóa đơn cần xuất: ");
@@ -47,6 +45,7 @@ public class InvoiceManager {
         }
 
     }
+
     // Sửa hóa đơn
     public void editReceiptById() {
         Scanner scanner = new Scanner(System.in);
@@ -63,16 +62,25 @@ public class InvoiceManager {
                 int newTransactionId = scanner.nextInt();
                 scanner.nextLine(); // Consume newline
                 transaction.setId(newTransactionId);
-
-                System.out.print("Nhập ngày giao dịch mới (dd/MM/yyyy) (hiện tại: " + new SimpleDateFormat("dd/MM/yyyy").format(transaction.getDate()) + "): ");
+                System.out.print("Nhập ngày giao dịch mới (dd/MM/yyyy) (hiện tại: "
+                        + new SimpleDateFormat("dd/MM/yyyy").format(transaction.getDate()) + "): ");
                 String newDateString = scanner.nextLine();
+
                 Date newDate = null;
                 try {
                     newDate = new SimpleDateFormat("dd/MM/yyyy").parse(newDateString);
+                    System.out.println("Ngày đã parse: " + newDate);
                 } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Lỗi định dạng ngày: " + e.getMessage());
+                    e.printStackTrace();
                 }
-                transaction.setDate(newDate);
+
+                if (newDate != null) {
+                    transaction.setDate(newDate);
+                    System.out.println("Ngày giao dịch mới đã được cập nhật!");
+                } else {
+                    System.out.println("Ngày giao dịch không được cập nhật do lỗi định dạng.");
+                }
 
                 System.out.print("Nhập số tiền khách đưa mới (hiện tại: " + transaction.getCustomerPaid() + "): ");
                 double newCustomerPaid = scanner.nextDouble();
@@ -96,7 +104,7 @@ public class InvoiceManager {
                 }
 
                 System.out.println("Hóa đơn đã được sửa thành công.");
-                
+
                 return;
             }
         }
@@ -122,34 +130,33 @@ public class InvoiceManager {
             }
         }
         System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
-        
+
     }
 
-// tìm kiếm hóa đơn
-public Receipt searchReceiptById(int receiptId) {
-    for (int i = 0; i < count; i++) {
-        if (receipts[i].getReceiptId() == receiptId) {
-            return receipts[i];
+    // tìm kiếm hóa đơn
+    public Receipt searchReceiptById(int receiptId) {
+        for (int i = 0; i < count; i++) {
+            if (receipts[i].getReceiptId() == receiptId) {
+                return receipts[i];
+            }
         }
+        return null;
     }
-    return null;
-}
 
-public void searchAndPrintReceipt() {
-    Scanner scanner = new Scanner(System.in);
-    System.out.print("Nhập mã hóa đơn cần tìm: ");
-    int receiptId = scanner.nextInt();
-    scanner.nextLine(); // Consume newline
+    public void searchAndPrintReceipt() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập mã hóa đơn cần tìm: ");
+        int receiptId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
-    Receipt receipt = searchReceiptById(receiptId);
-    if (receipt != null) {
-        receipt.print();
-    } else {
-        System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
+        Receipt receipt = searchReceiptById(receiptId);
+        if (receipt != null) {
+            receipt.print();
+        } else {
+            System.out.println("Không tìm thấy hóa đơn với mã: " + receiptId);
+        }
+        scanner.close();
     }
-    scanner.close();
-}
-
 
     // Đọc hóa đơn từ file
     public void loadReceiptsFromFile(String filename) {
