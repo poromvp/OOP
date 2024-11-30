@@ -524,7 +524,7 @@ public class Order implements QLFile {
                     "%20s╠═════════════════╬══════════════════════╬═══════════╬══════════════════╬═══════════════╬═════════════════╣\n",
                     " ");
             System.out.printf("%20s║ %d. %-13s║ %-21s║ %-10s║ %-17s║ %-14s║ %-16s║\n",
-                    " ", (i + 1), product[i].getProductID(), product[i].getName(), product[i].getCategoryId(),
+                    " ", (i + 1), product[i].getProductID(), product[i].getName(), Category.getCategoryById(product[i].getCategoryId()).getCategoryName(),
                     product[i].getPrice(), product[i].getQuantity(), product[i].getSupplierId());
         }
         System.out.printf(
