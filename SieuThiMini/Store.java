@@ -19,8 +19,8 @@ public class Store {
     public InventoryManager OrderProduct;
 
     public Store() {
-        Order order = new Order();
-        orderList = order.readFromFile("SieuThiMini\\donhang.txt");
+        Order or = new Order();
+        orderList = or.readFromFile("SieuThiMini\\donhang.txt");
         
         Customer cus=new Customer();
         customers = cus.readFromFile("SieuThiMini\\customers.txt");
@@ -36,9 +36,9 @@ public class Store {
         cashiers = new Cashier();
         IvenProduct = new InventoryManager();
         OrderProduct = new InventoryManager();
-        managers.readFromFile("dsnv.txt");
+        managers.readFromFile("SieuThiMini\\dsnv.txt");
         departments = new Department();
-        departments.readFromFile("DepartmentList.txt");
+        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
         readFileProduct();
 
     }
@@ -378,22 +378,24 @@ public class Store {
     }
 
     /* Các thao tác cho danh sách chương trình khuyến mãi END */
+
+
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("category.txt");
-        Supplier.readSupplierFromFile("supplier.txt");
-        Product.readProductsFromFile("product.txt");
+        Category.readCategoryFromFile("SieuThiMini\\category.txt");
+        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
+        Product.readProductsFromFile("SieuThiMini\\product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
     public void writeFileProduct(){
-        Product.writeProductsToFile("product.txt");
+        Product.writeProductsToFile("SieuThiMini\\product.txt");
     }
     public void writeFileCategory(){
-        Category.writeCategoryFromFile("category.txt");
+        Category.writeCategoryFromFile("SieuThiMini\\category.txt");
     }
     public void writeFileSupplier(){
-        Supplier.writeSupplierFromFile("supplier.txt");
+        Supplier.writeSupplierFromFile("SieuThiMini\\supplier.txt");
     }
     // Xuat danh sach cac san pham
     public void productDetail() {

@@ -905,7 +905,6 @@ public class Order implements QLFile {
         Order[] orderList;
         int i, n;
         n = 0;
-        filePath = "donhang.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String Line;
             while ((Line = br.readLine()) != null) {
