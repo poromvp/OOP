@@ -490,8 +490,8 @@ public class ChayChuongTrinh {
                             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                             System.out.print("Lựa chọn của bạn: ");
-                            subchoice = Integer.parseInt(scanner.nextLine());
-                        switch (subchoice) {
+                            subsubchoice = Integer.parseInt(scanner.nextLine());
+                        switch (subsubchoice) {
                         case 1:
                             store.xuatNhapKho();
                             break;
@@ -512,7 +512,7 @@ public class ChayChuongTrinh {
                             default:
                             System.out.println("Lựa chọn không hợp lệ.");
                         }
-                        } while (subchoice != 0);
+                        } while (subsubchoice != 0);
                         break;
                     case 0:
                         break;
