@@ -71,18 +71,37 @@ public class Discount implements QLFile{
 
     // Phương thức xuất danh sách khuyến mãi
     public static void outputDiscounts(Discount[] discounts) {
-        System.out.println("Danh sách chương trình khuyến mãi:");
+        System.out.printf("%-53s╔══════════════════════════════════════════╗\n", " ");
+        System.out.printf("%-53s║      DANH SÁCH CHƯƠNG TRÌNH KHUYẾN MÃI   ║\n", " ");
+        System.out.printf("%-53s╚══════════════════════════════════════════╝\n\n", " ");
+        System.out.printf(
+                "%40s╔═══════════╦═════════════════════════╦═══════════════╦════════════════╦════════════════╗\n",
+                " ");
+        System.out.printf(
+                "%40s║  Mã CTKM  ║      Tên Chương Trình     ║ % Giảm Giá   ║ Ngày Bắt Đầu  ║  Ngày Kết Thúc ║\n",
+                " ");
+        
         for (Discount discount : discounts) {
             if (discount != null) {
-                System.out.println("==================================");
-                System.out.println("Mã chương trình khuyến mãi: " + discount.discountID);
-                System.out.println("Tên chương trình khuyến mãi: " + discount.name);
-                System.out.println("Phần trăm giảm giá: " + discount.discountPercentage + "%");
-                System.out.println("Ngày bắt đầu chương trình: " + DATE_FORMAT.format(discount.startDate));
-                System.out.println("Ngày kết thúc chương trình: " + DATE_FORMAT.format(discount.endDate));
+                System.out.printf(
+                        "%40s╠═══════════╬═════════════════════════╬═══════════════╬════════════════╬════════════════╣\n", " ");
+                System.out.printf(
+                        "%40s║ %-10s║ %-25s║ %-13s║ %-15s║ %-15s║\n", 
+                        " ", 
+                        discount.discountID, 
+                        discount.name, 
+                        discount.discountPercentage + "%", 
+                        DATE_FORMAT.format(discount.startDate), 
+                        DATE_FORMAT.format(discount.endDate)
+                );
             }
         }
+        
+        System.out.printf(
+                "%40s╚═══════════╩═════════════════════════╩═══════════════╩════════════════╩════════════════╝\n\n",
+                " ");
     }
+    
 
     // Phương thức thêm chương trình khuyến mãi mới từ bàn phím
     public static Discount[] addDiscounts(Discount[] discounts) {
@@ -308,7 +327,7 @@ public class Discount implements QLFile{
     // Phương thức sửa thông tin chương trình khuyến mãi theo ID
     public static Discount[] updateDiscountByID(Discount[] discounts, int discountID) {
         Scanner scanner = new Scanner(System.in);
-
+    
         // Tìm kiếm chương trình khuyến mãi theo ID
         Discount discountToUpdate = null;
         for (Discount discount : discounts) {
@@ -317,25 +336,40 @@ public class Discount implements QLFile{
                 break;
             }
         }
-
+    
         if (discountToUpdate != null) {
-            // Hiển thị thông tin hiện tại của chương trình khuyến mãi
-            System.out.println("Thông tin chương trình khuyến mãi hiện tại:");
-            System.out.println("Mã chương trình khuyến mãi: " + discountToUpdate.getDiscountID());
-            System.out.println("Tên chương trình khuyến mãi: " + discountToUpdate.getName());
-            System.out.println("Phần trăm giảm giá: " + discountToUpdate.getDiscountPercentage() + "%");
-            System.out.println("Ngày bắt đầu: " + DATE_FORMAT.format(discountToUpdate.getStartDate()));
-            System.out.println("Ngày kết thúc: " + DATE_FORMAT.format(discountToUpdate.getEndDate()));
-
-            // Nhập thông tin mới (hoặc giữ nguyên nếu để trống)
-            System.out.println("Nhập thông tin mới (nhấn Enter để giữ nguyên):");
-
+            // Hiển thị thông tin chương trình khuyến mãi
+            System.out.printf(
+                    "%40s╔═══════════╦═════════════════════════╦═══════════════╦════════════════╦════════════════╗\n",
+                    " ");
+            System.out.printf(
+                    "%40s║  Mã CTKM  ║      Tên Chương Trình     ║ % Giảm Giá   ║ Ngày Bắt Đầu  ║  Ngày Kết Thúc ║\n",
+                    " ");
+            System.out.printf(
+                    "%40s╠═══════════╬═════════════════════════╬═══════════════╬════════════════╬════════════════╣\n", " ");
+            System.out.printf(
+                    "%40s║ %-10s║ %-25s║ %-13s║ %-15s║ %-15s║\n",
+                    " ",
+                    discountToUpdate.getDiscountID(),
+                    discountToUpdate.getName(),
+                    discountToUpdate.getDiscountPercentage() + "%",
+                    DATE_FORMAT.format(discountToUpdate.getStartDate()),
+                    DATE_FORMAT.format(discountToUpdate.getEndDate())
+            );
+            System.out.printf(
+                    "%40s╚═══════════╩═════════════════════════╩═══════════════╩════════════════╩════════════════╝\n\n",
+                    " ");
+    
+            System.out.println("\nNhấn Enter để giữ nguyên thông tin hiện tại.");
+    
+            // Cập nhật tên chương trình
             System.out.print("Tên chương trình khuyến mãi mới: ");
             String newName = scanner.nextLine();
             if (!newName.trim().isEmpty()) {
                 discountToUpdate.setName(newName);
             }
-
+    
+            // Cập nhật phần trăm giảm giá
             System.out.print("Phần trăm giảm giá mới: ");
             String newDiscountPercentageStr = scanner.nextLine();
             if (!newDiscountPercentageStr.trim().isEmpty()) {
@@ -343,42 +377,42 @@ public class Discount implements QLFile{
                     double newDiscountPercentage = Double.parseDouble(newDiscountPercentageStr);
                     discountToUpdate.setDiscountPercentage(newDiscountPercentage);
                 } catch (NumberFormatException e) {
-                    System.out.println("Lỗi: phần trăm giảm giá không hợp lệ.");
-                }   
+                    System.out.println("Lỗi: Phần trăm giảm giá không hợp lệ. Giữ nguyên giá trị hiện tại.");
+                }
             }
-
-            System.out.print("Ngày bắt đầu mới: (dd-MM-yyyy): ");
+    
+            // Cập nhật ngày bắt đầu
+            System.out.print("Ngày bắt đầu mới (dd-MM-yyyy): ");
             String newStartDateStr = scanner.nextLine();
             if (!newStartDateStr.trim().isEmpty()) {
                 try {
                     Date newStartDate = DATE_FORMAT.parse(newStartDateStr);
                     discountToUpdate.setStartDate(newStartDate);
-                } 
-                catch (ParseException e) {
-                System.out.println("Lỗi: Ngày bắt đầu không hợp lệ.");
+                } catch (ParseException e) {
+                    System.out.println("Lỗi: Ngày bắt đầu không hợp lệ. Giữ nguyên giá trị hiện tại.");
                 }
             }
-
-            System.out.print("Ngày kết thúc mới: (dd-MM-yyyy): ");
+    
+            // Cập nhật ngày kết thúc
+            System.out.print("Ngày kết thúc mới (dd-MM-yyyy): ");
             String newEndDateStr = scanner.nextLine();
             if (!newEndDateStr.trim().isEmpty()) {
                 try {
                     Date newEndDate = DATE_FORMAT.parse(newEndDateStr);
                     discountToUpdate.setEndDate(newEndDate);
                 } catch (ParseException e) {
-                    System.out.println("Lỗi: Ngày kết thúc không hợp lệ.");
+                    System.out.println("Lỗi: Ngày kết thúc không hợp lệ. Giữ nguyên giá trị hiện tại.");
                 }
             }
-
-            System.out.println("Thông tin chương trình khuyến mãi đã được cập nhật.");
-        } 
-        else {
+    
+            System.out.println("\nThông tin chương trình khuyến mãi đã được cập nhật thành công.");
+        } else {
             System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + discountID);
         }
-
+    
         return discounts; // Trả về danh sách đã được cập nhật
     }
-
+    
     // Thêm phương thức hiển thị chi tiết khuyến mãi
     public void displayDetails() {
         System.out.println("==================================");
