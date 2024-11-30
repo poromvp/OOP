@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Supplier {
@@ -76,6 +74,21 @@ public class Supplier {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
     }
+    public static void writeSupplierFromFile(String filePath){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (int i = 0; i < cnt; i++) {
+                Supplier s = supplierList[i];
+                if (s != null) {
+                    // Ghi thông tin sản phẩm vào file, cách nhau bởi dấu phẩy
+                    writer.write(s.getSupplierID()+','+s.getSupplierName());
+                    writer.newLine(); // Xuống dòng cho sản phẩm tiếp theo
+                }
+            }
+            System.out.println("Đã ghi nhà cung cấp vào file thành công.");
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
     public static void addSupplier(){
         if (cnt == supplierList.length) {
             // Mở rộng mảng khi đạt giới hạn
@@ -97,8 +110,33 @@ public class Supplier {
                 check=1;
             }
         } while(check ==0);
-        System.out.println("Nhap gia ten nha cung cap: ");
+        System.out.println("Nhap vao ten nha cung cap: ");
         a.setSupplierName(sc.nextLine());
+        supplierList[cnt++]=a;
+        System.out.println("Them nha cung cap thanh cong.");
+    }
+    //Xoa
+    public static void deleteSupplier( String supplierID) {
+        int indexToDelete = -1;
+
+        // Tìm chỉ mục sản phẩm cần xóa
+        for (int i = 0; i < cnt; i++) {
+            if (supplierList[i] != null && supplierList[i].getSupplierID().equals(supplierID)) {
+                indexToDelete = i;
+                break;
+            }
+        }
+
+        //Xóa sản phẩm và dịch chuyển các phần tử còn lại
+        if (indexToDelete != -1) {
+            for (int i = indexToDelete; i < cnt - 1; i++) {
+                supplierList[i] = supplierList[i + 1];
+            }
+            supplierList[--cnt] = null; // Đặt phần tử cuối cùng thành null
+            System.out.println("Đã xóa nhà cung cấp thành công.");
+        } else {
+            System.out.println("Không tìm thấy nhà cung cấp với ID: " + supplierID);
+        }
     }
 
     public static boolean checkIDSupplier(String id){

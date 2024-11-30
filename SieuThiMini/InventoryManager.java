@@ -162,32 +162,45 @@ public class InventoryManager extends Staff {
 
         InventoryManager[] IvenProduct = readFromFile("SieuThiMini\\Inventory.txt");
 
-        System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
-        int vitri = Integer.parseInt(sc.nextLine());
-
-        String id = InventoryManager.generateRandomString(8);
-
-        System.out.print("Nhập sản phẩm bạn muốn thêm vào kho: ");
-        String name = sc.nextLine();
-
-        System.out.println("Nhập Số lượng sản phẩm đó: ");
-        String SL = sc.nextLine();
-
-        InventoryManager newIvenProduct = new InventoryManager(id, name, Integer.parseInt(SL));
-
-        if (vitri > IvenProduct.length) {
-            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
-            IvenProduct[IvenProduct.length - 1] = newIvenProduct;
-        } else {
-            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
-            for (int i = IvenProduct.length - 1; i > vitri - 1; i--) {
-                IvenProduct[i] = IvenProduct[i - 1];
-            }
-            IvenProduct[vitri - 1] = newIvenProduct;
+        System.out.print("Số lượng hàng trong kho bạn muốn thêm vào: ");
+        int n = Integer.parseInt(sc.nextLine());
+        while(n<=0){
+            System.out.print("Số lượng không hợp lệ !!! vui lòng nhập lại: ");
+            n =Integer.parseInt(sc.nextLine());
         }
+        System.out.println("=================================================================");
 
+        for(int j=0; j<n; j++){
+
+            System.out.print("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
+            int vitri = Integer.parseInt(sc.nextLine());
+
+            String id = InventoryManager.generateRandomString(8);
+
+            System.out.print("Nhập sản phẩm bạn muốn thêm vào kho: ");
+            String name = sc.nextLine();
+
+            System.out.print("Nhập Số lượng sản phẩm đó: ");
+            String SL = sc.nextLine();
+
+            InventoryManager newIvenProduct = new InventoryManager(id, name, Integer.parseInt(SL));
+
+            if (vitri > IvenProduct.length) {
+                IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
+                IvenProduct[IvenProduct.length - 1] = newIvenProduct;
+            } else {
+                IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
+                for (int i = IvenProduct.length - 1; i > vitri - 1; i--) {
+                    IvenProduct[i] = IvenProduct[i - 1];
+                }
+                IvenProduct[vitri - 1] = newIvenProduct;
+            }
+            System.out.println("=================================================================");
+        }
         writeToFile("SieuThiMini\\Inventory.txt", IvenProduct);
         System.out.println("Thêm sản phẩm thành công!");
+        getdetail();
+
     }
     public void addOrder() {
         // Hiển thị danh sách Nhập hàng hiện tại
@@ -198,42 +211,53 @@ public class InventoryManager extends Staff {
         
         // Đọc danh sách nhập hàng hiện tại từ file
         InventoryManager[] IvenProduct = readFromFile("SieuThiMini\\OrderInventory.txt");
+        System.out.print("số lượng sản phẩm bạn muốn thêm vào danh sách nhập hàng: ");
+        int n =Integer.parseInt(sc.nextLine());
+        while(n<=0){
+            System.out.print("Số lượng thêm không hợp lệ !!! vui lòng nhập lại: ");
+            n = Integer.parseInt(sc.nextLine());
+        }
+        System.out.println("=================================================================");
+
+        for(int j=0; j<n; j++){
         
-        // Hỏi vị trí dòng cần thêm
-        System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
-        int vitri = Integer.parseInt(sc.nextLine());
+            // Hỏi vị trí dòng cần thêm
+            System.out.print("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
+            int vitri = Integer.parseInt(sc.nextLine());
+            
+            String id = InventoryManager.generateRandomString(vitri); // mã sản phẩm ngẫu nhiên
         
-        String id = InventoryManager.generateRandomString(vitri); // mã sản phẩm ngẫu nhiên
-    
-        // Nhập thông tin nhập hàng mới
-        System.out.print("Nhập sản phẩm bạn muốn thêm vào kho: ");
-        String name = sc.nextLine();
-        
-        System.out.println("Nhập Số lượng sản phẩm đó: ");
-        String SL = sc.nextLine();
-        
-        // Tạo nhập hàng mới
-        InventoryManager newIvenProduct = new InventoryManager(id, name, Integer.parseInt(SL));
-        
-        // Kiểm tra nếu vitri lớn hơn hoặc bằng kích thước mảng, thêm vào cuối mảng
-        if (vitri > IvenProduct.length) {
-            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
-            IvenProduct[IvenProduct.length - 1] = newIvenProduct;
-        } else {
-            // Mở rộng mảng departments để chứa nhập hàng mới
-            IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1); // Mở rộng mảng
-            for (int i = IvenProduct.length - 1; i > vitri - 1; i--) {
-                IvenProduct[i] = IvenProduct[i - 1]; // Di chuyển các phần tử phía sau
+            // Nhập thông tin nhập hàng mới
+            System.out.print("Nhập sản phẩm bạn muốn thêm vào danh sách: ");
+            String name = sc.nextLine();
+            
+            System.out.print("Nhập Số lượng sản phẩm đó: ");
+            String SL = sc.nextLine();
+            
+            // Tạo nhập hàng mới
+            InventoryManager newIvenProduct = new InventoryManager(id, name, Integer.parseInt(SL));
+            
+            // Kiểm tra nếu vitri lớn hơn hoặc bằng kích thước mảng, thêm vào cuối mảng
+            if (vitri > IvenProduct.length) {
+                IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1);
+                IvenProduct[IvenProduct.length - 1] = newIvenProduct;
+            } else {
+                // Mở rộng mảng departments để chứa nhập hàng mới
+                IvenProduct = Arrays.copyOf(IvenProduct, IvenProduct.length + 1); // Mở rộng mảng
+                for (int i = IvenProduct.length - 1; i > vitri - 1; i--) {
+                    IvenProduct[i] = IvenProduct[i - 1]; // Di chuyển các phần tử phía sau
+                }
+                // Thêm nhập hàng mới vào mảng tại vị trí vitri - 1
+                IvenProduct[vitri - 1] = newIvenProduct;
             }
-            // Thêm nhập hàng mới vào mảng tại vị trí vitri - 1
-            IvenProduct[vitri - 1] = newIvenProduct;
+            System.out.println("=================================================================");
         }
         // Ghi lại dữ liệu vào file
         writeToFile("SieuThiMini\\OrderInventory.txt", IvenProduct);
     
         // Hiển thị danh sách nhập hàng sau khi cập nhật
         System.out.println("Danh sách nhập hàng sau khi cập nhật: ");
-        getdetail();
+        getdetailOrder();
     }
     
     @Override
@@ -340,7 +364,7 @@ public class InventoryManager extends Staff {
         // Đọc danh sách kho hiện tại từ file
         InventoryManager[] IvenProduct= readFromFile("SieuThiMini\\Inventory.txt");
 
-        System.out.println("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
+        System.out.print("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
         String Id = sc.nextLine();
 
         boolean found = false;
@@ -351,7 +375,7 @@ public class InventoryManager extends Staff {
                 // kho được tìm thấy, tiến hành sửa thông tin
                 found = true;
 
-                System.out.println("Nhập thông tin mới cho sản phẩm (bỏ qua nếu không muốn thay đổi):");
+                System.out.println("Nhập thông tin mới cho sản phẩm (bỏ qua nếu không muốn thay đổi)");
 
                 // Cập nhật tên kho
                 System.out.print("Nhập tên sản phẩm mới: ");
@@ -392,7 +416,7 @@ public class InventoryManager extends Staff {
         // Đọc danh sách nhập hàng hiện tại từ file
         InventoryManager[] IvenProduct= readFromFile("SieuThiMini\\OrderInventory.txt");
 
-        System.out.println("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
+        System.out.print("Nhập mã sản phẩm bạn muốn thay đổi thông tin: ");
         String Id = sc.nextLine();
 
         boolean found = false;
@@ -403,7 +427,7 @@ public class InventoryManager extends Staff {
                 // nhập hàng được tìm thấy, tiến hành sửa thông tin
                 found = true;
 
-                System.out.println("Nhập thông tin mới cho danh sách nhập hàng (bỏ qua nếu không muốn thay đổi):");
+                System.out.println("Nhập thông tin mới cho danh sách nhập hàng (bỏ qua nếu không muốn thay đổi)");
 
                 // Cập nhật tên kho
                 System.out.print("Nhập tên sản phẩm mới: ");
@@ -441,7 +465,7 @@ public class InventoryManager extends Staff {
         InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\Inventory.txt");
 
         // Yêu cầu nhập các tiêu chí tìm kiếm
-        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
+        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
 
         // Tiêu chí tìm kiếm theo mã sản phẩm
         System.out.print("Nhập mã sản phẩm (hoặc nhấn Enter để bỏ qua): ");
@@ -508,7 +532,7 @@ public class InventoryManager extends Staff {
         InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\OrderInventory.txt");
 
         // Yêu cầu nhập các tiêu chí tìm kiếm
-        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
+        System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
 
         // Tiêu chí tìm kiếm theo mã sản phẩm
         System.out.print("Nhập mã sản phẩm (hoặc nhấn Enter để bỏ qua): ");

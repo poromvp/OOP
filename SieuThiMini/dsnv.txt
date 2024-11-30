@@ -1,5 +1,4 @@
 1233 1 1.0 1 1
 1235 Le Quang Kiet 2.0E9 Manager 098877321
-1871 do mi xi 1.0E8 streamer 115
-1235 Le Quang Kiet 2.5E7 Saler 0988888888
-1239 Nguyen Trong Nhan 1234.0 Saler 098878873
+1239 Nguyen Trong Nhan 123400000.0 Saler 098878873
+

@@ -36,9 +36,9 @@ public class Store {
         cashiers = new Cashier();
         IvenProduct = new InventoryManager();
         OrderProduct = new InventoryManager();
-        managers.readFromFile("SieuThiMini\\dsnv.txt");
+        managers.readFromFile("dsnv.txt");
         departments = new Department();
-        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
+        departments.readFromFile("DepartmentList.txt");
         readFileProduct();
 
     }
@@ -280,7 +280,7 @@ public class Store {
 
     public void ghifileord(){
         Order temp=new Order();
-        String filename="SieuThiMini\\ghidonhang.txt";
+        String filename="ghidonhang.txt";
         temp.xoaNoiDungFile(filename);
         for(Order or : orderList){
             or.writeToFile(filename);
@@ -381,12 +381,20 @@ public class Store {
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("SieuThiMini\\category.txt");
-        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
-        Product.readProductsFromFile("SieuThiMini\\product.txt");
+        Category.readCategoryFromFile("category.txt");
+        Supplier.readSupplierFromFile("supplier.txt");
+        Product.readProductsFromFile("product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
-
+    public void writeFileProduct(){
+        Product.writeProductsToFile("product.txt");
+    }
+    public void writeFileCategory(){
+        Category.writeCategoryFromFile("category.txt");
+    }
+    public void writeFileSupplier(){
+        Supplier.writeSupplierFromFile("supplier.txt");
+    }
     // Xuat danh sach cac san pham
     public void productDetail() {
         System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
@@ -453,9 +461,34 @@ public class Store {
                     System.out.println("Lua chon sai. Vui long chon lai.");
             }
         } while (choice != 0);
-
     }
-    
+    //Them loai san pham va nha cung cap
+    public void addCategory(Scanner scanner){
+        System.out.println("So loai san pham ban muon them la: ");
+        int n = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < n; i++) {
+            Category.addCategory();
+        }
+    }
+    public void addSupplier(Scanner scanner){
+        System.out.println("So nha cung cap ban muon them la: ");
+        int n = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < n; i++) {
+            Supplier.addSupplier();
+        }
+    }
+    //Xoa loai san pham va nha cung cap
+    public void removeCategory(Scanner scanner){
+        System.out.println("Nhap vao id loai san pham muon xoa.");
+        String rm = scanner.nextLine();
+        Category.deleteCategory(rm);
+    }
+    public void removeSupplier(Scanner scanner){
+        System.out.println("Nhap vao id nha cung cap muon xoa.");
+        String rm = scanner.nextLine();
+        Supplier.deleteSupplier(rm);
+    }
+  
     public void xuatHoaDon(){
         for(Receipt rc: receipts){
             rc.inHoaDon();
