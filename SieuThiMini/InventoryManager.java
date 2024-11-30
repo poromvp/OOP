@@ -211,7 +211,6 @@ public class InventoryManager extends Staff {
         
         // Đọc danh sách nhập hàng hiện tại từ file
         InventoryManager[] IvenProduct = readFromFile("SieuThiMini\\OrderInventory.txt");
-
         System.out.print("số lượng sản phẩm bạn muốn thêm vào danh sách nhập hàng: ");
         int n =Integer.parseInt(sc.nextLine());
         while(n<=0){

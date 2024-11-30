@@ -1,7 +1,8 @@
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
-public class Customer {
+
+public class Customer implements QLFile {
     private int customerID; // Mã khách hàng
     private String name; // Tên khách hàng
     private String contactNumber; // Số điện thoại
@@ -56,67 +57,67 @@ public class Customer {
     // Phương thức xem danh sách khách hàng (2)
     public static void outputCustomer(Customer[] customers) {
         System.out.printf("%-53s╔══════════════════════════════════════════╗\n", " ");
-        System.out.printf("%-53s║           DANH SÁCH KHÁCH HÀNG           ║\n"," ");
+        System.out.printf("%-53s║           DANH SÁCH KHÁCH HÀNG           ║\n", " ");
         System.out.printf("%-53s╚══════════════════════════════════════════╝\n\n", " ");
         System.out.printf(
-            "%40s╔═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
-            " ");
+                "%40s╔═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
+                " ");
         System.out.printf(
-            "%40s║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
-            " ");
-            for (Customer customer : customers) {
+                "%40s║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
+                " ");
+        for (Customer customer : customers) {
             System.out.printf(
-                "%40s╠═══════════╬══════════════════╬═══════════════╬═════════════════╣\n"," ");
-            System.out.printf("%40s║ %-10s║ %-17s║ %-14s║ %-16s║\n"," ",customer.customerID,customer.name,customer.contactNumber,customer.loyaltyPoints);
+                    "%40s╠═══════════╬══════════════════╬═══════════════╬═════════════════╣\n", " ");
+            System.out.printf("%40s║ %-10s║ %-17s║ %-14s║ %-16s║\n", " ", customer.customerID, customer.name,
+                    customer.contactNumber, customer.loyaltyPoints);
         }
         System.out.printf(
-            "%40s╚═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
-            " ");
+                "%40s╚═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
+                " ");
     }
 
     // Phương thức thêm khách hàng vào danh sách (3)
     public static Customer[] addCustomers(Customer[] customers) {
         Scanner scanner = new Scanner(System.in);
-    
+
         System.out.print("Nhập số lượng khách hàng cần thêm: ");
         int n = Integer.parseInt(scanner.nextLine());
-    
+
         // Tạo một mảng mới với kích thước đủ lớn
         Customer[] updatedCustomers = new Customer[customers.length + n];
         System.arraycopy(customers, 0, updatedCustomers, 0, customers.length);
-    
+
         for (int i = 0; i < n; i++) {
             System.out.println("\nNhập thông tin cho khách hàng thứ " + (i + 1) + ":");
-    
+
             // Nhập thông tin khách hàng mới
             System.out.print("Nhập mã khách hàng: ");
             int customerID = Integer.parseInt(scanner.nextLine());
-    
+
             System.out.print("Nhập tên khách hàng: ");
             String name = scanner.nextLine();
-    
+
             System.out.print("Nhập số điện thoại khách hàng: ");
             String contactNumber = scanner.nextLine();
-    
+
             System.out.print("Nhập điểm tích lũy: ");
             int loyaltyPoints = Integer.parseInt(scanner.nextLine());
-    
+
             // Tạo đối tượng Customer mới và thêm vào mảng
             Customer newCustomer = new Customer(customerID, name, contactNumber, loyaltyPoints);
             updatedCustomers[customers.length + i] = newCustomer;
-    
+
             System.out.println("Đã thêm khách hàng: " + name);
         }
         return updatedCustomers;
     }
-    
-    
+
     // Phương thức sửa (cập nhật) thông tin của khách hàng trong danh sách (4)
     public static Customer[] updateCustomerByID(Customer[] customers, int customerID) {
         Scanner scanner = new Scanner(System.in);
-    
+
         // Tìm kiếm khách hàng theo ID
-        Customer customerToUpdate= null;
+        Customer customerToUpdate = null;
         for (Customer customer : customers) {
             if (customer.getCustomerID() == customerID) {
                 customerToUpdate = customer;
@@ -126,34 +127,35 @@ public class Customer {
 
         if (customerToUpdate != null) {
             System.out.printf(
-            "%40s╔═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
-            " ");
+                    "%40s╔═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
+                    " ");
             System.out.printf(
-            "%40s║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
-            " ");
+                    "%40s║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
+                    " ");
             System.out.printf(
-                "%40s╠═══════════╬══════════════════╬═══════════════╬═════════════════╣\n"," ");
-            System.out.printf("%40s║ %-10s║ %-17s║ %-14s║ %-16s║\n"," ",customerToUpdate.customerID,customerToUpdate.name,customerToUpdate.contactNumber,customerToUpdate.loyaltyPoints);
+                    "%40s╠═══════════╬══════════════════╬═══════════════╬═════════════════╣\n", " ");
+            System.out.printf("%40s║ %-10s║ %-17s║ %-14s║ %-16s║\n", " ", customerToUpdate.customerID,
+                    customerToUpdate.name, customerToUpdate.contactNumber, customerToUpdate.loyaltyPoints);
             System.out.printf(
-            "%40s╚═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
-            " ");
+                    "%40s╚═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
+                    " ");
 
             System.out.println("\nNhấn Enter để giữ nguyên thông tin hiện tại.");
-    
+
             // Cập nhật tên khách hàng
             System.out.print("Tên khách hàng: ");
             String newName = scanner.nextLine();
             if (!newName.trim().isEmpty()) {
                 customerToUpdate.setName(newName);
             }
-    
+
             // Cập nhật số điện thoại
             System.out.print("Số điện thoại: ");
             String newContact = scanner.nextLine();
             if (!newContact.trim().isEmpty()) {
                 customerToUpdate.setContactNumber(newContact);
             }
-    
+
             // Cập nhật điểm tích lũy
             System.out.print("Điểm tích lũy: ");
             String newPointsStr = scanner.nextLine();
@@ -165,15 +167,15 @@ public class Customer {
                     System.out.println("Lỗi: Điểm tích lũy không hợp lệ. Giữ nguyên điểm tích lũy hiện tại.");
                 }
             }
-    
+
             System.out.println("\nThông tin khách hàng đã được cập nhật thành công.");
         } else {
             System.out.println("Không tìm thấy khách hàng với mã: " + customerID);
         }
-    
+
         return customers; // Trả về danh sách khách hàng sau khi cập nhật
     }
-    
+
     // Phương thức xóa khách hàng ra khỏi danh sách (theo mã khách hàng) (5)
     public static Customer[] removeCustomerByID(Customer[] customers, int customerID) {
         int count = 0;
@@ -201,45 +203,46 @@ public class Customer {
     public static void searchCustomers(Scanner scanner, Customer[] customers) {
         System.out.println("\n--- TÌM KIẾM KHÁCH HÀNG ---");
         System.out.println("Nhập tiêu chí để tìm (nhấn Enter để bỏ qua tiêu chí):");
-    
+
         System.out.print("Mã khách hàng: ");
         String customerIDStr = scanner.nextLine();
         int customerID = customerIDStr.isEmpty() ? 0 : Integer.parseInt(customerIDStr);
-    
+
         System.out.print("Tên khách hàng: ");
         String name = scanner.nextLine();
         if (name.isEmpty()) {
             name = null;
         }
-    
+
         System.out.print("Số điện thoại: ");
         String contactNumber = scanner.nextLine();
         if (contactNumber.isEmpty()) {
             contactNumber = null;
         }
-    
+
         System.out.print("Điểm tích lũy: ");
         String loyaltyPointsStr = scanner.nextLine();
         int loyaltyPoints = loyaltyPointsStr.isEmpty() ? 0 : Integer.parseInt(loyaltyPointsStr);
-    
+
         // Lọc danh sách khách hàng theo các tiêu chí
         Customer[] filteredCustomers = new Customer[customers.length];
         int count = 0;
-    
+
         for (Customer customer : customers) {
             if (isCustomerMatch(customer, customerID, name, contactNumber, loyaltyPoints)) {
                 filteredCustomers[count++] = customer;
             }
         }
-    
+
         Customer[] result = Arrays.copyOf(filteredCustomers, count);
-    
+
         // Hiển thị kết quả
         if (result.length == 0) {
             System.out.println("Không tìm thấy khách hàng nào khớp với tiêu chí.");
         } else {
             System.out.println("\nDanh sách khách hàng tìm thấy:");
-            Customer.outputCustomer(result);; // Hiển thị chi tiết mỗi Customer
+            Customer.outputCustomer(result);
+            ; // Hiển thị chi tiết mỗi Customer
         }
     }
 
@@ -249,8 +252,9 @@ public class Customer {
         System.out.println("Số điện thoại: " + contactNumber);
         System.out.println("Điểm tích lũy: " + loyaltyPoints);
     }
-    
-    private static boolean isCustomerMatch(Customer customer, int customerID, String name, String contactNumber, int loyaltyPoints) {
+
+    private static boolean isCustomerMatch(Customer customer, int customerID, String name, String contactNumber,
+            int loyaltyPoints) {
         if (customerID != 0 && customer.getCustomerID() != customerID) {
             return false;
         }
@@ -265,9 +269,10 @@ public class Customer {
         }
         return true;
     }
-    
+
+    @Override
     // Phương thức đọc file
-    public static Customer[] readFromFile(String fileName) {
+    public Customer[] readFromFile(String fileName) {
         Customer[] customers = new Customer[0]; // Khởi tạo mảng rỗng
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -287,52 +292,58 @@ public class Customer {
                     String name = parts[1].trim();
                     String contactNumber = parts[2].trim();
                     int loyaltyPoints = Integer.parseInt(parts[3].trim());
-    
+
                     // Tạo đối tượng Customer mới
                     Customer newCustomer = new Customer(customerID, name, contactNumber, loyaltyPoints);
-    
+
                     // Tạo mảng mới lớn hơn và thêm đối tượng mới
                     Customer[] newCustomers = new Customer[customers.length + 1];
                     System.arraycopy(customers, 0, newCustomers, 0, customers.length);
                     newCustomers[customers.length] = newCustomer;
                     customers = newCustomers;
-                } 
-                catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     System.out.println("Lỗi chuyển đổi dữ liệu: " + line);
                 }
             }
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
         }
         return customers;
     }
-    
-    // Phương thức ghi vào file 
-    public static void writeToFile(String fileName, Customer[] customers) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (Customer customer : customers) {
-                writer.write(customer.getCustomerID() + "," + customer.getName() + "," + customer.getContactNumber() + "," + customer.getLoyaltyPoints());
-                writer.newLine();
-            }
-            System.out.println("Đã ghi dữ liệu vào file: " + fileName);
-        } 
-        catch (IOException e) {
+
+    public void xoaNoiDungFile(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
+            // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+        } catch (IOException e) {
+            System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
+        }
+    }
+
+    @Override
+    // Phương thức ghi vào file
+    public void writeToFile(String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+
+            writer.write(getCustomerID() + "," + getName() + "," + getContactNumber() + "," + getLoyaltyPoints());
+            writer.newLine();
+
+        } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
-    
-    // Phương thức thống kê khách hàng có lượt mua hàng nhiều nhất dựa trên điểm tích lũy
+
+    // Phương thức thống kê khách hàng có lượt mua hàng nhiều nhất dựa trên điểm
+    // tích lũy
     public static void rankCustomersByLoyaltyPointsWithFile(Customer[] FileName) {
         if (FileName == null || FileName.length == 0) {
             System.out.println("Danh sách khách hàng rỗng. Không thể thực hiện thống kê.");
             return;
         }
-    
+
         // Tạo một bản sao của mảng FileName để tránh thay đổi mảng gốc
         Customer[] customerCopy = new Customer[FileName.length];
         System.arraycopy(FileName, 0, customerCopy, 0, FileName.length);
-    
+
         // Sắp xếp mảng customerCopy theo điểm tích lũy giảm dần (bubble sort)
         for (int i = 0; i < customerCopy.length - 1; i++) {
             for (int j = 0; j < customerCopy.length - 1 - i; j++) {
@@ -343,12 +354,12 @@ public class Customer {
                 }
             }
         }
-    
+
         // Hiển thị danh sách đã sắp xếp
         System.out.println("Danh sách khách hàng sắp xếp theo điểm tích lũy (giảm dần):");
         for (Customer customer : customerCopy) {
             customer.displayDetails();
         }
     }
-    
+
 }

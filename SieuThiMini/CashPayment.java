@@ -1,18 +1,10 @@
-
-
 public class CashPayment extends Payment {
-    public CashPayment(double amount){
-        super(amount);
+    public CashPayment(double soTien) {
+        super(soTien);
     }
 
     @Override
-    public void pay(){
-        System.out.println("Payment of $" + amount + " made in cash.");
-
+    public String xuLyThanhToan() {
+        return "Thanh toán bằng tiền mặt với số tiền:        " + soTien;
     }
-
-    public double caculateChange(double cashGiven){
-        return cashGiven - amount;
-    }
-
 }
