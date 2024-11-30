@@ -498,6 +498,7 @@ public class Store {
         System.out.println("Nhap vao id nha cung cap san pham muon sua (Id co dang SL___).");
         String ud = scanner.nextLine();
         Supplier.updateSupplier(ud);
+    }
     public void xuatHoaDon(){
         for(Receipt rc: receipts){
             rc.inHoaDon();
