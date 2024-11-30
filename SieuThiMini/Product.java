@@ -100,7 +100,17 @@ public class Product {
     public static void setCnt(int cnt) {
         Product.cnt = cnt;
     }
-
+    public static Product getProductById(String id){
+        int tmp = 0;
+        int size = productList.length;
+        for (int i = 0; i < size; i++) {
+            if (productList[i] != null && productList[i].getProductID().equals(id)) {
+                tmp = i;
+                break;
+            }
+        }
+        return productList[tmp];
+    }
     //Kiem tra format id
     protected static  boolean checkIDProduct(String id){
         if(id.length()!=5){
