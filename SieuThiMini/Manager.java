@@ -107,24 +107,35 @@ public class Manager extends Staff {
     // Đọc danh sách nhân viên hiện tại từ file
     Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
 
+    System.out.print("Bạn muốn thêm bao nhiêu nhân viên: ");
+    int n = Integer.parseInt(sc.nextLine());
+    while(n<0){
+        System.out.print("số lượng không hợp lệ !!!! vui lòng nhập lại: ");
+        n=Integer.parseInt(sc.nextLine());
+    }
+
+    System.out.println("=================================================================");
+
+    for(int j=0; j<n; j++){
+
     // Hỏi vị trí dòng cần thêm
-    System.out.println("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
+    System.out.print("Nhập vị trí dòng bạn muốn thêm vào danh sách:");
     int vitri = Integer.parseInt(sc.nextLine());
 
     // Nhập thông tin nhân viên mới
     System.out.print("Nhập mã cho nhân viên mới: ");
     String ID = sc.nextLine();
 
-    System.out.println("Nhập họ tên của nhân viên mới: ");
+    System.out.print("Nhập họ tên của nhân viên mới: ");
     String Ten = sc.nextLine();
 
-    System.out.println("Nhập số lương của nhân viên mới: ");
+    System.out.print("Nhập số lương của nhân viên mới: ");
     double Luong = Double.parseDouble(sc.nextLine());
 
-    System.out.println("Nhập vai trò bạn muốn cho nhân viên mới: ");
+    System.out.print("Nhập vai trò bạn muốn cho nhân viên mới: ");
     String role = sc.nextLine();
 
-    System.out.println("Nhập số điện thoại của nhân viên mới: ");
+    System.out.print("Nhập số điện thoại của nhân viên mới: ");
     String PhoneNum = sc.nextLine();
 
     // Tạo nhân viên mới
@@ -136,22 +147,25 @@ public class Manager extends Staff {
         managers = Arrays.copyOf(managers, managers.length + 1); // Mở rộng mảng
         managers[managers.length - 1] = newManager; // Thêm nhân viên mới vào cuối
     } else {
-        // Nếu vị trí hợp lệ, chèn nhân viên vào vị trí chỉ định
-        if (vitri - 1 < managers.length) {
-            managers = Arrays.copyOf(managers, managers.length + 1); // Mở rộng mảng
-            for (int i = managers.length - 1; i > vitri - 1; i--) {
-                managers[i] = managers[i - 1]; // Di chuyển các phần tử phía sau
+            // Nếu vị trí hợp lệ, chèn nhân viên vào vị trí chỉ định
+            if (vitri  < managers.length) {
+                managers = Arrays.copyOf(managers, managers.length + 1); // Mở rộng mảng
+                for (int i = managers.length - 1; i > vitri - 1; i--) {
+                    managers[i] = managers[i - 1]; // Di chuyển các phần tử phía sau
+                }
             }
+            // Thêm nhân viên mới vào mảng tại vị trí vitri - 1
+            managers[vitri - 1] = newManager;
+            }
+        System.out.println("=================================================================");
         }
-        // Thêm nhân viên mới vào mảng tại vị trí vitri - 1
-        managers[vitri - 1] = newManager;
-    }
 
     // Cập nhật lại số lượng nhân viên
     count = managers.length;
 
     // Ghi lại dữ liệu vào file SieuThiMini\\dsnv.txt
     writeToFile("SieuThiMini\\dsnv.txt", managers);
+    
 
     // Hiển thị danh sách nhân viên sau khi cập nhật
     System.out.println("Danh sách sau khi cập nhật: ");
@@ -224,7 +238,7 @@ public void writeToFile(String fileName, Manager[] managers) {
         // Đọc dữ liệu từ file vào mảng managers
         Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
     
-        System.out.println("Nhập mã nhân viên bạn muốn đổi thông tin: ");
+        System.out.print("Nhập mã nhân viên bạn muốn đổi thông tin: ");
         String id = sc.nextLine();
     
         boolean found = false;
@@ -235,7 +249,7 @@ public void writeToFile(String fileName, Manager[] managers) {
                 // Nhân viên được tìm thấy, tiến hành sửa thông tin
                 found = true;
     
-                System.out.println("Nhập thông tin mới cho nhân viên (bỏ qua nếu không muốn thay đổi):");
+                System.out.println("Nhập thông tin mới cho nhân viên (bỏ qua nếu không muốn thay đổi)");
     
                 // Cập nhật họ tên
                 System.out.print("Nhập họ tên mới: ");
@@ -289,7 +303,7 @@ public void writeToFile(String fileName, Manager[] managers) {
             Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
     
             // Yêu cầu nhập các tiêu chí tìm kiếm
-            System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter):");
+            System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
     
             // Tiêu chí tìm kiếm theo mã nhân viên
             System.out.print("Nhập mã nhân viên (hoặc nhấn Enter để bỏ qua): ");
