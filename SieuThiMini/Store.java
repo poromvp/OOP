@@ -19,6 +19,7 @@ public class Store {
     public InventoryManager OrderProduct;
 
     public Store() {
+        readFileProduct();
         Order or = new Order();
         orderList = or.readFromFile("SieuThiMini\\donhang.txt");
         
@@ -29,7 +30,7 @@ public class Store {
         discounts = dis.readFromFile("SieuThiMini\\discount.txt");
 
         Receipt rc=new Receipt();
-        receipts =rc.readFromFile("SieuThiMini\\ghihoadon.txt");
+        receipts =rc.readFromFile("SieuThiMini\\hoadon.txt");
 
         managers = new Manager();
         departments = new Department();
@@ -39,7 +40,6 @@ public class Store {
         managers.readFromFile("SieuThiMini\\dsnv.txt");
         departments = new Department();
         departments.readFromFile("SieuThiMini\\DepartmentList.txt");
-        readFileProduct();
 
     }
 

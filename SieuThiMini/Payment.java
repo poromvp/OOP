@@ -1,6 +1,5 @@
 public abstract class Payment {
     protected double soTien;
-
     public Payment(double soTien) {
         this.soTien = soTien;
     }
