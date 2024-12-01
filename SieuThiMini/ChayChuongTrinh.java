@@ -255,7 +255,7 @@ public class ChayChuongTrinh {
                     store.thongkeSpBanChay(scanner);
                     break;
                 case 3:
-                    store.thongKeCustomer();
+                    store.thongKeCustomerBanNhieuNhat(scanner);
                     break;
                 case 4:
                     store.thongKeNhanVien();
