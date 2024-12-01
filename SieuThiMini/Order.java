@@ -6,13 +6,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Comparator;
-
 public class Order implements QLFile {
     public String orderId; // mã đơn hàng
     public String orderDate; // ngày lập đơn hàng
     public Customer customer; // khách hàng
     public Product[] product; // danh sách các sản phẩm
+
     public double totalAmount; // Tổng số tiền
     private static final double VAT = 0.1; // Thuế VAT 10%
     protected static byte cnt_ghi_file = 0, aaaa = 0; // biến này để khống chế đúng số dòng khi ghi vào file, để nếu khi
@@ -77,6 +76,25 @@ public class Order implements QLFile {
         return amount * VAT;
     }
 
+    public Order getOrderbyID(String id){
+        Order[] orderList=readFromFile("SieuThiMini\\donhang.txt");
+        int tmp = 0;
+        boolean flag=false;
+        for (int i = 0; i < orderList.length; i++) {
+            if (orderList[i] != null && orderList[i].getOrderId().equals(id)) {
+                tmp = i;
+                flag=true;
+                break;
+            }
+        }
+        if(flag==false){
+            return null;
+        }
+        else{
+            return orderList[tmp];
+        }
+    }
+
     public int tongQuantity() {
         int sum = 0;
         for (Product product : product) { // vòng lặp for each duyệt từng sản phẩm có kdl là Products
@@ -125,7 +143,7 @@ public class Order implements QLFile {
         customer.setContactNumber(scanner.nextLine());
         System.out.print("Nhập Điểm Tích Lũy: ");
         customer.setLoyaltyPoints(Integer.parseInt(scanner.nextLine()));
-        for (Product pro : product) {
+        for (int I=0;I<product.length;I++) {
             dem++;
             System.out.println();
             System.out.print("Nhập Mã Sản Phẩm Thứ " + dem + ": ");
@@ -142,37 +160,10 @@ public class Order implements QLFile {
                 }
                 id = scanner.nextLine();
             }
-            pro.setProductID(id);
-            System.out.print("Nhập Tên Sản Phẩm: ");
-            id = scanner.nextLine();
-            while (!checknamepro(id, product, i)) {
-                System.out.printf("%30sĐã Có Tên Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
-                System.out.printf("%30s→ ", " ");
-                id = scanner.nextLine();
-            }
-            pro.setName(id);
-            System.out.print("Nhập Giá Tiền: ");
-            pro.setPrice(Integer.parseInt(scanner.nextLine()));
-            System.out.print("Nhập Mã Loại Sản Phẩm: ");
-            id = scanner.nextLine();
-            while (!Category.checkIDCategory(id)) {
-                System.out.printf("%30sMã Loại Sản Phẩm Phải Bắt Đầu Từ CT... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
-                        " ");
-                System.out.printf("%30s→ ", " ");
-                id = scanner.nextLine();
-            }
-            pro.setCategoryId(id);
-            System.out.print("Nhập Số Lượng: ");
-            pro.setQuantity(Integer.parseInt(scanner.nextLine()));
-            System.out.print("Nhập Mã Nhà Cung Cấp: ");
-            id = scanner.nextLine();
-            while (!Supplier.checkIDSupplier(id)) {
-                System.out.printf("%30sMã Nhà Cung Cấp Phải Bắt Đầu Từ SL... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
-                        " ");
-                System.out.printf("%30s→ ", " ");
-                id = scanner.nextLine();
-            }
-            pro.setSupplierId(id);
+            product[I]=Product.getProductById(id);
+            System.out.print("Nhập Số Lượng Mua: ");
+            product[I].setQuantity(Integer.parseInt(scanner.nextLine())); 
+            
             i++;
         }
     }
@@ -231,15 +222,6 @@ public class Order implements QLFile {
         return true; // Không trùng
     }
 
-    protected boolean checknamepro(String name, Product[] product, int vitrior) {
-        for (int i = 0; i < vitrior; i++) {
-            if (name != null && product[i].getName().equals(name)) {
-                return false; // Trùng tên trong cùng 1 đơn hàng
-            }
-        }
-        return true; // Không trùng
-    }
-
     public void edit(Scanner scanner, Product[] product, Order[] orderList, int vitrior) {
         int i = 1, index = 0; // i là choice, index dùng để chỉnh sửa đúng vị trí của ds sản phẩm
         do {
@@ -250,15 +232,11 @@ public class Order implements QLFile {
             System.out.printf("%55s║   1. Mã Đơn Hàng%16s║\n", " ", " ");
             System.out.printf("%55s║   2. Ngày Lập Đơn Hàng%10s║\n", " ", " ");
             System.out.printf("%55s║   3. Mã Sản Phẩm%16s║\n", " ", " ");
-            System.out.printf("%55s║   4. Tên Sản Phẩm%15s║\n", " ", " ");
-            System.out.printf("%55s║   5. Giá Tiền%19s║\n", " ", " ");
-            System.out.printf("%55s║   6. Mã Loại Sản Phẩm%11s║\n", " ", " ");
-            System.out.printf("%55s║   7. Số Lượng%19s║\n", " ", " ");
-            System.out.printf("%55s║   8. Mã Nhà Cung Cấp%12s║\n", " ", " ");
-            System.out.printf("%55s║   9. Mã Khách Hàng%14s║\n", " ", " ");
-            System.out.printf("%55s║  10. Tên Khách Hàng%13s║\n", " ", " ");
-            System.out.printf("%55s║  11. Số Điện Thoại%14s║\n", " ", " ");
-            System.out.printf("%55s║  12. Điểm Tích Lũy%14s║\n", " ", " ");
+            System.out.printf("%55s║   4. Số Lượng Mua%19s║\n", " ", " ");
+            System.out.printf("%55s║   5. Mã Khách Hàng%14s║\n", " ", " ");
+            System.out.printf("%55s║   6. Tên Khách Hàng%13s║\n", " ", " ");
+            System.out.printf("%55s║   7. Số Điện Thoại%14s║\n", " ", " ");
+            System.out.printf("%55s║   8. Điểm Tích Lũy%14s║\n", " ", " ");
             System.out.printf("%55s║   0. Thoát và Lưu%15s║\n", " ", " ");
             System.out.printf("%55s╚═════════════════════════════════╝\n", " ");
             System.out.printf("%55s→ ", " ");
@@ -319,65 +297,9 @@ public class Order implements QLFile {
                         }
                         id = scanner.nextLine();
                     }
-                    product[index - 1].setProductID(id);
+                    product[index - 1]=Product.getProductById(id);
                     break;
                 case 4:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Tên Của Sản Phẩm Thứ Mấy?\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    index = Integer.parseInt(scanner.nextLine());
-                    while (index > product.length || index <= 0) {
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
-                        System.out.printf("%40s→ ", " ");
-                        index = Integer.parseInt(scanner.nextLine());
-                    }
-                    System.out.printf("%40sNhập Tên Sản Phẩm MỚI\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    id = scanner.nextLine();
-                    while (!checknamepro(id, product, product.length)) {
-                        if (id.equals(product[index - 1].getName())) {
-                            break;
-                        }
-                        System.out.printf("%30sĐã Có Tên Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
-                        System.out.printf("%30s→ ", " ");
-                        id = scanner.nextLine();
-                    }
-                    product[index - 1].setName(id);
-                    break;
-                case 5:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Giá Của Sản Phẩm Thứ Mấy?\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    index = Integer.parseInt(scanner.nextLine());
-                    while (index > product.length || index <= 0) {
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
-                        System.out.printf("%40s→ ", " ");
-                        index = Integer.parseInt(scanner.nextLine());
-                    }
-                    System.out.printf("%40sNhập Giá Sản Phẩm MỚI\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    product[index - 1].setPrice(Integer.parseInt(scanner.nextLine()));
-                    break;
-                case 6:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Loại Của Sản Phẩm Thứ Mấy?\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    index = Integer.parseInt(scanner.nextLine());
-                    while (index > product.length || index <= 0) {
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
-                        System.out.printf("%40s→ ", " ");
-                        index = Integer.parseInt(scanner.nextLine());
-                    }
-                    System.out.printf("%40sNhập Mã Loại Sản Phẩm MỚI\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    id = scanner.nextLine();
-                    while (!Category.checkIDCategory(id)) {
-                        System.out.printf(
-                                "%30sMã Loại Sản Phẩm Phải Bắt Đầu Từ CT... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
-                                " ");
-                        System.out.printf("%30s→ ", " ");
-                        id = scanner.nextLine();
-                    }
-                    product[index - 1].setCategoryId(id);
-                    break;
-                case 7:
                     System.out.printf("%40sBạn Muốn Chỉnh Sửa Số Lượng Của Sản Phẩm Thứ Mấy?\n", " ");
                     System.out.printf("%40s→ ", " ");
                     index = Integer.parseInt(scanner.nextLine());
@@ -390,43 +312,22 @@ public class Order implements QLFile {
                     System.out.printf("%40s→ ", " ");
                     product[index - 1].setQuantity(Integer.parseInt(scanner.nextLine()));
                     break;
-                case 8:
-                    System.out.printf("%40sBạn Muốn Chỉnh Sửa Mã Nhà Cung Cấp Của Sản Phẩm Thứ Mấy?\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    index = Integer.parseInt(scanner.nextLine());
-                    while (index > product.length || index <= 0) {
-                        System.out.printf("%40sKhông hợp lệ, hãy nhập lại\n", " ");
-                        System.out.printf("%40s→ ", " ");
-                        index = Integer.parseInt(scanner.nextLine());
-                    }
-                    System.out.printf("%40sNhập Mã Nhà Cung Cấp Sản Phẩm MỚI\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    id = scanner.nextLine();
-                    while (!Supplier.checkIDSupplier(id)) {
-                        System.out.printf(
-                                "%30sMã Nhà Cung Cấp Phải Bắt Đầu Từ SL... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
-                                " ");
-                        System.out.printf("%30s→ ", " ");
-                        id = scanner.nextLine();
-                    }
-                    product[index - 1].setSupplierId(id);
-                    break;
-                case 9:
+                case 5:
                     System.out.printf("%40sNhập Mã Khách Hàng MỚI\n", " ");
                     System.out.printf("%40s→ ", " ");
                     customer.setCustomerID(Integer.parseInt(scanner.nextLine()));
                     break;
-                case 10:
+                case 6:
                     System.out.printf("%40sNhập Tên Khách Hàng MỚI\n", " ");
                     System.out.printf("%40s→ ", " ");
                     customer.setName(scanner.nextLine());
                     break;
-                case 11:
+                case 7:
                     System.out.printf("%40sNhập Số Điện Thoại MỚI\n", " ");
                     System.out.printf("%40s→ ", " ");
                     customer.setContactNumber(scanner.nextLine());
                     break;
-                case 12:
+                case 8:
                     System.out.printf("%40sNhập Điểm Tích Lũy MỚI\n", " ");
                     System.out.printf("%40s→ ", " ");
                     customer.setLoyaltyPoints(Integer.parseInt(scanner.nextLine()));
@@ -502,33 +403,33 @@ public class Order implements QLFile {
 
     public void displayOrderDetails() {
         System.out.printf(
-                "%20s╔═════════════════╦══════════════════════╦═══════════╦══════════════════╦═══════════════╦═════════════════╗\n",
+                "%20s╔═════════════════╦══════════════════════╦═════════════════════╦══════════════════╦═══════════════╦═════════════════╗\n",
                 " ");
         System.out.printf(
-                "%20s║   Mã Đơn Hàng   ║    Ngày Đặt Hàng     ║ Mã K.Hàng ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
+                "%20s║   Mã Đơn Hàng   ║    Ngày Đặt Hàng     ║ Mã K.Hàng           ║  Tên Khách Hàng  ║ Số Điện Thoại ║  Điểm Tích Lũy  ║\n",
                 " ");
         System.out.printf(
-                "%20s╠═════════════════╬══════════════════════╬═══════════╬══════════════════╬═══════════════╬═════════════════╣\n",
+                "%20s╠═════════════════╬══════════════════════╬═════════════════════╬══════════════════╬═══════════════╬═════════════════╣\n",
                 " ");
-        System.out.printf("%20s║ %-16s║ %-21s║ %-10d║ %-17s║ %-14s║ %-16s║\n",
+        System.out.printf("%20s║ %-16s║ %-21s║ %-20d║ %-17s║ %-14s║ %-16s║\n",
                 " ", orderId, orderDate, customer.getCustomerID(), customer.getName(), customer.getContactNumber(),
                 customer.getLoyaltyPoints());
         System.out.printf(
-                "%20s╠═════════════════╬══════════════════════╬═══════════╬══════════════════╬═══════════════╬═════════════════╣\n",
+                "%20s╠═════════════════╬══════════════════════╬═════════════════════╬══════════════════╬═══════════════╬═════════════════╣\n",
                 " ");
         System.out.printf(
-                "%20s║   Mã Sản Phẩm   ║     Tên Sản Phẩm     ║  Mã Loại  ║   Giá Sản Phẩm   ║   Số Lượng    ║ Mã Nhà Cung Cấp ║\n",
+                "%20s║   Mã Sản Phẩm   ║     Tên Sản Phẩm     ║  Loại               ║   Giá Sản Phẩm   ║   Số Lượng    ║ Nhà Cung Cấp    ║\n",
                 " ");
         for (int i = 0; i < product.length; i++) {
             System.out.printf(
-                    "%20s╠═════════════════╬══════════════════════╬═══════════╬══════════════════╬═══════════════╬═════════════════╣\n",
+                    "%20s╠═════════════════╬══════════════════════╬═════════════════════╬══════════════════╬═══════════════╬═════════════════╣\n",
                     " ");
-            System.out.printf("%20s║ %d. %-13s║ %-21s║ %-10s║ %-17s║ %-14s║ %-16s║\n",
+            System.out.printf("%20s║ %d. %-13s║ %-21s║ %-20s║ %-17s║ %-14s║ %-16s║\n",
                     " ", (i + 1), product[i].getProductID(), product[i].getName(), Category.getCategoryById(product[i].getCategoryId()).getCategoryName(),
-                    product[i].getPrice(), product[i].getQuantity(), product[i].getSupplierId());
+                    product[i].getPrice(), product[i].getQuantity(), Supplier.getSupplierById(product[i].getSupplierId()).getSupplierName());
         }
         System.out.printf(
-                "%20s╚═════════════════╩══════════════════════╩═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
+                "%20s╚═════════════════╩══════════════════════╩═════════════════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
                 " ");
     }
 
@@ -750,25 +651,6 @@ public class Order implements QLFile {
                 sapxepngay(orderList); // xếp theo mới nhất trước
                 break;
 
-            case 2:
-                // Sắp xếp theo tổng tiền (giảm dần và tăng dần)
-                sapxeptien(orderList);
-                break;
-
-            case 3:
-                // Sắp xếp theo quantity (giảm dần và tăng dần)
-                sapxepSL(orderList);
-                break;
-
-            case 4:
-                // Sắp xếp theo mã đơn hàng (alpha beta)
-                Arrays.sort(orderList, Comparator.comparing(Order::getOrderId));
-                System.out.printf("%-15s%-15s\n", "Mã Đơn Hàng", "Tổng Tiền");
-                for (Order order : orderList) {
-                    System.out.printf("%-15s%-15.2f\n", order.getOrderId(), order.getTotalAmount());
-                }
-                break;
-
             default:
                 System.out.println("Lựa chọn không hợp lệ.");
                 break;
@@ -847,58 +729,6 @@ public class Order implements QLFile {
         }
     }
 
-    public static void sapxeptien(Order[] orderList) {
-        double[] a = new double[orderList.length];
-        int[] vitri = new int[orderList.length];
-        for (int i = 0; i < a.length; i++) {
-            a[i] = orderList[i].calculateTotalAmount();
-            vitri[i] = i;
-        }
-        for (int i = 0; i < a.length - 1; i++) {
-            for (int j = i + 1; j < a.length; j++) {
-                if (a[i] > a[j]) {
-                    double temp = a[j];
-                    a[j] = a[i];
-                    a[i] = temp;
-                    int t = vitri[j];
-                    vitri[j] = vitri[i];
-                    vitri[i] = t;
-                }
-            }
-        }
-        System.out.printf("%-15s%-15s\n", "Tổng Tiền", "Mã Đơn Hàng");
-        for (int i = 0; i < orderList.length; i++) {
-            System.out.printf("%-15.2f%-15s\n", orderList[vitri[i]].calculateTotalAmount(),
-                    orderList[vitri[i]].getOrderId());
-        }
-    }
-
-    public static void sapxepSL(Order[] orderList) {
-        int[] a = new int[orderList.length];
-        int[] vitri = new int[orderList.length];
-        for (int i = 0; i < a.length; i++) {
-            a[i] = orderList[i].tongQuantity();
-            vitri[i] = i;
-        }
-        for (int i = 0; i < a.length - 1; i++) {
-            for (int j = i + 1; j < a.length; j++) {
-                if (a[i] > a[j]) {
-                    int temp = a[j];
-                    a[j] = a[i];
-                    a[i] = temp;
-                    int t = vitri[j];
-                    vitri[j] = vitri[i];
-                    vitri[i] = t;
-                }
-            }
-        }
-        System.out.printf("%-15s%-20s%-15s\n", "Số Lượng", "Mã Đơn Hàng", "Tổng Tiền");
-        for (int i = 0; i < orderList.length; i++) {
-            System.out.printf("%-15d%-20s%-15.2f\n", orderList[vitri[i]].tongQuantity(),
-                    orderList[vitri[i]].getOrderId(), orderList[vitri[i]].calculateTotalAmount());
-        }
-    }
-
     @Override
     public Order[] readFromFile(String filePath) {
         /* TẢI DANH SÁCH ĐƠN HÀNG - Kiệt */
@@ -942,12 +772,11 @@ public class Order implements QLFile {
                 for (int j = 0; j < productParts.length; j++) {
                     orderList[i].product[j] = new Product();
                     String[] ThongTinProduct = productParts[j].split(",");// tác các phần của sản phẩm như id, tên,...
-                    orderList[i].product[j].setProductID(ThongTinProduct[0]);
-                    orderList[i].product[j].setName(ThongTinProduct[1]);
-                    orderList[i].product[j].setPrice(Integer.parseInt(ThongTinProduct[2]));
-                    orderList[i].product[j].setCategoryId(ThongTinProduct[3]);
-                    orderList[i].product[j].setQuantity(Integer.parseInt(ThongTinProduct[4]));
-                    orderList[i].product[j].setSupplierId(ThongTinProduct[5]);
+                    orderList[i].product[j]=Product.getProductById(ThongTinProduct[0]);
+                    if(Integer.parseInt(ThongTinProduct[1])>orderList[i].product[j].getQuantity()){
+                        orderList[i].product[j].setQuantity(0);
+                    }
+                    orderList[i].product[j].setQuantity(Integer.parseInt(ThongTinProduct[1]));  //Số lượng phải nhỏ hơn hàng tồn kho
                 }
                 i++;
             }
@@ -962,6 +791,7 @@ public class Order implements QLFile {
     public void xoaNoiDungFile(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+            writer.close();
         } catch (IOException e) {
             System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
         }
@@ -978,8 +808,8 @@ public class Order implements QLFile {
                     + "," + customer.getName()
                     + "," + customer.getContactNumber() + ";");
             for (Product pr : product) {
-                writer.write(pr.getProductID() + "," + pr.getName() + "," + pr.getPrice() + "," + pr.getCategoryId()
-                        + "," + pr.getQuantity() + "," + pr.getSupplierId());
+                writer.write(pr.getProductID()
+                        + "," + pr.getQuantity());
                 if (i < product.length - 1) {
                     writer.write("|");
                 }

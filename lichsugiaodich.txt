@@ -1,55 +1,30 @@
 Mã Hóa Đơn:	HD12345678
-Ngày Giao Dịch: 	29/02/2022
+Ngày Giao Dịch: 	30/01/2024
 Tên Nhân Viên: 	Ha An
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        550000.0
+Thanh toán qua thẻ: 546132485 với số tiền:        50000.0
 Mã Hóa Đơn:	HD13245678
-Ngày Giao Dịch: 	28/11/2024
+Ngày Giao Dịch: 	29/05/2024
 Tên Nhân Viên: 	Minh Tuan
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        180000.0
+Thanh toán bằng tiền mặt với số tiền:        326000.0
 Mã Hóa Đơn:	HD56789234
-Ngày Giao Dịch: 	27/11/2024
+Ngày Giao Dịch: 	12/04/2024
 Tên Nhân Viên: 	Thanh Ha
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        125000.0
+Thanh toán qua thẻ: 65453125 với số tiền:        125000.0
 Mã Hóa Đơn:	HD78451239
-Ngày Giao Dịch: 	26/11/2024
+Ngày Giao Dịch: 	2/02/2027
 Tên Nhân Viên: 	Anh Tuan
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        245000.0
+Thanh toán bằng tiền mặt với số tiền:        122452.0
 Mã Hóa Đơn:	HD45981236
-Ngày Giao Dịch: 	25/11/2024
+Ngày Giao Dịch: 	30/01/2024
 Tên Nhân Viên: 	Ngoc Anh
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        320000.0
+Thanh toán qua thẻ: 532154100 với số tiền:        546566.0
 Mã Hóa Đơn:	HD98451273
-Ngày Giao Dịch: 	24/11/2024
+Ngày Giao Dịch: 	29/05/2024
 Tên Nhân Viên: 	Bao An
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        430000.0
-Mã Hóa Đơn:	Ht7FNsONcR
-Ngày Giao Dịch: 	30/01/2024
-Tên Nhân Viên: 	1
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        3800.0
-Mã Hóa Đơn:	chD5WFFYHh
-Ngày Giao Dịch: 	30/01/2024
-Tên Nhân Viên: 	1
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        3800.0
-Mã Hóa Đơn:	dCBdk3oSmh
-Ngày Giao Dịch: 	30/01/2024
-Tên Nhân Viên: 	1
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        23000.0
-Mã Hóa Đơn:	5uXSBHiksJ
-Ngày Giao Dịch: 	30/01/2024
-Tên Nhân Viên: 	1
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        4000.0
-Mã Hóa Đơn:	0yTM279vmY
-Ngày Giao Dịch: 	30/01/2024
-Tên Nhân Viên: 	1
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        456654.0
+Thanh toán bằng tiền mặt với số tiền:        121200.0
