@@ -321,9 +321,31 @@ public class Store {
     }
 
     // Thống kê Khách hàng mua nhiều nhất (theo điểm tích lũy)
-    public void thongKeCustomer() {
-        Customer.rankCustomersByLoyaltyPointsWithFile(customers);
+    public void thongKeCustomerBanNhieuNhat(Scanner scanner) {
+        System.out.print("Bạn muốn xem top bao nhiêu khách hàng có lượt mua nhiều nhất: ");
+        int n = Integer.parseInt(scanner.nextLine());
+    
+        // Đảm bảo n không vượt quá số lượng khách hàng thực tế
+        n = Math.min(n, customers.length);
+    
+        System.out.println("╔══════════════════════╦══════════════════════╗");
+        System.out.println("║     Tên Khách Hàng   ║     Điểm Tích Lũy    ║");
+        System.out.println("╠══════════════════════╬══════════════════════╣");
+    
+        for (int i = 0; i < n; i++) {
+            System.out.printf("║   %-19s║           %-11s║\n",
+                    customers[i].getName(),
+                    customers[i].getLoyaltyPoints());
+            if (i < n - 1) {
+                System.out.println("╠══════════════════════╬══════════════════════╣");
+            }
+        }
+    
+        System.out.println("╚══════════════════════╩══════════════════════╝");
     }
+    
+    
+    
 
     /* Các thao tác cho danh sách khách hàng END */
 
