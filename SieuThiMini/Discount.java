@@ -71,38 +71,35 @@ public class Discount implements QLFile{
 
     // Phương thức xuất danh sách khuyến mãi
     public static void outputDiscounts(Discount[] discounts) {
-        System.out.printf("%-53s╔══════════════════════════════════════════╗\n", " ");
-        System.out.printf("%-53s║      DANH SÁCH CHƯƠNG TRÌNH KHUYẾN MÃI   ║\n", " ");
-        System.out.printf("%-53s╚══════════════════════════════════════════╝\n\n", " ");
-        System.out.printf(
-                "%40s╔═══════════╦═════════════════════════╦═══════════════╦════════════════╦════════════════╗\n",
-                " ");
-        System.out.printf(
-                "%40s║  Mã CTKM  ║      Tên Chương Trình     ║ % Giảm Giá   ║ Ngày Bắt Đầu  ║  Ngày Kết Thúc ║\n",
-                " ");
+        // Tiêu đề bảng
+        System.out.printf("%-53s╔══════════════════════════════════════════════════════════════════════════════════╗\n", " ");
+        System.out.printf("%-53s║               DANH SÁCH CHƯƠNG TRÌNH KHUYẾN MÃI                                  ║\n", " ");
+        System.out.printf("%-53s╚══════════════════════════════════════════════════════════════════════════════════╝\n\n", " ");
         
+        // Tiêu đề các cột
+        System.out.printf("%40s╔═══════════╦════════════════════════════╦═══════════════╦════════════════════╦════════════════════╗\n", " ");
+        System.out.printf("%40s║ Mã CTKM   ║  Tên Chương Trình          ║ %% Giảm Giá    ║ Ngày Bắt Đầu       ║ Ngày Kết Thúc      ║\n", " ");
+        
+        // Dữ liệu các chương trình khuyến mãi
         for (Discount discount : discounts) {
             if (discount != null) {
-                System.out.printf(
-                        "%40s╠═══════════╬═════════════════════════╬═══════════════╬════════════════╬════════════════╣\n", " ");
-                System.out.printf(
-                        "%40s║ %-10s║ %-25s║ %-13s║ %-15s║ %-15s║\n", 
-                        " ", 
-                        discount.discountID, 
-                        discount.name, 
-                        discount.discountPercentage + "%", 
-                        DATE_FORMAT.format(discount.startDate), 
-                        DATE_FORMAT.format(discount.endDate)
+                System.out.printf("%40s╠═══════════╬════════════════════════════╬═══════════════╬════════════════════╬════════════════════╣\n", " ");
+                System.out.printf("%40s║ %-10s║ %-27s║ %-14s║ %-19s║ %-19s║\n", 
+                    " ", 
+                    discount.discountID, 
+                    discount.name, 
+                    discount.discountPercentage + "%", 
+                    DATE_FORMAT.format(discount.startDate), 
+                    DATE_FORMAT.format(discount.endDate)
                 );
             }
         }
         
-        System.out.printf(
-                "%40s╚═══════════╩═════════════════════════╩═══════════════╩════════════════╩════════════════╝\n\n",
-                " ");
+        // Đóng bảng
+        System.out.printf("%40s╚═══════════╩════════════════════════════╩═══════════════╩════════════════════╩════════════════════╝\n\n", " ");
     }
     
-
+    
     // Phương thức thêm chương trình khuyến mãi mới từ bàn phím
     public static Discount[] addDiscounts(Discount[] discounts) {
         Scanner scanner = new Scanner(System.in);
@@ -161,29 +158,38 @@ public class Discount implements QLFile{
 
     // Phương thức xóa chương trình khuyến mãi theo ID
     public static Discount[] removeDiscountByID(Discount[] discounts, int removeID) {
-        // Tạo mảng mới có kích thước nhỏ hơn 1
-        Discount[] updatedDiscounts = new Discount[discounts.length - 1];
-        boolean found = false;
-        int index = 0;
-
-        for (int i = 0; i < discounts.length; i++) {
-            if (discounts[i].getDiscountID() != removeID) {
-                updatedDiscounts[index++] = discounts[i];
-            } else {
-                found = true;
+        int count = 0;
+        // Đếm số lượng chương trình không bị xóa
+        for (Discount discount : discounts) {
+            if (discount != null && discount.getDiscountID() != removeID) {
+                count++;
             }
         }
-
-        if (found) {
-            System.out.println("Đã xóa chương trình khuyến mãi: " + removeID);
-        } else {
+    
+        // Nếu không tìm thấy chương trình nào để xóa
+        if (count == discounts.length) {
             System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + removeID);
+            return discounts;  // Trả về mảng gốc nếu không có gì thay đổi
         }
+    
+        // Tạo mảng mới với kích thước phù hợp
+        Discount[] updatedDiscounts = new Discount[count];
+        int index = 0;
+    
+        // Sao chép các chương trình không bị xóa vào mảng mới
+        for (Discount discount : discounts) {
+            if (discount != null && discount.getDiscountID() != removeID) {
+                updatedDiscounts[index++] = discount;
+            }
+        }
+    
+        System.out.println("Đã xóa chương trình khuyến mãi với mã: " + removeID);
         return updatedDiscounts;
     }
+    
 
     // Phương thức tìm kiếm chương trình khuyến mãi theo ID
-    public static Discount[] searchDiscounts(Scanner scanner, Discount[] discounts) {
+    public static void searchDiscounts(Scanner scanner, Discount[] discounts) {
         System.out.println("\n--- TÌM KIẾM CHƯƠNG TRÌNH KHUYẾN MÃI ---");
         System.out.println("Nhập tiêu chí để tìm (nhấn Enter để bỏ qua tiêu chí):");
     
@@ -240,13 +246,9 @@ public class Discount implements QLFile{
             System.out.println("Không tìm thấy chương trình khuyến mãi nào khớp với tiêu chí.");
         } else {
             System.out.println("\nDanh sách chương trình khuyến mãi tìm thấy:");
-            for (Discount discount : result) {
-                discount.displayDetails(); // Hiển thị chi tiết mỗi Discount
-            }
+            Discount.outputDiscounts(result); // Hiển thị chi tiết mỗi Discount
+            ; 
         }
-    
-        // Đảm bảo luôn trả về một mảng Discount[]
-        return result;
     }
     
     private static boolean isDiscountMatch(Discount discount, int discountID, String name, double discountPercentage, Date startDate, Date endDate) {
@@ -343,12 +345,12 @@ public class Discount implements QLFile{
                     "%40s╔═══════════╦═════════════════════════╦═══════════════╦════════════════╦════════════════╗\n",
                     " ");
             System.out.printf(
-                    "%40s║  Mã CTKM  ║      Tên Chương Trình     ║ % Giảm Giá   ║ Ngày Bắt Đầu  ║  Ngày Kết Thúc ║\n",
+                    "%40s║  Mã CTKM  ║      Tên Chương Trình   ║ %% Giảm Giá    ║ Ngày Bắt Đầu   ║  Ngày Kết Thúc ║\n",
                     " ");
             System.out.printf(
                     "%40s╠═══════════╬═════════════════════════╬═══════════════╬════════════════╬════════════════╣\n", " ");
             System.out.printf(
-                    "%40s║ %-10s║ %-25s║ %-13s║ %-15s║ %-15s║\n",
+                    "%40s║ %-10s║ %-24s║ %-14s║ %-15s║ %-15s║\n",
                     " ",
                     discountToUpdate.getDiscountID(),
                     discountToUpdate.getName(),
@@ -409,7 +411,6 @@ public class Discount implements QLFile{
         } else {
             System.out.println("Không tìm thấy chương trình khuyến mãi với mã: " + discountID);
         }
-    
         return discounts; // Trả về danh sách đã được cập nhật
     }
     
@@ -426,6 +427,23 @@ public class Discount implements QLFile{
     public double applyDiscount(double total) {
         return 0;
     }
+
+    public Discount getDiscountByDay(Date id) {
+        Discount[] discount = readFromFile("SieuThiMini\\discount.txt");
+        for (Discount discountObj : discount) {
+            if (discountObj != null) {
+                Date startDate = discountObj.getStartDate();
+                Date endDate = discountObj.getEndDate();
+    
+                // Kiểm tra nếu id nằm trong khoảng thời gian từ startDate đến endDate
+                if ((id.equals(startDate) || id.after(startDate)) && (id.equals(endDate) || id.before(endDate))) {
+                    return discountObj;  // Trả về chương trình khuyến mãi nếu ngày nằm trong khoảng
+                }
+            }
+        }
+        return null;  // Nếu không tìm thấy chương trình khuyến mãi hợp lệ
+    }
+    
 }
 
 
