@@ -246,6 +246,10 @@ public class Store {
         } while (flag != true);
     }
 
+    public void sapxepdonhang(){
+        Order.sapxepngay(orderList);
+    }
+
     public void timkiem(Scanner scanner) { // Tìm kiếm đơn hàng theo nhiều khóa
         Order.loc(scanner, orderList);
     }
@@ -280,12 +284,12 @@ public class Store {
 
     public void ghifileord(){
         Order temp=new Order();
-        String filename="ghidonhang.txt";
+        String filename="SieuThiMini\\donhang.txt";
         temp.xoaNoiDungFile(filename);
         for(Order or : orderList){
             or.writeToFile(filename);
         }
-        System.out.println("Đã ghi vào file ghidonhang.txt");
+        System.out.println("Đã ghi vào file donhang.txt");
     }
     /* các thao tác cho ds đơn đặt hàng END */
 
@@ -525,11 +529,12 @@ public class Store {
     }
 
     public void ghihoadon(){
-        String filename="SieuThiMini\\ghihoadon.txt";
+        String filename="SieuThiMini\\hoadon.txt";
         Receipt.xoaNoiDungFile(filename);
+        Receipt.xoaNoiDungFilelichsugiaodich("SieuThiMini\\lichsugiaodich.txt");
         for(Receipt rc:receipts){
             rc.writeToFile(filename);
         }
-        System.out.println("Đã ghi vào file ghihoadon.txt");
+        System.out.println("Đã ghi vào file hoadon.txt và lichsugiaodich.txt");
     }
 }

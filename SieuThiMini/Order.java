@@ -136,13 +136,17 @@ public class Order implements QLFile {
         System.out.print("Nhập Ngày Lập Đơn Hàng (dd/mm/yy): ");
         setOrderDate(scanner.nextLine());
         System.out.print("Nhập Mã Khách Hàng: ");
-        customer.setCustomerID(Integer.parseInt(scanner.nextLine()));
-        System.out.print("Nhập Tên Khách Hàng: ");
-        customer.setName(scanner.nextLine());
-        System.out.print("Nhập Số Điện Thoại: ");
-        customer.setContactNumber(scanner.nextLine());
-        System.out.print("Nhập Điểm Tích Lũy: ");
-        customer.setLoyaltyPoints(Integer.parseInt(scanner.nextLine()));
+        int cusId=Integer.parseInt(scanner.nextLine());
+        if(customer.getCustomerById(cusId)==null){
+            customer.setCustomerID(0);
+            customer.setLoyaltyPoints(0);
+            customer.setName("NONE");
+            customer.setContactNumber("NONE");
+        }
+        else{
+            customer=customer.getCustomerById(cusId);
+        }
+        
         for (int I=0;I<product.length;I++) {
             dem++;
             System.out.println();
@@ -232,11 +236,8 @@ public class Order implements QLFile {
             System.out.printf("%55s║   1. Mã Đơn Hàng%16s║\n", " ", " ");
             System.out.printf("%55s║   2. Ngày Lập Đơn Hàng%10s║\n", " ", " ");
             System.out.printf("%55s║   3. Mã Sản Phẩm%16s║\n", " ", " ");
-            System.out.printf("%55s║   4. Số Lượng Mua%19s║\n", " ", " ");
+            System.out.printf("%55s║   4. Số Lượng Mua%15s║\n", " ", " ");
             System.out.printf("%55s║   5. Mã Khách Hàng%14s║\n", " ", " ");
-            System.out.printf("%55s║   6. Tên Khách Hàng%13s║\n", " ", " ");
-            System.out.printf("%55s║   7. Số Điện Thoại%14s║\n", " ", " ");
-            System.out.printf("%55s║   8. Điểm Tích Lũy%14s║\n", " ", " ");
             System.out.printf("%55s║   0. Thoát và Lưu%15s║\n", " ", " ");
             System.out.printf("%55s╚═════════════════════════════════╝\n", " ");
             System.out.printf("%55s→ ", " ");
@@ -315,22 +316,16 @@ public class Order implements QLFile {
                 case 5:
                     System.out.printf("%40sNhập Mã Khách Hàng MỚI\n", " ");
                     System.out.printf("%40s→ ", " ");
-                    customer.setCustomerID(Integer.parseInt(scanner.nextLine()));
-                    break;
-                case 6:
-                    System.out.printf("%40sNhập Tên Khách Hàng MỚI\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    customer.setName(scanner.nextLine());
-                    break;
-                case 7:
-                    System.out.printf("%40sNhập Số Điện Thoại MỚI\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    customer.setContactNumber(scanner.nextLine());
-                    break;
-                case 8:
-                    System.out.printf("%40sNhập Điểm Tích Lũy MỚI\n", " ");
-                    System.out.printf("%40s→ ", " ");
-                    customer.setLoyaltyPoints(Integer.parseInt(scanner.nextLine()));
+                    int cusId=Integer.parseInt(scanner.nextLine());
+                    if(customer.getCustomerById(cusId)==null){
+                        customer.setCustomerID(0);
+                        customer.setLoyaltyPoints(0);
+                        customer.setName("NONE");
+                        customer.setContactNumber("NONE");
+                    }
+                    else{
+                        customer=customer.getCustomerById(cusId);
+                    }
                     break;
                 case 0:
                     System.out.println("Đã Cập Nhật Giá Trị Mới");
@@ -502,7 +497,7 @@ public class Order implements QLFile {
         if (productCatelo.isEmpty())
             productCatelo = null;
 
-        System.out.print("Số lượng: ");
+        System.out.print("Số lượng mua: ");
         int productQuanti;
         in = scanner.nextLine();
         if (in.isEmpty())
@@ -634,29 +629,6 @@ public class Order implements QLFile {
         return Arrays.copyOf(mangSP, index);
     }
 
-    public static void statisticalOrders(Scanner scanner, Order[] orderList) {
-        // Menu lựa chọn
-        System.out.println("\n--- MENU THỐNG KÊ ĐƠN HÀNG ---");
-        System.out.println("1. Thống kê đơn hàng theo thời gian (ngày/tháng/năm) mới, cũ");
-        System.out.println("2. Thống kê đơn hàng theo tổng số tiền giảm dần, tăng dần");
-        System.out.println("3. Thống kê đơn hàng theo quantity giảm dần, tăng dần");
-        System.out.println("4. Thống kê đơn hàng theo mã đơn hàng tăng dần, giảm dần");
-        System.out.print("Chọn lựa chọn (1-4): ");
-
-        int choice = Integer.parseInt(scanner.nextLine());
-
-        // Xử lý theo từng lựa chọn
-        switch (choice) {
-            case 1:
-                sapxepngay(orderList); // xếp theo mới nhất trước
-                break;
-
-            default:
-                System.out.println("Lựa chọn không hợp lệ.");
-                break;
-        }
-    }
-
     public static void sapxepngay(Order[] orderList) {
         int[] a = new int[orderList.length];
         int[] vitri = new int[orderList.length];
@@ -723,10 +695,16 @@ public class Order implements QLFile {
          * for(int j=0;j<a.length;j++){
          * System.out.printf("%d %d\n",a[j],vitri[j]);
          * }
-         */System.out.printf("%-15s%-20s\n", "Mã Đơn Hàng", "Ngày Lập Đơn");
-        for (int j = 0; j < orderList.length; j++) {
-            System.out.printf("%-15s%-20s\n", orderList[vitri[j]].getOrderId(), orderList[vitri[j]].getOrderDate());
-        }
+         */// In ra danh sách hóa đơn với khung viền══════════════════════════════════
+         System.out.printf("%20s╔═════════════════╦══════════════════╗\n", "");
+         System.out.printf("%20s║ %-15s ║ %-16s ║\n", "", "Mã Đơn Hàng", "Ngày Lập Đơn");
+         System.out.printf("%20s╠═════════════════╬══════════════════╣\n", "");
+     
+         for (int j = 0; j < orderList.length; j++) {
+             System.out.printf("%20s║ %-15s ║ %-16s ║\n", "", orderList[vitri[j]].getOrderId(), orderList[vitri[j]].getOrderDate());
+         }
+     
+         System.out.printf("%20s╚═════════════════╩══════════════════╝\n", "");
     }
 
     @Override
@@ -762,11 +740,15 @@ public class Order implements QLFile {
                 String[] parts = Line.split(";");
                 orderList[i].setOrderId(parts[0]);
                 orderList[i].setOrderDate(parts[1]);
-                String[] customerParts = parts[2].split(","); // lưu các phần của khách hàng như id, tên, ...
-                orderList[i].customer.setCustomerID(Integer.parseInt(customerParts[0]));
-                orderList[i].customer.setLoyaltyPoints(Integer.parseInt(customerParts[1]));
-                orderList[i].customer.setName(customerParts[2]);
-                orderList[i].customer.setContactNumber(customerParts[3]);
+                if(orderList[i].customer.getCustomerById(Integer.parseInt(parts[2]))==null){
+                    orderList[i].customer.setCustomerID(0);
+                    orderList[i].customer.setLoyaltyPoints(0);
+                    orderList[i].customer.setName("NONE");
+                    orderList[i].customer.setContactNumber("NONE");
+                }
+                else{
+                    orderList[i].customer=customer.getCustomerById(Integer.parseInt(parts[2]));
+                }
                 String[] productParts = parts[3].split("\\|"); // tách các sản phẩm cùng thông tin của nó ra
                 orderList[i].product = new Product[productParts.length];
                 for (int j = 0; j < productParts.length; j++) {
@@ -774,9 +756,9 @@ public class Order implements QLFile {
                     String[] ThongTinProduct = productParts[j].split(",");// tác các phần của sản phẩm như id, tên,...
                     orderList[i].product[j]=Product.getProductById(ThongTinProduct[0]);
                     if(Integer.parseInt(ThongTinProduct[1])>orderList[i].product[j].getQuantity()){
-                        orderList[i].product[j].setQuantity(0);
+                        orderList[i].product[j].setQuantity(0);//Số lượng mua phải nhỏ hơn hàng tồn kho
                     }
-                    orderList[i].product[j].setQuantity(Integer.parseInt(ThongTinProduct[1]));  //Số lượng phải nhỏ hơn hàng tồn kho
+                    orderList[i].product[j].setQuantity(Integer.parseInt(ThongTinProduct[1]));  
                 }
                 i++;
             }
@@ -803,10 +785,7 @@ public class Order implements QLFile {
             int i = 0;
             writer.write(orderId + ";"
                     + orderDate
-                    + ";" + customer.getCustomerID()
-                    + "," + customer.getLoyaltyPoints()
-                    + "," + customer.getName()
-                    + "," + customer.getContactNumber() + ";");
+                    + ";" + customer.getCustomerID()+ ";");
             for (Product pr : product) {
                 writer.write(pr.getProductID()
                         + "," + pr.getQuantity());
