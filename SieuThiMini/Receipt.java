@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Date;
 
-import javax.sound.sampled.Line;
-
 import java.util.Random;
 
 public class Receipt implements QLFile {

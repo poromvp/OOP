@@ -43,8 +43,7 @@ public class Store {
 
     }
 
-    public Store(Staff[] staffList,
-            Transaction[] transactions) {
+    public Store(Staff[] staffList, Transaction[] transactions) {
         this.transactions = transactions;
         this.discounts = new Discount[0]; // Khởi tạo danh sách trống
     }
@@ -56,6 +55,8 @@ public class Store {
     public void setTransactions(Transaction[] transactions) {
         this.transactions = transactions;
     }
+
+
 
     /* thao tác nhân viên start */
     public void xuatNV() {
@@ -159,7 +160,9 @@ public class Store {
     }
     /* thao tác nhân viên end */
 
-    // update Nhân
+
+
+
     public Discount[] getDiscounts() {
         return discounts;
     }
@@ -181,6 +184,8 @@ public class Store {
     public void thongKeNhanVien() {
         cashiers.statisticBestCashier();
     }
+
+
 
     /* các thao tác cho ds đơn đặt hàng START */
     public void xuatOrder() {
@@ -293,6 +298,8 @@ public class Store {
     }
     /* các thao tác cho ds đơn đặt hàng END */
 
+
+
     /* Các thao tác cho danh sách khách hàng START */
 
     // Chức năng thứ 1 trong menu
@@ -347,12 +354,12 @@ public class Store {
     
         System.out.println("╚══════════════════════╩══════════════════════╝");
     }
-    
-    
-    
 
     /* Các thao tác cho danh sách khách hàng END */
 
+
+
+    
     /* Các thao tác cho danh sách chương trình khuyến mãi START */
     // Chức năng 1: Thêm chương trình khuyến mãi
     public void themChuongTrinhKhuyenMai() {
@@ -404,6 +411,9 @@ public class Store {
     }
 
     /* Các thao tác cho danh sách chương trình khuyến mãi END */
+
+
+
 
 
     /* Cac thao tac voi Product START */
@@ -527,6 +537,10 @@ public class Store {
         String ud = scanner.nextLine();
         Supplier.updateSupplier(ud);
     }
+
+
+
+    /* Các thao tác cho HÓA ĐƠN START */
     public void xuatHoaDon(){
         for(Receipt rc: receipts){
             rc.inHoaDon();
@@ -559,4 +573,5 @@ public class Store {
         }
         System.out.println("Đã ghi vào file hoadon.txt và lichsugiaodich.txt");
     }
+    /* các thao tác cho hóa đơn END */
 }
