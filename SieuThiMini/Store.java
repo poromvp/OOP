@@ -345,8 +345,8 @@ public class Store {
     
         for (int i = 0; i < n; i++) {
             System.out.printf("║   %-19s║           %-11s║\n",
-                    customers[i].getName(),
-                    customers[i].getLoyaltyPoints());
+                Customer.rankCustomersByLoyaltyPointsWithFile(customers)[i].getName(),
+                Customer.rankCustomersByLoyaltyPointsWithFile(customers)[i].getLoyaltyPoints());
             if (i < n - 1) {
                 System.out.println("╠══════════════════════╬══════════════════════╣");
             }

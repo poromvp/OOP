@@ -334,16 +334,16 @@ public class Customer implements QLFile {
 
     // Phương thức thống kê khách hàng có lượt mua hàng nhiều nhất dựa trên điểm
     // tích lũy
-    public static void rankCustomersByLoyaltyPointsWithFile(Customer[] FileName) {
-        if (FileName == null || FileName.length == 0) {
+    public static Customer[] rankCustomersByLoyaltyPointsWithFile(Customer[] customers) {
+        if (customers == null || customers.length == 0) {
             System.out.println("Danh sách khách hàng rỗng. Không thể thực hiện thống kê.");
-            return;
+            return new Customer[0];
         }
-
-        // Tạo một bản sao của mảng FileName để tránh thay đổi mảng gốc
-        Customer[] customerCopy = new Customer[FileName.length];
-        System.arraycopy(FileName, 0, customerCopy, 0, FileName.length);
-
+    
+        // Tạo một bản sao của mảng để tránh thay đổi mảng gốc
+        Customer[] customerCopy = new Customer[customers.length];
+        System.arraycopy(customers, 0, customerCopy, 0, customers.length);
+    
         // Sắp xếp mảng customerCopy theo điểm tích lũy giảm dần (bubble sort)
         for (int i = 0; i < customerCopy.length - 1; i++) {
             for (int j = 0; j < customerCopy.length - 1 - i; j++) {
@@ -354,13 +354,10 @@ public class Customer implements QLFile {
                 }
             }
         }
-
-        // Hiển thị danh sách đã sắp xếp
-        System.out.println("Danh sách khách hàng sắp xếp theo điểm tích lũy (giảm dần):");
-        for (Customer customer : customerCopy) {
-            customer.displayDetails();
-        }
+    
+        return customerCopy;
     }
+    
 
     public Customer getCustomerById(int id) {
         Customer[] customers = readFromFile("SieuThiMini\\customers.txt");

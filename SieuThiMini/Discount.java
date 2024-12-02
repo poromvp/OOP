@@ -253,22 +253,23 @@ public class Discount implements QLFile{
     
     private static boolean isDiscountMatch(Discount discount, int discountID, String name, double discountPercentage, Date startDate, Date endDate) {
         if (discountID != 0 && discount.getDiscountID() != discountID) {
-            return false;
+            return false; // Không khớp mã khuyến mãi
         }
-        if (name != null && !discount.getName().toLowerCase().contains(name.toLowerCase())) {
-            return false;
+        if (name != null && !discount.getName().equalsIgnoreCase(name)) {
+            return false; // Không khớp tên khuyến mãi
         }
         if (discountPercentage != 0 && discount.getDiscountPercentage() != discountPercentage) {
-            return false;
+            return false; // Không khớp phần trăm giảm giá
         }
-        if (startDate != null && discount.getStartDate().before(startDate)) {
-            return false;
+        if (startDate != null && !discount.getStartDate().equals(startDate)) {
+            return false; // Không khớp ngày bắt đầu
         }
-        if (endDate != null && discount.getEndDate().after(endDate)) {
-            return false;
+        if (endDate != null && !discount.getEndDate().equals(endDate)) {
+            return false; // Không khớp ngày kết thúc
         }
-        return true;
+        return true; // Khớp tất cả tiêu chí
     }
+    
     @Override
     // Phương thức đọc danh sách từ file
     public Discount[] readFromFile(String fileName) {
