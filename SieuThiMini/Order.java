@@ -14,7 +14,7 @@ public class Order implements QLFile {
 
     public double totalAmount; // Tổng số tiền
     private static final double VAT = 0.1; // Thuế VAT 10%
-    protected static byte cnt_ghi_file = 0, aaaa = 0; // biến này để khống chế đúng số dòng khi ghi vào file, để nếu khi
+    protected static byte cnt_ghi_file = 0, aaaa = 0; // biến này để khống chế đúng số dòng khi ghi vào file, để khi
                                                       // chạy lại chương trình thì khi đọc số dòng để tạo mảng đúng kích
                                                       // thước sẽ đúng chứ không bị dư dòng newline(), biến cnt_ghi_file
                                                       // để lưu kích thước hiện tại, biến aaaa để lưu biến cho vòng lặp
