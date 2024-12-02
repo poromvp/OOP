@@ -17,25 +17,25 @@ public class Store {
     public Store() {
         readFileProduct();
         Order or = new Order();
-        orderList = or.readFromFile("SieuThiMini\\donhang.txt");
+        orderList = or.readFromFile("donhang.txt");
         
         Customer cus=new Customer();
-        customers = cus.readFromFile("SieuThiMini\\customers.txt");
+        customers = cus.readFromFile("customers.txt");
         
         Discount dis=new Discount();
-        discounts = dis.readFromFile("SieuThiMini\\discount.txt");
+        discounts = dis.readFromFile("discount.txt");
 
         Receipt rc=new Receipt();
-        receipts =rc.readFromFile("SieuThiMini\\hoadon.txt");
+        receipts =rc.readFromFile("hoadon.txt");
 
         managers = new Manager();
         departments = new Department();
         cashiers = new Cashier();
         IvenProduct = new InventoryManager();
         OrderProduct = new InventoryManager();
-        managers.readFromFile("SieuThiMini\\dsnv.txt");
+        managers.readFromFile("dsnv.txt");
         departments = new Department();
-        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
+        departments.readFromFile("DepartmentList.txt");
 
     }
 
@@ -298,7 +298,7 @@ public class Store {
 
     public void ghifileord(){
         Order temp=new Order();
-        String filename="SieuThiMini\\donhang.txt";
+        String filename="donhang.txt";
         temp.xoaNoiDungFile(filename);
         for(Order or : orderList){
             or.writeToFile(filename);
@@ -407,7 +407,7 @@ public class Store {
 
     public void ghifilectkm(){
         Discount temp =new Discount();
-        String filename = "SieuThiMini\\discount.txt";
+        String filename = "discount.txt";
         temp.xoaNoiDungFile(filename);
         for(Discount dis: discounts){
             dis.writeToFile(filename);
@@ -417,7 +417,7 @@ public class Store {
 
     public void ghifilecus(){
         Customer temp =new Customer();
-        String filename = "SieuThiMini\\customers.txt";
+        String filename = "customers.txt";
         temp.xoaNoiDungFile(filename);
         for(Customer cus: customers){
             cus.writeToFile(filename);
@@ -434,19 +434,19 @@ public class Store {
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("SieuThiMini\\category.txt");
-        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
-        Product.readProductsFromFile("SieuThiMini\\product.txt");
+        Category.readCategoryFromFile("category.txt");
+        Supplier.readSupplierFromFile("supplier.txt");
+        Product.readProductsFromFile("product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
     public void writeFileProduct(){
-        Product.writeProductsToFile("SieuThiMini\\product.txt");
+        Product.writeProductsToFile("product.txt");
     }
     public void writeFileCategory(){
-        Category.writeCategoryFromFile("SieuThiMini\\category.txt");
+        Category.writeCategoryFromFile("category.txt");
     }
     public void writeFileSupplier(){
-        Supplier.writeSupplierFromFile("SieuThiMini\\supplier.txt");
+        Supplier.writeSupplierFromFile("supplier.txt");
     }
     // Xuat danh sach cac san pham
     public void productDetail() {
@@ -465,7 +465,7 @@ public class Store {
         System.out.println("So phan tu ban muon them la: ");
         int n = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < n; i++) {
-            Product.addProduct();
+            Product.addProduct(scanner);
         }
     }
 
@@ -473,7 +473,7 @@ public class Store {
     public void updateProduct(Scanner scanner) {
         System.out.println("Nhap vao id san pham muon sua (Id co dang SP___).");
         String ud = scanner.nextLine();
-        Product.upDateProduct(ud);
+        Product.upDateProduct(ud,scanner);
     }
 
     public void removeProduct(Scanner scanner) {
@@ -490,24 +490,39 @@ public class Store {
             System.out.println("1.Tim kiem theo ten. ");
             System.out.println("2.Tim kiem theo loai. ");
             System.out.println("3.Tim kiem theo nha cung cap. ");
-            choice = new Scanner(System.in).nextInt();
+            choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 0:
                     System.out.println("Thoat chinh sua.");
                     break;
                 case 1:
                     System.out.println("Nhap tu khoa muon tim kiem: ");
-                     find= scanner.nextLine();
-                    Product.findById(find);
+                    find= scanner.nextLine();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
+                    Product.findByName(find);
                     break;
                 case 2:
                     System.out.println("Nhap ten loai san pham muon tim kiem: ");
                     find= scanner.nextLine();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
                     Product.findByCategory(find);
                     break;
                 case 3:
                     System.out.println("Nhap ten nha cung cap muon tim kiem");
                     find= scanner.nextLine();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
                     Product.findBySupplier(find);
                     break;
                 default:
@@ -520,14 +535,14 @@ public class Store {
         System.out.println("So loai san pham ban muon them la: ");
         int n = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < n; i++) {
-            Category.addCategory();
+            Category.addCategory(scanner);
         }
     }
     public void addSupplier(Scanner scanner){
         System.out.println("So nha cung cap ban muon them la: ");
         int n = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < n; i++) {
-            Supplier.addSupplier();
+            Supplier.addSupplier(scanner);
         }
     }
     //Xoa loai san pham va nha cung cap
@@ -545,12 +560,12 @@ public class Store {
     public void updateCategory(Scanner scanner){
         System.out.println("Nhap vao id loai san pham muon sua (Id co dang CT___).");
         String ud = scanner.nextLine();
-        Category.updateCategory(ud);
+        Category.updateCategory(ud,scanner);
     }
     public void updateSupplier(Scanner scanner){
         System.out.println("Nhap vao id nha cung cap san pham muon sua (Id co dang SL___).");
         String ud = scanner.nextLine();
-        Supplier.updateSupplier(ud);
+        Supplier.updateSupplier(ud,scanner);
     }
 
 
@@ -583,9 +598,9 @@ public class Store {
     }
 
     public void ghihoadon(){
-        String filename="SieuThiMini\\hoadon.txt";
+        String filename="hoadon.txt";
         Receipt.xoaNoiDungFile(filename);
-        Receipt.xoaNoiDungFilelichsugiaodich("SieuThiMini\\lichsugiaodich.txt");
+        Receipt.xoaNoiDungFilelichsugiaodich("lichsugiaodich.txt");
         for(Receipt rc:receipts){
             rc.writeToFile(filename);
         }

@@ -89,7 +89,7 @@ public class Category {
         }
     }
     //Them
-    public static void addCategory(){
+    public static void addCategory(Scanner sc){
         if (cnt == categoryList.length) {
             // Mở rộng mảng khi đạt giới hạn
             Category[] newCategoryList= new Category[categoryList.length*2];
@@ -97,7 +97,6 @@ public class Category {
             categoryList=newCategoryList;
         }
         Category a = new Category();
-        Scanner sc = new Scanner(System.in);
         int check =0;
         do{
             System.out.println("Nhap category id: ");
@@ -164,7 +163,7 @@ public class Category {
         return true; // Không trùng
     }
     // Sua category
-    public static void updateCategory(String id) {
+    public static void updateCategory(String id,Scanner sc) {
         int choice;
         int index = -1;
 
@@ -176,7 +175,6 @@ public class Category {
             }
         }
         if (index != -1) {
-            Scanner sc = new Scanner(System.in);
             do {
                 System.out.println("------ CHINH SUA LOAI SAN PHAM ------");
                 System.out.println("0. Thoát.");
