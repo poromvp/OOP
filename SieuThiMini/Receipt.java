@@ -55,31 +55,32 @@ public class Receipt implements QLFile {
             i++;
         }
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
-
         // Cập nhật lại phần tính toán tổng tiền
         System.out.printf("║  Thành Tiền                                   %-19.2f║\n",
-                giaodich.donhang.calculateTotalAmount());
+        giaodich.donhang.calculateTotalAmount());
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
-        if (discount.getDiscountPercentage() != 0) {
+        if (discount.getDiscountPercentage() != 0) { //Nếu có giảm giá
+            double tien_sau_khi_giam_gia=giaodich.donhang.calculateTotalAmount() * (1.0 - discount.getDiscountPercentage() / 100);
             System.out.printf("║  %-23s                      %-19.2f║\n", discount.getName(),
-                    giaodich.donhang.calculateTotalAmount() * (1.0 - discount.getDiscountPercentage() / 100));
+                    tien_sau_khi_giam_gia);
             System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
             System.out.printf("║  Tổng Thanh Toán (Có VAT)                     %-19.2f║\n",
-                    Order.calculateVAT(
-                            giaodich.donhang.calculateTotalAmount() * (1.0 - discount.getDiscountPercentage() / 100)));
+            tien_sau_khi_giam_gia+Order.calculateVAT(
+                            tien_sau_khi_giam_gia));
             System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
             System.out.printf("║  %-64s║\n", giaodich.phuongThucThanhToan.xuLyThanhToan());
             System.out.printf("║  Tiền Thối Lại                                %-19.2f║\n",
-                    giaodich.phuongThucThanhToan.getSoTien() - Order.calculateVAT(
-                            giaodich.donhang.calculateTotalAmount() * (1.0 - discount.getDiscountPercentage() / 100)));
+                    giaodich.phuongThucThanhToan.getSoTien() - (tien_sau_khi_giam_gia+Order.calculateVAT(
+                        tien_sau_khi_giam_gia)));
         } else {
-            System.out.printf("║  Tổng Thanh Toán (Có VAT)                     %-19.2f║\n",
-                    Order.calculateVAT(giaodich.donhang.calculateTotalAmount()));
+            double so_tien_sau_VAT=giaodich.donhang.calculateTotalAmount()+Order.calculateVAT(giaodich.donhang.calculateTotalAmount());
+            System.out.printf("║  Tổng Thanh Toán (Có VAT)                     %-19.2f║\n",so_tien_sau_VAT
+            );
             System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
             System.out.printf("║  %-64s║\n", giaodich.phuongThucThanhToan.xuLyThanhToan());
             System.out.printf("║  Tiền Thối Lại                                %-19.2f║\n",
-                    giaodich.phuongThucThanhToan.getSoTien()
-                            - Order.calculateVAT(giaodich.donhang.calculateTotalAmount()));
+                    giaodich.phuongThucThanhToan.getSoTien()-
+                            so_tien_sau_VAT);
         }
         System.out.printf("╚══════════════════════════════════════════════════════════════════╝\n");
     }
@@ -124,7 +125,7 @@ public class Receipt implements QLFile {
         } else {
             receipt.discount = receipt.discount.getDiscountByDay(date);
         }
-        double tien, tien_hang_sau_khi_giam = Order.calculateVAT(receipt.giaodich.donhang.calculateTotalAmount())
+        double tien, tien_hang_sau_khi_giam = (receipt.giaodich.donhang.calculateTotalAmount() + Order.calculateVAT(receipt.giaodich.donhang.calculateTotalAmount()))
                 * (1.0 - receipt.discount.getDiscountPercentage() / 100.0);
 
         if (pt == 1) {
@@ -279,7 +280,7 @@ public class Receipt implements QLFile {
             System.out.print("Nhấn Enter để giữ nguyên phương thức thanh toán hiện tại hoặc chọn 1 hoặc 2: ");
             String tmpInput = scanner.nextLine();
     
-            double tien_hang_sau_khi_giam = Order.calculateVAT(hoadon.giaodich.donhang.calculateTotalAmount())* (1.0 - hoadon.discount.getDiscountPercentage() / 100.0);
+            double tien_hang_sau_khi_giam = (hoadon.giaodich.donhang.calculateTotalAmount() + Order.calculateVAT(hoadon.giaodich.donhang.calculateTotalAmount()))* (1.0 - hoadon.discount.getDiscountPercentage() / 100.0);
             if (!tmpInput.trim().isEmpty()) {
                 byte tmp = Byte.parseByte(tmpInput);
                 if (tmp == 1) { // Thẻ/Chuyển khoản
@@ -636,6 +637,43 @@ public class Receipt implements QLFile {
 
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
+    public static void xemlichsugiaodich(){
+        int kichthuoc=0;
+        try (BufferedReader br = new BufferedReader(new FileReader("SieuThiMini\\lichsugiaodich.txt"))) {
+            String Line;
+            while ((Line = br.readLine()) != null) {
+                kichthuoc++;
+            }
+            br.close();
+            Line = Line + "line"; // Để cho nó không hiện broblem isn't used nữa
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String[] ds=new String[kichthuoc];
+
+        try (BufferedReader br = new BufferedReader(new FileReader("SieuThiMini\\lichsugiaodich.txt"))) {
+            String Line;
+            int i=0;
+            while ((Line = br.readLine()) != null) {
+                ds[i]=Line;
+                i++;
+            }
+            br.close();
+            Line = Line + "line"; // Để cho nó không hiện broblem isn't used nữa
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.printf("%40s\n\n","LỊCH SỬ GIAO DỊCH");
+        int i=0;
+        for(String ls:ds){
+            i++;
+            System.out.println(ls);
+            if(i%5==0){
+                System.out.println();
+            }
         }
     }
 }

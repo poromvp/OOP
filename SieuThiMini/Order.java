@@ -14,11 +14,6 @@ public class Order implements QLFile {
 
     public double totalAmount; // Tổng số tiền
     private static final double VAT = 0.1; // Thuế VAT 10%
-    protected static byte cnt_ghi_file = 0, aaaa = 0; // biến này để khống chế đúng số dòng khi ghi vào file, để nếu khi
-                                                      // chạy lại chương trình thì khi đọc số dòng để tạo mảng đúng kích
-                                                      // thước sẽ đúng chứ không bị dư dòng newline(), biến cnt_ghi_file
-                                                      // để lưu kích thước hiện tại, biến aaaa để lưu biến cho vòng lặp
-                                                      // mỗi lần ghi 1 dòng vào file
 
     public Order() {
         customer = new Customer(); // khởi tạo khách hàng cho hóa đơn
@@ -109,7 +104,7 @@ public class Order implements QLFile {
         double total = 0.0;
         for (Product product : product) { // vòng lặp for each duyệt từng sản phẩm có kdl là Products
             if (product != null) {
-                total += product.getPrice();
+                total += product.getPrice()*product.getQuantity();
             }
         }
         return total;
@@ -175,7 +170,6 @@ public class Order implements QLFile {
     public static Order[] add(Scanner scanner, Order[] orderList) { // thêm đơn hàng
         System.out.print("Bạn muốn thêm bao nhiêu đơn hàng ?: ");
         int n = Integer.parseInt(scanner.nextLine());
-        cnt_ghi_file += n;
         orderList = Arrays.copyOf(orderList, orderList.length + n);
         byte cnt = 0; // Dùng để xuất cho người nhập dễ theo dõi là đang hỏi bao nhiêu sản phẩm của
                       // đơn hàng nào
@@ -349,7 +343,6 @@ public class Order implements QLFile {
             int pos = 0; // Vị trí của đơn hàng trong danh sách
             for (int i = 0; i < orderList.length; i++) {
                 if (orderList[i].getOrderId().equals(temp)) {
-                    cnt_ghi_file--;
                     pos = i;
                     flag = true;
                     break;
@@ -723,7 +716,6 @@ public class Order implements QLFile {
         } catch (IOException e) {
             e.printStackTrace();
         } // Đoạn này đọc số dòng để lưu số lượng đơn hàng có trong danh sách
-        cnt_ghi_file = (byte) n;
         orderList = new Order[n];
         i = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -794,10 +786,7 @@ public class Order implements QLFile {
                 }
                 i++;
             }
-            if (aaaa < cnt_ghi_file - 1) { // đến dòng cuối cùng sẽ không newline nữa
                 writer.newLine();
-            }
-            aaaa++;
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }

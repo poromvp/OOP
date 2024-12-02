@@ -196,10 +196,12 @@ public class Store {
     public void addOrder(Scanner scanner) { // thêm đơn hàng
         orderList = Order.add(scanner, orderList);
         System.out.println("Thêm Đơn Hàng Mới Thành Công!");
+        ghifileord();
     }
 
     public void removeOrder(Scanner scanner) { // xóa đơn hàng theo mã
         orderList = Order.xoa(scanner, orderList);
+        ghifileord();
     }
 
     public void editOrder(Scanner scanner) {
@@ -245,6 +247,7 @@ public class Store {
                 } while (choice != 0 && choice != 1);
             }
         } while (flag != true);
+        ghifileord();
     }
 
     public void sapxepdonhang(){
@@ -257,14 +260,24 @@ public class Store {
 
     public void thongkeDoanhThu() {
         byte i = 0;
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách
-                                                                               // hàng nghìn, trăm, triệu
-        for (double mang : Order.thongkeQUY(orderList)) { // Quý 1: từ tháng 1 tới tháng 3
-            String formattedAmount = numberFormat.format(mang); // Quý 2: từ tháng 4 tới tháng 6
-            System.out.println("Quý " + (i + 1) + ": " + formattedAmount + " VND"); // Quý 3: từ tháng 7 tới tháng 9
-            i++; // Quý 4: từ tháng 10 tới tháng 12
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách hàng nghìn, trăm, triệu
+        
+        // Tạo phần tiêu đề
+        System.out.printf("%20s╔═════════════╦═════════════════════════════╗\n", " ");
+        System.out.printf("%20s║   Quý       ║    Doanh thu (VND)          ║\n", " ");
+        System.out.printf("%20s╠═════════════╬═════════════════════════════╣\n", " ");
+        
+        // Lặp qua các phần tử trong mảng
+        for (double mang : Order.thongkeQUY(orderList)) { 
+            String formattedAmount = numberFormat.format(mang);
+            System.out.printf("%20s║   Quý %-5d ║ %-27s ║\n", " ", (i + 1), formattedAmount);
+            i++;
         }
+        
+        // Tạo phần kết thúc
+        System.out.printf("%20s╚═════════════╩═════════════════════════════╝\n", " ");
     }
+    
 
     public void thongkeSpBanChay(Scanner scanner) {
         System.out.print("Bạn Muốn Xem Top Bao Nhiêu Sản Phẩm Bán Chạy Nhất: ");
@@ -301,6 +314,7 @@ public class Store {
     // Chức năng thứ 1 trong menu
     public void themKhachHang(Scanner scanner) {
         customers = Customer.addCustomers(customers, scanner);
+        ghifilecus();
     }
 
     // Chức năng thứ 2 trong menu
@@ -313,6 +327,7 @@ public class Store {
         System.out.print("Nhập mã khách hàng để xóa: ");
         int deleteID = Integer.parseInt(scanner.nextLine());
         customers = Customer.removeCustomerByID(customers, deleteID);
+        ghifilecus();
     }
 
     // Chức năng thứ 4 trong menu
@@ -320,6 +335,7 @@ public class Store {
         System.out.print("Nhập mã khách hàng để cập nhật: ");
         int updateID = Integer.parseInt(scanner.nextLine());
         Customer.updateCustomerByID(customers, updateID, scanner);
+        ghifilecus();
     }
 
     // Chức năng thứ 5 trong menu
@@ -360,6 +376,7 @@ public class Store {
     // Chức năng 1: Thêm chương trình khuyến mãi
     public void themChuongTrinhKhuyenMai(Scanner scanner) {
         discounts = Discount.addDiscounts(discounts,scanner); // Cập nhật danh sách
+        ghifilectkm();
     }
 
     // Chức năng 2: Xuất danh sách chương trình khuyến mãi
@@ -372,6 +389,7 @@ public class Store {
         System.out.print("Nhập mã chương trình khuyến mãi cần xóa: ");
         int removeID = Integer.parseInt(scanner.nextLine());
         discounts = Discount.removeDiscountByID(discounts, removeID); // Cập nhật danh sách
+        ghifilectkm();
     }
 
     // Chức năng 4: Cập nhật chương trình khuyến mãi
@@ -379,6 +397,7 @@ public class Store {
         System.out.print("Nhập mã chương trình khuyến mãi cần sửa: ");
         int updateID = Integer.parseInt(scanner.nextLine());
         Discount.updateDiscountByID(discounts, updateID, scanner); // Cập nhật danh sách
+        ghifilectkm();
     }
 
     // Chức năng 5: Tìm kiếm chương trình khuyến mãi
@@ -560,15 +579,18 @@ public class Store {
 
     public void themHoaDon(Scanner scanner){
         receipts=Receipt.themhoadon(receipts, scanner, orderList);
+        ghihoadon();
     }
 
     public void xoaHoaDon(Scanner scanner){
         receipts=Receipt.xoahoadon(receipts, scanner);
+        ghihoadon();
     }
 
     public void suaHoaDon(Scanner scanner){
         System.out.print("Nhập id hóa đơn mà bạn muốn chỉnh sửa: ");
         receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner);
+        ghihoadon();
     }
 
     public void timHoaDon(Scanner scanner){
@@ -583,6 +605,10 @@ public class Store {
             rc.writeToFile(filename);
         }
         System.out.println("Đã ghi vào file hoadon.txt và lichsugiaodich.txt");
+    }
+
+    public void xem(){
+        Receipt.xemlichsugiaodich();
     }
     /* các thao tác cho hóa đơn END */
 }
