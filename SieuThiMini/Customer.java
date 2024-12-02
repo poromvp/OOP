@@ -77,9 +77,7 @@ public class Customer implements QLFile {
     }
 
     // Phương thức thêm khách hàng vào danh sách (3)
-    public static Customer[] addCustomers(Customer[] customers) {
-        Scanner scanner = new Scanner(System.in);
-
+    public static Customer[] addCustomers(Customer[] customers, Scanner scanner) {
         System.out.print("Nhập số lượng khách hàng cần thêm: ");
         int n = Integer.parseInt(scanner.nextLine());
 
@@ -113,8 +111,7 @@ public class Customer implements QLFile {
     }
 
     // Phương thức sửa (cập nhật) thông tin của khách hàng trong danh sách (4)
-    public static Customer[] updateCustomerByID(Customer[] customers, int customerID) {
-        Scanner scanner = new Scanner(System.in);
+    public static Customer[] updateCustomerByID(Customer[] customers, int customerID, Scanner scanner) {
 
         // Tìm kiếm khách hàng theo ID
         Customer customerToUpdate = null;
@@ -314,6 +311,7 @@ public class Customer implements QLFile {
     public void xoaNoiDungFile(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+            writer.close();
         } catch (IOException e) {
             System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
         }
@@ -334,16 +332,16 @@ public class Customer implements QLFile {
 
     // Phương thức thống kê khách hàng có lượt mua hàng nhiều nhất dựa trên điểm
     // tích lũy
-    public static void rankCustomersByLoyaltyPointsWithFile(Customer[] FileName) {
-        if (FileName == null || FileName.length == 0) {
+    public static Customer[] rankCustomersByLoyaltyPointsWithFile(Customer[] customers) {
+        if (customers == null || customers.length == 0) {
             System.out.println("Danh sách khách hàng rỗng. Không thể thực hiện thống kê.");
-            return;
+            return new Customer[0];
         }
-
-        // Tạo một bản sao của mảng FileName để tránh thay đổi mảng gốc
-        Customer[] customerCopy = new Customer[FileName.length];
-        System.arraycopy(FileName, 0, customerCopy, 0, FileName.length);
-
+    
+        // Tạo một bản sao của mảng để tránh thay đổi mảng gốc
+        Customer[] customerCopy = new Customer[customers.length];
+        System.arraycopy(customers, 0, customerCopy, 0, customers.length);
+    
         // Sắp xếp mảng customerCopy theo điểm tích lũy giảm dần (bubble sort)
         for (int i = 0; i < customerCopy.length - 1; i++) {
             for (int j = 0; j < customerCopy.length - 1 - i; j++) {
@@ -354,13 +352,10 @@ public class Customer implements QLFile {
                 }
             }
         }
-
-        // Hiển thị danh sách đã sắp xếp
-        System.out.println("Danh sách khách hàng sắp xếp theo điểm tích lũy (giảm dần):");
-        for (Customer customer : customerCopy) {
-            customer.displayDetails();
-        }
+    
+        return customerCopy;
     }
+    
 
     public Customer getCustomerById(int id) {
         Customer[] customers = readFromFile("SieuThiMini\\customers.txt");

@@ -323,7 +323,7 @@ public class Store {
     public void capNhatKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để cập nhật: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Customer.updateCustomerByID(customers, updateID);
+        Customer.updateCustomerByID(customers, updateID, scanner);
     }
 
     // Chức năng thứ 5 trong menu

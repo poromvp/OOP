@@ -101,8 +101,7 @@ public class Discount implements QLFile{
     
     
     // Phương thức thêm chương trình khuyến mãi mới từ bàn phím
-    public static Discount[] addDiscounts(Discount[] discounts) {
-        Scanner scanner = new Scanner(System.in);
+    public static Discount[] addDiscounts(Discount[] discounts, Scanner scanner) {
     
         System.out.print("Nhập số lượng chương trình khuyến mãi cần thêm: ");
         int n = Integer.parseInt(scanner.nextLine());
@@ -253,22 +252,23 @@ public class Discount implements QLFile{
     
     private static boolean isDiscountMatch(Discount discount, int discountID, String name, double discountPercentage, Date startDate, Date endDate) {
         if (discountID != 0 && discount.getDiscountID() != discountID) {
-            return false;
+            return false; // Không khớp mã khuyến mãi
         }
-        if (name != null && !discount.getName().toLowerCase().contains(name.toLowerCase())) {
-            return false;
+        if (name != null && !discount.getName().equalsIgnoreCase(name)) {
+            return false; // Không khớp tên khuyến mãi
         }
         if (discountPercentage != 0 && discount.getDiscountPercentage() != discountPercentage) {
-            return false;
+            return false; // Không khớp phần trăm giảm giá
         }
-        if (startDate != null && discount.getStartDate().before(startDate)) {
-            return false;
+        if (startDate != null && !discount.getStartDate().equals(startDate)) {
+            return false; // Không khớp ngày bắt đầu
         }
-        if (endDate != null && discount.getEndDate().after(endDate)) {
-            return false;
+        if (endDate != null && !discount.getEndDate().equals(endDate)) {
+            return false; // Không khớp ngày kết thúc
         }
-        return true;
+        return true; // Khớp tất cả tiêu chí
     }
+    
     @Override
     // Phương thức đọc danh sách từ file
     public Discount[] readFromFile(String fileName) {
@@ -310,6 +310,7 @@ public class Discount implements QLFile{
         public void xoaNoiDungFile(String filePath) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
                 // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+                writer.close();
             } catch (IOException e) {
                 System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
             }
@@ -327,8 +328,7 @@ public class Discount implements QLFile{
         }
     
         // Phương thức sửa thông tin chương trình khuyến mãi theo ID
-        public static Discount[] updateDiscountByID(Discount[] discounts, int discountID) {
-            Scanner scanner = new Scanner(System.in);
+        public static Discount[] updateDiscountByID(Discount[] discounts, int discountID, Scanner scanner) {
         
             // Tìm kiếm chương trình khuyến mãi theo ID
             Discount discountToUpdate = null;

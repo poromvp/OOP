@@ -205,7 +205,7 @@ public class ChayChuongTrinh {
                 
                 case 1:
                     // Thêm mới 1 phần tử, k phần tử
-                    store.themChuongTrinhKhuyenMai();
+                    store.themChuongTrinhKhuyenMai(scanner);
                     break;
                 case 2:
                     // Xem danh sách chương trình khuyến mãi
