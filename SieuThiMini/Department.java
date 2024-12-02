@@ -84,7 +84,6 @@ public class Department extends Staff {
 
                 }
             }
-
             return departments;
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc file: " + e.getMessage());
@@ -92,27 +91,28 @@ public class Department extends Staff {
         }
     }
 
-    public void getdetail (){
-        Department[] temp =readFromFile("SieuThiMini\\DepartmentList.txt");
+    public void getdetail() {
+        Department[] temp = readFromFile("SieuThiMini\\DepartmentList.txt");
         if (temp == null || temp.length == 0) {
-            System.out.println("Không có dữ liệu nhân viên");
+            System.out.println("Không có dữ liệu phòng ban");
             return;
         }
-
-        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
-        System.out.printf("║ %-10s │ %-15s │ %-20s ║\n", "Mã phòng ban", "Tên phòng ban", "Tên người quản lý");
-        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╣\n");
-
-        // Dữ liệu trong bảng
+    
+        System.out.println("Danh sách các phòng ban");
+        System.out.println("╔══════════════╤═════════════════╤═════════════════════════╗");
+        System.out.printf("║ %-11s │ %-15s │ %-23s ║\n", "Mã phòng ban", "Tên phòng ban", "Tên người quản lý");
+        System.out.println("╠══════════════╪═════════════════╪═════════════════════════╣");
+    
         for (Department department : temp) {
-            System.out.printf("║ %-10s │ %-15s │ %-20s ║\n",
-                department.getDepartmentID(),
-                department.getDepartmentName(),
-                department.getManagerName());
+            System.out.printf("║ %-12s │ %-15s │ %-23s ║\n",
+                    department.getDepartmentID(),
+                    department.getDepartmentName(),
+                    department.getManagerName());
         }
-        System.out.printf("╚════════════╧═══════════════╧════════════════════════════╝\n");
+        System.out.println("╚══════════════╧═════════════════╧═════════════════════════╝");
         System.out.println("");
     }
+    
 
     // Phương thức ghi lại dữ liệu vào file
     public void writeToFile(String fileName, Department[] departments) {
@@ -314,9 +314,9 @@ public class Department extends Staff {
         boolean found = false;
     
         // In ra tiêu đề bảng
-        System.out.printf("╔════════════╤══════════════╤══════════════════════════════╤══════════════════╗\n");
-        System.out.printf("║ %-10s │ %-15s │ %-20s ║\n", "Mã phòng ban", "Tên phòng ban", "Tên người quản lý");
-        System.out.printf("╠════════════╪══════════════╪══════════════════════════════╪══════════════════╣\n");
+        System.out.println("╔══════════════╤═════════════════╤═════════════════════════╗");
+        System.out.printf("║ %-11s │ %-15s │ %-23s ║\n", "Mã phòng ban", "Tên phòng ban", "Tên người quản lý");
+        System.out.println("╠══════════════╪═════════════════╪═════════════════════════╣");
     
         // Duyệt qua mảng departments và tìm phòng ban thỏa mãn ít nhất một tiêu chí
         for (Department department : departments) {
@@ -341,7 +341,7 @@ public class Department extends Staff {
             if (match) {
                 found = true;
                 // In ra thông tin phòng ban
-                System.out.printf("║ %-10s │ %-15s │ %-20s ║\n",
+                System.out.printf("║ %-12s │ %-15s │ %-23s ║\n",
                     department.getDepartmentID(),
                     department.getDepartmentName(),
                     department.getManagerName());
@@ -355,7 +355,7 @@ public class Department extends Staff {
         }
     
         // Đường viền cuối bảng
-        System.out.printf("╚════════════╧══════════════╧══════════════════════════════╧══════════════════╝\n");
+        System.out.println("╚══════════════╧═════════════════╧═════════════════════════╝");
     }
 }
 

@@ -25,6 +25,14 @@ public class Product {
         this.quantity = quantity;
         this.supplierId = supplierId;
     }
+
+    //ConStructor với 3 đối tượng
+    public Product(String productID, String name, int quantity){
+        this.productID= productID;
+        this.name=name;
+        this.quantity=quantity;
+    }
+    
     // get, set
 
     public String getProductID() {

@@ -116,22 +116,28 @@ public class Cashier extends Staff {
     // Phương thức in thông tin thu ngân dưới dạng bảng
     public void getdetail() {
         Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
-        System.out.println("╔════════════╤══════════════════════════════════════╤═════════════════╤════════════╤══════════════════╗");
-        System.out.println("║ Mã NV      │ Họ Tên                              │ Vai trò         │ Ca Làm     │ Ngày Công       ║");
-        System.out.println("╠════════════╪══════════════════════════════════════╪═════════════════╪════════════╪══════════════════╣");
-
+        if (cashiers == null || cashiers.length == 0) {
+            System.out.println("Không có dữ liệu nhân viên");
+            return;
+        }
+    
+        System.out.println("Danh sách nhân viên thu ngân");
+        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤═════════════════╗");
+        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", "Ngày Công");
+        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪═════════════════╣");
+    
         for (Cashier cashier : cashiers) {
-            System.out.printf("║ %-10s │ %-35s │ %-15s │ %-10s │ %-15d ║\n",
+            System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
                     cashier.getShift(),
                     cashier.getNumWorkingDays());
         }
-
-        System.out.println("╚════════════╧═══════════════════════════════════════╧═════════════════╧════════════╧══════════════════╝");
+    
+        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧═════════════════╝");
     }
-
+    
     // Phương thức thêm một Cashier mới vào danh sách
     public void add() {
         // Hiển thị danh sách thu ngân hiện tại
@@ -323,9 +329,9 @@ public class Cashier extends Staff {
         boolean found = false;
     
         // Định dạng tiêu đề bảng
-        System.out.printf("╔════════════╤══════════════════════════════╤══════════════╤════════════╤══════════════════╗\n");
-        System.out.printf("║ %-10s │ %-30s │ %-12s │ %-10s │ %-15s ║\n", "Mã NV", "Tên thu ngân", "Vai trò", "Ca làm", "Số ngày công");
-        System.out.printf("╠════════════╪══════════════════════════════╪══════════════╪════════════╪══════════════════╣\n");
+        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤═════════════════╗");
+        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", "Ngày Công");
+        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪═════════════════╣");
     
         // Duyệt qua danh sách các thu ngân và tìm kiếm
         for (Cashier cashier : cashiers) {
@@ -351,7 +357,7 @@ public class Cashier extends Staff {
             // Nếu tất cả tiêu chí khớp, in ra thông tin thu ngân
             if (match) {
                 found = true;
-                System.out.printf("║ %-10s │ %-30s │ %-12s │ %-10s │ %-15d ║\n",
+                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
@@ -366,8 +372,7 @@ public class Cashier extends Staff {
         }
     
         // Đường viền cuối bảng
-        System.out.printf("╚════════════╧══════════════════════════════╧══════════════╧════════════╧══════════════════╝\n");
-    }
+        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧═════════════════╝");    }
 
     // Phương thức thống kê nhân viên xuất sắc nhất tháng/năm 
     public void statisticBestCashier() {
