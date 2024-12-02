@@ -1,5 +1,4 @@
 import java.io.*;
-import java.security.PrivateKey;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -12,6 +11,7 @@ public class InventoryManager extends Staff {
         String number = String.valueOf(a.nextInt(900)+100);
         return "SP"+number;
     }
+    Scanner sc = new Scanner(System.in);
 
     // Đọc dữ liệu từ file Inventory
     @Override
@@ -103,7 +103,6 @@ public class InventoryManager extends Staff {
     public void add() {
         getdetail();
 
-        Scanner sc = new Scanner(System.in);
 
         Product[] InvenProduct = readFromFile("SieuThiMini\\Inventory.txt");
 
@@ -156,7 +155,6 @@ public class InventoryManager extends Staff {
         getdetailOrder();
         
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
         
         // Đọc danh sách nhập hàng hiện tại từ file
         Product[] InvenProduct = readFromFile("SieuThiMini\\OrderInventory.txt");
@@ -222,12 +220,12 @@ public class InventoryManager extends Staff {
         getdetail();
         
         // Nhập mã kho muốn xóa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã sản phẩm bạn muốn xoá: ");
         String IDremove = sc.nextLine();
         
         // Đọc danh sách kho từ file
         Product[] InvenProducts = readFromFile("SieuThiMini\\Inventory.txt");
+
         
         // Duyệt qua mảng departments và đếm số lượng kho cần giữ lại
         int newSize = 0;
@@ -265,12 +263,12 @@ public class InventoryManager extends Staff {
         getdetailOrder();
 
         // Nhập mã kho muốn xóa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã sản phẩm bạn muốn xoá: ");
         String IDremove = sc.nextLine();
 
         // Đọc danh sách kho từ file
         Product[] InvenProducts = readFromFile("SieuThiMini\\OrderInventory.txt");
+
 
         // Duyệt qua mảng departments và đếm số lượng kho cần giữ lại
         int newSize = 0;
@@ -309,7 +307,6 @@ public class InventoryManager extends Staff {
         getdetail();
 
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
 
         // Đọc danh sách kho hiện tại từ file
        Product[] InvenProduct= readFromFile("SieuThiMini\\Inventory.txt");
@@ -361,7 +358,6 @@ public class InventoryManager extends Staff {
         getdetailOrder();
 
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
 
         // Đọc danh sách nhập hàng hiện tại từ file
         Product[] InvenProduct= readFromFile("SieuThiMini\\OrderInventory.txt");
@@ -414,6 +410,7 @@ public class InventoryManager extends Staff {
         getdetail();
         Scanner sc = new Scanner(System.in);
         Product[] InvenProducts = readFromFile("SieuThiMini\\Inventory.txt");
+
 
         // Yêu cầu nhập các tiêu chí tìm kiếm
         System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
@@ -480,6 +477,7 @@ public class InventoryManager extends Staff {
     }
 
     public void searchOrder() {
+
         getdetailOrder();
         Scanner sc = new Scanner(System.in);
         Product[] InvenProducts = readFromFile("SieuThiMini\\OrderInventory.txt");

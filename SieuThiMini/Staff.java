@@ -1,5 +1,4 @@
 
-import java.util.Scanner;
 
 
 public abstract class Staff implements QLFile{
@@ -9,7 +8,7 @@ public abstract class Staff implements QLFile{
     protected double Salary; 
     protected String ContactNum;
     public Object removeStaff;
-
+    
     
 
     public Staff(String staffID, String name, String role, Double salary, String contactNum) {

@@ -1,6 +1,5 @@
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -31,6 +30,9 @@ public class Manager extends Staff {
     public void setCount(int count) {
         this.count = count;
     }
+
+    Scanner sc = new Scanner(System.in);
+
 
     @Override
     // đọc và lưu lại các phần tử trong file
@@ -101,7 +103,6 @@ public class Manager extends Staff {
     //them nhan vien vao danh sach nhan vien
     public void add() {
     getdetail();
-    Scanner sc = new Scanner(System.in);
 
 
     // Đọc danh sách nhân viên hiện tại từ file
@@ -189,15 +190,13 @@ public void writeToFile(String fileName, Manager[] managers) {
     @Override
     public void remove() {
         getdetail();
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhập mã nhân viên bạn muốn xoá: ");
+            System.out.print("Nhập mã nhân viên bạn muốn xoá: ");
         String IDremove = sc.nextLine();
 
         // Đọc danh sách nhân viên từ file
         Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
 
         // Kiểm tra nếu không tìm thấy nhân viên
-        boolean found = false;
 
         // Duyệt qua mảng managers và đếm số lượng nhân viên cần giữ lại
         int newSize = 0;
@@ -233,8 +232,7 @@ public void writeToFile(String fileName, Manager[] managers) {
     @Override
     public void ChangeInFo() {
         getdetail();
-        Scanner sc = new Scanner(System.in);
-    
+        
         // Đọc dữ liệu từ file vào mảng managers
         Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
     
@@ -299,8 +297,7 @@ public void writeToFile(String fileName, Manager[] managers) {
     @Override
         // Phương thức tìm kiếm nhân viên theo các tiêu chí
         public void search() {
-            Scanner sc = new Scanner(System.in);
-            Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
+                    Manager[] managers = readFromFile("SieuThiMini\\dsnv.txt");
     
             // Yêu cầu nhập các tiêu chí tìm kiếm
             System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
