@@ -62,6 +62,7 @@ public class Cashier extends Staff {
     public void setNumWorkingDays(int numWorkingDays) {
         this.numWorkingDays = numWorkingDays;
     }
+    Scanner sc = new Scanner(System.in);
 
     @Override
     // Phương thức đọc thông tin thu ngân từ file
@@ -138,7 +139,6 @@ public class Cashier extends Staff {
         getdetail();
 
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("Nhập số lượng thu ngân bạn muốn thêm vào ca làm: ");
         int n =Integer.parseInt(sc.nextLine());
@@ -208,12 +208,10 @@ public class Cashier extends Staff {
         getdetail();
 
         // Khởi tạo scanner để nhập mã thu ngân cần xóa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã thu ngân bạn muốn xóa: ");
         String cashierID = sc.nextLine();
 
         // Duyệt qua mảng cashiers để tìm và xóa thu ngân
-        boolean found = false;
         int newSize = 0;
         for (Cashier cashier : cashiers) {
             if (!cashier.getCashierID().equals(cashierID)) {
@@ -252,7 +250,6 @@ public class Cashier extends Staff {
         getdetail();
 
         // Khởi tạo scanner để nhập thông tin thu ngân cần sửa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã thu ngân bạn muốn thay đổi thông tin: ");
         String cashierID = sc.nextLine();
 
@@ -297,7 +294,6 @@ public class Cashier extends Staff {
         Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
     
         // Khởi tạo scanner để nhập từ bàn phím
-        Scanner sc = new Scanner(System.in);
     
         // Yêu cầu nhập các tiêu chí tìm kiếm
         System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
