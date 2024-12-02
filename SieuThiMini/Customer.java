@@ -362,4 +362,26 @@ public class Customer implements QLFile {
         }
     }
 
+    public Customer getCustomerById(int id) {
+        Customer[] customers = readFromFile("SieuThiMini\\customers.txt");
+        int tmp = -1;  // Sử dụng -1 để dễ dàng kiểm tra xem có tìm thấy không
+        boolean flag = false;
+        
+        for (int i = 0; i < customers.length; i++) {
+            // Kiểm tra null và so sánh id với customerID
+            if (customers[i] != null && customers[i].getCustomerID() == id) {
+                tmp = i;
+                flag = true;
+                break;
+            }
+        }
+    
+        // Sửa điều kiện so sánh flag và xử lý khi không tìm thấy
+        if (!flag) {  // Thay vì flag = false, sử dụng flag == false hoặc !flag
+            return null;
+        } else {
+            return customers[tmp];
+        }
+    }
+    
 }

@@ -375,39 +375,6 @@ public class Cashier extends Staff {
 
     // Phương thức thống kê nhân viên xuất sắc nhất tháng/năm 
     public void statisticBestCashier() {
-        Scanner scanner = new Scanner(System.in);
-    
-        // Hỏi người dùng chọn thống kê theo tháng hoặc năm
-        String choice;
-        do {
-            System.out.println("Bạn muốn thống kê theo (1) Tháng hay (2) Năm?");
-            choice = scanner.nextLine().trim();
-        } while (!choice.equals("1") && !choice.equals("2"));
-    
-        // Xác định thống kê theo tháng hay năm
-        boolean isMonth = choice.equals("1");
-        int period = -1;
-    
-        if (isMonth) {
-            do {
-                System.out.println("Nhập tháng (1-12):");
-                try {
-                    period = Integer.parseInt(scanner.nextLine().trim());
-                } catch (NumberFormatException e) {
-                    System.out.println("Vui lòng nhập số nguyên hợp lệ.");
-                }
-            } while (period < 1 || period > 12);
-        } else {
-            do {
-                System.out.println("Nhập năm (VD: 2023):");
-                try {
-                    period = Integer.parseInt(scanner.nextLine().trim());
-                } catch (NumberFormatException e) {
-                    System.out.println("Vui lòng nhập số nguyên hợp lệ.");
-                }
-            } while (period <= 0);
-        }
-    
         // Đọc danh sách từ file
         Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
     
@@ -424,8 +391,7 @@ public class Cashier extends Staff {
             }
         }
     
-        // Liệt kê các nhân viên xuất sắc nhất
-        System.out.println("Nhân viên xuất sắc nhất trong " + (isMonth ? "tháng" : "năm") + " " + period + ":");
+        // Liệt kê nhân viên xuất sắc nhất
         System.out.printf("%-10s | %-25s | %-15s | %-10s | %-10s%n",
                 "Mã NV", "Tên Nhân Viên", "Vai Trò", "Ca Làm", "Ngày Công");
         System.out.println("-------------------------------------------------------------------------------");

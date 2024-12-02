@@ -1,5 +1,4 @@
 
-
 import java.util.Scanner;
 
 public class ChayChuongTrinh {
@@ -256,7 +255,7 @@ public class ChayChuongTrinh {
                     store.thongkeSpBanChay(scanner);
                     break;
                 case 3:
-                    store.thongKeCustomer();
+                    store.thongKeCustomerBanNhieuNhat(scanner);
                     break;
                 case 4:
                     store.thongKeNhanVien();
@@ -279,7 +278,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách ĐƠN HÀNG");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Sửa ĐƠN HÀNG (theo mã)");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xóa ĐƠN HÀNG (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Thống kê ĐƠN HÀNG");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Sắp xếp ĐƠN HÀNG mới nhất");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm ĐƠN HÀNG");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
@@ -301,7 +300,7 @@ public class ChayChuongTrinh {
                     store.removeOrder(scanner);
                     break;
                 case 5:
-                    //store.thongkeOrder(scanner);
+                    store.sapxepdonhang();
                     break;
                 case 6:
                     store.timkiem(scanner);

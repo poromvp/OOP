@@ -6,3 +6,4 @@
 1003 Tran Minh C Saler A 22
 1004 Phan Thi D Manager B 25
 1005 Hoang Van E Saler A 30
+5 5 5 A 5
