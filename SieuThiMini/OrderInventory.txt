@@ -1,6 +1,9 @@
-fdsh VinaMilk 50
-jdhf BanhMi 30
-hgsd redbull 76
-12ha pepsi 100
-s31a sprite 56
-ILiK 123 11111
+SP200 Milk 25
+SP201 Sugar 10
+SP202 Bread 40
+SP203 Butter 15
+SP415 Beef 10
+SP204 Coffee 20
+SP205 Tea 50
+SP206 Juice 30
+SP207 Water 60
