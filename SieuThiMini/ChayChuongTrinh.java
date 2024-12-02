@@ -71,11 +71,11 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","╔═══════════════════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-44s ║\n","","" ,"QUẢN LÝ SẢN PHẨM");
             System.out.printf("%-20s%s","","╠═══════════════════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-50s ║\n","", "1.", "Thêm mới 1 sản phẩm, k ản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "1.", "Thêm mới sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "2.", "Xem danh sách sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "3.", "Sửa sản phẩm (theo mã).");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "4.", "Xóa sản phẩm (theo mã).");
-            System.out.printf("%-20s║ %-2s %-50s ║\n","", "5.", "Tìm kiếm sản phẩm (theo tên,loại,nhà cung cấp)");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "5.", "Tìm kiếm sản phẩm (theo tên,loại,nhà cung cấp).");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "6.", "Thêm loại sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "7.", "Thêm nhà cung cấp sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "8.", "Xóa loại sản phẩm.");

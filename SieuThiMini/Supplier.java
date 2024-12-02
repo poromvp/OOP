@@ -89,7 +89,7 @@ public class Supplier {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
-    public static void addSupplier(){
+    public static void addSupplier(Scanner sc){
         if (cnt == supplierList.length) {
             // Mở rộng mảng khi đạt giới hạn
             Supplier[] newSupplierList= new Supplier[supplierList.length*2];
@@ -97,7 +97,6 @@ public class Supplier {
             supplierList=newSupplierList;
         }
         Supplier a = new Supplier();
-        Scanner sc = new Scanner(System.in);
         int check =0;
         do{
             System.out.println("Nhap supplier id: ");
@@ -163,7 +162,7 @@ public class Supplier {
         return true; // Không trùng
     }
     // Sua Supplier
-    public static void updateSupplier(String id) {
+    public static void updateSupplier(String id,Scanner sc) {
         int choice;
         int index = -1;
 
@@ -175,7 +174,6 @@ public class Supplier {
             }
         }
         if (index != -1) {
-            Scanner sc = new Scanner(System.in);
             do {
                 System.out.println("------ CHINH SUA NHA CUNG CAP SAN PHAM ------");
                 System.out.println("0. Thoát.");

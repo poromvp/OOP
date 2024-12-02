@@ -429,7 +429,7 @@ public class Discount implements QLFile{
         }
     
         public Discount getDiscountByDay(Date id) {
-            Discount[] discount = readFromFile("SieuThiMini\\discount.txt");
+            Discount[] discount = readFromFile("discount.txt");
         for (Discount discountObj : discount) {
             if (discountObj != null) {
                 Date startDate = discountObj.getStartDate();
