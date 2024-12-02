@@ -1,5 +1,8 @@
-fdsh VinaMilk 50
-Kg5K TT1kgs 20
-jdhf BanhMi 30
-1235 CaPhe 2
-1097 Esp 100
+SP100 VinaMilk 50
+SP101 TT1kgs 20
+SP975 Pot 50
+SP193 abc 45
+SP102 BanhMi 30
+SP389 Rubik 3
+SP103 CaPhe 2
+SP104 Esp 100
