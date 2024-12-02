@@ -20,25 +20,25 @@ public class Store {
 
     public Store() {
         Order or = new Order();
-        orderList = or.readFromFile("SieuThiMini\\donhang.txt");
+        orderList = or.readFromFile("donhang.txt");
         
         Customer cus=new Customer();
-        customers = cus.readFromFile("SieuThiMini\\customers.txt");
+        customers = cus.readFromFile("customers.txt");
         
         Discount dis=new Discount();
-        discounts = dis.readFromFile("SieuThiMini\\discount.txt");
+        discounts = dis.readFromFile("discount.txt");
 
         Receipt rc=new Receipt();
-        receipts =rc.readFromFile("SieuThiMini\\ghihoadon.txt");
+        receipts =rc.readFromFile("ghihoadon.txt");
 
         managers = new Manager();
         departments = new Department();
         cashiers = new Cashier();
         IvenProduct = new InventoryManager();
         OrderProduct = new InventoryManager();
-        managers.readFromFile("SieuThiMini\\dsnv.txt");
+        managers.readFromFile("dsnv.txt");
         departments = new Department();
-        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
+        departments.readFromFile("DepartmentList.txt");
         readFileProduct();
 
     }
@@ -359,7 +359,7 @@ public class Store {
 
     public void ghifilectkm(){
         Discount temp =new Discount();
-        String filename = "SieuThiMini\\discount.txt";
+        String filename = "discount.txt";
         temp.xoaNoiDungFile(filename);
         for(Discount dis: discounts){
             dis.writeToFile(filename);
@@ -369,7 +369,7 @@ public class Store {
 
     public void ghifilecus(){
         Customer temp =new Customer();
-        String filename = "SieuThiMini\\customers.txt";
+        String filename = "customers.txt";
         temp.xoaNoiDungFile(filename);
         for(Customer cus: customers){
             cus.writeToFile(filename);
@@ -383,19 +383,19 @@ public class Store {
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("SieuThiMini\\category.txt");
-        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
-        Product.readProductsFromFile("SieuThiMini\\product.txt");
+        Category.readCategoryFromFile("category.txt");
+        Supplier.readSupplierFromFile("supplier.txt");
+        Product.readProductsFromFile("product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
     public void writeFileProduct(){
-        Product.writeProductsToFile("SieuThiMini\\product.txt");
+        Product.writeProductsToFile("product.txt");
     }
     public void writeFileCategory(){
-        Category.writeCategoryFromFile("SieuThiMini\\category.txt");
+        Category.writeCategoryFromFile("category.txt");
     }
     public void writeFileSupplier(){
-        Supplier.writeSupplierFromFile("SieuThiMini\\supplier.txt");
+        Supplier.writeSupplierFromFile("supplier.txt");
     }
     // Xuat danh sach cac san pham
     public void productDetail() {
