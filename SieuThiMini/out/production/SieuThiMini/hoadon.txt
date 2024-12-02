@@ -1,6 +1,0 @@
-HD12345678;29/02/2022;Ha An;Phuoc Khoa;Banh Khot Thap Cam,1,55000|Banh Xeo Thap Cam,1,60000|Tra Da,2,6000|Khan Giay Uot,2,4000;550000
-HD13245678;28/11/2024;Minh Tuan;Thanh Ha;Com Tam Suon Bi,2,55000|Nuoc Ngot,3,12000|Khan Giay Uot,1,4000;180000
-HD56789234;27/11/2024;Thanh Ha;Ngoc Minh;Hu Tieu My Tho,1,45000|Tra Da,2,6000|Banh Mi Thap Cam,2,30000;125000
-HD78451239;26/11/2024;Anh Tuan;Bao Khanh;Bun Bo Hue,3,70000|Che Ba Mau,2,20000|Nuoc Ep Cam,1,30000;245000
-HD45981236;25/11/2024;Ngoc Anh;Minh Hanh;Lau Hai San,1,250000|CoCa Cola,2,15000|Banh Trang Tron,1,35000;320000
-HD98451273;24/11/2024;Bao An;Quang Duy;Pizza Phomai,2,120000|Kem Trai Cay,3,40000|Tra Chanh,2,10000;430000

@@ -1,8 +1,0 @@
-1233 Duong Thien Quy Saler A 23
-1235 Le Quang Kiet Manager B 26
-1239 Nguyen Trong Nhan Saler A 24
-1001 Nguyen Van A Saler A 20
-1002 Le Thi B Manager B 18
-1003 Tran Minh C Saler A 22
-1004 Phan Thi D Manager B 25
-1005 Hoang Van E Saler A 30
