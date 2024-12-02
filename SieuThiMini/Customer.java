@@ -77,9 +77,7 @@ public class Customer implements QLFile {
     }
 
     // Phương thức thêm khách hàng vào danh sách (3)
-    public static Customer[] addCustomers(Customer[] customers) {
-        Scanner scanner = new Scanner(System.in);
-
+    public static Customer[] addCustomers(Customer[] customers, Scanner scanner) {
         System.out.print("Nhập số lượng khách hàng cần thêm: ");
         int n = Integer.parseInt(scanner.nextLine());
 
@@ -113,8 +111,7 @@ public class Customer implements QLFile {
     }
 
     // Phương thức sửa (cập nhật) thông tin của khách hàng trong danh sách (4)
-    public static Customer[] updateCustomerByID(Customer[] customers, int customerID) {
-        Scanner scanner = new Scanner(System.in);
+    public static Customer[] updateCustomerByID(Customer[] customers, int customerID, Scanner scanner) {
 
         // Tìm kiếm khách hàng theo ID
         Customer customerToUpdate = null;
@@ -314,6 +311,7 @@ public class Customer implements QLFile {
     public void xoaNoiDungFile(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+            writer.close();
         } catch (IOException e) {
             System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
         }

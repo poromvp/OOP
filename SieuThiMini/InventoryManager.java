@@ -1,5 +1,4 @@
 import java.io.*;
-import java.security.PrivateKey;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -67,6 +66,7 @@ public class InventoryManager extends Staff {
 
         return randomString.toString();
     }
+    Scanner sc = new Scanner(System.in);
 
     // Đọc dữ liệu từ file Inventory
     @Override
@@ -158,7 +158,6 @@ public class InventoryManager extends Staff {
     public void add() {
         getdetail();
 
-        Scanner sc = new Scanner(System.in);
 
         InventoryManager[] IvenProduct = readFromFile("SieuThiMini\\Inventory.txt");
 
@@ -207,7 +206,6 @@ public class InventoryManager extends Staff {
         getdetailOrder();
         
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
         
         // Đọc danh sách nhập hàng hiện tại từ file
         InventoryManager[] IvenProduct = readFromFile("SieuThiMini\\OrderInventory.txt");
@@ -266,7 +264,6 @@ public class InventoryManager extends Staff {
         getdetail();
         
         // Nhập mã kho muốn xóa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã sản phẩm bạn muốn xoá: ");
         String IDremove = sc.nextLine();
         
@@ -274,7 +271,6 @@ public class InventoryManager extends Staff {
         InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\Inventory.txt");
         
         // Kiểm tra nếu không tìm thấy kho
-        boolean found = false;
         
         // Duyệt qua mảng departments và đếm số lượng kho cần giữ lại
         int newSize = 0;
@@ -312,7 +308,6 @@ public class InventoryManager extends Staff {
         getdetailOrder();
 
         // Nhập mã kho muốn xóa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã sản phẩm bạn muốn xoá: ");
         String IDremove = sc.nextLine();
 
@@ -320,7 +315,6 @@ public class InventoryManager extends Staff {
         InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\OrderInventory.txt");
 
         // Kiểm tra nếu không tìm thấy kho
-        boolean found = false;
 
         // Duyệt qua mảng departments và đếm số lượng kho cần giữ lại
         int newSize = 0;
@@ -359,7 +353,6 @@ public class InventoryManager extends Staff {
         getdetail();
 
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
 
         // Đọc danh sách kho hiện tại từ file
         InventoryManager[] IvenProduct= readFromFile("SieuThiMini\\Inventory.txt");
@@ -411,7 +404,6 @@ public class InventoryManager extends Staff {
         getdetailOrder();
 
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
 
         // Đọc danh sách nhập hàng hiện tại từ file
         InventoryManager[] IvenProduct= readFromFile("SieuThiMini\\OrderInventory.txt");
@@ -461,7 +453,6 @@ public class InventoryManager extends Staff {
 
     @Override
     public void search() {
-        Scanner sc = new Scanner(System.in);
         InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\Inventory.txt");
 
         // Yêu cầu nhập các tiêu chí tìm kiếm
@@ -528,7 +519,6 @@ public class InventoryManager extends Staff {
     }
 
     public void searchOrder() {
-        Scanner sc = new Scanner(System.in);
         InventoryManager[] IvenProducts = readFromFile("SieuThiMini\\OrderInventory.txt");
 
         // Yêu cầu nhập các tiêu chí tìm kiếm

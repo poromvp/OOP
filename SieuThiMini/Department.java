@@ -56,6 +56,8 @@ public class Department extends Staff {
         this.ManagerName = managerName;
     }
 
+    Scanner sc = new Scanner(System.in);
+
     // Phương thức đọc thông tin phòng ban từ file
     @Override
     public Department[] readFromFile(String fileName) {
@@ -132,7 +134,6 @@ public class Department extends Staff {
         getdetail();
     
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
     
         // Đọc danh sách phòng ban hiện tại từ file
         Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
@@ -196,7 +197,6 @@ public class Department extends Staff {
         getdetail();
     
         // Nhập mã phòng ban muốn xóa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã phòng ban bạn muốn xoá: ");
         String IDremove = sc.nextLine();
     
@@ -204,7 +204,6 @@ public class Department extends Staff {
         Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
         // Kiểm tra nếu không tìm thấy phòng ban
-        boolean found = false;
     
         // Duyệt qua mảng departments và đếm số lượng phòng ban cần giữ lại
         int newSize = 0;
@@ -244,7 +243,6 @@ public class Department extends Staff {
         getdetail();
     
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
     
         // Đọc danh sách phòng ban hiện tại từ file
         Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
@@ -295,7 +293,6 @@ public class Department extends Staff {
 
     @Override
     public void search() {
-        Scanner sc = new Scanner(System.in);
         Department[] departments = readFromFile("SieuThiMini\\DepartmentList.txt");
     
         // Yêu cầu nhập các tiêu chí tìm kiếm

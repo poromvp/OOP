@@ -101,8 +101,7 @@ public class Discount implements QLFile{
     
     
     // Phương thức thêm chương trình khuyến mãi mới từ bàn phím
-    public static Discount[] addDiscounts(Discount[] discounts) {
-        Scanner scanner = new Scanner(System.in);
+    public static Discount[] addDiscounts(Discount[] discounts, Scanner scanner) {
     
         System.out.print("Nhập số lượng chương trình khuyến mãi cần thêm: ");
         int n = Integer.parseInt(scanner.nextLine());
@@ -310,6 +309,7 @@ public class Discount implements QLFile{
         public void xoaNoiDungFile(String filePath) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
                 // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+                writer.close();
             } catch (IOException e) {
                 System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
             }
@@ -327,8 +327,7 @@ public class Discount implements QLFile{
         }
     
         // Phương thức sửa thông tin chương trình khuyến mãi theo ID
-        public static Discount[] updateDiscountByID(Discount[] discounts, int discountID) {
-            Scanner scanner = new Scanner(System.in);
+        public static Discount[] updateDiscountByID(Discount[] discounts, int discountID, Scanner scanner) {
         
             // Tìm kiếm chương trình khuyến mãi theo ID
             Discount discountToUpdate = null;

@@ -1,9 +1,5 @@
-import java.util.Arrays;
 import java.util.Scanner;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class Store {
@@ -304,7 +300,7 @@ public class Store {
 
     // Chức năng thứ 1 trong menu
     public void themKhachHang(Scanner scanner) {
-        customers = Customer.addCustomers(customers);
+        customers = Customer.addCustomers(customers, scanner);
     }
 
     // Chức năng thứ 2 trong menu
@@ -323,7 +319,7 @@ public class Store {
     public void capNhatKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để cập nhật: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Customer.updateCustomerByID(customers, updateID);
+        Customer.updateCustomerByID(customers, updateID, scanner);
     }
 
     // Chức năng thứ 5 trong menu
@@ -362,8 +358,8 @@ public class Store {
     
     /* Các thao tác cho danh sách chương trình khuyến mãi START */
     // Chức năng 1: Thêm chương trình khuyến mãi
-    public void themChuongTrinhKhuyenMai() {
-        discounts = Discount.addDiscounts(discounts); // Cập nhật danh sách
+    public void themChuongTrinhKhuyenMai(Scanner scanner) {
+        discounts = Discount.addDiscounts(discounts,scanner); // Cập nhật danh sách
     }
 
     // Chức năng 2: Xuất danh sách chương trình khuyến mãi
@@ -382,7 +378,7 @@ public class Store {
     public void capNhatChuongTrinhKhuyenMai(Scanner scanner) {
         System.out.print("Nhập mã chương trình khuyến mãi cần sửa: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Discount.updateDiscountByID(discounts, updateID); // Cập nhật danh sách
+        Discount.updateDiscountByID(discounts, updateID, scanner); // Cập nhật danh sách
     }
 
     // Chức năng 5: Tìm kiếm chương trình khuyến mãi
