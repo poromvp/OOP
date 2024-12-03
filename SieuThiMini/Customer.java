@@ -358,7 +358,7 @@ public class Customer implements QLFile {
     
 
     public Customer getCustomerById(int id) {
-        Customer[] customers = readFromFile("SieuThiMini\\customers.txt");
+        Customer[] customers = readFromFile("customers.txt");
         int tmp = -1;  // Sử dụng -1 để dễ dàng kiểm tra xem có tìm thấy không
         boolean flag = false;
         

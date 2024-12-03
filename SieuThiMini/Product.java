@@ -145,7 +145,7 @@ public class Product {
         return true; // Không trùng
     }
 
-    public static void addProduct(){
+    public static void addProduct(Scanner sc){
         if (cnt == productList.length) {
             // Mở rộng mảng khi đạt giới hạn
             Product[] newProductList = new Product[productList.length * 2];
@@ -153,7 +153,6 @@ public class Product {
             productList = newProductList;
         }
         Product a = new Product();
-        Scanner sc = new Scanner(System.in);
         int check =0;
         do{
             System.out.println("Nhap product id (co dang SP___): ");
@@ -264,7 +263,7 @@ public class Product {
     }
 
     //Tim kiem
-    public static void findById(String name) {
+    public static void findByName(String name) {
         boolean found = false;
         for (int i = 0; i < cnt; i++) {
             if (productList[i] != null && productList[i].getName().toLowerCase().contains(name.toLowerCase())) {
@@ -341,7 +340,7 @@ public class Product {
         System.out.println();
     }
     // chinh sua
-    public static void upDateProduct(String id) {
+    public static void upDateProduct(String id,Scanner sc) {
         int choice;
         int index = -1;
         for (int i = 0; i <= cnt; i++) {
@@ -351,7 +350,6 @@ public class Product {
             }
         }
         if (index != -1) {
-            Scanner sc = new Scanner(System.in);
 
             do {
                 System.out.println("------ CHINH SUA SAN PHAM------");

@@ -72,7 +72,7 @@ public class Order implements QLFile {
     }
 
     public Order getOrderbyID(String id){
-        Order[] orderList=readFromFile("SieuThiMini\\donhang.txt");
+        Order[] orderList=readFromFile("donhang.txt");
         int tmp = 0;
         boolean flag=false;
         for (int i = 0; i < orderList.length; i++) {
