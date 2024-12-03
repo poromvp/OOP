@@ -57,10 +57,7 @@ public class ChayChuongTrinh {
         } while (choice != 0);
 
         // Ghi vào file trước khi kết thúc chương trình
-        sieuthi.ghifilecus();
-        sieuthi.ghifilectkm();
-        sieuthi.ghifileord();
-        sieuthi.ghihoadon();
+        
         scanner.close();
     }
 
