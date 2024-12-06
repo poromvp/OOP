@@ -573,4 +573,26 @@ public class Store {
         Receipt.xemlichsugiaodich();
     }
     /* các thao tác cho hóa đơn END */
+
+    /* cac thao tac cho Import START*/
+    ImportManager a= new ImportManager();
+    public void addImport(Scanner scanner){
+        a.addImport(scanner);
+    }
+    public  void outImport(Scanner scanner){
+        a.outAllImport();
+    }
+    public void findImport(Scanner scanner){
+        a.findByImportId(scanner);
+    }
+    public void removeImport(Scanner scanner){
+        a.removeImport(scanner);
+    }
+    //Ghi file
+    public void writeFileImport(){
+        Import.writeFile("import.txt");
+    }
+    public  void writeFileImportDetai(){
+        ImportDetail.writeFile("importDetail.txt");
+    }
 }
