@@ -600,7 +600,7 @@ public class Store {
     public void ghihoadon(){
         String filename="hoadon.txt";
         Receipt.xoaNoiDungFile(filename);
-        Receipt.xoaNoiDungFilelichsugiaodich("lichsugiaodich.txt");
+        Receipt.xoaNoiDungFilelichsugiaodich("SieuThiMini\\lichsugiaodich.txt");
         for(Receipt rc:receipts){
             rc.writeToFile(filename);
         }

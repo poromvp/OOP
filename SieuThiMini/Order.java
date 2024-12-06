@@ -147,22 +147,29 @@ public class Order implements QLFile {
             System.out.println();
             System.out.print("Nhập Mã Sản Phẩm Thứ " + dem + ": ");
             id = scanner.nextLine();
-            while (!Product.checkIDProduct(id) || !checkx2IDpro(id, product, i)) {
+            while (!Product.checkIDProduct(id) || !checkx2IDpro(id, product, I)) {
                 if (!Product.checkIDProduct(id)) {
                     System.out.printf("%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n",
                             " ");
                     System.out.printf("%30s→ ", " ");
                 }
-                if (!checkx2IDpro(id, product, i)) {
+                if (!checkx2IDpro(id, product, I)) {
                     System.out.printf("%30sĐã Có Mã Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
                     System.out.printf("%30s→ ", " ");
                 }
                 id = scanner.nextLine();
             }
             product[I]=Product.getProductById(id);
+
             System.out.print("Nhập Số Lượng Mua: ");
-            product[I].setQuantity(Integer.parseInt(scanner.nextLine())); 
-            
+            int sl=Integer.parseInt(scanner.nextLine());
+            while(sl>Product.getProductById(id).getQuantity()){
+                System.out.println("Số lượng "+sl+" vượt quá "+Product.getProductById(id).getQuantity()+" trong kho, hãy nhập lại: ");
+                sl=Integer.parseInt(scanner.nextLine());
+            }
+            product[I].setQuantity(sl);
+        
+            Product.writeProductsToFile("product.txt");
             i++;
         }
     }

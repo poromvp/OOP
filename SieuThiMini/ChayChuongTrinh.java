@@ -438,7 +438,7 @@ public class ChayChuongTrinh {
                     } while (subchoice != 0);
                     break;
                 
-                case 4:     
+                /*case 4:     
                     int subsubchoice;
                     do {
                         System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -526,7 +526,7 @@ public class ChayChuongTrinh {
                         System.out.println("Lựa chọn không hợp lệ.");
                     }
                     }while(subchoice!=0);
-                    break;
+                    break;*/
                 case 0:
                     break;
                 default:
