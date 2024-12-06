@@ -37,6 +37,9 @@ public class Store {
         departments = new Department();
         departments.readFromFile("DepartmentList.txt");
 
+        Import.readFile("import.txt");
+        ImportDetail.readFile("importDetail.txt");
+
     }
 
     public Store(Staff[] staffList, Transaction[] transactions) {
@@ -611,4 +614,13 @@ public class Store {
         Receipt.xemlichsugiaodich();
     }
     /* các thao tác cho hóa đơn END */
+
+    /* cac thao tac cho Import START*/
+    ImportManager a= new ImportManager();
+    public void addImport(Scanner scanner){
+        a.addImport(scanner);
+    }
+    public  void outImport(Scanner scanner){
+        a.outAllImport();
+    }
 }
