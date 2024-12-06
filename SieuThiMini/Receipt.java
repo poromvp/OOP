@@ -641,7 +641,7 @@ public class Receipt implements QLFile {
     }
     public static void xemlichsugiaodich(){
         int kichthuoc=0;
-        try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("SieuThiMini\\lichsugiaodich.txt"))) {
             String Line;
             while ((Line = br.readLine()) != null) {
                 kichthuoc++;
@@ -654,7 +654,7 @@ public class Receipt implements QLFile {
 
         String[] ds=new String[kichthuoc];
 
-        try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("SieuThiMini\\lichsugiaodich.txt"))) {
             String Line;
             int i=0;
             while ((Line = br.readLine()) != null) {
