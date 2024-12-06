@@ -65,7 +65,17 @@ public class Import {
         }
         return c;
     }
-
+    //Tim bang id
+    public static Import getImportById(String id){
+        int tmp = 0;
+        for (int i = 0; i < importsList.length; i++) {
+            if (importsList[i] != null && importsList[i].getImportID().equals(id)) {
+                tmp = i;
+                break;
+            }
+        }
+        return importsList[tmp];
+    }
     // Thêm nhập hàng
     public static  void addImport(Scanner sc,String importID) {
         if(cnt == importsList.length){
@@ -73,7 +83,6 @@ public class Import {
             System.arraycopy(importsList,0,newList,0,importsList.length);
             importsList=newList;
         }
-        DateTimeFormatter  formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Import newImport = new Import();
         System.out.println("Nhap ma nguoi thuc hien nhap hang");
         newImport.staffID=sc.nextLine();
@@ -82,12 +91,12 @@ public class Import {
         while (!CheckDate) {
             System.out.println("Nhap ngay nhan hang: ");
             String ngaySinhInput = sc.nextLine();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             try {
                 newImport.importDate = LocalDate.parse(ngaySinhInput, format);
                 CheckDate = true;
             } catch (DateTimeParseException e) {
-                System.out.println("Ngay nhan hang khong hop le. Vui long nhap lai(dd-MM-yyyy).");
+                System.out.println("Ngay nhan hang khong hop le. Vui long nhap lai(dd/MM/yyyy).");
             }
         }
         importsList[cnt++]=newImport;
@@ -95,7 +104,7 @@ public class Import {
     public void outImport() {
         System.out.println("----------Phieu nhap hang----------");
         System.out.println("Ma phieu nhap hang: "+importID);
-        System.out.println("Ngay nhap hang: "+importDate);
+        System.out.println("Ngay nhap hang: "+importDate.format(formatter));
         System.out.println("Nhan vien thuc hien: "+staffID);
     }
     //read from file
@@ -121,14 +130,26 @@ public class Import {
 
     //write to file
     public static void writeFile(String fileName) {
+        DateTimeFormatter  formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try (BufferedWriter writer= new BufferedWriter(new FileWriter(fileName))) {
             for (int i = 0; i < cnt; i++) {
                 Import imp = importsList[i];
-                writer.write(imp.importID + "," + imp.importDate + "," + imp.staffID + "\n");
+                writer.write(imp.importID + "," + imp.importDate.format(formatter) + "," + imp.staffID + "\n");
             }
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
+    }
+    //xoa
+    public static void removeByImportIndex(int index){
+        String id = importsList[index].getImportID();
+        ImportDetail.removeByImportId(id);
+        for(int i=index;i<cnt-1;i++){
+            importsList[i]=importsList[i+1];
+        }
+        importsList[importsList.length-1]=null;
+        cnt--;
+        System.out.println("Xoa don nhap hang voi id "+id+" thanh cong.");
     }
 }
 

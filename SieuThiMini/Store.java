@@ -37,9 +37,6 @@ public class Store {
         departments = new Department();
         departments.readFromFile("DepartmentList.txt");
 
-        Import.readFile("import.txt");
-        ImportDetail.readFile("importDetail.txt");
-
     }
 
     public Store(Staff[] staffList, Transaction[] transactions) {
@@ -596,5 +593,18 @@ public class Store {
     }
     public  void outImport(Scanner scanner){
         a.outAllImport();
+    }
+    public void findImport(Scanner scanner){
+        a.findByImportId(scanner);
+    }
+    public void removeImport(Scanner scanner){
+        a.removeImport(scanner);
+    }
+    //Ghi file
+    public void writeFileImport(){
+        Import.writeFile("import.txt");
+    }
+    public  void writeFileImportDetai(){
+        ImportDetail.writeFile("importDetail.txt");
     }
 }

@@ -190,11 +190,26 @@ public class ImportDetail {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (int i = 0; i < cnt; i++) {
                 ImportDetail detail = importDetailsList[i];
-                writer.write(detail.importID + "," + detail.productID + "," + detail.quantity + "," + detail.price + "," + detail.toTal + "\n");
+                writer.write(detail.importID + "," + detail.productID + "," + detail.quantity + "," + detail.price  +  "\n");
             }
             System.out.println("Ghi file thành công!");
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
+    //xoa
+
+    public static void removeByImportId(String importID){
+        for(int i=0;i<cnt;i++){
+            if(importDetailsList[i].getImportID().equals(importID)){
+                for(int j=i;j<cnt-1;j++){
+                    importDetailsList[j]=importDetailsList[j+1];
+                }
+                importDetailsList[cnt-1]=null;
+                cnt--;
+                i--;
+            }
+
         }
     }
 }
