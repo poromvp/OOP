@@ -82,6 +82,8 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "9.", "Xóa nhà cung cấp sản phẩm.");
             System.out.printf("%-20s║ %-3s %-49s ║\n","", "10.","Sửa loại sản phẩm (theo mã).");
             System.out.printf("%-20s║ %-3s %-49s ║\n","", "11.","Sửa nhà cung cấp sản phẩm (theo mã).");
+            System.out.printf("%-20s║ %-3s %-49s ║\n","", "12.","Nhap hang");
+            System.out.printf("%-20s║ %-3s %-49s ║\n","", "13.","Xuat hang");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚═══════════════════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -132,6 +134,12 @@ public class ChayChuongTrinh {
                 case 11:
                     store.updateSupplier(scanner);
                     store.writeFileSupplier();
+                    break;
+                case 12:
+                    store.addImport(scanner);
+                    break;
+                case 13:
+                    store.outImport(scanner);
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
