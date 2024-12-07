@@ -1,35 +1,12 @@
-Mã Hóa Đơn:	HD12345678
-Ngày Giao Dịch: 	30/01/2024
-Tên Nhân Viên: 	Ha An
+Mã Hóa Đơn:	HD1O2rTjhY
+Ngày Giao Dịch: 	07/12/2024
+Tên Nhân Viên: 	null
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 546132485 với số tiền:        50000.0
-Mã Hóa Đơn:	HD13245678
-Ngày Giao Dịch: 	29/05/2024
-Tên Nhân Viên: 	Minh Tuan
+Thanh toán qua thẻ: 123 với số tiền:        8250.0
+Mã Hóa Đơn:	HDlLXUmmCK
+Ngày Giao Dịch: 	07/12/2024
+Tên Nhân Viên: 	null
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        326000.0
-Mã Hóa Đơn:	HD56789234
-Ngày Giao Dịch: 	1/12/2024
-Tên Nhân Viên: 	Thanh Ha
-Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 65453125 với số tiền:        125000.0
-Mã Hóa Đơn:	HD78451239
-Ngày Giao Dịch: 	2/02/2027
-Tên Nhân Viên: 	Anh Tuan
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        122452.0
-Mã Hóa Đơn:	HD45981236
-Ngày Giao Dịch: 	NONE
-Tên Nhân Viên: 	Ngoc Anh
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        0.0
-Mã Hóa Đơn:	HD98451273
-Ngày Giao Dịch: 	NONE
-Tên Nhân Viên: 	Bao An
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        0.0
-Mã Hóa Đơn:	HDg5jsYeu8
-Ngày Giao Dịch: 	1/12/2024
-Tên Nhân Viên: 	QUy
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:        800000.0
+
+Thanh toán qua thẻ: 122 với số tiền:        24750.0
+ddd1dce93e75b8c10893e7ee808e062911971acf

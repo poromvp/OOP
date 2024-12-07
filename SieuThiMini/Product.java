@@ -25,6 +25,19 @@ public class Product {
         this.quantity = quantity;
         this.supplierId = supplierId;
     }
+
+    //ConStructor với 3 đối tượng
+    public Product(String productID, String name, int quantity){
+        this.productID= productID;
+        this.name=name;
+        this.quantity=quantity;
+    }
+    //constructor 2 doi so dung cho Supplier 
+    public Product(String productID) {
+        this.productID = productID;
+    }
+
+
     // get, set
 
     public String getProductID() {
@@ -136,8 +149,19 @@ public class Product {
         }
         return true; // Không trùng
     }
+    //Kiem tra xem 1 ma don hang co ton tai trong mảng hay không
+    public static boolean checkProductList(String check){
+        boolean c =false;
+        for (int i=0;i<cnt;i++) {
+            if (productList[i].getProductID().equals(check)) {
+                c = true;
+                break;
+            }
+        }
+        return c;
+    }
 
-    public static void addProduct(){
+    public static void addProduct(Scanner sc){
         if (cnt == productList.length) {
             // Mở rộng mảng khi đạt giới hạn
             Product[] newProductList = new Product[productList.length * 2];
@@ -145,7 +169,6 @@ public class Product {
             productList = newProductList;
         }
         Product a = new Product();
-        Scanner sc = new Scanner(System.in);
         int check =0;
         do{
             System.out.println("Nhap product id (co dang SP___): ");
@@ -160,22 +183,73 @@ public class Product {
         } while(check ==0);
         System.out.println("Nhap ten san pham: ");
         a.setName(sc.nextLine());
-        System.out.println("Nhap gia san pham: ");
-        try {
-            a.setPrice(Integer.parseInt(sc.nextLine()));
-        } catch (NumberFormatException e) {
-            System.out.println("Gia nhap vao phai la mot so nguyen hop le.");
-            return;
-        }
+        int price;
+        do {
+            System.out.println("Nhap gia san pham: ");
+            try {
+                price = Integer.parseInt(sc.nextLine());
+                if (price < 0) {
+                    System.out.println("Gia san pham phai lon hon hoac bang 0. Vui long nhap lai.");
+                } else {
+                    a.setPrice(price);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Gia nhap vao phai la mot so nguyen hop le. Vui long nhap lai.");
+                price = -1; // Đặt giá trị không hợp lệ để lặp lại
+            }
+        } while (price < 0);
+        int quantity;
+        do {
+            System.out.println("Nhap so luong san pham: ");
+            try {
+                quantity = Integer.parseInt(sc.nextLine());
+                if (quantity < 0) {
+                    System.out.println("So luong phai lon hon hoac bang 0. Vui long nhap lai.");
+                } else {
+                    a.setQuantity(quantity);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("So luong nhap vao phai la mot so nguyen hop le. Vui long nhap lai.");
+                quantity = -1;
+            }
+        } while (quantity < 0);
         System.out.println("Nhap ma loai san pham");
         a.setCategoryId(sc.nextLine());
-        System.out.println("Nhap so luong san pham: ");
-        try {
-            a.setQuantity(Integer.parseInt(sc.nextLine()));
-        } catch (NumberFormatException e) {
-            System.out.println("So luong nhap vao phai la mot so nguyen hop le.");
-            return;
+        System.out.println("Nhap ma nha cung cap cho san pham: ");
+        a.setSupplierId(sc.nextLine());
+        productList[cnt++]=a;
+        System.out.println("Da them san pham thanh cong.");
+    }
+    //Them san pham (dung cho nhap hang)
+    public static void addProductForImport(Scanner sc,String id,int sl){
+        if (cnt == productList.length) {
+            // Mở rộng mảng khi đạt giới hạn
+            Product[] newProductList = new Product[productList.length * 2];
+            System.arraycopy(productList, 0, newProductList, 0, productList.length);
+            productList = newProductList;
         }
+        Product a = new Product();
+        a.productID=id;
+        System.out.println("Nhap ten san pham: ");
+        a.setName(sc.nextLine());
+        int price;
+        do {
+            System.out.println("Nhap gia san pham: ");
+            try {
+                price = Integer.parseInt(sc.nextLine());
+                if (price < 0) {
+                    System.out.println("Gia san pham phai lon hon hoac bang 0. Vui long nhap lai.");
+                } else {
+                    a.setPrice(price);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Gia nhap vao phai la mot so nguyen hop le. Vui long nhap lai.");
+                price = -1; // Đặt giá trị không hợp lệ để lặp lại
+            }
+        } while (price < 0);
+        a.quantity=sl;
+        System.out.println("Nhap ma loai san pham");
+        a.setCategoryId(sc.nextLine());
         System.out.println("Nhap ma nha cung cap cho san pham: ");
         a.setSupplierId(sc.nextLine());
         productList[cnt++]=a;
@@ -231,7 +305,7 @@ public class Product {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
-    //Xoa san pham
+    //Xoa san phamz
     public static void deleteProduct( String productID) {
         int indexToDelete = -1;
 
@@ -256,7 +330,7 @@ public class Product {
     }
 
     //Tim kiem
-    public static void findById(String name) {
+    public static void findByName(String name) {
         boolean found = false;
         for (int i = 0; i < cnt; i++) {
             if (productList[i] != null && productList[i].getName().toLowerCase().contains(name.toLowerCase())) {
@@ -333,7 +407,7 @@ public class Product {
         System.out.println();
     }
     // chinh sua
-    public static void upDateProduct(String id) {
+    public static void upDateProduct(String id,Scanner sc) {
         int choice;
         int index = -1;
         for (int i = 0; i <= cnt; i++) {
@@ -343,7 +417,6 @@ public class Product {
             }
         }
         if (index != -1) {
-            Scanner sc = new Scanner(System.in);
 
             do {
                 System.out.println("------ CHINH SUA SAN PHAM------");

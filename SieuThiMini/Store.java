@@ -1,10 +1,6 @@
-import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class Store {
     public Transaction[] transactions; // danh sách giao dịch
@@ -13,34 +9,33 @@ public class Store {
     public Discount[] discounts; // danh sách chương trình khuyến mãi
     public Receipt[] receipts;
     public Manager managers;
-    public Department departments;
+    public AccountManager accounts;
     public Cashier cashiers;
-    public InventoryManager IvenProduct;
-    public InventoryManager OrderProduct;
 
     public Store() {
         readFileProduct();
         Order or = new Order();
-        orderList = or.readFromFile("SieuThiMini\\donhang.txt");
+        orderList = or.readFromFile("donhang.txt");
         
         Customer cus=new Customer();
-        customers = cus.readFromFile("SieuThiMini\\customers.txt");
+        customers = cus.readFromFile("customers.txt");
         
         Discount dis=new Discount();
-        discounts = dis.readFromFile("SieuThiMini\\discount.txt");
+        discounts = dis.readFromFile("discount.txt");
 
         Receipt rc=new Receipt();
-        receipts =rc.readFromFile("SieuThiMini\\hoadon.txt");
+        receipts =rc.readFromFile("hoadon.txt");
 
         managers = new Manager();
-        departments = new Department();
         cashiers = new Cashier();
-        IvenProduct = new InventoryManager();
-        OrderProduct = new InventoryManager();
-        managers.readFromFile("SieuThiMini\\dsnv.txt");
-        departments = new Department();
-        departments.readFromFile("SieuThiMini\\DepartmentList.txt");
+        cashiers.readFromFile("CashierList.txt");
+        managers.readFromFile("dsnv.txt");
+        accounts = new AccountManager();
+        accounts.readFromFile("DepartmentList.txt");
 
+    }
+    public Order[] getOrderlist(){
+        return orderList;
     }
 
     public Store(Staff[] staffList, Transaction[] transactions) {
@@ -79,24 +74,24 @@ public class Store {
         managers.search();
     }
 
-    public void XuatPBan() {
-        departments.getdetail();
+    public void XuatTK() {
+        accounts.getdetail();
     }
 
-    public void ThemQLPB() {
-        departments.add();
+    public void ThemTK() {
+        accounts.add();
     }
 
-    public void XoaPB() {
-        departments.remove();
+    public void XoaTK() {
+        accounts.remove();
     }
 
-    public void SuaPB() {
-        departments.ChangeInFo();
+    public void SuaTK() {
+        accounts.ChangeInFo();
     }
 
-    public void TimPB() {
-        departments.search();
+    public void TimTK() {
+        accounts.search();
     }
 
     public void xuatThuNgan() {
@@ -119,45 +114,7 @@ public class Store {
         cashiers.ChangeInFo();
     }
 
-    public void xuatKho() {
-        IvenProduct.getdetail();
-    }
-
-    public void themKho() {
-        IvenProduct.add();
-    }
-
-    public void xoaKho() {
-        IvenProduct.remove();
-    }
-
-    public void suaKho() {
-        IvenProduct.ChangeInFo();
-    }
-
-    public void timKho() {
-        IvenProduct.search();
-    }
-
-    public void xuatNhapKho() {
-        OrderProduct.getdetailOrder();
-    }
-
-    public void themNhapKho() {
-        OrderProduct.addOrder();
-    }
-
-    public void xoaNhapKho() {
-        OrderProduct.removeOrder();
-    }
-
-    public void suaNhapKho() {
-        OrderProduct.ChangeInFoOrder();
-    }
-
-    public void timNhapKho() {
-        OrderProduct.searchOrder();
-    }
+    
     /* thao tác nhân viên end */
 
 
@@ -200,10 +157,12 @@ public class Store {
     public void addOrder(Scanner scanner) { // thêm đơn hàng
         orderList = Order.add(scanner, orderList);
         System.out.println("Thêm Đơn Hàng Mới Thành Công!");
+        ghifileord();
     }
 
     public void removeOrder(Scanner scanner) { // xóa đơn hàng theo mã
         orderList = Order.xoa(scanner, orderList);
+        ghifileord();
     }
 
     public void editOrder(Scanner scanner) {
@@ -249,6 +208,7 @@ public class Store {
                 } while (choice != 0 && choice != 1);
             }
         } while (flag != true);
+        ghifileord();
     }
 
     public void sapxepdonhang(){
@@ -259,20 +219,35 @@ public class Store {
         Order.loc(scanner, orderList);
     }
 
-    public void thongkeDoanhThu() {
+    public void thongkeDoanhThu(Scanner scanner) {
         byte i = 0;
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách
-                                                                               // hàng nghìn, trăm, triệu
-        for (double mang : Order.thongkeQUY(orderList)) { // Quý 1: từ tháng 1 tới tháng 3
-            String formattedAmount = numberFormat.format(mang); // Quý 2: từ tháng 4 tới tháng 6
-            System.out.println("Quý " + (i + 1) + ": " + formattedAmount + " VND"); // Quý 3: từ tháng 7 tới tháng 9
-            i++; // Quý 4: từ tháng 10 tới tháng 12
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách hàng nghìn, trăm, triệu
+        System.out.println("Bạn muốn thông kê doanh thu của năm nào?");
+        int n=Integer.parseInt(scanner.nextLine());
+        
+        // Tạo phần tiêu đề
+        System.out.printf("%20s╔═════════════╦═════════════════════════════╗\n", " ");
+        System.out.printf("%20s║   Quý       ║    Doanh thu (VND)          ║\n", " ");
+        System.out.printf("%20s╠═════════════╬═════════════════════════════╣\n", " ");
+        // Lặp qua các phần tử trong mảng
+        for (double mang : Order.thongkeQUY(orderList,n)) { 
+            String formattedAmount = numberFormat.format(mang);
+            System.out.printf("%20s║   Quý %-5d ║ %-27s ║\n", " ", (i + 1), formattedAmount);
+            i++;
         }
+        
+        // Tạo phần kết thúc
+        System.out.printf("%20s╚═════════════╩═════════════════════════════╝\n", " ");
     }
+    
 
     public void thongkeSpBanChay(Scanner scanner) {
         System.out.print("Bạn Muốn Xem Top Bao Nhiêu Sản Phẩm Bán Chạy Nhất: ");
         int n = Integer.parseInt(scanner.nextLine());
+        while(n>Order.thongkeBanChay(orderList).length || n<0){
+            System.out.println("Không hợp lệ, hãy nhập lại");
+            n = Integer.parseInt(scanner.nextLine());
+        }
         System.out.println("╔══════════════════════╦══════════════════════╗");
         System.out.println("║     Tên Sản Phẩm     ║     Số Lượng Bán     ║");
         System.out.println("╠══════════════════════╬══════════════════════╣");
@@ -289,10 +264,10 @@ public class Store {
 
     public void ghifileord(){
         Order temp=new Order();
-        String filename="SieuThiMini\\donhang.txt";
+        String filename="donhang.txt";
         temp.xoaNoiDungFile(filename);
-        for(Order or : orderList){
-            or.writeToFile(filename);
+        for(int i=0;i<orderList.length;i++){
+            orderList[i].writeToFile(filename);
         }
         System.out.println("Đã ghi vào file donhang.txt");
     }
@@ -304,7 +279,8 @@ public class Store {
 
     // Chức năng thứ 1 trong menu
     public void themKhachHang(Scanner scanner) {
-        customers = Customer.addCustomers(customers);
+        customers = Customer.addCustomers(customers, scanner);
+        ghifilecus();
     }
 
     // Chức năng thứ 2 trong menu
@@ -317,14 +293,16 @@ public class Store {
         System.out.print("Nhập mã khách hàng để xóa: ");
         int deleteID = Integer.parseInt(scanner.nextLine());
         customers = Customer.removeCustomerByID(customers, deleteID);
+        ghifilecus();
     }
 
     // Chức năng thứ 4 trong menu
-    public void capNhatKhachHang(Scanner scanner) {
+    /*public void capNhatKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để cập nhật: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Customer.updateCustomerByID(customers, updateID);
-    }
+        Customer.updateCustomerByID(customers, updateID, scanner);
+        ghifilecus();
+    } */
 
     // Chức năng thứ 5 trong menu
     public void timKhachHang(Scanner scanner) {
@@ -362,8 +340,9 @@ public class Store {
     
     /* Các thao tác cho danh sách chương trình khuyến mãi START */
     // Chức năng 1: Thêm chương trình khuyến mãi
-    public void themChuongTrinhKhuyenMai() {
-        discounts = Discount.addDiscounts(discounts); // Cập nhật danh sách
+    public void themChuongTrinhKhuyenMai(Scanner scanner) {
+        discounts = Discount.addDiscounts(discounts,scanner); // Cập nhật danh sách
+        ghifilectkm();
     }
 
     // Chức năng 2: Xuất danh sách chương trình khuyến mãi
@@ -376,13 +355,15 @@ public class Store {
         System.out.print("Nhập mã chương trình khuyến mãi cần xóa: ");
         int removeID = Integer.parseInt(scanner.nextLine());
         discounts = Discount.removeDiscountByID(discounts, removeID); // Cập nhật danh sách
+        ghifilectkm();
     }
 
     // Chức năng 4: Cập nhật chương trình khuyến mãi
     public void capNhatChuongTrinhKhuyenMai(Scanner scanner) {
         System.out.print("Nhập mã chương trình khuyến mãi cần sửa: ");
         int updateID = Integer.parseInt(scanner.nextLine());
-        Discount.updateDiscountByID(discounts, updateID); // Cập nhật danh sách
+        Discount.updateDiscountByID(discounts, updateID, scanner); // Cập nhật danh sách
+        ghifilectkm();
     }
 
     // Chức năng 5: Tìm kiếm chương trình khuyến mãi
@@ -392,7 +373,7 @@ public class Store {
 
     public void ghifilectkm(){
         Discount temp =new Discount();
-        String filename = "SieuThiMini\\discount.txt";
+        String filename = "discount.txt";
         temp.xoaNoiDungFile(filename);
         for(Discount dis: discounts){
             dis.writeToFile(filename);
@@ -402,7 +383,7 @@ public class Store {
 
     public void ghifilecus(){
         Customer temp =new Customer();
-        String filename = "SieuThiMini\\customers.txt";
+        String filename = "customers.txt";
         temp.xoaNoiDungFile(filename);
         for(Customer cus: customers){
             cus.writeToFile(filename);
@@ -419,19 +400,19 @@ public class Store {
     /* Cac thao tac voi Product START */
     //Doc tu file
     public void readFileProduct(){
-        Category.readCategoryFromFile("SieuThiMini\\category.txt");
-        Supplier.readSupplierFromFile("SieuThiMini\\supplier.txt");
-        Product.readProductsFromFile("SieuThiMini\\product.txt");
+        Category.readCategoryFromFile("category.txt");
+        Supplier.readSupplierFromFile("supplier.txt");
+        Product.readProductsFromFile("product.txt");
         System.out.println("Đã thêm "+Product.getCnt()+" sản phẩm.");
     }
     public void writeFileProduct(){
-        Product.writeProductsToFile("SieuThiMini\\product.txt");
+        Product.writeProductsToFile("product.txt");
     }
     public void writeFileCategory(){
-        Category.writeCategoryFromFile("SieuThiMini\\category.txt");
+        Category.writeCategoryFromFile("category.txt");
     }
     public void writeFileSupplier(){
-        Supplier.writeSupplierFromFile("SieuThiMini\\supplier.txt");
+        Supplier.writeSupplierFromFile("supplier.txt");
     }
     // Xuat danh sach cac san pham
     public void productDetail() {
@@ -450,7 +431,7 @@ public class Store {
         System.out.println("So phan tu ban muon them la: ");
         int n = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < n; i++) {
-            Product.addProduct();
+            Product.addProduct(scanner);
         }
     }
 
@@ -458,7 +439,7 @@ public class Store {
     public void updateProduct(Scanner scanner) {
         System.out.println("Nhap vao id san pham muon sua (Id co dang SP___).");
         String ud = scanner.nextLine();
-        Product.upDateProduct(ud);
+        Product.upDateProduct(ud,scanner);
     }
 
     public void removeProduct(Scanner scanner) {
@@ -475,24 +456,39 @@ public class Store {
             System.out.println("1.Tim kiem theo ten. ");
             System.out.println("2.Tim kiem theo loai. ");
             System.out.println("3.Tim kiem theo nha cung cap. ");
-            choice = new Scanner(System.in).nextInt();
+            choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 0:
                     System.out.println("Thoat chinh sua.");
                     break;
                 case 1:
                     System.out.println("Nhap tu khoa muon tim kiem: ");
-                     find= scanner.nextLine();
-                    Product.findById(find);
+                    find= scanner.nextLine();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
+                    Product.findByName(find);
                     break;
                 case 2:
                     System.out.println("Nhap ten loai san pham muon tim kiem: ");
                     find= scanner.nextLine();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
                     Product.findByCategory(find);
                     break;
                 case 3:
                     System.out.println("Nhap ten nha cung cap muon tim kiem");
                     find= scanner.nextLine();
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "Product ID", "Name", "Price", "Quantity", "Category", "Supplier");
+                    System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s\n",
+                            "-------------------", "-------------------", "-------------------",
+                            "-------------------", "-------------------", "-------------------");
                     Product.findBySupplier(find);
                     break;
                 default:
@@ -505,14 +501,14 @@ public class Store {
         System.out.println("So loai san pham ban muon them la: ");
         int n = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < n; i++) {
-            Category.addCategory();
+            Category.addCategory(scanner);
         }
     }
     public void addSupplier(Scanner scanner){
         System.out.println("So nha cung cap ban muon them la: ");
         int n = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < n; i++) {
-            Supplier.addSupplier();
+            Supplier.addSupplier(scanner);
         }
     }
     //Xoa loai san pham va nha cung cap
@@ -530,12 +526,12 @@ public class Store {
     public void updateCategory(Scanner scanner){
         System.out.println("Nhap vao id loai san pham muon sua (Id co dang CT___).");
         String ud = scanner.nextLine();
-        Category.updateCategory(ud);
+        Category.updateCategory(ud,scanner);
     }
     public void updateSupplier(Scanner scanner){
         System.out.println("Nhap vao id nha cung cap san pham muon sua (Id co dang SL___).");
         String ud = scanner.nextLine();
-        Supplier.updateSupplier(ud);
+        Supplier.updateSupplier(ud,scanner);
     }
 
 
@@ -549,15 +545,22 @@ public class Store {
 
     public void themHoaDon(Scanner scanner){
         receipts=Receipt.themhoadon(receipts, scanner, orderList);
+        ghihoadon();
+        for(Receipt rc: receipts){
+            orderList= Order.capnhatlaiOrders(orderList,rc.giaodich.donhang.getOrderId());
+        }
+        ghifileord();
     }
 
     public void xoaHoaDon(Scanner scanner){
         receipts=Receipt.xoahoadon(receipts, scanner);
+        ghihoadon();
     }
 
     public void suaHoaDon(Scanner scanner){
         System.out.print("Nhập id hóa đơn mà bạn muốn chỉnh sửa: ");
         receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner);
+        ghihoadon();
     }
 
     public void timHoaDon(Scanner scanner){
@@ -565,13 +568,57 @@ public class Store {
     }
 
     public void ghihoadon(){
-        String filename="SieuThiMini\\hoadon.txt";
+        String filename="hoadon.txt";
         Receipt.xoaNoiDungFile(filename);
-        Receipt.xoaNoiDungFilelichsugiaodich("SieuThiMini\\lichsugiaodich.txt");
+        Receipt.xoaNoiDungFilelichsugiaodich("lichsugiaodich.txt");
         for(Receipt rc:receipts){
             rc.writeToFile(filename);
         }
         System.out.println("Đã ghi vào file hoadon.txt và lichsugiaodich.txt");
     }
+
+    public void xem(){
+        Receipt.xemlichsugiaodich();
+    }
+
+    public void GiaoDichMoi(Scanner scanner){
+        System.out.print("Bạn muốn thêm bao nhiêu giao dịch ?: ");
+        int n = Integer.parseInt(scanner.nextLine());
+        while(n<0){
+            System.out.println("Không hợp lệ, hãy nhập lại");
+            n=Integer.parseInt(scanner.nextLine());
+        }
+        for(int i=0;i<n;i++){
+            orderList=Order.themgiaodich(scanner, orderList);
+            ghifileord();
+            receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner);
+            System.out.println(orderList[orderList.length-1].getOrderId());
+            orderList=Order.capnhatlaiOrders(orderList, orderList[orderList.length-1].getOrderId());
+            ghifileord();
+            ghihoadon();
+        }
+    }
     /* các thao tác cho hóa đơn END */
+
+    /* cac thao tac cho Import START*/
+    ImportManager a= new ImportManager();
+    public void addImport(Scanner scanner){
+        a.addImport(scanner);
+    }
+    public  void outImport(Scanner scanner){
+        a.outAllImport();
+    }
+    public void findImport(Scanner scanner){
+        a.findByImportId(scanner);
+    }
+    public void removeImport(Scanner scanner){
+        a.removeImport(scanner);
+    }
+    //Ghi file
+    public void writeFileImport(){
+        Import.writeFile("import.txt");
+    }
+    public  void writeFileImportDetai(){
+        ImportDetail.writeFile("importDetail.txt");
+    }
 }

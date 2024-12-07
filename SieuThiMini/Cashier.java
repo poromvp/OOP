@@ -62,6 +62,7 @@ public class Cashier extends Staff {
     public void setNumWorkingDays(int numWorkingDays) {
         this.numWorkingDays = numWorkingDays;
     }
+    Scanner sc = new Scanner(System.in);
 
     @Override
     // Phương thức đọc thông tin thu ngân từ file
@@ -114,31 +115,36 @@ public class Cashier extends Staff {
     @Override
     // Phương thức in thông tin thu ngân dưới dạng bảng
     public void getdetail() {
-        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
-        System.out.println("╔════════════╤══════════════════════════════════════╤═════════════════╤════════════╤══════════════════╗");
-        System.out.println("║ Mã NV      │ Họ Tên                              │ Vai trò         │ Ca Làm     │ Ngày Công       ║");
-        System.out.println("╠════════════╪══════════════════════════════════════╪═════════════════╪════════════╪══════════════════╣");
-
+        Cashier[] cashiers = readFromFile("CashierList.txt");
+        if (cashiers == null || cashiers.length == 0) {
+            System.out.println("Không có dữ liệu nhân viên");
+            return;
+        }
+    
+        System.out.println("Danh sách nhân viên thu ngân");
+        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤═════════════════╗");
+        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", "Ngày Công");
+        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪═════════════════╣");
+    
         for (Cashier cashier : cashiers) {
-            System.out.printf("║ %-10s │ %-35s │ %-15s │ %-10s │ %-15d ║\n",
+            System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
                     cashier.getShift(),
                     cashier.getNumWorkingDays());
         }
-
-        System.out.println("╚════════════╧═══════════════════════════════════════╧═════════════════╧════════════╧══════════════════╝");
+    
+        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧═════════════════╝");
     }
-
+    
     // Phương thức thêm một Cashier mới vào danh sách
     public void add() {
         // Hiển thị danh sách thu ngân hiện tại
-        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
+        Cashier[] cashiers = readFromFile("CashierList.txt");
         getdetail();
 
         // Khởi tạo scanner để nhập dữ liệu
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("Nhập số lượng thu ngân bạn muốn thêm vào ca làm: ");
         int n =Integer.parseInt(sc.nextLine());
@@ -193,7 +199,7 @@ public class Cashier extends Staff {
                     }
                 System.out.println("=================================================================");
         }
-        writeToFile("SieuThiMini\\CashierList.txt", cashiers);
+        writeToFile("CashierList.txt", cashiers);
 
         // In danh sách thu ngân sau khi cập nhật
         System.out.println("Danh sách thu ngân sau khi cập nhật: ");
@@ -204,16 +210,14 @@ public class Cashier extends Staff {
     // Phương thức xóa một Cashier khỏi danh sách
     public void remove() {
         // Hiển thị danh sách thu ngân
-        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
+        Cashier[] cashiers = readFromFile("CashierList.txt");
         getdetail();
 
         // Khởi tạo scanner để nhập mã thu ngân cần xóa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã thu ngân bạn muốn xóa: ");
         String cashierID = sc.nextLine();
 
         // Duyệt qua mảng cashiers để tìm và xóa thu ngân
-        boolean found = false;
         int newSize = 0;
         for (Cashier cashier : cashiers) {
             if (!cashier.getCashierID().equals(cashierID)) {
@@ -235,7 +239,7 @@ public class Cashier extends Staff {
             }
 
             // Ghi lại dữ liệu vào file
-            writeToFile("SieuThiMini\\CashierList.txt", updatedCashiers);
+            writeToFile("CashierList.txt", updatedCashiers);
             System.out.println("Thu ngân với mã " + cashierID + " đã được xóa.");
         }
 
@@ -248,11 +252,10 @@ public class Cashier extends Staff {
     // Phương thức thay đổi thông tin thu ngân
     public void ChangeInFo() {
         // Hiển thị danh sách thu ngân
-        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
+        Cashier[] cashiers = readFromFile("CashierList.txt");
         getdetail();
 
         // Khởi tạo scanner để nhập thông tin thu ngân cần sửa
-        Scanner sc = new Scanner(System.in);
         System.out.print("Nhập mã thu ngân bạn muốn thay đổi thông tin: ");
         String cashierID = sc.nextLine();
 
@@ -281,7 +284,7 @@ public class Cashier extends Staff {
 
         if (found) {
             // Ghi lại dữ liệu vào file
-            writeToFile("SieuThiMini\\CashierList.txt", cashiers);
+            writeToFile("CashierList.txt", cashiers);
             System.out.println("Thông tin thu ngân đã được cập nhật.");
         } else {
             System.out.println("Không tìm thấy thu ngân với mã: " + cashierID);
@@ -294,10 +297,9 @@ public class Cashier extends Staff {
     @Override
     public void search() {
         // Đọc dữ liệu từ file
-        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
+        Cashier[] cashiers = readFromFile("CashierList.txt");
     
         // Khởi tạo scanner để nhập từ bàn phím
-        Scanner sc = new Scanner(System.in);
     
         // Yêu cầu nhập các tiêu chí tìm kiếm
         System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
@@ -327,9 +329,9 @@ public class Cashier extends Staff {
         boolean found = false;
     
         // Định dạng tiêu đề bảng
-        System.out.printf("╔════════════╤══════════════════════════════╤══════════════╤════════════╤══════════════════╗\n");
-        System.out.printf("║ %-10s │ %-30s │ %-12s │ %-10s │ %-15s ║\n", "Mã NV", "Tên thu ngân", "Vai trò", "Ca làm", "Số ngày công");
-        System.out.printf("╠════════════╪══════════════════════════════╪══════════════╪════════════╪══════════════════╣\n");
+        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤═════════════════╗");
+        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", "Ngày Công");
+        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪═════════════════╣");
     
         // Duyệt qua danh sách các thu ngân và tìm kiếm
         for (Cashier cashier : cashiers) {
@@ -355,7 +357,7 @@ public class Cashier extends Staff {
             // Nếu tất cả tiêu chí khớp, in ra thông tin thu ngân
             if (match) {
                 found = true;
-                System.out.printf("║ %-10s │ %-30s │ %-12s │ %-10s │ %-15d ║\n",
+                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
@@ -370,13 +372,12 @@ public class Cashier extends Staff {
         }
     
         // Đường viền cuối bảng
-        System.out.printf("╚════════════╧══════════════════════════════╧══════════════╧════════════╧══════════════════╝\n");
-    }
+        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧═════════════════╝");    }
 
     // Phương thức thống kê nhân viên xuất sắc nhất tháng/năm 
     public void statisticBestCashier() {
         // Đọc danh sách từ file
-        Cashier[] cashiers = readFromFile("SieuThiMini\\CashierList.txt");
+        Cashier[] cashiers = readFromFile("CashierList.txt");
     
         if (cashiers.length == 0) {
             System.out.println("Danh sách nhân viên rỗng hoặc không có dữ liệu hợp lệ.");

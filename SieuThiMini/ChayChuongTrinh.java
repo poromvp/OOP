@@ -12,12 +12,13 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ SIÊU THỊ MINI");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Quản lý sản phẩm");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Quản lý khách hàng");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Quản lý đơn hàng");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Quản lý nhân sự");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Quản lý hóa đơn");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Quản lý CTKM");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "7.", "Thống kê");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Quản lý nhập hàng.");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Quản lý khách hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Quản lý đơn hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Quản lý nhân sự");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Quản lý hóa đơn");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "7.", "Quản lý CTKM");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "8.", "Thống kê");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Nhập lựa chọn của bạn: ");
@@ -29,21 +30,24 @@ public class ChayChuongTrinh {
                     manageProducts(scanner, sieuthi);
                     break;
                 case 2:
-                    manageCustomer(scanner, sieuthi);
+                    manageImport(scanner,sieuthi);
                     break;
                 case 3:
-                    manageOrders(scanner, sieuthi);
+                    manageCustomer(scanner, sieuthi);
                     break;
                 case 4:
-                    manageStaffs(scanner, sieuthi);
+                    manageOrders(scanner, sieuthi);
                     break;
                 case 5:
-                    manageInvoice(scanner, sieuthi);
+                    manageStaffs(scanner, sieuthi);
                     break;
                 case 6:
-                    manageDiscounnt(scanner, sieuthi);
+                    manageInvoice(scanner, sieuthi);
                     break;
                 case 7:
+                    manageDiscounnt(scanner, sieuthi);
+                    break;
+                case 8:
                     // Thống kê
                     manageThongKe(scanner, sieuthi);
                     break;
@@ -56,12 +60,6 @@ public class ChayChuongTrinh {
             }
         } while (choice != 0);
 
-        // Ghi vào file trước khi kết thúc chương trình
-        sieuthi.ghifilecus();
-        sieuthi.ghifilectkm();
-        sieuthi.ghifileord();
-        sieuthi.ghihoadon();
-        scanner.close();
     }
 
     private static void manageProducts(Scanner scanner, Store store) {
@@ -71,11 +69,11 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","╔═══════════════════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-44s ║\n","","" ,"QUẢN LÝ SẢN PHẨM");
             System.out.printf("%-20s%s","","╠═══════════════════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-50s ║\n","", "1.", "Thêm mới 1 sản phẩm, k ản phẩm.");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "1.", "Thêm mới sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "2.", "Xem danh sách sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "3.", "Sửa sản phẩm (theo mã).");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "4.", "Xóa sản phẩm (theo mã).");
-            System.out.printf("%-20s║ %-2s %-50s ║\n","", "5.", "Tìm kiếm sản phẩm (theo tên,loại,nhà cung cấp)");
+            System.out.printf("%-20s║ %-2s %-50s ║\n","", "5.", "Tìm kiếm sản phẩm (theo tên,loại,nhà cung cấp).");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "6.", "Thêm loại sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "7.", "Thêm nhà cung cấp sản phẩm.");
             System.out.printf("%-20s║ %-2s %-50s ║\n","", "8.", "Xóa loại sản phẩm.");
@@ -140,6 +138,49 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
+    private static void manageImport(Scanner scanner, Store store) {
+        int choice;
+        do {
+            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ NHẬP HÀNG");
+            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm mới đơn nhập hàng.");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xuất đơn nhập hàng.");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Tìm đơn nhập hàng (theo mã).");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xóa đơn nhập hàng.");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
+            System.out.print("Lựa chọn của bạn: ");
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+
+                case 1:
+                    store.addImport(scanner);
+                    store.writeFileImport();
+                    store.writeFileImportDetai();
+                    store.writeFileProduct();
+                    break;
+                case 2:
+                    store.outImport(scanner);
+                    break;
+                case 3:
+                    store.findImport(scanner);
+                    break;
+                case 4:
+                    store.removeImport(scanner);
+                    store.writeFileImport();
+                    store.writeFileImportDetai();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ.");
+            }
+        } while (choice != 0);
+    }
+
+
     private static void manageCustomer(Scanner scanner, Store store) {
         int choice;
         do {
@@ -171,7 +212,7 @@ public class ChayChuongTrinh {
                     break;
                 case 4:
                     // Sửa khách hàng (theo mã)
-                    store.capNhatKhachHang(scanner);
+                    //store.capNhatKhachHang(scanner);
                     break;
                 case 5:
                     // Tìm kiếm khách hàng (theo mã)
@@ -205,7 +246,7 @@ public class ChayChuongTrinh {
                 
                 case 1:
                     // Thêm mới 1 phần tử, k phần tử
-                    store.themChuongTrinhKhuyenMai();
+                    store.themChuongTrinhKhuyenMai(scanner);
                     break;
                 case 2:
                     // Xem danh sách chương trình khuyến mãi
@@ -249,7 +290,7 @@ public class ChayChuongTrinh {
             switch (choice) {
                 
                 case 1:
-                    store.thongkeDoanhThu();
+                    store.thongkeDoanhThu(scanner);
                     break;
                 case 2:
                     store.thongkeSpBanChay(scanner);
@@ -323,9 +364,8 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ NHÂN SỰ");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Quản lý nhân viên");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Quản lý phòng ban");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Quản lý tài khoản nhân viên");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Quản lý ca làm");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Quản lý kho hàng");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -372,30 +412,30 @@ public class ChayChuongTrinh {
                 case 2:
                     do {
                         System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách phòng ban");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm quản lý phòng ban");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá phòng ban");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin phòng ban ");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm phòng ban");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách tài khoản");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "thêm tài khoản ");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá tài khoản");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa tài khoản ");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm tài khoản");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                         System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                         System.out.print("Lựa chọn của bạn: ");
                         subchoice = Integer.parseInt(scanner.nextLine());
                     switch (subchoice) {
                     case 1:
-                        store.XuatPBan();
+                        store.XuatTK();
                         break;
                     case 2: 
-                        store.ThemQLPB();
+                        store.ThemTK();
                         break;
                     case 3:
-                        store.XoaPB();
+                        store.XoaTK();
                         break;
                     case 4: 
-                        store.SuaPB();
+                        store.SuaTK();
                         break;
                     case 5: 
-                        store.TimPB();
+                        store.TimTK();
                         break;
                     case 0:
                         break;
@@ -440,96 +480,6 @@ public class ChayChuongTrinh {
                     }
                     } while (subchoice != 0);
                     break;
-                
-                case 4:     
-                    int subsubchoice;
-                    do {
-                        System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Hàng trong kho");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Đặt hàng");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-                        System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
-                        System.out.print("Lựa chọn của bạn: ");
-                        subchoice = Integer.parseInt(scanner.nextLine());
-                    switch (subchoice) {
-                    case 1:
-                        do {
-                            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách kho hàng");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm sản phẩm vào kho hàng");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá sản phẩm khỏi kho hàng");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin kho hàng ");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm sản phẩm trong kho hàng");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-                            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
-                            System.out.print("Lựa chọn của bạn: ");
-                            subsubchoice = Integer.parseInt(scanner.nextLine());
-                        switch (subsubchoice) {
-                        case 1:
-                            store.xuatKho();
-                            break;
-                        case 2: 
-                            store.themKho();
-                            break;
-                        case 3:
-                            store.xoaKho();
-                            break;
-                        case 4: 
-                            store.suaKho();
-                            break;
-                        case 5: 
-                            store.timKho();
-                            break;
-                        case 0:
-                            break;
-                            default:
-                            System.out.println("Lựa chọn không hợp lệ.");
-                        }
-                        } while (subsubchoice != 0);
-                        break;
-
-                    case 2: 
-                        do {
-                            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách nhập kho");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm sản phẩm nhập kho");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá sản phẩm nhập kho");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa thông tin nhập kho ");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm sản phẩm trong danh sách");
-                            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-                            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
-                            System.out.print("Lựa chọn của bạn: ");
-                            subsubchoice = Integer.parseInt(scanner.nextLine());
-                        switch (subsubchoice) {
-                        case 1:
-                            store.xuatNhapKho();
-                            break;
-                        case 2: 
-                            store.themNhapKho();
-                            break;
-                        case 3:
-                            store.xoaNhapKho();
-                            break;
-                        case 4: 
-                            store.suaNhapKho();
-                            break;
-                        case 5: 
-                            store.timNhapKho();
-                            break;
-                        case 0:
-                            break;
-                            default:
-                            System.out.println("Lựa chọn không hợp lệ.");
-                        }
-                        } while (subsubchoice != 0);
-                        break;
-                    case 0:
-                        break;
-                    default:
-                        System.out.println("Lựa chọn không hợp lệ.");
-                    }
-                    }while(subchoice!=0);
-                    break;
                 case 0:
                     break;
                 default:
@@ -538,7 +488,6 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
-    // minh update
     private static void manageInvoice(Scanner scanner, Store store) {
         int choice;
         do {
@@ -550,6 +499,8 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xóa hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xuất hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm hóa đơn");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Xem lịch sử giao dịch");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "7.", "Bán hàng");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -572,7 +523,13 @@ public class ChayChuongTrinh {
                     break;
                 case 5:
                     store.timHoaDon(scanner);
-                    break;                
+                    break;
+                case 6:
+                    store.xem();
+                    break;
+                case 7:
+                    store.GiaoDichMoi(scanner);
+                    break;
                 case 0:
                     break;
                 default:

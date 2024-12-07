@@ -7,10 +7,13 @@ public class Customer implements QLFile {
     private String name; // Tên khách hàng
     private String contactNumber; // Số điện thoại
     private int loyaltyPoints; // Điểm tích lũy
+    private Order order;
+
+    //Order order = new Order(); 
 
     // Constructor không tham số
     public Customer() {
-
+        
     }
 
     // Constructor có tham số
@@ -19,6 +22,7 @@ public class Customer implements QLFile {
         this.name = name;
         this.contactNumber = contactNumber;
         this.loyaltyPoints = loyaltyPoints;
+        //this.order = order;
     }
 
     // Getter và Setter
@@ -69,7 +73,7 @@ public class Customer implements QLFile {
             System.out.printf(
                     "%40s╠═══════════╬══════════════════╬═══════════════╬═════════════════╣\n", " ");
             System.out.printf("%40s║ %-10s║ %-17s║ %-14s║ %-16s║\n", " ", customer.customerID, customer.name,
-                    customer.contactNumber, customer.loyaltyPoints);
+                    customer.contactNumber, customer.calculateLoyaltyPoints());
         }
         System.out.printf(
                 "%40s╚═══════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
@@ -77,40 +81,65 @@ public class Customer implements QLFile {
     }
 
     // Phương thức thêm khách hàng vào danh sách (3)
-    public static Customer[] addCustomers(Customer[] customers) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Nhập số lượng khách hàng cần thêm: ");
-        int n = Integer.parseInt(scanner.nextLine());
-
-        // Tạo một mảng mới với kích thước đủ lớn
-        Customer[] updatedCustomers = new Customer[customers.length + n];
-        System.arraycopy(customers, 0, updatedCustomers, 0, customers.length);
-
-        for (int i = 0; i < n; i++) {
-            System.out.println("\nNhập thông tin cho khách hàng thứ " + (i + 1) + ":");
-
-            // Nhập thông tin khách hàng mới
-            System.out.print("Nhập mã khách hàng: ");
+    public static Customer[] addCustomers(Customer[] customers, Scanner scanner) {
+        System.out.print("Khách hàng đã có thẻ thành viên chưa? (y/n): ");
+        String hasMembership = scanner.nextLine().trim().toLowerCase();
+    
+        Order order = new Order(); // Khởi tạo đối tượng Order
+    
+        if (hasMembership.equals("n")) {
+            // Thêm khách hàng mới
+            System.out.println("\nThêm khách hàng mới:");
+    
+            System.out.print("Nhập số điện thoại khách hàng: ");
             int customerID = Integer.parseInt(scanner.nextLine());
-
-            System.out.print("Nhập tên khách hàng: ");
-            String name = scanner.nextLine();
-
+    
             System.out.print("Nhập số điện thoại khách hàng: ");
             String contactNumber = scanner.nextLine();
-
-            System.out.print("Nhập điểm tích lũy: ");
-            int loyaltyPoints = Integer.parseInt(scanner.nextLine());
-
-            // Tạo đối tượng Customer mới và thêm vào mảng
-            Customer newCustomer = new Customer(customerID, name, contactNumber, loyaltyPoints);
-            updatedCustomers[customers.length + i] = newCustomer;
-
-            System.out.println("Đã thêm khách hàng: " + name);
+    
+            System.out.print("Nhập tên khách hàng: ");
+            String name = scanner.nextLine();
+    
+            // Tạo khách hàng mới với điểm tích lũy mặc định là 0
+            Customer newCustomer = new Customer(customerID, name, contactNumber, 0);
+    
+            // Tạo mảng mới để thêm khách hàng
+            Customer[] updatedCustomers = new Customer[customers.length + 1];
+            System.arraycopy(customers, 0, updatedCustomers, 0, customers.length);
+            updatedCustomers[customers.length] = newCustomer;
+    
+            System.out.println("Đã thêm khách hàng mới: " + name);
+            return updatedCustomers;
+    
+        } else if (hasMembership.equals("y")) {
+            // Cập nhật điểm tích lũy cho khách hàng hiện có
+            System.out.print("Nhập số điện thoại khách hàng: ");
+            String contactNumber = scanner.nextLine();
+    
+            boolean customerFound = false;
+            for (Customer customer : customers) {
+                if (customer.getContactNumber().equals(contactNumber)) {
+                    customerFound = true;
+    
+                    // Tăng điểm tích lũy bằng phương thức calculateLoyaltyPoints
+                    int updatedPoints = customer.calculateLoyaltyPoints();
+                    System.out.println("Cập nhật điểm tích lũy cho khách hàng " + customer.getName() + ". Điểm tích lũy mới: " + updatedPoints);
+                    break;
+                }
+            }
+    
+            if (!customerFound) {
+                System.out.println("Không tìm thấy khách hàng với số điện thoại: " + contactNumber);
+            }
+    
+            return customers;
+        } else {
+            System.out.println("Lựa chọn không hợp lệ. Vui lòng thử lại.");
+            return customers;
         }
-        return updatedCustomers;
     }
+    
+    
 
     // Phương thức sửa (cập nhật) thông tin của khách hàng trong danh sách (4)
     public static Customer[] updateCustomerByID(Customer[] customers, int customerID) {
@@ -380,6 +409,28 @@ public class Customer implements QLFile {
             return customers[tmp];
         }
     }
+    
+    // Phương thức giảm giá đơn hàng cho khách hàng khi điểm tích lũy đạt yêu cầu
+    public double isLoyaltyPoints() { 
+        double totalAmount = order.calculateTotalAmount(); // Lấy tổng tiền từ hóa đơn
+        if (this.loyaltyPoints > 2000) {
+            return totalAmount - totalAmount * 0.15; // Giảm 15% khi điểm lớn hơn 2000
+        } else if (this.loyaltyPoints > 1500 && this.loyaltyPoints <= 2000) {
+            return totalAmount - totalAmount * 0.10; // Giảm 10% khi điểm từ 1500-2000
+        } else if (this.loyaltyPoints > 1000 && this.loyaltyPoints <= 1500) {
+            return totalAmount - totalAmount * 0.05; // Giảm 5% khi điểm từ 1000-1500
+        } else {
+            return totalAmount; // Không giảm giá khi điểm dưới 1000
+        }
+    }
+    
 
+    // Phương thức tăng điểm tích lũy cho khách hàng dựa trên hóa đơn
+    public int calculateLoyaltyPoints() {
+        double totalAmount = order.calculateTotalAmount(); // Lấy tổng tiền từ phương thức calculateTotalAmount() trả về kiểu double
+        int loyaltyPointsFromOrder = (int) (totalAmount * 0.10);  // Lấy 10% của tổng tiền và chuyển thành int
+        int newLoyaltyPoints = this.loyaltyPoints + loyaltyPointsFromOrder;
+        return newLoyaltyPoints;
+    }
     
 }
