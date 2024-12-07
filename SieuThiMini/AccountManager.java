@@ -319,169 +319,165 @@ public class AccountManager extends Staff {
 
     @Override
     public void ChangeInFo() {
-        int count =0;
         Manager temp = new Manager();
         Manager[] managers = temp.readFromFile("dsnv.txt");
-
+    
         // Đọc danh sách tài khoản hiện tại từ file
         AccountManager[] accounts = readFromFile("AccountManager.txt");
         System.out.println();
-        String temp2;
-
-        for(AccountManager account : accounts){
-            boolean hasAccount = false;
-            for(Manager manager: managers){
-                if(account.getName().equals(manager.getName())){
-                    hasAccount= true;
-                    break;
-                }else{
-                   account.setName(manager.getName()); 
-                }
-            }
-            if(!hasAccount){
-                temp2=account.getName();
-                count++;
-                System.out.print("bạn có muốn thay đổi trạng thái và mật khẩu cho tài khoản này không ?");
-                System.out.print("nhập Y (có)/N (không): ");
-                String choice = sc.nextLine();
-                while (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n")){
-                    System.out.print("Lựa chọn không hợp lệ mời nhập lại (nhập Y hoặc N): ");
-                    choice = sc.nextLine();
-                }
-                if(choice.equalsIgnoreCase("y")){
-                    System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
-                    
-                    System.out.print("Nhập mật khẩu mới cho tài khoản: ");
-                    String Pass = sc.nextLine();
-                    if(!Pass.isEmpty()){
-                        account.setPassWord(Pass);
-                    }
-
-                    System.out.print("Nhập trạng thái mới cho tài khoản: ");
-                    String status = sc.nextLine();
-                    if(!status.isEmpty()){
-                        account.setStatus(status);
-                    }
-
-                    AccountManager[] updatedAccount = new AccountManager[accounts.length];
-                    int index = 0;
-                
-                    // Duyệt qua mảng và sao chép lại danh sách tài khoản đã cập nhật
-                    for (AccountManager acc : accounts) {
-                        if (!acc.getAccount().equals(temp2)) {
-                            updatedAccount[index++] = acc;
+    
+        for (Manager manager : managers) {
+            // Tìm tài khoản tương ứng với mã nhân viên
+            for (AccountManager account : accounts) {
+                if (manager.getStaffID().equals(account.getAccount())) { // So sánh mã nhân viên với tài khoản
+                    // Kiểm tra xem tên có thay đổi không
+                    if (!manager.getName().equals(account.getName())) {
+                        account.setName(manager.getName()); // Cập nhật tên
+                        System.out.println("Tên tài khoản " + account.getAccount() + " đã được cập nhật.");
+                        
+                        // Hỏi người dùng có muốn cập nhật mật khẩu và trạng thái không
+                        System.out.print("Bạn có muốn cập nhật mật khẩu và trạng thái cho tài khoản " + account.getAccount() + "? (Y/N): ");
+                        String choice = sc.nextLine();
+                        while (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n")) {
+                            System.out.print("Lựa chọn không hợp lệ, mời nhập lại (Y hoặc N): ");
+                            choice = sc.nextLine();
                         }
-                    }
-        
-                        // Ghi lại danh sách mới vào file
-                    writeToFile("AccountManager.txt", updatedAccount);
-                    System.out.println("Tài khoản " + temp2 + " đã được cập nhật.");
+                        if (choice.equalsIgnoreCase("y")) {
+                            System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
                     
-
+                            System.out.print("Nhập mật khẩu mới cho tài khoản: ");
+                            String pass = sc.nextLine();
+                            if (!pass.isEmpty()) {
+                                account.setPassWord(pass); // Cập nhật mật khẩu
+                            }
+                    
+                            System.out.print("Nhập trạng thái mới cho tài khoản (active/banned): ");
+                            String status = sc.nextLine();
+                            if (!status.isEmpty()) {
+                                account.setStatus(status); // Cập nhật trạng thái
+                            }
+                    
+                            System.out.println("Tài khoản " + account.getAccount() + " đã được cập nhật.");
+                        }
+                    }                    
+                    break; // Thoát khỏi vòng lặp vì đã xử lý tài khoản này
                 }
             }
-        }
-
-
-        if(count==0){
-            boolean found = false;
-            System.out.print("Bạn muốn đổi mật khẩu và trạng thái của tài khoản nào : ");
-            String acc = sc.nextLine();
-            for(AccountManager account : accounts){
-                if(account.getAccount().equals(acc)){
-                    found = true;
-                    System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
-
-                    System.out.print("Nhập mật khẩu mới cho tài khoản: ");
-                    String Pass = sc.nextLine();
-                    if (!Pass.isEmpty()) {
-                        account.setPassWord(Pass);
-                    }
-                    System.out.println();
-
-                    System.out.print("Nhập trạng thái mới cho tài khoản: ");
-                    String status = sc.nextLine();
-                    if(!status.isEmpty()){
-                        account.setStatus(status);
-                    }
-                    System.out.println();
-                }
-            }
-            if(!found){
-                System.out.println("không tìm thấy tài khoản cần thay đổi");
-            }
-            writeToFile("AccountManager.txt", accounts);
-
         }
     
+        // Nếu không có nhân viên nào thay đổi tên => chỉ thay đổi mật khẩu và trạng thái
+        System.out.print("Bạn muốn đổi mật khẩu và trạng thái của tài khoản nào: ");
+        String acc = sc.nextLine();
+        boolean found = false;
+        for (AccountManager account : accounts) {
+            if (account.getAccount().equals(acc)) {
+                found = true;
+    
+                System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
+    
+                System.out.print("Nhập mật khẩu mới cho tài khoản: ");
+                String pass = sc.nextLine();
+                if (!pass.isEmpty()) {
+                    account.setPassWord(pass);
+                }
+    
+                System.out.print("Nhập trạng thái mới cho tài khoản (active/banned): ");
+                String status = sc.nextLine();
+                if (!status.isEmpty()) {
+                    account.setStatus(status);
+                }
+    
+                System.out.println("Tài khoản " + acc + " đã được cập nhật.");
+                break;
+            }
+        }
+    
+        if (!found) {
+            System.out.println("Không tìm thấy tài khoản cần thay đổi.");
+        }
+    
+        // Ghi lại danh sách tài khoản vào file sau khi hoàn tất thay đổi
+        writeToFile("AccountManager.txt", accounts);
     }
+    
 
-    @Override
     public void search() {
-        AccountManager[] departments = readFromFile("SieuThiMini\\AccountManager.txt.txt");
+        // Đọc danh sách tài khoản từ file
+        AccountManager[] accounts = readFromFile("AccountManager.txt");
     
         // Yêu cầu nhập các tiêu chí tìm kiếm
         System.out.println("Nhập tiêu chí tìm kiếm (Có thể bỏ qua một số tiêu chí bằng cách nhấn Enter)");
     
-        // Tiêu chí tìm kiếm theo mã phòng ban
-        System.out.print("Nhập mã phòng ban (hoặc nhấn Enter để bỏ qua): ");
-        String departmentID = sc.nextLine().trim();
+        // Tiêu chí tìm kiếm theo tài khoản
+        System.out.print("Nhập tài khoản (hoặc nhấn Enter để bỏ qua): ");
+        String accountID = sc.nextLine().trim();
     
-        // Tiêu chí tìm kiếm theo tên phòng ban
-        System.out.print("Nhập tên phòng ban (hoặc nhấn Enter để bỏ qua): ");
-        String departmentName = sc.nextLine().trim();
+        // Tiêu chí tìm kiếm theo tên nhân viên
+        System.out.print("Nhập tên nhân viên (hoặc nhấn Enter để bỏ qua): ");
+        String name = sc.nextLine().trim();
     
-        // Tiêu chí tìm kiếm theo tên người quản lý
-        System.out.print("Nhập tên người quản lý (hoặc nhấn Enter để bỏ qua): ");
-        String managerName = sc.nextLine().trim();
+        // Tiêu chí tìm kiếm theo mật khẩu
+        System.out.print("Nhập mật khẩu (hoặc nhấn Enter để bỏ qua): ");
+        String password = sc.nextLine().trim();
+    
+        // Tiêu chí tìm kiếm theo trạng thái
+        System.out.print("Nhập trạng thái (active/banned) (hoặc nhấn Enter để bỏ qua): ");
+        String status = sc.nextLine().trim();
     
         // Kiểm tra nếu không có tiêu chí nào được nhập
         boolean found = false;
     
         // In ra tiêu đề bảng
-        System.out.println("╔══════════════╤═════════════════╤═════════════════════════╗");
-        System.out.printf("║ %-11s │ %-15s │ %-23s ║\n", "Mã phòng ban", "Tên phòng ban", "Tên người quản lý");
-        System.out.println("╠══════════════╪═════════════════╪═════════════════════════╣");
+        System.out.println("Danh sách các tài khoản");
+        System.out.println("╔════════════════════╤═══════════════════════╤══════════════════════╤════════════════════╗");
+        System.out.printf("║ %-18s │ %-20s │ %-20s │ %-16s ║\n", "Tài khoản", "Tên nhân viên", "Mật khẩu", "Trạng thái");
+        System.out.println("╠════════════════════╪═══════════════════════╪══════════════════════╪════════════════════╣");
     
-        // Duyệt qua mảng departments và tìm phòng ban thỏa mãn ít nhất một tiêu chí
-        for (AccountManager department : departments) {
-            boolean match = false;
+        // Duyệt qua mảng accounts và tìm tài khoản thỏa mãn ít nhất một tiêu chí
+        for (AccountManager account : accounts) {
+            boolean match = true;
     
-            // Kiểm tra mã phòng ban nếu có
-            if (!departmentID.isEmpty() && department.getDepartmentID().equalsIgnoreCase(departmentID)) {
-                match = true;
+            // Kiểm tra tài khoản nếu có
+            if (!accountID.isEmpty() && !account.getAccount().equalsIgnoreCase(accountID)) {
+                match = false;
             }
     
-            // Kiểm tra tên phòng ban nếu có
-            if (!departmentName.isEmpty() && department.getDepartmentName().toLowerCase().contains(departmentName.toLowerCase())) {
-                match = true;
+            // Kiểm tra tên nhân viên nếu có
+            if (!name.isEmpty() && !account.getName().toLowerCase().contains(name.toLowerCase())) {
+                match = false;
             }
     
-            // Kiểm tra tên người quản lý nếu có
-            if (!managerName.isEmpty() && department.getManagerName().toLowerCase().contains(managerName.toLowerCase())) {
-                match = true;
+            // Kiểm tra mật khẩu nếu có
+            if (!password.isEmpty() && !account.getPassWord().equals(password)) {
+                match = false;
+            }
+    
+            // Kiểm tra trạng thái nếu có
+            if (!status.isEmpty() && !account.getStatus().equalsIgnoreCase(status)) {
+                match = false;
             }
     
             // Nếu có ít nhất một tiêu chí trùng khớp
             if (match) {
                 found = true;
-                // In ra thông tin phòng ban
-                System.out.printf("║ %-12s │ %-15s │ %-23s ║\n",
-                    department.getDepartmentID(),
-                    department.getDepartmentName(),
-                    department.getManagerName());
-
+                // In ra thông tin tài khoản
+                System.out.printf("║ %-18s │ %-20s │ %-20s │ %-16s ║\n",
+                        account.getAccount(),
+                        account.getName(),
+                        account.getPassWord(),
+                        account.getStatus());
             }
         }
     
-        // Nếu không tìm thấy phòng ban nào
+        // Nếu không tìm thấy tài khoản nào
         if (!found) {
-            System.out.println("Không tìm thấy phòng ban thỏa mãn điều kiện tìm kiếm.");
+            System.out.println("Không tìm thấy tài khoản thỏa mãn điều kiện tìm kiếm.");
         }
     
         // Đường viền cuối bảng
-        System.out.println("╚══════════════╧═════════════════╧═════════════════════════╝");
+        System.out.println("╚════════════════════╧═══════════════════════╧══════════════════════╧════════════════════╝");
     }
 }
+    
     
 
