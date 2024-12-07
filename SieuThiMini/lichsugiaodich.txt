@@ -1,0 +1,10 @@
+Mã Hóa Đơn:	HD1O2rTjhY
+Ngày Giao Dịch: 	07/12/2024
+Tên Nhân Viên: 	null
+Phuong Thuc Thanh Toan: 
+Thanh toán qua thẻ: 123 với số tiền:        8250.0
+Mã Hóa Đơn:	HDlLXUmmCK
+Ngày Giao Dịch: 	07/12/2024
+Tên Nhân Viên: 	null
+Phuong Thuc Thanh Toan: 
+Thanh toán qua thẻ: 122 với số tiền:        24750.0
