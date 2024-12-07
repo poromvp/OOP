@@ -7,4 +7,3 @@ NV1007 789 active Le Van Cuong
 NV1008 1011 active Nguyen Thi Lan
 QL1009 1112 active Pham Van Duc
 NV1010 1213 active Hoang Thi Mai
-NV7895 1 active Tran Van Hai
