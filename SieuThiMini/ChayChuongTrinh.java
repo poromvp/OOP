@@ -246,7 +246,7 @@ public class ChayChuongTrinh {
             switch (choice) {
                 
                 case 1:
-                    store.thongkeDoanhThu();
+                    store.thongkeDoanhThu(scanner);
                     break;
                 case 2:
                     store.thongkeSpBanChay(scanner);
@@ -535,7 +535,6 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
-    // minh update
     private static void manageInvoice(Scanner scanner, Store store) {
         int choice;
         do {
@@ -548,6 +547,7 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xuất hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Xem lịch sử giao dịch");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "7.", "Bán hàng");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -573,6 +573,9 @@ public class ChayChuongTrinh {
                     break;
                 case 6:
                     store.xem();
+                    break;
+                case 7:
+                    store.GiaoDichMoi(scanner);
                     break;
                 case 0:
                     break;

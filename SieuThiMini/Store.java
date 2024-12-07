@@ -1,6 +1,6 @@
+import java.util.Locale;
 import java.util.Scanner;
 import java.text.NumberFormat;
-import java.util.Locale;
 
 public class Store {
     public Transaction[] transactions; // danh sách giao dịch
@@ -37,6 +37,9 @@ public class Store {
         departments = new Department();
         departments.readFromFile("DepartmentList.txt");
 
+    }
+    public Order[] getOrderlist(){
+        return orderList;
     }
 
     public Store(Staff[] staffList, Transaction[] transactions) {
@@ -258,17 +261,18 @@ public class Store {
         Order.loc(scanner, orderList);
     }
 
-    public void thongkeDoanhThu() {
+    public void thongkeDoanhThu(Scanner scanner) {
         byte i = 0;
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách hàng nghìn, trăm, triệu
+        System.out.println("Bạn muốn thông kê doanh thu của năm nào?");
+        int n=Integer.parseInt(scanner.nextLine());
         
         // Tạo phần tiêu đề
         System.out.printf("%20s╔═════════════╦═════════════════════════════╗\n", " ");
         System.out.printf("%20s║   Quý       ║    Doanh thu (VND)          ║\n", " ");
         System.out.printf("%20s╠═════════════╬═════════════════════════════╣\n", " ");
-        
         // Lặp qua các phần tử trong mảng
-        for (double mang : Order.thongkeQUY(orderList)) { 
+        for (double mang : Order.thongkeQUY(orderList,n)) { 
             String formattedAmount = numberFormat.format(mang);
             System.out.printf("%20s║   Quý %-5d ║ %-27s ║\n", " ", (i + 1), formattedAmount);
             i++;
@@ -282,6 +286,10 @@ public class Store {
     public void thongkeSpBanChay(Scanner scanner) {
         System.out.print("Bạn Muốn Xem Top Bao Nhiêu Sản Phẩm Bán Chạy Nhất: ");
         int n = Integer.parseInt(scanner.nextLine());
+        while(n>Order.thongkeBanChay(orderList).length || n<0){
+            System.out.println("Không hợp lệ, hãy nhập lại");
+            n = Integer.parseInt(scanner.nextLine());
+        }
         System.out.println("╔══════════════════════╦══════════════════════╗");
         System.out.println("║     Tên Sản Phẩm     ║     Số Lượng Bán     ║");
         System.out.println("╠══════════════════════╬══════════════════════╣");
@@ -300,8 +308,8 @@ public class Store {
         Order temp=new Order();
         String filename="donhang.txt";
         temp.xoaNoiDungFile(filename);
-        for(Order or : orderList){
-            or.writeToFile(filename);
+        for(int i=0;i<orderList.length;i++){
+            orderList[i].writeToFile(filename);
         }
         System.out.println("Đã ghi vào file donhang.txt");
     }
@@ -580,6 +588,10 @@ public class Store {
     public void themHoaDon(Scanner scanner){
         receipts=Receipt.themhoadon(receipts, scanner, orderList);
         ghihoadon();
+        for(Receipt rc: receipts){
+            orderList= Order.capnhatlaiOrders(orderList,rc.giaodich.donhang.getOrderId());
+        }
+        ghifileord();
     }
 
     public void xoaHoaDon(Scanner scanner){
@@ -600,7 +612,7 @@ public class Store {
     public void ghihoadon(){
         String filename="hoadon.txt";
         Receipt.xoaNoiDungFile(filename);
-        Receipt.xoaNoiDungFilelichsugiaodich("SieuThiMini\\lichsugiaodich.txt");
+        Receipt.xoaNoiDungFilelichsugiaodich("lichsugiaodich.txt");
         for(Receipt rc:receipts){
             rc.writeToFile(filename);
         }
@@ -609,6 +621,24 @@ public class Store {
 
     public void xem(){
         Receipt.xemlichsugiaodich();
+    }
+
+    public void GiaoDichMoi(Scanner scanner){
+        System.out.print("Bạn muốn thêm bao nhiêu giao dịch ?: ");
+        int n = Integer.parseInt(scanner.nextLine());
+        while(n<0){
+            System.out.println("Không hợp lệ, hãy nhập lại");
+            n=Integer.parseInt(scanner.nextLine());
+        }
+        for(int i=0;i<n;i++){
+            orderList=Order.themgiaodich(scanner, orderList);
+            ghifileord();
+            receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner);
+            System.out.println(orderList[orderList.length-1].getOrderId());
+            orderList=Order.capnhatlaiOrders(orderList, orderList[orderList.length-1].getOrderId());
+            ghifileord();
+            ghihoadon();
+        }
     }
     /* các thao tác cho hóa đơn END */
 }
