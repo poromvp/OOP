@@ -69,6 +69,19 @@ public class AccountManager extends Staff {
 
     Scanner sc = new Scanner(System.in);
 
+    public boolean checkaccount ( String acc){
+        AccountManager[] accounts = readFromFile("AccountManager.txt");
+        boolean check = false;
+        for( AccountManager account : accounts){
+            if(acc.equals(account.getAccount())){
+                check = true;
+                break;
+            }
+        }
+
+        return check;
+    }
+
     // Phương thức đọc thông tin phòng ban từ file
     @Override
     public AccountManager[] readFromFile(String fileName) {
@@ -319,6 +332,7 @@ public class AccountManager extends Staff {
 
     @Override
     public void ChangeInFo() {
+        int count=0;
         Manager temp = new Manager();
         Manager[] managers = temp.readFromFile("dsnv.txt");
     
@@ -331,6 +345,7 @@ public class AccountManager extends Staff {
             for (AccountManager account : accounts) {
                 if (manager.getStaffID().equals(account.getAccount())) { // So sánh mã nhân viên với tài khoản
                     // Kiểm tra xem tên có thay đổi không
+                    count++;
                     if (!manager.getName().equals(account.getName())) {
                         account.setName(manager.getName()); // Cập nhật tên
                         System.out.println("Tên tài khoản " + account.getAccount() + " đã được cập nhật.");
@@ -364,40 +379,43 @@ public class AccountManager extends Staff {
                 }
             }
         }
-    
-        // Nếu không có nhân viên nào thay đổi tên => chỉ thay đổi mật khẩu và trạng thái
-        System.out.print("Bạn muốn đổi mật khẩu và trạng thái của tài khoản nào: ");
-        String acc = sc.nextLine();
-        boolean found = false;
-        for (AccountManager account : accounts) {
-            if (account.getAccount().equals(acc)) {
-                found = true;
-    
-                System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
-    
-                System.out.print("Nhập mật khẩu mới cho tài khoản: ");
-                String pass = sc.nextLine();
-                if (!pass.isEmpty()) {
-                    account.setPassWord(pass);
-                }
-    
-                System.out.print("Nhập trạng thái mới cho tài khoản (active/banned): ");
-                String status = sc.nextLine();
-                if (!status.isEmpty()) {
-                    account.setStatus(status);
-                }
-    
-                System.out.println("Tài khoản " + acc + " đã được cập nhật.");
-                break;
+        
+        if(count == 0 ){
+            // Nếu không có nhân viên nào thay đổi tên => chỉ thay đổi mật khẩu và trạng thái
+            System.out.print("Bạn muốn đổi mật khẩu và trạng thái của tài khoản nào: ");
+            String acc = sc.nextLine();
+            boolean found = false;
+            for (AccountManager account : accounts) {
+                if (account.getAccount().equals(acc)) {
+                    found = true;
+        
+                    System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
+        
+                    System.out.print("Nhập mật khẩu mới cho tài khoản: ");
+                    String pass = sc.nextLine();
+                    if (!pass.isEmpty()) {
+                        account.setPassWord(pass);
+                    }
+        
+                    System.out.print("Nhập trạng thái mới cho tài khoản (active/banned): ");
+                    String status = sc.nextLine();
+                    if (!status.isEmpty()) {
+                        account.setStatus(status);
+                    }
+        
+                    System.out.println("Tài khoản " + acc + " đã được cập nhật.");
+                    break;
             }
         }
     
-        if (!found) {
-            System.out.println("Không tìm thấy tài khoản cần thay đổi.");
+            if (!found) {
+                System.out.println("Không tìm thấy tài khoản cần thay đổi.");
+            }
         }
     
         // Ghi lại danh sách tài khoản vào file sau khi hoàn tất thay đổi
         writeToFile("AccountManager.txt", accounts);
+        
     }
     
 

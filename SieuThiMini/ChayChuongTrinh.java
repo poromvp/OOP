@@ -423,19 +423,19 @@ public class ChayChuongTrinh {
                         subchoice = Integer.parseInt(scanner.nextLine());
                     switch (subchoice) {
                     case 1:
-                        store.XuatPBan();
+                        store.XuatTK();
                         break;
                     case 2: 
-                        store.ThemQLPB();
+                        store.ThemTK();
                         break;
                     case 3:
-                        store.XoaPB();
+                        store.XoaTK();
                         break;
                     case 4: 
-                        store.SuaPB();
+                        store.SuaTK();
                         break;
                     case 5: 
-                        store.TimPB();
+                        store.TimTK();
                         break;
                     case 0:
                         break;

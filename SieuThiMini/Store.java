@@ -9,10 +9,8 @@ public class Store {
     public Discount[] discounts; // danh sách chương trình khuyến mãi
     public Receipt[] receipts;
     public Manager managers;
-    public AccountManager departments;
+    public AccountManager accounts;
     public Cashier cashiers;
-    public InventoryManager IvenProduct;
-    public InventoryManager OrderProduct;
 
     public Store() {
         readFileProduct();
@@ -29,13 +27,11 @@ public class Store {
         receipts =rc.readFromFile("hoadon.txt");
 
         managers = new Manager();
-        departments = new AccountManager();
         cashiers = new Cashier();
-        IvenProduct = new InventoryManager();
-        OrderProduct = new InventoryManager();
+        cashiers.readFromFile("CashierList.txt");
         managers.readFromFile("dsnv.txt");
-        departments = new AccountManager();
-        departments.readFromFile("DepartmentList.txt");
+        accounts = new AccountManager();
+        accounts.readFromFile("DepartmentList.txt");
 
     }
 
@@ -75,24 +71,24 @@ public class Store {
         managers.search();
     }
 
-    public void XuatPBan() {
-        departments.getdetail();
+    public void XuatTK() {
+        accounts.getdetail();
     }
 
-    public void ThemQLPB() {
-        departments.add();
+    public void ThemTK() {
+        accounts.add();
     }
 
-    public void XoaPB() {
-        departments.remove();
+    public void XoaTK() {
+        accounts.remove();
     }
 
-    public void SuaPB() {
-        departments.ChangeInFo();
+    public void SuaTK() {
+        accounts.ChangeInFo();
     }
 
-    public void TimPB() {
-        departments.search();
+    public void TimTK() {
+        accounts.search();
     }
 
     public void xuatThuNgan() {

@@ -80,13 +80,13 @@ public class Manager extends Staff {
         }
     
         // In ra tiêu đề bảng
-        System.out.printf("╔════════════╤═════════════════════════════════════╤═════════════════╤════════════╤═════════════════╗\n");
-        System.out.printf("║ %-10s │ %-35s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Lương (VND)", "Vai trò", "Số điện thoại");
-        System.out.printf("╠════════════╪═════════════════════════════════════╪═════════════════╪════════════╪═════════════════╣\n");
+        System.out.printf("╔════════════╤═════════════════════════════════════╤═════════════════╤═════════════════╤═════════════════╗\n");
+        System.out.printf("║ %-10s │ %-35s │ %-15s │ %-15s │ %-15s ║\n", "Mã NV", "Họ Tên", "Lương (VND)", "Vai trò", "Số điện thoại");
+        System.out.printf("╠════════════╪═════════════════════════════════════╪═════════════════╪═════════════════╪═════════════════╣\n");
     
         // Duyệt qua mảng managers và in ra thông tin của từng nhân viên
         for (Manager manager : managers) {
-            System.out.printf("║ %-10s │ %-35s │ %-15.2f │ %-10s │ %-15s ║\n",
+            System.out.printf("║ %-10s │ %-35s │ %-15.2f │ %-15s │ %-15s ║\n",
                 manager.getStaffID(),
                 manager.getName(),
                 manager.getSalary(),
@@ -95,7 +95,7 @@ public class Manager extends Staff {
         }
     
         // Đường viền cuối bảng
-        System.out.printf("╚════════════╧═════════════════════════════════════╧═════════════════╧════════════╧═════════════════╝\n");
+        System.out.printf("╚════════════╧═════════════════════════════════════╧═════════════════╧═════════════════╧═════════════════╝\n");
         System.out.println("");
     }
 
@@ -117,10 +117,11 @@ public class Manager extends Staff {
 
     for(int j=0; j<n; j++){
         // Nhập thông tin nhân viên mới
-        System.out.print("Nhập mã cho nhân viên mới (mã có dạng:'NV + 4 chữ số'(Nhân viên) hoặc: 'QL + 4 chữ số' (quản lý)): ");
+        System.out.print("Nhập mã cho nhân viên mới (mã có dạng:'NV + 4 chữ số'(Nhân viên) hoặc: 'QL + 4 chữ số' (quản lý) hoặc 'NK + 4 chữ số'(nhân viên kho hàng)): ");
+
         String ID = sc.nextLine();
         while (ID.length() != 6 || 
-               (!ID.startsWith("NV") && !ID.startsWith("QL")) || 
+               (!ID.startsWith("NV") && !ID.startsWith("QL") && !ID.startsWith("NK")) || 
                !ID.substring(2).matches("\\d{4}")) {
             System.out.print("Bạn nhập sai định dạng mã, xin mời nhập lại: ");
             ID = sc.nextLine();
@@ -139,9 +140,11 @@ public class Manager extends Staff {
         String role;
         if(ID.startsWith("NV")){
             role = "Saler";
-        } else{
+        } else if(ID.startsWith("QL")){
             role = "Manager";
-        }
+            } else {
+                role = "Warehouseman";
+            }
         System.out.println("Vai trò của nhân viên : "+role);
 
         System.out.print("Nhập số điện thoại của nhân viên mới: ");
@@ -284,10 +287,8 @@ public void writeToFile(String fileName, Manager[] managers) {
     
         // Cập nhật lại dữ liệu vào file
         writeToFile("dsnv.txt", managers);
-    
-        // Hiển thị lại danh sách nhân viên sau khi cập nhật
-        getdetail();
-        ;
+        AccountManager a = new AccountManager();
+        a.ChangeInFo();
     }
     @Override
         // Phương thức tìm kiếm nhân viên theo các tiêu chí
@@ -317,9 +318,9 @@ public void writeToFile(String fileName, Manager[] managers) {
             // Kiểm tra nếu không có tiêu chí nào được nhập
             boolean found = false;
             
-            System.out.printf("╔════════════╤═════════════════════════════════════╤═════════════════╤════════════╤═════════════════╗\n");
-            System.out.printf("║ %-10s │ %-35s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Lương (VND)", "Vai trò", "Số điện thoại");
-            System.out.printf("╠════════════╪═════════════════════════════════════╪═════════════════╪════════════╪═════════════════╣\n");
+            System.out.printf("╔════════════╤═════════════════════════════════════╤═════════════════╤═════════════════╤═════════════════╗\n");
+            System.out.printf("║ %-10s │ %-35s │ %-15s │ %-15s │ %-15s ║\n", "Mã NV", "Họ Tên", "Lương (VND)", "Vai trò", "Số điện thoại");
+            System.out.printf("╠════════════╪═════════════════════════════════════╪═════════════════╪═════════════════╪═════════════════╣\n");
             
             // Duyệt qua mảng managers và tìm nhân viên thỏa mãn ít nhất một tiêu chí
             for (Manager manager : managers) {
@@ -349,7 +350,7 @@ public void writeToFile(String fileName, Manager[] managers) {
                 if (match) {
                     found = true;
                     // In ra thông tin nhân viên
-                    System.out.printf("║ %-10s │ %-35s │ %-15.2f │ %-10s │ %-15s ║\n",
+                    System.out.printf("║ %-10s │ %-35s │ %-15.2f │ %-15s │ %-15s ║\n",
                         manager.getStaffID(),
                         manager.getName(),
                         manager.getSalary(),
@@ -364,6 +365,6 @@ public void writeToFile(String fileName, Manager[] managers) {
             }
     
             // Đường viền cuối bảng
-            System.out.printf("╚════════════╧═════════════════════════════════════╧═════════════════╧════════════╧═════════════════╝\n");
+            System.out.printf("╚════════════╧═════════════════════════════════════╧═════════════════╧═════════════════╧═════════════════╝\n");
         }
 }
