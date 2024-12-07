@@ -28,3 +28,8 @@ Ngày Giao Dịch: 	NONE
 Tên Nhân Viên: 	Bao An
 Phuong Thuc Thanh Toan: 
 Thanh toán bằng tiền mặt với số tiền:        0.0
+Mã Hóa Đơn:	HDg5jsYeu8
+Ngày Giao Dịch: 	1/12/2024
+Tên Nhân Viên: 	QUy
+Phuong Thuc Thanh Toan: 
+Thanh toán bằng tiền mặt với số tiền:        800000.0
