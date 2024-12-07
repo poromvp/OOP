@@ -287,7 +287,7 @@ public class Store {
         System.out.print("Bạn Muốn Xem Top Bao Nhiêu Sản Phẩm Bán Chạy Nhất: ");
         int n = Integer.parseInt(scanner.nextLine());
         while(n>Order.thongkeBanChay(orderList).length || n<0){
-            System.out.println("Không hợp lệ, hãy nhập lại");
+            System.out.println("Không hợp lệ, chỉ có từ top "+(Order.thongkeBanChay(orderList).length-1)+" sản phẩm trở lại thôi, hãy nhập lại");
             n = Integer.parseInt(scanner.nextLine());
         }
         System.out.println("╔══════════════════════╦══════════════════════╗");
