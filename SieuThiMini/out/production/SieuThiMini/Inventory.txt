@@ -1,8 +1,0 @@
-SP100 VinaMilk 50
-SP101 TT1kgs 20
-SP975 Pot 50
-SP193 abc 45
-SP102 BanhMi 30
-SP389 Rubik 3
-SP103 CaPhe 2
-SP104 Esp 100
