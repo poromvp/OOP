@@ -141,7 +141,7 @@ public class Order implements QLFile {
             customer.getCustomerById(cusId).getName(),
             customer.getCustomerById(cusId).getContactNumber(),
             customer.getCustomerById(cusId).getLoyaltyPoints());
-            customer.getCustomerById(cusId).getOrder();
+            
             
         String id; //mã sp
         int sl=0,temp=0;
