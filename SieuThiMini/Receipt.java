@@ -721,7 +721,6 @@ public class Receipt implements QLFile {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
-
     public static void xemlichsugiaodich() {
         int kichthuoc = 0;
         try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
@@ -737,7 +736,7 @@ public class Receipt implements QLFile {
 
         String[] ds = new String[kichthuoc];
 
-        try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("SieuThiMini\\lichsugiaodich.txt"))) {
             String Line;
             int i = 0;
             while ((Line = br.readLine()) != null) {
