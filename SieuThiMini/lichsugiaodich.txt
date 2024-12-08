@@ -1,5 +1,4 @@
-Mã Hóa Đơn:	HDhOskiyC9
-Ngày Giao Dịch: 	07/12/2024
-Tên Nhân Viên: 	null
+Mã Hóa Đơn:	HDM7NDwfvT
+Ngày Giao Dịch: 	08/12/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 123 với số tiền:        313500.0
+Thanh toán qua thẻ: 123 với số tiền:        12375.0
