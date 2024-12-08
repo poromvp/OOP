@@ -8,7 +8,7 @@ public class ImportManager {
         ImportDetail.readFile("importDetail.txt");
     }
 
-    public void addImport(Scanner sc){
+    public void addImport(Scanner sc,String staffID){
         System.out.println("Nhap ma don hang (dang IM___)");
         String importID;
         while (true) {
@@ -19,7 +19,7 @@ public class ImportManager {
             }
             else System.out.println("Ma nhap sai hoac da bi trung ! Vui lòng nhập lại.");
         }
-        Import.addImport(sc,importID);
+        Import.addImport(sc,importID,staffID);
         System.out.println("Da tao don nhap hang thanh cong. Hay nhap vao so luong san pham can nhap hang.");
         int n = Integer.parseInt(sc.nextLine());
         for(int i=0;i<n;i++){
