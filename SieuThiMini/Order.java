@@ -5,10 +5,12 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Date;
+
 public class Order implements QLFile {
     public String orderId; // mã đơn hàng
     public String orderDate; // ngày lập đơn hàng
@@ -78,7 +80,7 @@ public class Order implements QLFile {
         double total = 0.0;
         for (Product product : product) { // vòng lặp for each duyệt từng sản phẩm có kdl là Products
             if (product != null) {
-                total += product.getPrice()*product.getQuantity();
+                total += product.getPrice() * product.getQuantity();
             }
         }
         return total;
@@ -87,27 +89,26 @@ public class Order implements QLFile {
     public static double calculateVAT(double amount) {
         return amount * VAT;
     }
-    
-    public Order getOrderbyID(String id){ //trả ra 1 bộ dữ liệu trong file (1 dòng)
-        Order[] orderList=readFromFile("donhang.txt");
+
+    public Order getOrderbyID(String id) { // trả ra 1 bộ dữ liệu trong file (1 dòng)
+        Order[] orderList = readFromFile("donhang.txt");
         int tmp = 0;
-        boolean flag=false;
+        boolean flag = false;
         for (int i = 0; i < orderList.length; i++) {
             if (orderList[i] != null && orderList[i].getOrderId().equals(id)) {
                 tmp = i;
-                flag=true;
+                flag = true;
                 break;
             }
         }
-        if(flag==false){
+        if (flag == false) {
             return null;
-        }
-        else{
+        } else {
             return orderList[tmp];
         }
     }
 
-    public String generateRandomString(int length, String charSet) { //hàm tạo chuỗi ngẫu nhiên từ chat GPT
+    public String generateRandomString(int length, String charSet) { // hàm tạo chuỗi ngẫu nhiên từ chat GPT
         Random random = new Random();
         StringBuilder randomString = new StringBuilder(length);
 
@@ -122,74 +123,78 @@ public class Order implements QLFile {
     public void nhapdonhang(Scanner scanner, Product[] product, Order[] orderList) {
         String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int length = 7;
-        setOrderId("ORD"+generateRandomString(length, charSet)); //Tạo mã đơn hàng ngẫu nhiên, không cần nhập
-        
-        //ngay lap don hang
-        Date date = new Date(); //khởi tạo ngày lập đơn hàng là ngày hiện tại
+        setOrderId("ORD" + generateRandomString(length, charSet)); // Tạo mã đơn hàng ngẫu nhiên, không cần nhập
+
+        // ngay lap don hang
+        Date date = new Date(); // khởi tạo ngày lập đơn hàng là ngày hiện tại
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = formatter.format(date);
         setOrderDate(formattedDate);
-        
+
         System.out.print("Nhập Mã Khách Hàng: ");
-        int cusId=Integer.parseInt(scanner.nextLine());
-        while(customer.getCustomerById(cusId)==null){
+        int cusId = Integer.parseInt(scanner.nextLine());
+        while (customer.getCustomerById(cusId) == null) {
             System.out.println("Mã khách hàng này không tồn tại, hãy nhập lại!");
-            cusId=Integer.parseInt(scanner.nextLine());
+            cusId = Integer.parseInt(scanner.nextLine());
         }
-        customer=new Customer(
-            customer.getCustomerById(cusId).getCustomerID(),
-            customer.getCustomerById(cusId).getName(),
-            customer.getCustomerById(cusId).getContactNumber(),
-            customer.getCustomerById(cusId).getLoyaltyPoints());
-            
-        String id; //mã sp
-        int sl=0;
-        for (int I=0;I<product.length;I++) {
+        customer = new Customer(
+                customer.getCustomerById(cusId).getCustomerID(),
+                customer.getCustomerById(cusId).getName(),
+                customer.getCustomerById(cusId).getContactNumber(),
+                customer.getCustomerById(cusId).getLoyaltyPoints());
+
+        String id; // mã sp
+        int sl = 0;
+        for (int I = 0; I < product.length; I++) {
             System.out.println();
-            System.out.print("Nhập Mã Sản Phẩm Thứ " + (I+1) + ": ");
+            System.out.print("Nhập Mã Sản Phẩm Thứ " + (I + 1) + ": ");
             id = scanner.nextLine();
             if (!Product.checkIDProduct(id)) {
-                System.out.printf("%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n"," ");
-                    I--;
-                    continue;
+                System.out.printf("%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n", " ");
+                I--;
+                continue;
             }
 
-            if(Product.getProductById(id).getQuantity()==0){
+            if (Product.getProductById(id).getQuantity() == 0) {
                 System.out.println("Sản phẩm này đã hết hàng, hãy nhập lại mã sản phẩm khác");
                 I--;
                 continue;
             }
 
-            //không dùng product[I]=Produc.getbyID(id) bởi vì nó sẽ tham chiếu đến địa chỉ này, 
-            //nó sẽ làm thay đổi lun cái mảng của ngta chứ kp cái mảng sp riêng trong đơn hàng này,
-            //chứ nó không sao chép, nên là khởi tạo lại như thế này mới đúng
-            if (checkx2IDpro(id, product, I)){ //Nếu không trùng thì sẽ tạo mới, còn không thì ko tạo
-                product[I]=new Product(Product.getProductById(id).getProductID(),
-                Product.getProductById(id).getName(),
-                Product.getProductById(id).getPrice(),
-                Product.getProductById(id).getQuantity(),
-                Product.getProductById(id).getCategoryId(),
-                Product.getProductById(id).getSupplierId());    
+            // không dùng product[I]=Produc.getbyID(id) bởi vì nó sẽ tham chiếu đến địa chỉ
+            // này,
+            // nó sẽ làm thay đổi lun cái mảng của ngta chứ kp cái mảng sp riêng trong đơn
+            // hàng này,
+            // chứ nó không sao chép, nên là khởi tạo lại như thế này mới đúng
+            if (checkx2IDpro(id, product, I)) { // Nếu không trùng thì sẽ tạo mới, còn không thì ko tạo
+                product[I] = new Product(Product.getProductById(id).getProductID(),
+                        Product.getProductById(id).getName(),
+                        Product.getProductById(id).getPrice(),
+                        Product.getProductById(id).getQuantity(),
+                        Product.getProductById(id).getCategoryId(),
+                        Product.getProductById(id).getSupplierId());
             }
-            
+
             System.out.print("Nhập Số Lượng Mua: ");
-            sl=Integer.parseInt(scanner.nextLine());
-            while(sl>Product.getProductById(id).getQuantity() || sl<0){
-                if(sl<0){
+            sl = Integer.parseInt(scanner.nextLine());
+            while (sl > Product.getProductById(id).getQuantity() || sl < 0) {
+                if (sl < 0) {
                     System.out.println("Số lượng bạn nhập không được < 0, hãy nhập lại");
                 }
-                if(sl>Product.getProductById(id).getQuantity()){
-                    System.out.println("Số lượng "+sl+" vượt quá "+product[I].getQuantity()+" trong kho, hãy nhập lại: ");
+                if (sl > Product.getProductById(id).getQuantity()) {
+                    System.out.println(
+                            "Số lượng " + sl + " vượt quá " + product[I].getQuantity() + " trong kho, hãy nhập lại: ");
                 }
-                sl=Integer.parseInt(scanner.nextLine());
+                sl = Integer.parseInt(scanner.nextLine());
             }
-            Product.getProductById(id).setQuantity(Product.getProductById(id).getQuantity()-sl);
+            Product.getProductById(id).setQuantity(Product.getProductById(id).getQuantity() - sl);
             Product.writeProductsToFile("product.txt");
             if (!checkx2IDpro(id, product, I)) {
-                System.out.println("Mã sản phẩm mà bạn nhập đã có trước đó rồi, tiến hành cộng dồn số lượng mua vào....");
+                System.out
+                        .println("Mã sản phẩm mà bạn nhập đã có trước đó rồi, tiến hành cộng dồn số lượng mua vào....");
                 I--;
-                System.out.println("Hiện tại đang có : "+(product[I].getQuantity()+sl));
-                product[I].setQuantity(product[I].getQuantity()+sl);
+                System.out.println("Hiện tại đang có : " + (product[I].getQuantity() + sl));
+                product[I].setQuantity(product[I].getQuantity() + sl);
                 continue;
             }
             product[I].setQuantity(sl);
@@ -298,7 +303,9 @@ public class Order implements QLFile {
                     System.out.printf("%40sNhập Mã Sản Phẩm MỚI\n", " ");
                     System.out.printf("%40s→ ", " ");
                     id = scanner.nextLine();
-                    while (!Product.checkIDProduct(id) || !checkx2IDpro(id, product, product.length) || Product.getProductById(id).getQuantity()==0 || Product.getProductById(id).getCategoryId().equals("SLOOO")) {
+                    while (!Product.checkIDProduct(id) || !checkx2IDpro(id, product, product.length)
+                            || Product.getProductById(id).getQuantity() == 0
+                            || Product.getProductById(id).getCategoryId().equals("SLOOO")) {
                         if (id.equals(product[index - 1].getProductID())) {
                             break;
                         }
@@ -308,23 +315,32 @@ public class Order implements QLFile {
                                     " ");
                             System.out.printf("%30s→ ", " ");
                         }
-                        if (!checkx2IDpro(id, product, product.length)) { //dò tất cả sp trong đơn hàng xem có trùng mã kh
+                        if (!checkx2IDpro(id, product, product.length)) { // dò tất cả sp trong đơn hàng xem có trùng mã
+                                                                          // kh
                             System.out.printf("%30sĐã Có Mã Sản Phẩm Này Trước Đó Rồi, Hãy Nhập Lại\n", " ");
                             System.out.printf("%30s→ ", " ");
                         }
-                        if(Product.getProductById(id).getQuantity()==0 && !Product.getProductById(id).getCategoryId().equals("SLOOO")){
-                            System.out.printf("%30Mã sản phẩm này hiện tại không có (số lượng = 0), hãy nhập lại\n", " ");
+                        if (Product.getProductById(id).getQuantity() == 0
+                                && !Product.getProductById(id).getCategoryId().equals("SLOOO")) {
+                            System.out.printf("%30Mã sản phẩm này hiện tại không có (số lượng = 0), hãy nhập lại\n",
+                                    " ");
                             System.out.printf("%30s→ ", " ");
-                            //Nếu sản phẩm này hết hàng, (phải bỏ qua trường hợp là dòng đầu trong file, nếu thế thì nó sẽ xuất tiếp dòng dưới)
+                            // Nếu sản phẩm này hết hàng, (phải bỏ qua trường hợp là dòng đầu trong file,
+                            // nếu thế thì nó sẽ xuất tiếp dòng dưới)
                         }
-                        if(Product.getProductById(id).getCategoryId().equals("SLOOO")){ //nếu là dòng mặc định trong file product của Bảo thì bắt nhập lại
+                        if (Product.getProductById(id).getCategoryId().equals("SLOOO")) { // nếu là dòng mặc định trong
+                                                                                          // file product của Bảo thì
+                                                                                          // bắt nhập lại
                             System.out.printf("%30Sản phẩm này hiện không tồn tại trong kho, hãy nhập lại\n", " ");
                             System.out.printf("%30s→ ", " ");
                         }
                         id = scanner.nextLine();
                     }
 
-                    Product.getProductById(product[index-1].getProductID()).setQuantity(Product.getProductById(product[index-1].getProductID()).getQuantity()+product[index-1].getQuantity());//Đổi sản phẩm thì phải trả lại, mà trả lại thì là tăng số lượng lại vào trong kho
+                    Product.getProductById(product[index - 1].getProductID())
+                            .setQuantity(Product.getProductById(product[index - 1].getProductID()).getQuantity()
+                                    + product[index - 1].getQuantity());// Đổi sản phẩm thì phải trả lại, mà trả lại thì
+                                                                        // là tăng số lượng lại vào trong kho
 
                     product[index - 1].setProductID(id);
                     product[index - 1].setName(Product.getProductById(id).getName());
@@ -335,34 +351,34 @@ public class Order implements QLFile {
                     System.out.printf("%40sĐã Chỉnh Sửa Mã Sản Phẩm Thành Công, Hãy Nhập Lại Số Lượng Mua Mới\n", " ");
                     System.out.printf("%40s→ ", " ");
                     int sl = Integer.parseInt(scanner.nextLine());
-                    while(sl<0 || sl>Product.getProductById(id).getQuantity()){
-                        if(sl<0){
+                    while (sl < 0 || sl > Product.getProductById(id).getQuantity()) {
+                        if (sl < 0) {
                             System.out.printf("%30sKhông hợp lệ, hãy nhập lại\n", " ");
                             System.out.printf("%30s→ ", " ");
                         }
-                        if(sl>Product.getProductById(id).getQuantity()){
-                            System.out.printf("%30Số lượng lớn hơn trong kho (%d), hãy nhập lại\n", " ",Product.getProductById(id).getQuantity());
+                        if (sl > Product.getProductById(id).getQuantity()) {
+                            System.out.printf("%30Số lượng lớn hơn trong kho (%d), hãy nhập lại\n", " ",
+                                    Product.getProductById(id).getQuantity());
                             System.out.printf("%30s→ ", " ");
                         }
                         sl = Integer.parseInt(scanner.nextLine());
                     }
-                    //Giảm số lượng trong kho lại sau khi nhập
-                    Product.getProductById(id).setQuantity(Product.getProductById(id).getQuantity()-sl);
-                    Product.writeProductsToFile("product.txt"); //cập nhật, ghi lại vào file
-                    product[index - 1].setQuantity(sl); //set số lượng mua mới
+                    // Giảm số lượng trong kho lại sau khi nhập
+                    Product.getProductById(id).setQuantity(Product.getProductById(id).getQuantity() - sl);
+                    Product.writeProductsToFile("product.txt"); // cập nhật, ghi lại vào file
+                    product[index - 1].setQuantity(sl); // set số lượng mua mới
                     break;
                 case 3:
                     System.out.printf("%40sNhập Mã Khách Hàng MỚI\n", " ");
                     System.out.printf("%40s→ ", " ");
-                    int cusId=Integer.parseInt(scanner.nextLine());
-                    if(customer.getCustomerById(cusId)==null){
+                    int cusId = Integer.parseInt(scanner.nextLine());
+                    if (customer.getCustomerById(cusId) == null) {
                         customer.setCustomerID(0);
                         customer.setLoyaltyPoints(0);
                         customer.setName("NONE");
                         customer.setContactNumber("NONE");
-                    }
-                    else{
-                        customer=customer.getCustomerById(cusId);
+                    } else {
+                        customer = customer.getCustomerById(cusId);
                     }
                     break;
                 case 0:
@@ -456,8 +472,10 @@ public class Order implements QLFile {
                     "%20s╠═════════════════╬══════════════════════╬═════════════════════╬══════════════════╬═══════════════╬═════════════════╣\n",
                     " ");
             System.out.printf("%20s║ %d. %-13s║ %-21s║ %-20s║ %-17s║ %-14s║ %-16s║\n",
-                    " ", (i + 1), product[i].getProductID(), product[i].getName(), Category.getCategoryById(product[i].getCategoryId()).getCategoryName(),
-                    product[i].getPrice(), product[i].getQuantity(), Supplier.getSupplierById(product[i].getSupplierId()).getSupplierName());
+                    " ", (i + 1), product[i].getProductID(), product[i].getName(),
+                    Category.getCategoryById(product[i].getCategoryId()).getCategoryName(),
+                    product[i].getPrice(), product[i].getQuantity(),
+                    Supplier.getSupplierById(product[i].getSupplierId()).getSupplierName());
         }
         System.out.printf(
                 "%20s╚═════════════════╩══════════════════════╩═════════════════════╩══════════════════╩═══════════════╩═════════════════╝\n\n",
@@ -547,13 +565,23 @@ public class Order implements QLFile {
         if (suppli.isEmpty())
             suppli = null;
 
+        System.out.print("Từ ngày (dd/mm/yyyy): "); // **Thêm mới**
+        String startDate = scanner.nextLine();
+        if (startDate.isEmpty())
+            startDate = null;
+
+        System.out.print("Đến ngày (dd/mm/yyyy): "); // **Thêm mới**
+        String endDate = scanner.nextLine();
+        if (endDate.isEmpty())
+            endDate = null;
+
         Order[] filteredOrders = new Order[orderList.length]; // Tạo mảng với kích thước tối đa là độ dài của mảng
                                                               // orders
         int count = 0; // Biến đếm số đơn hàng thỏa mãn điều kiện
 
         for (Order order : orderList) {
             if (isOrderMatch(order, orderID, orderDate, productID, productName, price, productCatelo, productQuanti,
-                    suppli, order.product, cusID, cusName, phone, point)) {
+                    suppli, order.product, cusID, cusName, phone, point, startDate, endDate)) {
                 filteredOrders[count++] = order; // Thêm đơn hàng vào mảng
             }
         }
@@ -572,7 +600,7 @@ public class Order implements QLFile {
 
     public static boolean isOrderMatch(Order order, String orderID, String orderDate, String productID,
             String productName, int price, String productCatelo, int productQuanti, String suppli, Product[] product,
-            int cusID, String cusName, String phone, int point) {
+            int cusID, String cusName, String phone, int point, String startDate, String endDate) {
         // Kiểm tra nếu người dùng KO bỏ qua tiêu chí (!=null, !=0) thì kiểm tra tiếp
         // nếu KO trùng khớp (!equal(false)) thì nó sẽ trả về giá trị false để hàm if ở
         // trên kia kiểm trả và vì hàm if trên đó chỉ kiểm tra true nên sẽ không thêm
@@ -589,6 +617,29 @@ public class Order implements QLFile {
             return false;//
         if (point != 0 && order.customer.getLoyaltyPoints() != point)
             return false;
+        if (startDate != null || endDate != null) { // **Thêm mới**
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date orderDateObj = sdf.parse(order.getOrderDate());
+
+                if (startDate != null) {
+                    Date start = sdf.parse(startDate);
+                    if (orderDateObj.before(start)) { // Nếu ngày đặt hàng trước ngày bắt đầu
+                        return false;
+                    }
+                }
+
+                if (endDate != null) {
+                    Date end = sdf.parse(endDate);
+                    if (orderDateObj.after(end)) { // Nếu ngày đặt hàng sau ngày kết thúc
+                        return false;
+                    }
+                }
+            } catch (ParseException e) {
+                System.out.println("Lỗi định dạng ngày tháng: " + e.getMessage());
+                return false;
+            }
+        }
 
         boolean san_pham_thu_may = false;
         for (int i = 0; i < product.length; i++) {
@@ -623,7 +674,7 @@ public class Order implements QLFile {
             String[] ngaythangnam = or.getOrderDate().split("/"); // Định dạng ngày là "dd/mm/yyyy"
             int month = Integer.parseInt(ngaythangnam[1]); // Lấy tháng từ chuỗi ngày
             int year = Integer.parseInt(ngaythangnam[2]); // Lấy năm
-            
+
             if (year == n) { // Kiểm tra xem đơn hàng có thuộc năm cần thống kê không
                 int QUY = (month - 1) / 3; // Xác định quý (0: Q1, 1: Q2, 2: Q3, 3: Q4)
                 if (QUY >= 0 && QUY < 4) {
@@ -649,8 +700,9 @@ public class Order implements QLFile {
                     }
                 }
                 if (!ton_tai) {
-                    mangSP[index] = new Product(pr.getProductID(), pr.getName(), pr.getPrice(),pr.getQuantity(), pr.getCategoryId(),
-                             pr.getSupplierId());
+                    mangSP[index] = new Product(pr.getProductID(), pr.getName(), pr.getPrice(), pr.getQuantity(),
+                            pr.getCategoryId(),
+                            pr.getSupplierId());
                     index++;
                 }
             }
@@ -735,15 +787,16 @@ public class Order implements QLFile {
          * System.out.printf("%d %d\n",a[j],vitri[j]);
          * }
          */// In ra danh sách hóa đơn với khung viền══════════════════════════════════
-         System.out.printf("%20s╔═════════════════╦══════════════════╗\n", "");
-         System.out.printf("%20s║ %-15s ║ %-16s ║\n", "", "Mã Đơn Hàng", "Ngày Lập Đơn");
-         System.out.printf("%20s╠═════════════════╬══════════════════╣\n", "");
-     
-         for (int j = 0; j < orderList.length; j++) {
-             System.out.printf("%20s║ %-15s ║ %-16s ║\n", "", orderList[vitri[j]].getOrderId(), orderList[vitri[j]].getOrderDate());
-         }
-     
-         System.out.printf("%20s╚═════════════════╩══════════════════╝\n", "");
+        System.out.printf("%20s╔═════════════════╦══════════════════╗\n", "");
+        System.out.printf("%20s║ %-15s ║ %-16s ║\n", "", "Mã Đơn Hàng", "Ngày Lập Đơn");
+        System.out.printf("%20s╠═════════════════╬══════════════════╣\n", "");
+
+        for (int j = 0; j < orderList.length; j++) {
+            System.out.printf("%20s║ %-15s ║ %-16s ║\n", "", orderList[vitri[j]].getOrderId(),
+                    orderList[vitri[j]].getOrderDate());
+        }
+
+        System.out.printf("%20s╚═════════════════╩══════════════════╝\n", "");
     }
 
     @Override
@@ -778,23 +831,22 @@ public class Order implements QLFile {
                 String[] parts = Line.split(";");
                 orderList[i].setOrderId(parts[0]);
                 orderList[i].setOrderDate(parts[1]);
-                orderList[i].customer=new Customer(
-                    customer.getCustomerById(Integer.parseInt(parts[2])).getCustomerID(),
-                    customer.getCustomerById(Integer.parseInt(parts[2])).getName(),
-                    customer.getCustomerById(Integer.parseInt(parts[2])).getContactNumber(),
-                    customer.getCustomerById(Integer.parseInt(parts[2])).getLoyaltyPoints());
+                orderList[i].customer = new Customer(
+                        customer.getCustomerById(Integer.parseInt(parts[2])).getCustomerID(),
+                        customer.getCustomerById(Integer.parseInt(parts[2])).getName(),
+                        customer.getCustomerById(Integer.parseInt(parts[2])).getContactNumber(),
+                        customer.getCustomerById(Integer.parseInt(parts[2])).getLoyaltyPoints());
                 String[] productParts = parts[3].split("\\|"); // tách các sản phẩm cùng thông tin của nó ra
                 orderList[i].product = new Product[productParts.length];
                 for (int j = 0; j < productParts.length; j++) {
                     String[] ThongTinProduct = productParts[j].split(",");// tác các phần của sản phẩm như id, tên,...
                     orderList[i].product[j] = new Product(
-                    Product.getProductById(ThongTinProduct[0]).getProductID(),
-                    Product.getProductById(ThongTinProduct[0]).getName(),
-                    Product.getProductById(ThongTinProduct[0]).getPrice(),
-                    Product.getProductById(ThongTinProduct[0]).getQuantity(),
-                    Product.getProductById(ThongTinProduct[0]).getCategoryId(),
-                    Product.getProductById(ThongTinProduct[0]).getSupplierId()
-                    );
+                            Product.getProductById(ThongTinProduct[0]).getProductID(),
+                            Product.getProductById(ThongTinProduct[0]).getName(),
+                            Product.getProductById(ThongTinProduct[0]).getPrice(),
+                            Product.getProductById(ThongTinProduct[0]).getQuantity(),
+                            Product.getProductById(ThongTinProduct[0]).getCategoryId(),
+                            Product.getProductById(ThongTinProduct[0]).getSupplierId());
                     orderList[i].product[j].setQuantity(Integer.parseInt(ThongTinProduct[1]));
                 }
                 i++;
@@ -807,7 +859,7 @@ public class Order implements QLFile {
         return orderList;
     }
 
-    public void xoaNoiDungFile(String filePath) { //xóa để khi chạy ghi thì nó sẽ không bị nhân bản các dữ liệu lên
+    public void xoaNoiDungFile(String filePath) { // xóa để khi chạy ghi thì nó sẽ không bị nhân bản các dữ liệu lên
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             // Mở file ở chế độ ghi đè nhưng không ghi gì cả
             writer.close();
@@ -822,7 +874,7 @@ public class Order implements QLFile {
             int i = 0;
             writer.write(orderId + ";"
                     + orderDate
-                    + ";" + customer.getCustomerID()+ ";");
+                    + ";" + customer.getCustomerID() + ";");
             for (Product pr : this.product) {
                 writer.write(pr.getProductID()
                         + "," + pr.getQuantity());
@@ -831,13 +883,13 @@ public class Order implements QLFile {
                 }
                 i++;
             }
-                writer.newLine();
+            writer.newLine();
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
 
-    public static Order[] capnhatlaiOrders (Order[] orderList, String id){
+    public static Order[] capnhatlaiOrders(Order[] orderList, String id) {
         int pos = 0; // Vị trí của đơn hàng trong danh sách
         for (int i = 0; i < orderList.length; i++) {
             if (orderList[i].getOrderId().equals(id)) {
@@ -852,101 +904,108 @@ public class Order implements QLFile {
                 orderList[i] = orderList[i + 1];
             }
             orderList = Arrays.copyOf(orderList, orderList.length - 1);
-            System.out.println("Đã xóa đơn hàng vi tri "+(pos+1));
+            System.out.println("Đã xóa đơn hàng vi tri " + (pos + 1));
         }
         return orderList;
     }
 
     public static Order[] themgiaodich(Scanner scanner, Order[] orderList) { // thêm đơn hàng
-        /*System.out.print("Bạn muốn thêm bao nhiêu giao dịch ?: ");
-        int n = Integer.parseInt(scanner.nextLine());
-        while(n<0){
-            System.out.println("Không hợp lệ, hãy nhập lại");
-            n=Integer.parseInt(scanner.nextLine());
-        }*/
+        /*
+         * System.out.print("Bạn muốn thêm bao nhiêu giao dịch ?: ");
+         * int n = Integer.parseInt(scanner.nextLine());
+         * while(n<0){
+         * System.out.println("Không hợp lệ, hãy nhập lại");
+         * n=Integer.parseInt(scanner.nextLine());
+         * }
+         */
         orderList = Arrays.copyOf(orderList, orderList.length + 1);
         String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int length = 7;
         int i = orderList.length - 1;
         orderList[i] = new Order();
-        orderList[i].setOrderId("ORD"+orderList[i].generateRandomString(length, charSet));
+        orderList[i].setOrderId("ORD" + orderList[i].generateRandomString(length, charSet));
 
-        //ngay lap don hang
+        // ngay lap don hang
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = formatter.format(date);
         orderList[i].setOrderDate(formattedDate);
 
         System.out.print("Nhập Mã Khách Hàng: ");
-        int cusId=Integer.parseInt(scanner.nextLine());
-        while(orderList[i].customer.getCustomerById(cusId)==null){
+        int cusId = Integer.parseInt(scanner.nextLine());
+        while (orderList[i].customer.getCustomerById(cusId) == null) {
             System.out.println("Mã khách hàng này không tồn tại, hãy nhập lại!");
-            cusId=Integer.parseInt(scanner.nextLine());
+            cusId = Integer.parseInt(scanner.nextLine());
         }
-        orderList[i].customer=new Customer(
-            orderList[i].customer.getCustomerById(cusId).getCustomerID(),
-            orderList[i].customer.getCustomerById(cusId).getName(),
-            orderList[i].customer.getCustomerById(cusId).getContactNumber(),
-            orderList[i].customer.getCustomerById(cusId).getLoyaltyPoints());
+        orderList[i].customer = new Customer(
+                orderList[i].customer.getCustomerById(cusId).getCustomerID(),
+                orderList[i].customer.getCustomerById(cusId).getName(),
+                orderList[i].customer.getCustomerById(cusId).getContactNumber(),
+                orderList[i].customer.getCustomerById(cusId).getLoyaltyPoints());
 
         System.out.print(" Bao nhiêu sản phẩm ?: "); // bởi vì 1 đơn hàng có nhiều sản phẩm
-        int n=Integer.parseInt(scanner.nextLine());
-        while(n<0){
+        int n = Integer.parseInt(scanner.nextLine());
+        while (n < 0) {
             System.out.println("Không hợp lệ, hãy nhập lại");
-            n=Integer.parseInt(scanner.nextLine());
+            n = Integer.parseInt(scanner.nextLine());
         }
         orderList[i].product = new Product[n];
-            
+
         for (int j = 0; j < orderList[i].product.length; j++) {
-            System.out.println("Nhập Mã Sản Phẩm Thứ "+(j+1));
-            String id=scanner.nextLine();
+            System.out.println("Nhập Mã Sản Phẩm Thứ " + (j + 1));
+            String id = scanner.nextLine();
             if (!Product.checkIDProduct(id)) {
-                System.out.printf("%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n"," ");
+                System.out.printf("%30sMã Sản Phẩm Phải Bắt Đầu Từ SP... Và Có Độ Dài Là 5 Ký Tự, Hãy Nhập Lại\n", " ");
                 j--;
                 continue;
             }
 
-            if(Product.getProductById(id).getQuantity()==0){
+            if (Product.getProductById(id).getQuantity() == 0) {
                 System.out.println("Sản phẩm này đã hết hàng, vui vòng nhập mã SP khác");
                 j--;
                 continue;
             }
 
-            //không dùng product[I]=Produc.getbyID(id) bởi vì nó sẽ tham chiếu đến địa chỉ này, 
-            //nó sẽ làm thay đổi lun cái mảng của ngta chứ kp cái mảng sp riêng trong đơn hàng này,
-            //chứ nó không sao chép, nên là khởi tạo lại như thế này mới đúng
+            // không dùng product[I]=Produc.getbyID(id) bởi vì nó sẽ tham chiếu đến địa chỉ
+            // này,
+            // nó sẽ làm thay đổi lun cái mảng của ngta chứ kp cái mảng sp riêng trong đơn
+            // hàng này,
+            // chứ nó không sao chép, nên là khởi tạo lại như thế này mới đúng
 
             if (orderList[i].checkx2IDpro(id, orderList[i].product, j)) {
-                orderList[i].product[j]=new Product(Product.getProductById(id).getProductID(),
-                Product.getProductById(id).getName(),
-                    Product.getProductById(id).getPrice(),
-                    Product.getProductById(id).getQuantity(),
-                    Product.getProductById(id).getCategoryId(),
-                    Product.getProductById(id).getSupplierId());
+                orderList[i].product[j] = new Product(Product.getProductById(id).getProductID(),
+                        Product.getProductById(id).getName(),
+                        Product.getProductById(id).getPrice(),
+                        Product.getProductById(id).getQuantity(),
+                        Product.getProductById(id).getCategoryId(),
+                        Product.getProductById(id).getSupplierId());
             }
 
             System.out.print("Nhập Số Lượng Mua: ");
-            int sl=Integer.parseInt(scanner.nextLine());
-            while(sl>Product.getProductById(id).getQuantity() || sl<0){
-                if(sl<0){
+            int sl = Integer.parseInt(scanner.nextLine());
+            while (sl > Product.getProductById(id).getQuantity() || sl < 0) {
+                if (sl < 0) {
                     System.out.println("Số lượng bạn nhập không được < 0, hãy nhập lại");
                 }
-                if(sl>Product.getProductById(id).getQuantity()){
-                    System.out.println("Số lượng "+sl+" vượt quá "+orderList[i].product[j].getQuantity()+" trong kho, hãy nhập lại: ");
+                if (sl > Product.getProductById(id).getQuantity()) {
+                    System.out.println("Số lượng " + sl + " vượt quá " + orderList[i].product[j].getQuantity()
+                            + " trong kho, hãy nhập lại: ");
                 }
-                sl=Integer.parseInt(scanner.nextLine());
+                sl = Integer.parseInt(scanner.nextLine());
             }
-            
-            Product.getProductById(id).setQuantity(Product.getProductById(id).getQuantity()-sl); //cập nhật lại số lượng trong kho
+
+            Product.getProductById(id).setQuantity(Product.getProductById(id).getQuantity() - sl); // cập nhật lại số
+                                                                                                   // lượng trong kho
             Product.writeProductsToFile("product.txt");
-            if (!orderList[i].checkx2IDpro(id, orderList[i].product, j)){
-                System.out.println("Mã sản phẩm mà bạn nhập đã có trước đó rồi, tiến hành cộng dồn số lượng mua vào....");
+            if (!orderList[i].checkx2IDpro(id, orderList[i].product, j)) {
+                System.out
+                        .println("Mã sản phẩm mà bạn nhập đã có trước đó rồi, tiến hành cộng dồn số lượng mua vào....");
                 j--;
-                System.out.println("Hiện tại đang có : "+(orderList[i].product[j].getQuantity()+sl));
-                orderList[i].product[j].setQuantity(orderList[i].product[j].getQuantity()+sl);
+                System.out.println("Hiện tại đang có : " + (orderList[i].product[j].getQuantity() + sl));
+                orderList[i].product[j].setQuantity(orderList[i].product[j].getQuantity() + sl);
                 continue;
             }
-            orderList[i].product[j].setQuantity(sl); //set số lượng mua
+            orderList[i].product[j].setQuantity(sl); // set số lượng mua
         }
         return orderList;
     }
