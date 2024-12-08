@@ -9,10 +9,8 @@ public class Store {
     public Discount[] discounts; // danh sách chương trình khuyến mãi
     public Receipt[] receipts;
     public Manager managers;
-    public Department departments;
+    public AccountManager accounts;
     public Cashier cashiers;
-    public InventoryManager IvenProduct;
-    public InventoryManager OrderProduct;
 
     public Store() {
         readFileProduct();
@@ -29,13 +27,11 @@ public class Store {
         receipts =rc.readFromFile("hoadon.txt");
 
         managers = new Manager();
-        departments = new Department();
         cashiers = new Cashier();
-        IvenProduct = new InventoryManager();
-        OrderProduct = new InventoryManager();
+        cashiers.readFromFile("CashierList.txt");
         managers.readFromFile("dsnv.txt");
-        departments = new Department();
-        departments.readFromFile("DepartmentList.txt");
+        accounts = new AccountManager();
+        accounts.readFromFile("DepartmentList.txt");
 
     }
     public Order[] getOrderlist(){
@@ -78,24 +74,24 @@ public class Store {
         managers.search();
     }
 
-    public void XuatPBan() {
-        departments.getdetail();
+    public void XuatTK() {
+        accounts.getdetail();
     }
 
-    public void ThemQLPB() {
-        departments.add();
+    public void ThemTK() {
+        accounts.add();
     }
 
-    public void XoaPB() {
-        departments.remove();
+    public void XoaTK() {
+        accounts.remove();
     }
 
-    public void SuaPB() {
-        departments.ChangeInFo();
+    public void SuaTK() {
+        accounts.ChangeInFo();
     }
 
-    public void TimPB() {
-        departments.search();
+    public void TimTK() {
+        accounts.search();
     }
 
     public void xuatThuNgan() {
@@ -118,45 +114,7 @@ public class Store {
         cashiers.ChangeInFo();
     }
 
-    public void xuatKho() {
-        IvenProduct.getdetail();
-    }
-
-    public void themKho() {
-        IvenProduct.add();
-    }
-
-    public void xoaKho() {
-        IvenProduct.remove();
-    }
-
-    public void suaKho() {
-        IvenProduct.ChangeInFo();
-    }
-
-    public void timKho() {
-        IvenProduct.search();
-    }
-
-    public void xuatNhapKho() {
-        OrderProduct.getdetailOrder();
-    }
-
-    public void themNhapKho() {
-        OrderProduct.addOrder();
-    }
-
-    public void xoaNhapKho() {
-        OrderProduct.removeOrder();
-    }
-
-    public void suaNhapKho() {
-        OrderProduct.ChangeInFoOrder();
-    }
-
-    public void timNhapKho() {
-        OrderProduct.searchOrder();
-    }
+    
     /* thao tác nhân viên end */
 
 
@@ -641,4 +599,26 @@ public class Store {
         }
     }
     /* các thao tác cho hóa đơn END */
+
+    /* cac thao tac cho Import START*/
+    ImportManager a= new ImportManager();
+    public void addImport(Scanner scanner){
+        a.addImport(scanner);
+    }
+    public  void outImport(Scanner scanner){
+        a.outAllImport();
+    }
+    public void findImport(Scanner scanner){
+        a.findByImportId(scanner);
+    }
+    public void removeImport(Scanner scanner){
+        a.removeImport(scanner);
+    }
+    //Ghi file
+    public void writeFileImport(){
+        Import.writeFile("import.txt");
+    }
+    public  void writeFileImportDetai(){
+        ImportDetail.writeFile("importDetail.txt");
+    }
 }
