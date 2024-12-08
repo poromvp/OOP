@@ -11,8 +11,8 @@ public class Store {
     public Manager managers;
     public AccountManager departments;
     public Cashier cashiers;
-    public InventoryManager IvenProduct;
-    public InventoryManager OrderProduct;
+//    public InventoryManager IvenProduct;
+//    public InventoryManager OrderProduct;
 
     public Store() {
         readFileProduct();
@@ -31,8 +31,8 @@ public class Store {
         managers = new Manager();
         departments = new AccountManager();
         cashiers = new Cashier();
-        IvenProduct = new InventoryManager();
-        OrderProduct = new InventoryManager();
+//        IvenProduct = new InventoryManager();
+//        OrderProduct = new InventoryManager();
         managers.readFromFile("dsnv.txt");
         departments = new AccountManager();
         departments.readFromFile("DepartmentList.txt");
@@ -587,6 +587,12 @@ public class Store {
     }
     public void removeImport(Scanner scanner){
         a.removeImport(scanner);
+    }
+    public void statisticImportByTotal(Scanner scanner){
+        ImportManager.statisticImportByTotal(scanner);
+    }
+    public void statisticImportByQuantity(Scanner scanner){
+        ImportManager.statisticImportByQuantity(scanner);
     }
     //Ghi file
     public void writeFileImport(){
