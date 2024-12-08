@@ -933,6 +933,12 @@ public class Order implements QLFile {
 
         System.out.print("Nhập Mã Khách Hàng: ");
         int cusId = Integer.parseInt(scanner.nextLine());
+        if(orderList[i].customer.getCustomerById(cusId) == null){
+            System.out.println("Mã khách hàng này không tồn tại....");
+            
+            System.out.println("Tạo khách hàng mới thành công!");
+
+        }
         while (orderList[i].customer.getCustomerById(cusId) == null) {
             System.out.println("Mã khách hàng này không tồn tại, hãy nhập lại!");
             cusId = Integer.parseInt(scanner.nextLine());

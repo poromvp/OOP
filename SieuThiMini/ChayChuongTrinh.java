@@ -390,53 +390,6 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
-    private static void manageOrders(Scanner scanner, Store store) {
-        int choice;
-        do {
-            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ ĐƠN HÀNG");
-            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm mới 1 phần tử, k phần tử");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách ĐƠN HÀNG");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Sửa ĐƠN HÀNG (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xóa ĐƠN HÀNG (theo mã)");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Sắp xếp ĐƠN HÀNG mới nhất");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm ĐƠN HÀNG");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
-            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
-            System.out.print("Lựa chọn của bạn: ");
-            choice = Integer.parseInt(scanner.nextLine());
-
-            switch (choice) {
-                case 1:
-                    store.addOrder(scanner);
-                    break;
-                case 2:
-                    store.xuatOrder();
-                    break;
-                case 3:
-                    //store.xuatOrder();
-                    store.editOrder(scanner);
-                    break;
-                case 4:
-                    store.removeOrder(scanner);
-                    break;
-                case 5:
-                    store.sapxepdonhang();
-                    break;
-                case 6:
-                    store.timkiem(scanner);
-                    break;
-                case 0:
-                    System.out.println("Đã thoát");
-                    break;
-                default:
-                    System.out.println("Lựa chọn không hợp lệ.");
-                    break;
-            }
-        } while (choice != 0);
-    }
-
     private static void manageStaffs(Scanner scanner, Store store) {
         int choice;
         int subchoice;
@@ -565,6 +518,53 @@ public class ChayChuongTrinh {
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lệ.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void manageOrders(Scanner scanner, Store store) {
+        int choice;
+        do {
+            System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
+            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ ĐƠN HÀNG");
+            System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Thêm mới 1 phần tử, k phần tử");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xem danh sách ĐƠN HÀNG");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Sửa ĐƠN HÀNG (theo mã)");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xóa ĐƠN HÀNG (theo mã)");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Sắp xếp ĐƠN HÀNG mới nhất");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Tìm kiếm ĐƠN HÀNG");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
+            System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
+            System.out.print("Lựa chọn của bạn: ");
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1:
+                    store.addOrder(scanner);
+                    break;
+                case 2:
+                    store.xuatOrder();
+                    break;
+                case 3:
+                    //store.xuatOrder();
+                    store.editOrder(scanner);
+                    break;
+                case 4:
+                    store.removeOrder(scanner);
+                    break;
+                case 5:
+                    store.sapxepdonhang();
+                    break;
+                case 6:
+                    store.timkiem(scanner);
+                    break;
+                case 0:
+                    System.out.println("Đã thoát");
+                    break;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ.");
+                    break;
             }
         } while (choice != 0);
     }
