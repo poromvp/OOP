@@ -13,7 +13,7 @@ public class ChayChuongTrinh {
         int login= sieuthi.login(staffID,passWord);
         if (login==2){
             //Menu cho nhap kho
-            System.out.println(sieuthi.getAccountById(staffID).getName());
+            System.out.println(Store.getAccountById(staffID).getName());
             do {
                 // Hiển thị menu
                 System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -49,8 +49,7 @@ public class ChayChuongTrinh {
                 System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
                 System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ SIÊU THỊ MINI");
                 System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Quản lý đơn hàng");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Quản lý hóa đơn");
+                System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Quản lý bán hàng");
                 System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                 System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                 System.out.print("Nhập lựa chọn của bạn: ");
@@ -58,12 +57,8 @@ public class ChayChuongTrinh {
                 choice = Integer.parseInt(scanner.nextLine());
 
                 switch (choice) {
-
                     case 1:
-                        manageOrders(scanner, sieuthi);
-                        break;
-                    case 2:
-                        manageInvoice(scanner, sieuthi);
+                        manageInvoice(scanner, sieuthi, staffID);
                         break;
                     case 0:
                         System.out.println("Đã thoát chương trình.");
@@ -112,7 +107,7 @@ public class ChayChuongTrinh {
                         manageStaffs(scanner, sieuthi);
                         break;
                     case 6:
-                        manageInvoice(scanner, sieuthi);
+                        manageInvoice(scanner, sieuthi,staffID);
                         break;
                     case 7:
                         manageDiscounnt(scanner, sieuthi);
@@ -569,19 +564,17 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
-    private static void manageInvoice(Scanner scanner, Store store) {
+    private static void manageInvoice(Scanner scanner, Store store, String staffID) {
         int choice;
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ HÓA ĐƠN");
+            System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ BÁN HÀNG");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Tạo giao dịch mới");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Sửa hóa đơn");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xuất hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xóa hóa đơn");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Xuất hóa đơn");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm hóa đơn");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Xem lịch sử giao dịch");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "7.", "Bán hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Tìm kiếm hóa đơn");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Xem lịch sử giao dịch");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -589,27 +582,19 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    store.xuatOrder();
-                    store.themHoaDon(scanner);
+                    store.GiaoDichMoi(scanner);
                     break;
                 case 2:
-                    store.suaHoaDon(scanner);
+                    store.xuatHoaDon(staffID);
                     break;
-                
                 case 3:
                     store.xoaHoaDon(scanner);
                     break;
                 case 4:
-                    store.xuatHoaDon();
+                    store.timHoaDon(scanner,staffID);
                     break;
                 case 5:
-                    store.timHoaDon(scanner);
-                    break;
-                case 6:
                     store.xem();
-                    break;
-                case 7:
-                    store.GiaoDichMoi(scanner);
                     break;
                 case 0:
                     break;

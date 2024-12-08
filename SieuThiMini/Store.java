@@ -534,9 +534,9 @@ public class Store {
 
 
     /* Các thao tác cho HÓA ĐƠN START */
-    public void xuatHoaDon(){
+    public void xuatHoaDon(String staffID){
         for(Receipt rc: receipts){
-            rc.inHoaDon();
+            rc.inHoaDon(staffID);
         }
     }
 
@@ -554,14 +554,14 @@ public class Store {
         ghihoadon();
     }
 
-    public void suaHoaDon(Scanner scanner){
+    public void suaHoaDon(Scanner scanner, String staffID){
         System.out.print("Nhập id hóa đơn mà bạn muốn chỉnh sửa: ");
-        receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner);
+        receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner, staffID);
         ghihoadon();
     }
 
-    public void timHoaDon(Scanner scanner){
-        Receipt.locHoaDon(scanner, receipts);
+    public void timHoaDon(Scanner scanner, String staffID){
+        Receipt.locHoaDon(scanner, receipts,staffID);
     }
 
     public void ghihoadon(){
@@ -589,9 +589,9 @@ public class Store {
             orderList=Order.themgiaodich(scanner, orderList);
             ghifileord();
             receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner);
-            System.out.println(orderList[orderList.length-1].getOrderId());
+            /*System.out.println(orderList[orderList.length-1].getOrderId());
             orderList=Order.capnhatlaiOrders(orderList, orderList[orderList.length-1].getOrderId());
-            ghifileord();
+            ghifileord();*/
             ghihoadon();
         }
     }
