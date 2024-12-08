@@ -77,15 +77,14 @@ public class Import {
         return importsList[tmp];
     }
     // Thêm nhập hàng
-    public static  void addImport(Scanner sc,String importID) {
+    public static  void addImport(Scanner sc,String importID,String staffID) {
         if(cnt == importsList.length){
             Import[] newList = new Import[importsList.length*2];
             System.arraycopy(importsList,0,newList,0,importsList.length);
             importsList=newList;
         }
         Import newImport = new Import();
-        System.out.println("Nhap ma nguoi thuc hien nhap hang");
-        newImport.staffID=sc.nextLine();
+        newImport.staffID=staffID;
         newImport.importID = importID;
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         newImport.importDate=LocalDate.now();
@@ -110,7 +109,8 @@ public class Import {
         System.out.println("----------Phieu nhap hang----------");
         System.out.println("Ma phieu nhap hang: "+importID);
         System.out.println("Ngay nhap hang: "+importDate.format(formatter));
-        System.out.println("Nhan vien thuc hien: "+staffID);
+        System.out.println("Nhan vien thuc hien: "+Store.getAccountById(staffID).getName());
+        System.out.println("Ma nhan vien: "+staffID);
     }
     //read from file
     public static void readFile(String fileName) {

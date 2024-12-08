@@ -6,8 +6,14 @@ public class ChayChuongTrinh {
         int choice;
         Store sieuthi = new Store();
         Scanner scanner = new Scanner(System.in);
-        if (false){
-            //Nhan vien kho thuc hien
+        System.out.println("Nhap vao ma nhan vien:");
+        String staffID=scanner.nextLine();
+        System.out.println("Nhap vao mat khau:");
+        String passWord=scanner.nextLine();
+        int login= sieuthi.login(staffID,passWord);
+        if (login==2){
+            //Menu cho nhap kho
+            System.out.println(sieuthi.getAccountById(staffID).getName());
             do {
                 // Hiển thị menu
                 System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -26,7 +32,7 @@ public class ChayChuongTrinh {
                         manageProducts(scanner, sieuthi);
                         break;
                     case 2:
-                        manageImport(scanner,sieuthi);
+                        manageImport(scanner,sieuthi,staffID);
                         break;
                     case 0:
                         System.out.println("Đã thoát chương trình.");
@@ -36,8 +42,8 @@ public class ChayChuongTrinh {
                         break;
                 }
             } while (choice != 0);
-        } else if (false) {
-            //Nhan vien ban hang thuc hien
+        } else if (login==1) {
+            //Menu cho nhan vien ban hang
             do {
                 // Hiển thị menu
                 System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -69,9 +75,9 @@ public class ChayChuongTrinh {
             } while (choice != 0);
 
         }
-        else{
+        else if(login==3){
             do {
-                // Hiển thị menu
+                // Menu cho quan ly (full chuc nang)
                 System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
                 System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ SIÊU THỊ MINI");
                 System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
@@ -94,7 +100,7 @@ public class ChayChuongTrinh {
                         manageProducts(scanner, sieuthi);
                         break;
                     case 2:
-                        manageImport(scanner,sieuthi);
+                        manageImport(scanner,sieuthi,staffID);
                         break;
                     case 3:
                         manageCustomer(scanner, sieuthi);
@@ -123,6 +129,10 @@ public class ChayChuongTrinh {
                         break;
                 }
             } while (choice != 0);
+        }
+        else {
+            System.out.println("Khong the dang nhap !!!");
+            return;
         }
 
     }
@@ -203,7 +213,7 @@ public class ChayChuongTrinh {
         } while (choice != 0);
     }
 
-    private static void manageImport(Scanner scanner, Store store) {
+    private static void manageImport(Scanner scanner, Store store,String staffID) {
         int choice;
         do {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
@@ -221,7 +231,7 @@ public class ChayChuongTrinh {
             switch (choice) {
 
                 case 1:
-                    store.addImport(scanner);
+                    store.addImport(scanner,staffID);
                     store.writeFileImport();
                     store.writeFileImportDetai();
                     store.writeFileProduct();

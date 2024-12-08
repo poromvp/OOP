@@ -599,8 +599,8 @@ public class Store {
 
     /* cac thao tac cho Import START*/
     ImportManager a= new ImportManager();
-    public void addImport(Scanner scanner){
-        a.addImport(scanner);
+    public void addImport(Scanner scanner,String staffID){
+        a.addImport(scanner,staffID);
     }
     public  void outImport(Scanner scanner){
         a.outAllImport();
@@ -623,5 +623,35 @@ public class Store {
     }
     public  void writeFileImportDetai(){
         ImportDetail.writeFile("importDetail.txt");
+    }
+    /* cac thao tac cho Import END*/
+
+    /*Dang nhap*/
+    public int login(String id, String pass){
+        AccountManager acc = new AccountManager();
+        if(acc.returnAccount(id,pass)==1){
+            System.out.println("Dang nhap thanh cong ( nhan vien ban hang ). ");
+            return 1;
+        }
+        else if (acc.returnAccount(id,pass)==2){
+            System.out.println("Dang nhap thanh cong ( nhan vien kho ). ");
+            return 2;
+        } else if (acc.returnAccount(id,pass)==3) {
+            System.out.println("Dang nhap thanh cong ( quan ly ). ");
+            return 3;
+        }
+        return -1;
+    }
+
+    //tra ve phan tu account
+    public static AccountManager getAccountById(String id){
+        AccountManager account= new AccountManager();
+        AccountManager[] accList = account.readFromFile("AccountManager.txt");
+        for(AccountManager acc : accList){
+            if(acc.getAccount().equals(id)){
+                return acc;
+            }
+        }
+        return accList[0];
     }
 }

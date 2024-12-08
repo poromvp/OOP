@@ -69,17 +69,32 @@ public class AccountManager extends Staff {
 
     Scanner sc = new Scanner(System.in);
 
-    public boolean checkaccount ( String acc){
+    public boolean checkaccount ( String acc, String pass){
         AccountManager[] accounts = readFromFile("AccountManager.txt");
         boolean check = false;
         for( AccountManager account : accounts){
-            if(acc.equals(account.getAccount())){
+            if(acc.equals(account.getAccount()) && pass.equals(account.getPassWord())&&account.getStatus().equals("active")){
                 check = true;
                 break;
             }
         }
-
         return check;
+    }
+    public int returnAccount (String acc, String pass){
+        if(checkaccount(acc,pass)){
+            if(acc.startsWith("NV")){
+                return 1;
+            } else if (acc.startsWith("NK")) {
+                return 2;
+            } else if (acc.startsWith("QL")) {
+                return 3;
+            }
+            else {
+                System.out.println("Loi khi tim nhan vien.");
+                return -1;
+            }
+        }
+        return -1;
     }
 
     // Phương thức đọc thông tin phòng ban từ file
