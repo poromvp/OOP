@@ -9,10 +9,8 @@ public class Store {
     public Discount[] discounts; // danh sách chương trình khuyến mãi
     public Receipt[] receipts;
     public Manager managers;
-    public AccountManager departments;
+    public AccountManager accounts;
     public Cashier cashiers;
-//    public InventoryManager IvenProduct;
-//    public InventoryManager OrderProduct;
 
     public Store() {
         readFileProduct();
@@ -29,13 +27,11 @@ public class Store {
         receipts =rc.readFromFile("hoadon.txt");
 
         managers = new Manager();
-        departments = new AccountManager();
         cashiers = new Cashier();
-//        IvenProduct = new InventoryManager();
-//        OrderProduct = new InventoryManager();
+        cashiers.readFromFile("CashierList.txt");
         managers.readFromFile("dsnv.txt");
-        departments = new AccountManager();
-        departments.readFromFile("DepartmentList.txt");
+        accounts = new AccountManager();
+        accounts.readFromFile("DepartmentList.txt");
 
     }
 
@@ -75,24 +71,24 @@ public class Store {
         managers.search();
     }
 
-    public void XuatPBan() {
-        departments.getdetail();
+    public void XuatTK() {
+        accounts.getdetail();
     }
 
-    public void ThemQLPB() {
-        departments.add();
+    public void ThemTK() {
+        accounts.add();
     }
 
-    public void XoaPB() {
-        departments.remove();
+    public void XoaTK() {
+        accounts.remove();
     }
 
-    public void SuaPB() {
-        departments.ChangeInFo();
+    public void SuaTK() {
+        accounts.ChangeInFo();
     }
 
-    public void TimPB() {
-        departments.search();
+    public void TimTK() {
+        accounts.search();
     }
 
     public void xuatThuNgan() {
@@ -220,17 +216,18 @@ public class Store {
         Order.loc(scanner, orderList);
     }
 
-    public void thongkeDoanhThu() {
+    public void thongkeDoanhThu(Scanner scanner) {
         byte i = 0;
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách hàng nghìn, trăm, triệu
-        
+        System.out.println("Bạn muốn thông kê doanh thu của năm nào?");
+        int n=Integer.parseInt(scanner.nextLine());
+
         // Tạo phần tiêu đề
         System.out.printf("%20s╔═════════════╦═════════════════════════════╗\n", " ");
         System.out.printf("%20s║   Quý       ║    Doanh thu (VND)          ║\n", " ");
         System.out.printf("%20s╠═════════════╬═════════════════════════════╣\n", " ");
-        
         // Lặp qua các phần tử trong mảng
-        for (double mang : Order.thongkeQUY(orderList)) { 
+        for (double mang : Order.thongkeQUY(orderList,n)) {
             String formattedAmount = numberFormat.format(mang);
             System.out.printf("%20s║   Quý %-5d ║ %-27s ║\n", " ", (i + 1), formattedAmount);
             i++;
@@ -244,6 +241,10 @@ public class Store {
     public void thongkeSpBanChay(Scanner scanner) {
         System.out.print("Bạn Muốn Xem Top Bao Nhiêu Sản Phẩm Bán Chạy Nhất: ");
         int n = Integer.parseInt(scanner.nextLine());
+        while(n>Order.thongkeBanChay(orderList).length || n<0){
+            System.out.println("Không hợp lệ, chỉ có từ top "+(Order.thongkeBanChay(orderList).length-1)+" sản phẩm trở lại thôi, hãy nhập lại");
+            n = Integer.parseInt(scanner.nextLine());
+        }
         System.out.println("╔══════════════════════╦══════════════════════╗");
         System.out.println("║     Tên Sản Phẩm     ║     Số Lượng Bán     ║");
         System.out.println("╠══════════════════════╬══════════════════════╣");
@@ -262,8 +263,8 @@ public class Store {
         Order temp=new Order();
         String filename="donhang.txt";
         temp.xoaNoiDungFile(filename);
-        for(Order or : orderList){
-            or.writeToFile(filename);
+        for(int i=0;i<orderList.length;i++){
+            orderList[i].writeToFile(filename);
         }
         System.out.println("Đã ghi vào file donhang.txt");
     }
@@ -542,6 +543,10 @@ public class Store {
     public void themHoaDon(Scanner scanner){
         receipts=Receipt.themhoadon(receipts, scanner, orderList);
         ghihoadon();
+        for(Receipt rc: receipts){
+            orderList= Order.capnhatlaiOrders(orderList,rc.giaodich.donhang.getOrderId());
+        }
+        ghifileord();
     }
 
     public void xoaHoaDon(Scanner scanner){
@@ -571,6 +576,24 @@ public class Store {
 
     public void xem(){
         Receipt.xemlichsugiaodich();
+    }
+
+    public void GiaoDichMoi(Scanner scanner){
+        System.out.print("Bạn muốn thêm bao nhiêu giao dịch ?: ");
+        int n = Integer.parseInt(scanner.nextLine());
+        while(n<0){
+            System.out.println("Không hợp lệ, hãy nhập lại");
+            n=Integer.parseInt(scanner.nextLine());
+        }
+        for(int i=0;i<n;i++){
+            orderList=Order.themgiaodich(scanner, orderList);
+            ghifileord();
+            receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner);
+            System.out.println(orderList[orderList.length-1].getOrderId());
+            orderList=Order.capnhatlaiOrders(orderList, orderList[orderList.length-1].getOrderId());
+            ghifileord();
+            ghihoadon();
+        }
     }
     /* các thao tác cho hóa đơn END */
 
