@@ -193,7 +193,6 @@ public class Manager extends Staff {
 
     @Override
     public void remove() {
-        AccountManager account = new AccountManager();
         getdetail();
         System.out.print("Nhập mã nhân viên bạn muốn xoá: ");
         String IDremove = sc.nextLine();
@@ -228,7 +227,10 @@ public class Manager extends Staff {
             // Ghi lại danh sách mới vào file
             writeToFile("dsnv.txt", updatedManagers);
             System.out.print("Nhân viên với mã " + IDremove + " đã được xoá.");
+            AccountManager account = new AccountManager();
             account.remove();
+            Cashier cashier = new Cashier();
+            cashier.remove();
             System.out.println();
         }
     }
@@ -269,12 +271,14 @@ public class Manager extends Staff {
                 }
 
                 // Cập nhật vai trò
-                System.out.print("Nhập vai trò mới: ");
-                String role = sc.nextLine();
-                if (!role.isEmpty()) {
-                    managers[i].setRole(role); // Nếu không để trống, cập nhật vai trò mới
-                }
-
+                String role;
+                if(managers[i].getStaffID().startsWith("NV")){
+                    role = "Saler";
+                } else if(managers[i].getStaffID().startsWith("QL")){
+                    role = "Manager";
+                    } else {
+                        role = "Warehouseman";
+                    }
                 // Cập nhật số điện thoại
                 System.out.print("Nhập số điện thoại mới: ");
                 String contactNum = sc.nextLine();
@@ -295,6 +299,8 @@ public class Manager extends Staff {
         writeToFile("dsnv.txt", managers);
         AccountManager a = new AccountManager();
         a.ChangeInFo();
+        Cashier cashier = new Cashier();
+        cashier.ChangeInFo();
     }
 
     @Override

@@ -122,12 +122,12 @@ public class Cashier extends Staff {
         }
     
         System.out.println("Danh sách nhân viên thu ngân");
-        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤═════════════════╗");
-        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", "Ngày Công");
-        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪═════════════════╣");
+        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤════════════════════════════════╗");
+        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", " Số ngày công (trong tháng)");
+        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪════════════════════════════════╣");
     
         for (Cashier cashier : cashiers) {
-            System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15d ║\n",
+            System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
@@ -135,163 +135,281 @@ public class Cashier extends Staff {
                     cashier.getNumWorkingDays());
         }
     
-        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧═════════════════╝");
+        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧════════════════════════════════╝");
     }
     
     // Phương thức thêm một Cashier mới vào danh sách
     public void add() {
-        // Hiển thị danh sách thu ngân hiện tại
+        int count = 0;
+        Manager temp = new Manager();
+        Manager[] managers = temp.readFromFile("dsnv.txt");
+    
+        // Đọc danh sách thu ngân hiện tại từ file
         Cashier[] cashiers = readFromFile("CashierList.txt");
-        getdetail();
-
-        // Khởi tạo scanner để nhập dữ liệu
-
-        System.out.print("Nhập số lượng thu ngân bạn muốn thêm vào ca làm: ");
-        int n =Integer.parseInt(sc.nextLine());
-        while (n<0){
-            System.out.print("Số lượng không hợp lệ !!!! vui lòng nhập lại: ");
-            n = Integer.parseInt(sc.nextLine());
-        }
-
-        System.out.println("=================================================================");
-        for(int j=0; j<n; j++){
-            // Nhập thông tin thu ngân mới
-            System.out.print("Nhập vị trí bạn muốn thêm vào danh sách: ");
-            int vitri = Integer.parseInt(sc.nextLine());
-
-            System.out.print("Nhập mã thu ngân mới: ");
-            String cashierID = sc.nextLine();
-
-            System.out.print("Nhập tên thu ngân mới: ");
-            String cashierName = sc.nextLine();
-
-            System.out.print("Nhập vai trò thu ngân mới: ");
-            String role = sc.nextLine();
-
-            System.out.print("Nhập ca làm việc của thu ngân mới (A(ca sáng) hoặc B(ca chiều)): ");
-            String shift = sc.nextLine();
-            while(!shift.equalsIgnoreCase("A") && !shift.equalsIgnoreCase("B")){
-                System.out.print("Ca làm không hợp lệ !!! vui lòng nhập lại:  ");
-                shift = sc.nextLine();
+    
+        // Mảng tạm để lưu các mã nhân viên chưa có ca làm
+        String[] tempManagerIDs = new String[0];
+        String[] tempManagerNames = new String[0];
+    
+        // Kiểm tra các nhân viên chưa có ca làm
+        for (Manager manager : managers) {
+            boolean hasShift = false;
+            for (Cashier cashier : cashiers) {
+                if (manager.getStaffID().equals(cashier.getCashierID())) {
+                    hasShift = true;
+                    break;
+                }
             }
-
-            System.out.print("Nhập số ngày công của thu ngân mới: ");
-            int numWorkingDays = Integer.parseInt(sc.nextLine());
-
-            // Tạo một đối tượng Cashier mới
-            Cashier newCashier = new Cashier(cashierID, cashierName, role, shift.toUpperCase(), numWorkingDays);
-
-                // Mở rộng mảng managers để chứa nhân viên mới
-            if (vitri  > cashiers.length) {
-                // Nếu vị trí lớn hơn 3, thêm nhân viên vào cuối danh sách
-                cashiers = Arrays.copyOf(cashiers, cashiers.length + 1); // Mở rộng mảng
-                cashiers[cashiers.length - 1] = newCashier; // Thêm nhân viên mới vào cuối
-            } else {
-                    // Nếu vị trí hợp lệ, chèn nhân viên vào vị trí chỉ định
-                    if (vitri - 1 < cashiers.length) {
-                        cashiers = Arrays.copyOf(cashiers, cashiers.length + 1); // Mở rộng mảng
-                        for (int i = cashiers.length - 1; i > vitri - 1; i--) {
-                            cashiers[i] = cashiers[i - 1]; // Di chuyển các phần tử phía sau
-                        }
-                    }
-                    // Thêm nhân viên mới vào mảng tại vị trí vitri - 1
-                    cashiers[vitri - 1] = newCashier;
-                    }
-                System.out.println("=================================================================");
+            if (!hasShift) {
+                System.out.println("===========================================================");
+                System.out.println("Nhân viên chưa có ca làm với mã và tên: " + manager.getStaffID() + " || " + manager.getName());
+                count++;
+                tempManagerIDs = Arrays.copyOf(tempManagerIDs, tempManagerIDs.length + 1);
+                tempManagerIDs[tempManagerIDs.length - 1] = manager.getStaffID();
+                tempManagerNames = Arrays.copyOf(tempManagerNames, tempManagerNames.length + 1);
+                tempManagerNames[tempManagerNames.length - 1] = manager.getName();
+            }
         }
-        writeToFile("CashierList.txt", cashiers);
-
-        // In danh sách thu ngân sau khi cập nhật
-        System.out.println("Danh sách thu ngân sau khi cập nhật: ");
-        getdetail();
+        System.out.println("===========================================================");
+    
+        if (count == 0) {
+            System.out.println("Tất cả nhân viên đã có ca làm !!! Bạn hãy thêm một nhân viên mới !!!");
+            System.out.println();
+        } else {
+            System.out.println("Số lượng nhân viên chưa có ca làm: " + count);
+            System.out.println();
+            for (int j = 0; j < count; j++) {
+                // Nhập ca làm cho nhân viên
+                System.out.print("Mã nhân viên mới: " + tempManagerIDs[j]);
+                String managerID = tempManagerIDs[j];
+                System.out.println();
+    
+                System.out.print("Tên nhân viên sở hữu ca làm: " + tempManagerNames[j]);
+                String managerName = tempManagerNames[j];
+                System.out.println();
+    
+                String role;
+                if(managerID.startsWith("QL")){
+                    role = "Manager";
+                }else if(managerID.startsWith("NV")){
+                    role = "Saler";
+                }else {
+                    role = "Warehouseman";
+                }
+                System.out.println("Vai trò của nhân viên: "+role);
+    
+                // Nhập ca làm cho nhân viên
+                System.out.print("Nhập ca làm cho nhân viên (A: ca sáng hoặc B: ca chiều): ");
+                String shift = sc.nextLine();
+                while (!shift.equalsIgnoreCase("A") && !shift.equalsIgnoreCase("B")) {
+                    System.out.print("Ca làm không hợp lệ, vui lòng nhập lại (A hoặc B): ");
+                    shift = sc.nextLine();
+                }
+    
+                // Nhập số ngày công cho nhân viên
+                System.out.print("Nhập số ngày công trong tháng của nhân viên mới: ");
+                int numWorkingDays = Integer.parseInt(sc.nextLine());
+                while(numWorkingDays > 31 ){
+                    System.out.print("Số ngày công trong tháng phải nhỏ hơn 31, mời nhập lại: ");
+                    numWorkingDays = Integer.parseInt(sc.nextLine());
+                }
+    
+                // Tạo một đối tượng Cashier mới
+                Cashier newCashier = new Cashier(managerID, managerName, role, shift.toUpperCase(), numWorkingDays);
+    
+                // Thêm nhân viên vào danh sách thu ngân
+                cashiers = Arrays.copyOf(cashiers, cashiers.length + 1);
+                cashiers[cashiers.length - 1] = newCashier;
+    
+                // Ghi lại dữ liệu vào file
+                writeToFile("CashierList.txt", cashiers);
+    
+                // Hiển thị danh sách thu ngân đã được cập nhật
+                System.out.println("Danh sách ca làm đã được cập nhật!");
+                System.out.println("===========================================================");
+            }
+        }
     }
+    
+    
 
     @Override
     // Phương thức xóa một Cashier khỏi danh sách
     public void remove() {
-        // Hiển thị danh sách thu ngân
+        int count = 0;
+        Manager temp = new Manager();
+        Manager[] managers = temp.readFromFile("dsnv.txt");
         Cashier[] cashiers = readFromFile("CashierList.txt");
-        getdetail();
+        
+        for(Cashier cashier : cashiers){
+            boolean hasCashier = false;
+            for(Manager manager : managers){
+                if(manager.getStaffID().equals(cashier.getCashierID())){
+                    hasCashier = true;
+                    break;
+                }
+            }
+            if(!hasCashier){
+                count ++;
+                String tmp = cashier.getCashierID();
+                int newSize = 0;
+                for(Cashier a : cashiers){
+                    if(!a.getCashierID().equals(tmp)){
+                        newSize++;  // nếu không phải thu ngân bị xoá, tăng kích thước mảng mới
+                    }
+                }
 
-        // Khởi tạo scanner để nhập mã thu ngân cần xóa
-        System.out.print("Nhập mã thu ngân bạn muốn xóa: ");
-        String cashierID = sc.nextLine();
+                if(newSize == cashiers.length){
+                    System.out.println("Không tìm thấy dữ liệu !!!!");
+                }else {
+                    Cashier[] updateCashier = new Cashier[newSize];
+                    int index = 0;
 
-        // Duyệt qua mảng cashiers để tìm và xóa thu ngân
-        int newSize = 0;
-        for (Cashier cashier : cashiers) {
-            if (!cashier.getCashierID().equals(cashierID)) {
-                newSize++;
+                    for(Cashier b : cashiers ){
+                        if(!b.getCashierID().equals(tmp)){
+                            updateCashier[index++] = b;
+                        }
+                    }
+
+                    writeToFile("CashierList.txt", updateCashier);
+                    System.out.println("Ca làm của nhân viên đã được xoá");
+                }
+
             }
         }
 
-        if (newSize == cashiers.length) {
-            System.out.println("Không tìm thấy thu ngân với mã: " + cashierID);
-        } else {
-            // Tạo mảng mới và sao chép các thu ngân không bị xóa
-            Cashier[] updatedCashiers = new Cashier[newSize];
-            int index = 0;
+        if(count == 0){
 
+            System.out.print("Nhập mã nhân viên bạn muốn xóa lịch làm: ");
+            String cashierID = sc.nextLine();
+
+            // Duyệt qua mảng cashiers để tìm và xóa thu ngân
+            int newSize = 0;
             for (Cashier cashier : cashiers) {
                 if (!cashier.getCashierID().equals(cashierID)) {
-                    updatedCashiers[index++] = cashier;
+                    newSize++;
                 }
             }
 
-            // Ghi lại dữ liệu vào file
-            writeToFile("CashierList.txt", updatedCashiers);
-            System.out.println("Thu ngân với mã " + cashierID + " đã được xóa.");
-        }
+            if (newSize == cashiers.length) {
+                System.out.println("Không tìm thấy nhân viên với mã: " + cashierID);
+            } else {
+                // Tạo mảng mới và sao chép các thu ngân không bị xóa
+                Cashier[] updatedCashiers = new Cashier[newSize];
+                int index = 0;
 
-        // In danh sách thu ngân sau khi xóa
-        System.out.println("Danh sách thu ngân sau khi xóa: ");
-        getdetail();
-    }
+                for (Cashier cashier : cashiers) {
+                    if (!cashier.getCashierID().equals(cashierID)) {
+                        updatedCashiers[index++] = cashier;
+                    }
+                }
 
-    @Override
-    // Phương thức thay đổi thông tin thu ngân
-    public void ChangeInFo() {
-        // Hiển thị danh sách thu ngân
-        Cashier[] cashiers = readFromFile("CashierList.txt");
-        getdetail();
-
-        // Khởi tạo scanner để nhập thông tin thu ngân cần sửa
-        System.out.print("Nhập mã thu ngân bạn muốn thay đổi thông tin: ");
-        String cashierID = sc.nextLine();
-
-        boolean found = false;
-        for (Cashier cashier : cashiers) {
-            if (cashier.getCashierID().equals(cashierID)) {
-                found = true;
-                System.out.println("Thu ngân tìm thấy: " + cashier.getCashierName());
-
-                // Nhập thông tin mới
-                System.out.print("Nhập tên thu ngân mới: ");
-                cashier.setCashierName(sc.nextLine());
-
-                System.out.print("Nhập vai trò thu ngân mới: ");
-                cashier.setRole(sc.nextLine());
-
-                System.out.print("Nhập ca làm việc thu ngân mới: ");
-                cashier.setShift(sc.nextLine());
-
-                System.out.print("Nhập số ngày công thu ngân mới: ");
-                cashier.setNumWorkingDays(Integer.parseInt(sc.nextLine()));
-
-                break;
+                // Ghi lại dữ liệu vào file
+                writeToFile("CashierList.txt", updatedCashiers);
+                System.out.println("Nhân viên với mã " + cashierID + " đã được xóa lịch làm.");
             }
         }
+    }
+        
 
-        if (found) {
-            // Ghi lại dữ liệu vào file
-            writeToFile("CashierList.txt", cashiers);
-            System.out.println("Thông tin thu ngân đã được cập nhật.");
-        } else {
-            System.out.println("Không tìm thấy thu ngân với mã: " + cashierID);
+    @Override
+    // Phương thức thay đổi thông tin ca làm
+    public void ChangeInFo() {
+        int count = 0 ;
+        Manager temp = new Manager();
+        Manager[] managers = temp.readFromFile("dsnv.txt");
+
+        Cashier[] cashiers = readFromFile("CashierList.txt");
+        for(Cashier cashier : cashiers){
+            for(Manager manager : managers){
+                if(manager.getStaffID().equals(cashier.getCashierID())){
+                    if(!manager.getName().equals(cashier.getCashierName())){
+                        count ++;
+                        cashier.setCashierName(manager.getName());
+                        System.out.println("Tên nhân viên đã được cập nhật trong danh sách ca làm");
+
+                        System.out.print("Bạn có muốn thay đổi ca làm của nhân viên này không (nhập y (có) / n (không)): ");
+                        String choice = sc.nextLine();
+                        while(choice.equalsIgnoreCase("Y") && choice.equalsIgnoreCase("N")){
+                            System.out.print("Lựa chọn của bạn không hợp lệ !!! mời nhập lại (nhập y (có) / n (không)): ");
+                            choice = sc.nextLine();
+                        }
+
+                        if(choice.equalsIgnoreCase("Y")){
+                            System.out.println("Nhập thông tin mới cho ca làm (bỏ trống nếu không muốn thay đổi)");
+
+                            System.out.print("Nhập ca làm việc mới cho nhân viên (nhập A(ca sáng) hoặc B(ca chiều)): ");
+                            String shift = sc.nextLine();
+                            if(!shift.isEmpty()){
+                                while(!shift.equalsIgnoreCase("A") && !shift.equalsIgnoreCase("B")){
+                                    System.out.print("Ca làm không hợp lệ !!! vui lòng nhập lại:  ");
+                                    shift = sc.nextLine();
+                                }
+                                cashier.setShift(shift);
+                            }
+
+                            System.out.print("Nhập số ngày công trong tháng mới của nhân viên: ");
+                            String newNum = sc.nextLine();
+                                if(!newNum.isEmpty() && newNum.matches("\\d+")){
+                                while(Integer.parseInt(newNum) > 31 ){
+                                    System.out.print("Số ngày công trong tháng phải nhỏ hơn 31, mời nhập lại: ");
+                                    newNum = sc.nextLine();
+                                }
+                                cashier.setNumWorkingDays(Integer.parseInt(newNum));
+                            }
+                            System.out.println("thông tin ca làm đã được cập nhật");
+                            break;
+                        }else {
+                            System.out.println("Không thay đổi ca làm của nhân viên");
+                        }
+
+                    }
+                }
+            }
         }
+        
+        if(count == 0){
+            System.out.print("Nhập mã nhân viên bạn muốn thay đổi ca làm: ");
+            String cashierID = sc.nextLine();
 
-        // In danh sách thu ngân sau khi cập nhật
-        getdetail();
+            boolean found = false;
+            for (Cashier cashier : cashiers) {
+                if (cashier.getCashierID().equals(cashierID)) {
+                    found = true;
+                    System.out.println("Nhân viên tìm thấy: " + cashier.getCashierName());
+
+                    // Nhập thông tin mới
+                    System.out.print("Nhập tên Nhân viên thay thế: ");
+                    cashier.setCashierName(sc.nextLine());
+
+                    System.out.print("Nhập ca làm việc mới cho nhân viên (nhập A(ca sáng) hoặc B(ca chiều)): ");
+                    String shift = sc.nextLine();
+                    while(!shift.equalsIgnoreCase("A") && !shift.equalsIgnoreCase("B")){
+                        System.out.print("Ca làm không hợp lệ !!! vui lòng nhập lại:  ");
+                        shift = sc.nextLine();
+                    }
+
+                    System.out.print("Nhập số ngày công trong tháng mới của nhân viên: ");
+                    int newNum = Integer.parseInt(sc.nextLine());
+                    while(newNum > 31 ){
+                        System.out.print("Số ngày công trong tháng phải nhỏ hơn 31, mời nhập lại: ");
+                        newNum = Integer.parseInt(sc.nextLine());
+                    }
+                    System.out.println("thông tin ca làm đã được cập nhật");
+
+                    break;
+                }
+            }
+
+            if (found) {
+                // Ghi lại dữ liệu vào file
+                writeToFile("CashierList.txt", cashiers);
+                System.out.println("Thông tin ca làm đã được cập nhật.");
+            } else {
+                System.out.println("Không tìm thấy thu ngân với mã: " + cashierID);
+            }   
+        }
+        writeToFile("CashierList.txt", cashiers);
     }
 
     @Override
@@ -328,11 +446,6 @@ public class Cashier extends Staff {
         // Kiểm tra nếu không có tiêu chí nào được nhập
         boolean found = false;
     
-        // Định dạng tiêu đề bảng
-        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤═════════════════╗");
-        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", "Ngày Công");
-        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪═════════════════╣");
-    
         // Duyệt qua danh sách các thu ngân và tìm kiếm
         for (Cashier cashier : cashiers) {
             boolean match = true;
@@ -357,22 +470,30 @@ public class Cashier extends Staff {
             // Nếu tất cả tiêu chí khớp, in ra thông tin thu ngân
             if (match) {
                 found = true;
-                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-15d ║\n",
+                System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤════════════════════════════════╗");
+                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", " Số ngày công (trong tháng)");
+                System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪════════════════════════════════╣");
+                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
                     cashier.getShift(),
                     cashier.getNumWorkingDays());
+                System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧════════════════════════════════╝");
+
             }
         }
     
         // Nếu không tìm thấy thu ngân nào
         if (!found) {
-            System.out.println("Không tìm thấy thu ngân thỏa mãn điều kiện tìm kiếm.");
+            System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤════════════════════════════════╗");
+            System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", " Số ngày công (trong tháng)");
+            System.out.println("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+            System.out.printf("║ %-108s║\n","Không tìm thấy nhân viên");
+            System.out.println("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
+
         }
-    
-        // Đường viền cuối bảng
-        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧═════════════════╝");    }
+    }
 
     // Phương thức thống kê nhân viên xuất sắc nhất tháng/năm 
     public void statisticBestCashier() {
