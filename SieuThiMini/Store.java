@@ -247,7 +247,7 @@ public class Store {
         System.out.print("Bạn Muốn Xem Top Bao Nhiêu Sản Phẩm Bán Chạy Nhất: ");
         int n = Integer.parseInt(scanner.nextLine());
         while(n>Order.thongkeBanChay(orderList).length || n<0){
-            System.out.println("Không hợp lệ, hãy nhập lại");
+            System.out.println("Không hợp lệ, chỉ có từ top "+(Order.thongkeBanChay(orderList).length-1)+" sản phẩm trở lại thôi, hãy nhập lại");
             n = Integer.parseInt(scanner.nextLine());
         }
         System.out.println("╔══════════════════════╦══════════════════════╗");
@@ -300,12 +300,12 @@ public class Store {
     }
 
     // Chức năng thứ 4 trong menu
-    /*public void capNhatKhachHang(Scanner scanner) {
+    public void capNhatKhachHang(Scanner scanner) {
         System.out.print("Nhập mã khách hàng để cập nhật: ");
         int updateID = Integer.parseInt(scanner.nextLine());
         Customer.updateCustomerByID(customers, updateID, scanner);
         ghifilecus();
-    } */
+    } 
 
     // Chức năng thứ 5 trong menu
     public void timKhachHang(Scanner scanner) {
@@ -592,7 +592,7 @@ public class Store {
             n=Integer.parseInt(scanner.nextLine());
         }
         for(int i=0;i<n;i++){
-            orderList=Order.themgiaodich(scanner, orderList);
+            orderList=Order.themgiaodich(scanner, orderList, customers);
             ghifileord();
             receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner);
             System.out.println(orderList[orderList.length-1].getOrderId());

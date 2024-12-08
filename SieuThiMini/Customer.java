@@ -9,11 +9,9 @@ public class Customer implements QLFile {
     private int loyaltyPoints; // Điểm tích lũy
     private Order order;
 
-    //Order order = new Order(); 
-
     // Constructor không tham số
     public Customer() {
-        
+       
     }
 
     // Constructor có tham số
@@ -22,7 +20,6 @@ public class Customer implements QLFile {
         this.name = name;
         this.contactNumber = contactNumber;
         this.loyaltyPoints = loyaltyPoints;
-        //this.order = order;
     }
 
     // Getter và Setter
@@ -58,6 +55,14 @@ public class Customer implements QLFile {
         this.loyaltyPoints = loyaltyPoints;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+    
     // Phương thức xem danh sách khách hàng (2)
     public static void outputCustomer(Customer[] customers) {
         System.out.printf("%-53s╔══════════════════════════════════════════╗\n", " ");
@@ -140,8 +145,8 @@ public class Customer implements QLFile {
     
 
     // Phương thức sửa (cập nhật) thông tin của khách hàng trong danh sách (4)
-    public static Customer[] updateCustomerByID(Customer[] customers, int customerID) {
-        Scanner scanner = new Scanner(System.in);
+    public static Customer[] updateCustomerByID(Customer[] customers, int customerID, Scanner scanner) {
+        //Scanner scanner = new Scanner(System.in);
 
         // Tìm kiếm khách hàng theo ID
         Customer customerToUpdate = null;
@@ -341,6 +346,7 @@ public class Customer implements QLFile {
     public void xoaNoiDungFile(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             // Mở file ở chế độ ghi đè nhưng không ghi gì cả
+            writer.close();
         } catch (IOException e) {
             System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
         }
@@ -408,27 +414,30 @@ public class Customer implements QLFile {
         }
     }
     
-    // Phương thức giảm giá đơn hàng cho khách hàng khi điểm tích lũy đạt yêu cầu
-    public double isLoyaltyPoints() { 
-        double totalAmount = order.calculateTotalAmount(); // Lấy tổng tiền từ hóa đơn
-        if (this.loyaltyPoints > 2000) {
-            return totalAmount - totalAmount * 0.15; // Giảm 15% khi điểm lớn hơn 2000
-        } else if (this.loyaltyPoints > 1500 && this.loyaltyPoints <= 2000) {
-            return totalAmount - totalAmount * 0.10; // Giảm 10% khi điểm từ 1500-2000
-        } else if (this.loyaltyPoints > 1000 && this.loyaltyPoints <= 1500) {
-            return totalAmount - totalAmount * 0.05; // Giảm 5% khi điểm từ 1000-1500
-        } else {
-            return totalAmount; // Không giảm giá khi điểm dưới 1000
+    // Phương thức giảm giá dựa trên điểm
+    public double isLoyaltyPoints() {
+        if (order != null) {
+            double totalAmount = order.calculateTotalAmount();
+            if (this.loyaltyPoints > 2000) {
+                return totalAmount - totalAmount * 0.15;
+            } else if (this.loyaltyPoints > 1500 && this.loyaltyPoints <= 2000) {
+                return totalAmount - totalAmount * 0.10;
+            } else if (this.loyaltyPoints > 1000 && this.loyaltyPoints <= 1500) {
+                return totalAmount - totalAmount * 0.05;
+            }
         }
+        return 0.0; // Nếu không có order, không áp dụng giảm giá
     }
     
-
-    // Phương thức tăng điểm tích lũy cho khách hàng dựa trên hóa đơn
+  
+    // Tính điểm tích lũy dựa trên tổng tiền từ Order
     public int calculateLoyaltyPoints() {
-        double totalAmount = order.calculateTotalAmount(); // Lấy tổng tiền từ phương thức calculateTotalAmount() trả về kiểu double
-        int loyaltyPointsFromOrder = (int) (totalAmount * 0.10);  // Lấy 10% của tổng tiền và chuyển thành int
-        int newLoyaltyPoints = this.loyaltyPoints + loyaltyPointsFromOrder;
-        return newLoyaltyPoints;
+        if (order != null) {
+            double totalAmount = order.calculateTotalAmount();
+            int loyaltyPointsFromOrder = (int) (totalAmount * 0.10);
+            return this.loyaltyPoints += loyaltyPointsFromOrder;
+        }
+        return this.loyaltyPoints;
     }
     
     // Phương thức kiểm tra số âm
@@ -453,15 +462,14 @@ public class Customer implements QLFile {
     // Phương thức kiểm tra số điện thoại nhập vào phải có đủ 11 số và bắt đầu bằng số 0
     public static String validatePhoneNumber(Scanner scanner) {
         while (true) {
-            System.out.print("Nhập số điện thoại khách hàng (11 chữ số, bắt đầu bằng '0'): ");
+            System.out.print("Nhập số điện thoại khách hàng (10 chữ số, bắt đầu bằng '0'): ");
             String phoneNumber = scanner.nextLine().trim();
     
-            if (phoneNumber.matches("0\\d{10}")) { // Kiểm tra định dạng bằng regex
+            if (phoneNumber.matches("0\\d{9}")) { // Kiểm tra định dạng bằng regex
                 return phoneNumber; // Số điện thoại hợp lệ
             } else {
                 System.out.println("Số điện thoại không hợp lệ. Vui lòng nhập lại!");
             }
         }
     }
-    
 }
