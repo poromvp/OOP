@@ -15,7 +15,6 @@ public class Receipt implements QLFile {
     public Transaction giaodich;
     public Discount discount;
     public String maHoaDon;
-
     public Receipt() {
         giaodich = new Transaction();
         discount = new Discount();
@@ -34,12 +33,13 @@ public class Receipt implements QLFile {
         return maHoaDon;
     }
 
-    public void inHoaDon() {
+    public void inHoaDon(String staffID) {
         int i = 0;
         System.out.printf("╔══════════════════════════════════════════════════════════════════╗\n");
         System.out.printf("║%28s%-20s%18s║\n", " ", getMaHoaDon(), " ");
         System.out.printf("╠══════════════════════════════════════════════════════════════════╣\n");
         System.out.printf("║  Ngày thanh toán: %45s  ║\n", giaodich.donhang.getOrderDate());
+        System.out.printf("║  Th.Ngân: %-55s║\n", Store.getAccountById(staffID).getName());
         System.out.printf("║  Tên KhH: %-15s%38s  ║\n", giaodich.donhang.customer.getName(),
                 "Mã KhH: " + giaodich.donhang.customer.getCustomerID());
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
@@ -58,8 +58,12 @@ public class Receipt implements QLFile {
         System.out.printf("║  Thành Tiền                                   %,-19.2f║\n",
                 giaodich.donhang.calculateTotalAmount());
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
-        if (discount.getDiscountPercentage() != 0) { // Nếu có giảm giá
-            double tien_sau_khi_giam_gia = giaodich.donhang.calculateTotalAmount()
+        double tien_giam_theo_point=giaodich.donhang.customer.isLoyaltyPoints(giaodich.donhang);
+            System.out.printf("║  Sau Khi Giảm Theo Point                      %,-19.2f║\n",
+                    tien_giam_theo_point);
+        System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
+        if (discount.getDiscountPercentage() != 0) { // Nếu có chương trình giảm giá
+            double tien_sau_khi_giam_gia = tien_giam_theo_point
                     * (1.0 - discount.getDiscountPercentage() / 100);
             System.out.printf("║  %-23s                      %,-19.2f║\n", discount.getName(),
                     tien_sau_khi_giam_gia);
@@ -73,8 +77,8 @@ public class Receipt implements QLFile {
                     giaodich.phuongThucThanhToan.getSoTien() - (tien_sau_khi_giam_gia + Order.calculateVAT(
                             tien_sau_khi_giam_gia)));
         } else {
-            double so_tien_sau_VAT = giaodich.donhang.calculateTotalAmount()
-                    + Order.calculateVAT(giaodich.donhang.calculateTotalAmount());
+            double so_tien_sau_VAT = tien_giam_theo_point
+                    + Order.calculateVAT(tien_giam_theo_point);
             System.out.printf("║  Tổng Thanh Toán (Có VAT)                     %,-19.2f║\n", so_tien_sau_VAT);
             System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
             System.out.printf("║  %-64s║\n", giaodich.phuongThucThanhToan.xuLyThanhToan());
@@ -141,11 +145,12 @@ public class Receipt implements QLFile {
         } else {
             receipts[i].discount = receipts[i].discount.getDiscountByDay(date);
         }
-        // Tiền hàng sau khi giảm = (Tổng tiền hàng + Tiền VAT) * (1 - Phần trăm giảm)
+        // Tiền hàng sau khi giảm = (Tổng tiền hàng sau khi giảm theo point) * (1 - Phần trăm giảm) + Tiền VAT
         double tien,
-                tien_hang_sau_khi_giam = (receipts[i].giaodich.donhang.calculateTotalAmount()
-                        + Order.calculateVAT(receipts[i].giaodich.donhang.calculateTotalAmount()))
+                tien_hang_sau_khi_giam = (receipts[i].giaodich.donhang.customer.isLoyaltyPoints(receipts[i].giaodich.donhang)
+                        )
                         * (1.0 - receipts[i].discount.getDiscountPercentage() / 100.0);
+        tien_hang_sau_khi_giam += Order.calculateVAT(tien_hang_sau_khi_giam);
 
         if (pt == 1) {
             System.out.print("Nhập STK: ");
@@ -298,7 +303,7 @@ public class Receipt implements QLFile {
         return receipts;
     }
 
-    public static Receipt[] suahoadon(Receipt[] receipts, String editID, Scanner scanner) {
+    public static Receipt[] suahoadon(Receipt[] receipts, String editID, Scanner scanner, String staffID) {
         // Tìm kiếm hóa đơn theo ID
         Receipt hoadon = null;
         for (Receipt rc : receipts) {
@@ -309,7 +314,7 @@ public class Receipt implements QLFile {
         }
 
         if (hoadon != null) {
-            hoadon.inHoaDon();
+            hoadon.inHoaDon(staffID);
             System.out.println("\nNhấn Enter để giữ nguyên thông tin hiện tại.");
 
             // Cập nhật mã hóa đơn
@@ -410,7 +415,7 @@ public class Receipt implements QLFile {
         return receipts; // Trả về danh sách khách hàng sau khi cập nhật
     }
 
-    public static void locHoaDon(Scanner scanner, Receipt[] receipts) {
+    public static void locHoaDon(Scanner scanner, Receipt[] receipts, String staffID) {
         System.out.println();
         System.out.printf("%20s╔═════════════════════════════════════════════════════════════════╗\n", "");
         System.out.printf("%20s║                        TÌM KIẾM HÓA ĐƠN                         ║\n", "");
@@ -528,7 +533,7 @@ public class Receipt implements QLFile {
         } else {
             System.out.println("\nDanh sách hóa đơn:\n");
             for (Receipt rc : result) {
-                rc.inHoaDon();
+                rc.inHoaDon(staffID);
             }
         }
     }

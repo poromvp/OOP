@@ -935,28 +935,34 @@ public class Order implements QLFile {
         int cusId = Integer.parseInt(scanner.nextLine());
         if(orderList[i].customer.getCustomerById(cusId) == null){
             System.out.println("Mã khách hàng này không tồn tại....");
-            
-            System.out.println("Tạo khách hàng mới thành công!");
-
-        }
-        while (orderList[i].customer.getCustomerById(cusId) == null) {
-            System.out.println("Mã khách hàng này không tồn tại, hãy nhập lại!");
-            cusId = Integer.parseInt(scanner.nextLine());
-        }
-        orderList[i].customer = new Customer(
-                orderList[i].customer.getCustomerById(cusId).getCustomerID(),
-                orderList[i].customer.getCustomerById(cusId).getName(),
-                orderList[i].customer.getCustomerById(cusId).getContactNumber(),
-                orderList[i].customer.getCustomerById(cusId).getLoyaltyPoints());
-
-        System.out.print(" Bao nhiêu sản phẩm ?: "); // bởi vì 1 đơn hàng có nhiều sản phẩm
-        int n = Integer.parseInt(scanner.nextLine());
-        while (n < 0) {
-            System.out.println("Không hợp lệ, hãy nhập lại");
-            n = Integer.parseInt(scanner.nextLine());
-        }
+            System.out.println("Tiến hành tạo khách hàng mới");
+            System.out.print("Nhập tên: ");
+            String name=scanner.nextLine();
+            System.out.print("Nhập số điện thoại: ");
+            String sdt=scanner.nextLine();
+            orderList[i].customer = new Customer(
+                cusId,
+                name,
+                sdt,
+                0);
+                System.out.println("Tạo khách hàng mới thành công!");
+            }
+            else{
+                orderList[i].customer = new Customer(
+                    orderList[i].customer.getCustomerById(cusId).getCustomerID(),
+                    orderList[i].customer.getCustomerById(cusId).getName(),
+                    orderList[i].customer.getCustomerById(cusId).getContactNumber(),
+                    orderList[i].customer.getCustomerById(cusId).getLoyaltyPoints());
+                }
+                
+                System.out.print(" Bao nhiêu sản phẩm ?: "); // bởi vì 1 đơn hàng có nhiều sản phẩm
+                int n = Integer.parseInt(scanner.nextLine());
+                while (n < 0) {
+                    System.out.println("Không hợp lệ, hãy nhập lại");
+                    n = Integer.parseInt(scanner.nextLine());
+                }
         orderList[i].product = new Product[n];
-
+        
         for (int j = 0; j < orderList[i].product.length; j++) {
             System.out.println("Nhập Mã Sản Phẩm Thứ " + (j + 1));
             String id = scanner.nextLine();
@@ -965,13 +971,13 @@ public class Order implements QLFile {
                 j--;
                 continue;
             }
-
+            
             if (Product.getProductById(id).getQuantity() == 0) {
                 System.out.println("Sản phẩm này đã hết hàng, vui vòng nhập mã SP khác");
                 j--;
                 continue;
             }
-
+            
             // không dùng product[I]=Produc.getbyID(id) bởi vì nó sẽ tham chiếu đến địa chỉ
             // này,
             // nó sẽ làm thay đổi lun cái mảng của ngta chứ kp cái mảng sp riêng trong đơn
@@ -980,32 +986,32 @@ public class Order implements QLFile {
 
             if (orderList[i].checkx2IDpro(id, orderList[i].product, j)) {
                 orderList[i].product[j] = new Product(Product.getProductById(id).getProductID(),
-                        Product.getProductById(id).getName(),
+                Product.getProductById(id).getName(),
                         Product.getProductById(id).getPrice(),
                         Product.getProductById(id).getQuantity(),
                         Product.getProductById(id).getCategoryId(),
                         Product.getProductById(id).getSupplierId());
-            }
+                    }
 
-            System.out.print("Nhập Số Lượng Mua: ");
-            int sl = Integer.parseInt(scanner.nextLine());
-            while (sl > Product.getProductById(id).getQuantity() || sl < 0) {
-                if (sl < 0) {
-                    System.out.println("Số lượng bạn nhập không được < 0, hãy nhập lại");
-                }
-                if (sl > Product.getProductById(id).getQuantity()) {
-                    System.out.println("Số lượng " + sl + " vượt quá " + orderList[i].product[j].getQuantity()
+                    System.out.print("Nhập Số Lượng Mua: ");
+                    int sl = Integer.parseInt(scanner.nextLine());
+                    while (sl > Product.getProductById(id).getQuantity() || sl < 0) {
+                        if (sl < 0) {
+                            System.out.println("Số lượng bạn nhập không được < 0, hãy nhập lại");
+                        }
+                        if (sl > Product.getProductById(id).getQuantity()) {
+                            System.out.println("Số lượng " + sl + " vượt quá " + orderList[i].product[j].getQuantity()
                             + " trong kho, hãy nhập lại: ");
-                }
-                sl = Integer.parseInt(scanner.nextLine());
+                        }
+                        sl = Integer.parseInt(scanner.nextLine());
             }
 
             Product.getProductById(id).setQuantity(Product.getProductById(id).getQuantity() - sl); // cập nhật lại số
-                                                                                                   // lượng trong kho
+            // lượng trong kho
             Product.writeProductsToFile("product.txt");
             if (!orderList[i].checkx2IDpro(id, orderList[i].product, j)) {
                 System.out
-                        .println("Mã sản phẩm mà bạn nhập đã có trước đó rồi, tiến hành cộng dồn số lượng mua vào....");
+                .println("Mã sản phẩm mà bạn nhập đã có trước đó rồi, tiến hành cộng dồn số lượng mua vào....");
                 j--;
                 System.out.println("Hiện tại đang có : " + (orderList[i].product[j].getQuantity() + sl));
                 orderList[i].product[j].setQuantity(orderList[i].product[j].getQuantity() + sl);
@@ -1013,6 +1019,8 @@ public class Order implements QLFile {
             }
             orderList[i].product[j].setQuantity(sl); // set số lượng mua
         }
+        orderList[i].customer.setLoyaltyPoints(orderList[i].customer.calculateLoyaltyPoints(orderList[i]));
+        orderList[i].customer.writeToFile("customers.txt");
         return orderList;
     }
 }

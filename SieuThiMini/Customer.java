@@ -378,5 +378,30 @@ public class Customer implements QLFile {
             return customers[tmp];
         }
     }
-    
+
+    // Tính điểm tích lũy dựa trên tổng tiền từ Order
+    public int calculateLoyaltyPoints(Order order) {
+        if (order != null) {
+            double totalAmount = order.calculateTotalAmount();
+            int loyaltyPointsFromOrder = (int) (totalAmount * 0.10);
+            return this.loyaltyPoints += loyaltyPointsFromOrder;
+        }
+        return this.loyaltyPoints;
+    }
+
+    // Phương thức giảm giá dựa trên điểm
+    public double isLoyaltyPoints(Order order) {
+        if (order != null) {
+            double totalAmount = order.calculateTotalAmount();
+            if (this.loyaltyPoints > 2000) {
+                return totalAmount - totalAmount * 0.15;
+            } else if (this.loyaltyPoints > 1500 && this.loyaltyPoints <= 2000) {
+                return totalAmount - totalAmount * 0.10;
+            } else if (this.loyaltyPoints > 1000 && this.loyaltyPoints <= 1500) {
+                return totalAmount - totalAmount * 0.05;
+            }
+            //else if(this.loyaltyPoints <= 1000) return totalAmount;
+        }
+        return 0.0; // Nếu không có order, không áp dụng giảm giá
+    }
 }
