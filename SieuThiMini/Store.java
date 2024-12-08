@@ -31,7 +31,7 @@ public class Store {
         cashiers.readFromFile("CashierList.txt");
         managers.readFromFile("dsnv.txt");
         accounts = new AccountManager();
-        accounts.readFromFile("DepartmentList.txt");
+        accounts.readFromFile("AccountManager.txt");
 
     }
 

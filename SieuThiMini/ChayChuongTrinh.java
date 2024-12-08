@@ -483,8 +483,8 @@ public class ChayChuongTrinh {
                 case 2:
                     do {
                         System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "xuất danh sách tài khoản");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "thêm tài khoản ");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Xuất danh sách tài khoản");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm tài khoản ");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá tài khoản");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa tài khoản ");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm tài khoản");

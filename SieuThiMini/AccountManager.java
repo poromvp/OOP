@@ -209,18 +209,24 @@ public class AccountManager extends Staff {
                     Pass = "1";
                     System.out.println();
                 }
-                System.out.println();
 
-                System.out.print("Trạng thái bạn muốn cho tài khoản mới (nhập active(hoạt động) hoặc banned(bị khoá)): ");
-                String status = sc.nextLine();
-                while(!status.equalsIgnoreCase("active") && !status.equalsIgnoreCase("banned")){
-                    System.out.print("Trạng thái bạn muốn không đúng mời bạn nhập lại: ");
-                    status = sc.nextLine();
-                }
-                System.out.println();
-            
+                System.out.print("Bạn muốn trạng thái nào cho tài khoản ( 1.active(hoạt động) hoặc 2.banned(khoá lại) ): ");
+                    int option = Integer.parseInt(sc.nextLine());
+
+                    while(option != 1 && option != 2){
+                        System.out.print("Lựa chọn không hợp lệ mời nhập lại: ");
+                        option = Integer.parseInt(sc.nextLine());
+                    }
+
+                    String status;
+                    if(option == 1){
+                        status = "active";
+                    } else{
+                        status = "banned";
+                    }
+
                 // Tạo tài khoản mới
-                AccountManager newaccount = new AccountManager(acc, Pass, Name, status.toLowerCase());
+                AccountManager newaccount = new AccountManager(acc, Pass, Name, status);
             
                 accounts = Arrays.copyOf(accounts, accounts.length + 1);
                 accounts[accounts.length - 1] = newaccount;
@@ -231,6 +237,7 @@ public class AccountManager extends Staff {
             
                 // Hiển thị danh sách phòng ban sau khi cập nhật
                 System.out.println("Danh sách tài khoản đã được cập nhật ! ");
+                System.out.println("===========================================================");
             }
          }
     }
@@ -332,90 +339,101 @@ public class AccountManager extends Staff {
 
     @Override
     public void ChangeInFo() {
-        int count=0;
+        int count =0;
         Manager temp = new Manager();
         Manager[] managers = temp.readFromFile("dsnv.txt");
-    
+
         // Đọc danh sách tài khoản hiện tại từ file
         AccountManager[] accounts = readFromFile("AccountManager.txt");
         System.out.println();
-    
-        for (Manager manager : managers) {
-            // Tìm tài khoản tương ứng với mã nhân viên
-            for (AccountManager account : accounts) {
-                if (manager.getStaffID().equals(account.getAccount())) { // So sánh mã nhân viên với tài khoản
-                    // Kiểm tra xem tên có thay đổi không
-                    count++;
-                    if (!manager.getName().equals(account.getName())) {
-                        account.setName(manager.getName()); // Cập nhật tên
-                        System.out.println("Tên tài khoản " + account.getAccount() + " đã được cập nhật.");
-                        
-                        // Hỏi người dùng có muốn cập nhật mật khẩu và trạng thái không
-                        System.out.print("Bạn có muốn cập nhật mật khẩu và trạng thái cho tài khoản " + account.getAccount() + "? (Y/N): ");
+
+        for(AccountManager account : accounts){
+            for(Manager manager: managers){
+                if(manager.getStaffID().equals(account.getAccount())){
+                    if(!manager.getName().equals(account.getName())){
+                        count ++;
+                        account.setName(manager.getName());
+
+                        System.out.print("Bạn có muốn thay đổi mật khẩu và trạng thái của tài khoản nhân viên này không ? y (có) / n (không)): ");
                         String choice = sc.nextLine();
-                        while (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n")) {
-                            System.out.print("Lựa chọn không hợp lệ, mời nhập lại (Y hoặc N): ");
+                        while(choice.equalsIgnoreCase("Y") && choice.equalsIgnoreCase("N")){
+                            System.out.print("Lựa chọn của bạn không hợp lệ !!! mời nhập lại (nhập y (có) / n (không)): ");
                             choice = sc.nextLine();
                         }
-                        if (choice.equalsIgnoreCase("y")) {
-                            System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
-                    
-                            System.out.print("Nhập mật khẩu mới cho tài khoản: ");
-                            String pass = sc.nextLine();
-                            if (!pass.isEmpty()) {
-                                account.setPassWord(pass); // Cập nhật mật khẩu
+                        if(choice.equalsIgnoreCase("Y")){
+                            System.out.println("Nhập thông tin mới cho tài khoản ");
+
+                            System.out.print("Nhập mật khẩu mới (bỏ trống nếu bạn không muốn thay đổi): ");
+                            String newPass = sc.nextLine();
+                            if(!newPass.isEmpty()){
+                                account.setPassWord(newPass);
                             }
-                    
-                            System.out.print("Nhập trạng thái mới cho tài khoản (active/banned): ");
-                            String status = sc.nextLine();
-                            if (!status.isEmpty()) {
-                                account.setStatus(status); // Cập nhật trạng thái
+
+                            System.out.print("Bạn muốn trạng thái nào cho tài khoản ( 1.active(hoạt động) hoặc 2.banned(khoá lại) hoặc 0.(không thay đổi) ): ");
+                            int option = Integer.parseInt(sc.nextLine());
+
+                            while(option != 1 && option != 2 && option != 0){
+                                System.out.print("Lựa chọn không hợp lệ mời nhập lại: ");
+                                option = Integer.parseInt(sc.nextLine());
                             }
-                    
-                            System.out.println("Tài khoản " + account.getAccount() + " đã được cập nhật.");
+
+                            if(option == 1){
+                                account.setStatus("active");
+                            } else if(option == 2){
+                                account.setStatus("banned");
+                            } else {
+                                account.setStatus(account.getStatus());
+                            }
+
+                            System.out.println("Tài khoản đã được cập nhật !!!");
+                            break;
                         }
-                    }                    
-                    break; // Thoát khỏi vòng lặp vì đã xử lý tài khoản này
+                        else {
+                            System.out.println("Tài khoản không có thay đổi");
+                        }
+                    }
                 }
             }
         }
-        
         if(count == 0 ){
-            // Nếu không có nhân viên nào thay đổi tên => chỉ thay đổi mật khẩu và trạng thái
-            System.out.print("Bạn muốn đổi mật khẩu và trạng thái của tài khoản nào: ");
-            String acc = sc.nextLine();
+            System.out.print("nhập tài khoản bạn muốn đổi mật khẩu và trạng thái: ");
+            String TK = sc.nextLine();
+
             boolean found = false;
-            for (AccountManager account : accounts) {
-                if (account.getAccount().equals(acc)) {
+            for(AccountManager account : accounts){
+                if(account.getAccount().equals(TK)){
                     found = true;
-        
-                    System.out.println("Nhập thông tin mới cho tài khoản (bỏ qua nếu không muốn thay đổi)");
-        
-                    System.out.print("Nhập mật khẩu mới cho tài khoản: ");
-                    String pass = sc.nextLine();
-                    if (!pass.isEmpty()) {
-                        account.setPassWord(pass);
+                    System.out.print("Nhập mật khẩu mới cho tài khoản (để trống nếu không muốn thay đổi): ");
+                    String newPass = sc.nextLine();
+                    if(!newPass.isEmpty()){
+                        account.setPassWord(newPass);
                     }
-        
-                    System.out.print("Nhập trạng thái mới cho tài khoản (active/banned): ");
-                    String status = sc.nextLine();
-                    if (!status.isEmpty()) {
-                        account.setStatus(status);
+
+                    System.out.print("Bạn muốn trạng thái nào cho tài khoản ( 1.active(hoạt động) hoặc 2.banned(khoá lại) hoặc 0.(không thay đổi) ): ");
+                    int option = Integer.parseInt(sc.nextLine());
+
+                    while(option != 1 && option != 2 && option != 0){
+                        System.out.print("Lựa chọn không hợp lệ mời nhập lại: ");
+                        option = Integer.parseInt(sc.nextLine());
                     }
-        
-                    System.out.println("Tài khoản " + acc + " đã được cập nhật.");
-                    break;
+
+                    if(option == 1){
+                        account.setStatus("active");
+                    } else if(option == 2){
+                        account.setStatus("banned");
+                    } else {
+                        account.setStatus(account.getStatus());
+                    }
+
+                    System.out.println("Tài khoản đã được cập nhật");
+                }
             }
-        }
-    
-            if (!found) {
-                System.out.println("Không tìm thấy tài khoản cần thay đổi.");
+            if(!found){
+                System.out.println("Không tìm thấy tài khoản");
             }
+            writeToFile("AccountManager.txt", accounts);
         }
-    
-        // Ghi lại danh sách tài khoản vào file sau khi hoàn tất thay đổi
         writeToFile("AccountManager.txt", accounts);
-        
     }
     
 
