@@ -154,23 +154,23 @@ public class ChayChuongTrinh {
             choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
-
+                
                 case 1:
-                    store.addImport(scanner);
-                    store.writeFileImport();
-                    store.writeFileImportDetai();
-                    store.writeFileProduct();
+                    //store.addImport(scanner);
+                    //store.writeFileImport();
+                    //store.writeFileImportDetai();
+                    //store.writeFileProduct();
                     break;
                 case 2:
-                    store.outImport(scanner);
+                    //store.outImport(scanner);
                     break;
                 case 3:
-                    store.findImport(scanner);
+                    //store.findImport(scanner);
                     break;
                 case 4:
-                    store.removeImport(scanner);
-                    store.writeFileImport();
-                    store.writeFileImportDetai();
+                    //store.removeImport(scanner);
+                    //store.writeFileImport();
+                    //store.writeFileImportDetai();
                     break;
                 case 0:
                     break;
@@ -423,19 +423,19 @@ public class ChayChuongTrinh {
                         subchoice = Integer.parseInt(scanner.nextLine());
                     switch (subchoice) {
                     case 1:
-                        store.XuatTK();
+                        //store.XuatTK();
                         break;
                     case 2: 
-                        store.ThemTK();
+                        //store.ThemTK();
                         break;
                     case 3:
-                        store.XoaTK();
+                        //store.XoaTK();
                         break;
                     case 4: 
-                        store.SuaTK();
+                        //store.SuaTK();
                         break;
                     case 5: 
-                        store.TimTK();
+                        //store.TimTK();
                         break;
                     case 0:
                         break;

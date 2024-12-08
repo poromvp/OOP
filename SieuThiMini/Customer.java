@@ -84,60 +84,58 @@ public class Customer implements QLFile {
     public static Customer[] addCustomers(Customer[] customers, Scanner scanner) {
         System.out.print("Khách hàng đã có thẻ thành viên chưa? (y/n): ");
         String hasMembership = scanner.nextLine().trim().toLowerCase();
-    
-        Order order = new Order(); // Khởi tạo đối tượng Order
-    
+
         if (hasMembership.equals("n")) {
             // Thêm khách hàng mới
             System.out.println("\nThêm khách hàng mới:");
-    
+        
+            // Sử dụng phương thức inputCustomerID để nhập mã khách hàng
+            int customerID = new Customer().inputCustomerID(scanner);
+
             System.out.print("Nhập số điện thoại khách hàng: ");
-            int customerID = Integer.parseInt(scanner.nextLine());
-    
-            System.out.print("Nhập số điện thoại khách hàng: ");
-            String contactNumber = scanner.nextLine();
-    
+            String contactNumber = validatePhoneNumber(scanner);
+
             System.out.print("Nhập tên khách hàng: ");
             String name = scanner.nextLine();
-    
+
             // Tạo khách hàng mới với điểm tích lũy mặc định là 0
             Customer newCustomer = new Customer(customerID, name, contactNumber, 0);
-    
+
             // Tạo mảng mới để thêm khách hàng
             Customer[] updatedCustomers = new Customer[customers.length + 1];
             System.arraycopy(customers, 0, updatedCustomers, 0, customers.length);
             updatedCustomers[customers.length] = newCustomer;
-    
+
             System.out.println("Đã thêm khách hàng mới: " + name);
             return updatedCustomers;
-    
+
         } else if (hasMembership.equals("y")) {
             // Cập nhật điểm tích lũy cho khách hàng hiện có
             System.out.print("Nhập số điện thoại khách hàng: ");
-            String contactNumber = scanner.nextLine();
-    
+            String contactNumber = validatePhoneNumber(scanner);
+
             boolean customerFound = false;
             for (Customer customer : customers) {
                 if (customer.getContactNumber().equals(contactNumber)) {
                     customerFound = true;
-    
+
                     // Tăng điểm tích lũy bằng phương thức calculateLoyaltyPoints
                     int updatedPoints = customer.calculateLoyaltyPoints();
                     System.out.println("Cập nhật điểm tích lũy cho khách hàng " + customer.getName() + ". Điểm tích lũy mới: " + updatedPoints);
                     break;
                 }
             }
-    
+
             if (!customerFound) {
                 System.out.println("Không tìm thấy khách hàng với số điện thoại: " + contactNumber);
             }
-    
             return customers;
         } else {
             System.out.println("Lựa chọn không hợp lệ. Vui lòng thử lại.");
             return customers;
         }
     }
+
     
     
 
@@ -389,7 +387,7 @@ public class Customer implements QLFile {
     
 
     public Customer getCustomerById(int id) {
-        Customer[] customers = readFromFile("SieuThiMini\\customers.txt");
+        Customer[] customers = readFromFile("customers.txt");
         int tmp = -1;  // Sử dụng -1 để dễ dàng kiểm tra xem có tìm thấy không
         boolean flag = false;
         
@@ -431,6 +429,39 @@ public class Customer implements QLFile {
         int loyaltyPointsFromOrder = (int) (totalAmount * 0.10);  // Lấy 10% của tổng tiền và chuyển thành int
         int newLoyaltyPoints = this.loyaltyPoints + loyaltyPointsFromOrder;
         return newLoyaltyPoints;
+    }
+    
+    // Phương thức kiểm tra số âm
+    public int inputCustomerID(Scanner scanner) {
+        int id;
+        while (true) {
+            System.out.print("Nhập mã khách hàng (không được là số âm): ");
+            try {
+                id = Integer.parseInt(scanner.nextLine());
+                if (id >= 0) {
+                    break; // Thoát khỏi vòng lặp nếu mã hợp lệ
+                } else {
+                    System.out.println("Lỗi: Mã khách hàng không được là số âm. Vui lòng thử lại.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Lỗi: Giá trị nhập vào không hợp lệ. Vui lòng nhập một số nguyên.");
+            }
+        }
+        return id;
+    }
+    
+    // Phương thức kiểm tra số điện thoại nhập vào phải có đủ 11 số và bắt đầu bằng số 0
+    public static String validatePhoneNumber(Scanner scanner) {
+        while (true) {
+            System.out.print("Nhập số điện thoại khách hàng (11 chữ số, bắt đầu bằng '0'): ");
+            String phoneNumber = scanner.nextLine().trim();
+    
+            if (phoneNumber.matches("0\\d{10}")) { // Kiểm tra định dạng bằng regex
+                return phoneNumber; // Số điện thoại hợp lệ
+            } else {
+                System.out.println("Số điện thoại không hợp lệ. Vui lòng nhập lại!");
+            }
+        }
     }
     
 }

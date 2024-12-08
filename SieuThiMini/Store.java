@@ -9,7 +9,7 @@ public class Store {
     public Discount[] discounts; // danh sách chương trình khuyến mãi
     public Receipt[] receipts;
     public Manager managers;
-    public AccountManager accounts;
+    //public AccountManager accounts;
     public Cashier cashiers;
 
     public Store() {
@@ -30,8 +30,8 @@ public class Store {
         cashiers = new Cashier();
         cashiers.readFromFile("CashierList.txt");
         managers.readFromFile("dsnv.txt");
-        accounts = new AccountManager();
-        accounts.readFromFile("DepartmentList.txt");
+        //accounts = new AccountManager();
+        //accounts.readFromFile("DepartmentList.txt");
 
     }
     public Order[] getOrderlist(){
@@ -74,6 +74,7 @@ public class Store {
         managers.search();
     }
 
+    /*
     public void XuatTK() {
         accounts.getdetail();
     }
@@ -93,6 +94,7 @@ public class Store {
     public void TimTK() {
         accounts.search();
     }
+    */
 
     public void xuatThuNgan() {
         cashiers.getdetail();
@@ -277,6 +279,7 @@ public class Store {
 
     /* Các thao tác cho danh sách khách hàng START */
 
+    
     // Chức năng thứ 1 trong menu
     public void themKhachHang(Scanner scanner) {
         customers = Customer.addCustomers(customers, scanner);
@@ -601,7 +604,7 @@ public class Store {
     /* các thao tác cho hóa đơn END */
 
     /* cac thao tac cho Import START*/
-    ImportManager a= new ImportManager();
+    /*ImportManager a= new ImportManager();
     public void addImport(Scanner scanner){
         a.addImport(scanner);
     }
@@ -620,5 +623,5 @@ public class Store {
     }
     public  void writeFileImportDetai(){
         ImportDetail.writeFile("importDetail.txt");
-    }
+    } */
 }
