@@ -87,18 +87,23 @@ public class Import {
         System.out.println("Nhap ma nguoi thuc hien nhap hang");
         newImport.staffID=sc.nextLine();
         newImport.importID = importID;
-        boolean CheckDate = false;
-        while (!CheckDate) {
-            System.out.println("Nhap ngay nhan hang: ");
-            String ngaySinhInput = sc.nextLine();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            try {
-                newImport.importDate = LocalDate.parse(ngaySinhInput, format);
-                CheckDate = true;
-            } catch (DateTimeParseException e) {
-                System.out.println("Ngay nhan hang khong hop le. Vui long nhap lai(dd/MM/yyyy).");
-            }
-        }
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        newImport.importDate=LocalDate.now();
+//        boolean CheckDate = false;
+//        while (!CheckDate) {
+//            System.out.println("Nhap ngay nhan hang: ");
+//            String ngaySinhInput = sc.nextLine();
+//            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//            try {
+//                LocalDate inputDate = LocalDate.parse(ngaySinhInput,format);
+//                if(inputDate.isEqual(LocalDate.now())){
+//                    System.out.println("Ngay nhap hang phai la ngay hom nay.");
+//                }
+//                CheckDate = true;
+//            } catch (DateTimeParseException e) {
+//                System.out.println("Ngay nhan hang khong hop le. Vui long nhap lai(dd/MM/yyyy).");
+//            }
+//        }
         importsList[cnt++]=newImport;
     }
     public void outImport() {

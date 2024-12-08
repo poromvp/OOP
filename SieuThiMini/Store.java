@@ -1,6 +1,6 @@
-import java.util.Locale;
 import java.util.Scanner;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Store {
     public Transaction[] transactions; // danh sách giao dịch
@@ -33,9 +33,6 @@ public class Store {
         //accounts = new AccountManager();
         //accounts.readFromFile("DepartmentList.txt");
 
-    }
-    public Order[] getOrderlist(){
-        return orderList;
     }
 
     public Store(Staff[] staffList, Transaction[] transactions) {
@@ -226,13 +223,13 @@ public class Store {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách hàng nghìn, trăm, triệu
         System.out.println("Bạn muốn thông kê doanh thu của năm nào?");
         int n=Integer.parseInt(scanner.nextLine());
-        
+
         // Tạo phần tiêu đề
         System.out.printf("%20s╔═════════════╦═════════════════════════════╗\n", " ");
         System.out.printf("%20s║   Quý       ║    Doanh thu (VND)          ║\n", " ");
         System.out.printf("%20s╠═════════════╬═════════════════════════════╣\n", " ");
         // Lặp qua các phần tử trong mảng
-        for (double mang : Order.thongkeQUY(orderList,n)) { 
+        for (double mang : Order.thongkeQUY(orderList,n)) {
             String formattedAmount = numberFormat.format(mang);
             System.out.printf("%20s║   Quý %-5d ║ %-27s ║\n", " ", (i + 1), formattedAmount);
             i++;
@@ -616,6 +613,12 @@ public class Store {
     }
     public void removeImport(Scanner scanner){
         a.removeImport(scanner);
+    }
+    public void statisticImportByTotal(Scanner scanner){
+        ImportManager.statisticImportByTotal(scanner);
+    }
+    public void statisticImportByQuantity(Scanner scanner){
+        ImportManager.statisticImportByQuantity(scanner);
     }
     //Ghi file
     public void writeFileImport(){

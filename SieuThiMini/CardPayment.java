@@ -7,7 +7,7 @@ public class CardPayment extends Payment {
 
     @Override
     public String xuLyThanhToan() {
-        return "Thanh toán qua thẻ: " + soThe + " với số tiền:        " + soTien;
+        return String.format("Thanh toán qua thẻ: %s với số tiền:        %, .2fđ", soThe, soTien);
     }
 
     public String getSoThe() {

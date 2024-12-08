@@ -18,6 +18,7 @@ public class ImportDetail {
         this.toTal = this.price*this.quantity;
     }
 
+
     public ImportDetail() {
     }
 

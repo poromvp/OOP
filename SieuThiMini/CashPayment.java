@@ -4,6 +4,6 @@ public class CashPayment extends Payment {
     }
     @Override
     public String xuLyThanhToan() {
-        return "Thanh toán bằng tiền mặt với số tiền:        " + soTien;
+        return String.format("Thanh toán bằng tiền mặt với số tiền:        %, .2fđ", soTien);
     }
 }

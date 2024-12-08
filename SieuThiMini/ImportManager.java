@@ -1,4 +1,6 @@
+import java.io.IOException;
 import java.util.Scanner;
+
 
 public class ImportManager {
     public ImportManager() {
@@ -88,5 +90,102 @@ public class ImportManager {
             System.out.println("Khong tim thay ma don nhap hang.");
         }
     }
+     public static void statisticImportByTotal(Scanner sc){
+        ImportDetail[] toTal = new ImportDetail[Product.cnt];
+         for (int i = 0; i < Product.cnt; i++) {
+             toTal[i] = new ImportDetail();
+             toTal[i].toTal=0;
+             toTal[i].setProductID(Product.productList[i].getProductID());
+         }
 
+         // Tính tổng giá trị nhập hàng theo sản phẩm
+         for (int i = 0; i < Product.cnt; i++) {
+             for (int j = 0; j < ImportDetail.cnt; j++) { // Chỉ lặp đến cnt - 1
+                 if (ImportDetail.importDetailsList[j].getProductID().equals(Product.productList[i].getProductID())) {
+                     toTal[i].toTal=(toTal[i].getToTal() + ImportDetail.importDetailsList[j].getToTal());
+                 }
+             }
+         }
+        for(int i=0;i<=toTal.length-1;i++){
+            for(int j=i+1;j<toTal.length;j++){
+                if(toTal[i].getToTal()<toTal[j].getToTal()){
+                    ImportDetail tmp=toTal[i];
+                    toTal[i]=toTal[j];
+                    toTal[j]=tmp;
+                }
+            }
+        }
+         System.out.println("Ban muon xem bao nhieu san pham co gia tri nhap hang lon nhat");
+         int n;
+         do {
+             try {
+                 int tmp=Integer.parseInt(sc.nextLine());
+                 if(tmp>Product.cnt){
+                     System.out.println("So luong san pham phai be hon so san pham hien co.");
+                 }
+                 else if (tmp<0) {
+                     System.out.println("So luong nhap vao khong duoc am.");
+                 } else {
+                     n=tmp;
+                     break;
+                 }
+             }
+             catch (NumberFormatException e){
+                 System.out.println("Gia tri nhap vao la 1 so nguyen hop le."+e.getMessage());
+                 return;
+             }
+         }while (true);
+         System.out.println("Thong ke nhung san pham duoc nhap vao voi gia tri lon nhat.");
+         for(int i=0;i<n;i++){
+             System.out.println(toTal[i].productID+"    "+Product.getProductById(toTal[i].productID).getName()+"   "+toTal[i].toTal);
+         }
+     }
+    public static void statisticImportByQuantity(Scanner sc){
+        ImportDetail[] toTal = new ImportDetail[Product.cnt];
+        for (int i = 0; i < Product.cnt; i++) {
+            toTal[i] = new ImportDetail();
+            toTal[i].quantity=0;
+            toTal[i].setProductID(Product.productList[i].getProductID());
+        }
+        for (int i = 0; i < Product.cnt; i++) {
+            for (int j = 0; j < ImportDetail.cnt; j++) {
+                if (ImportDetail.importDetailsList[j].getProductID().equals(Product.productList[i].getProductID())) {
+                    toTal[i].quantity=(toTal[i].getQuantity() + ImportDetail.importDetailsList[j].getQuantity());
+                }
+            }
+        }
+        for(int i=0;i<=toTal.length-1;i++){
+            for(int j=i+1;j<toTal.length;j++){
+                if(toTal[i].getQuantity()<toTal[j].getQuantity()){
+                    ImportDetail tmp=toTal[i];
+                    toTal[i]=toTal[j];
+                    toTal[j]=tmp;
+                }
+            }
+        }
+        System.out.println("Ban muon xem bao nhieu san pham co so luong nhap hang lon nhat");
+        int n;
+        do {
+            try {
+                int tmp=Integer.parseInt(sc.nextLine());
+                if(tmp>Product.cnt){
+                    System.out.println("So luong san pham phai be hon so san pham hien co.");
+                }
+                else if (tmp<0) {
+                    System.out.println("So luong nhap vao khong duoc am.");
+                } else {
+                    n=tmp;
+                    break;
+                }
+            }
+            catch (NumberFormatException e){
+                System.out.println("Gia tri nhap vao la 1 so nguyen hop le."+e.getMessage());
+                return;
+            }
+        }while (true);
+        System.out.println("Thong ke nhung san pham duoc nhap vao voi so luong lon nhat.");
+        for(int i=0;i<n;i++){
+            System.out.println(toTal[i].productID+"    "+Product.getProductById(toTal[i].productID).getName()+"    "+toTal[i].quantity);
+        }
+    }
 }

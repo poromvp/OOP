@@ -43,12 +43,12 @@ public class Receipt implements QLFile {
         System.out.printf("╠══════════════════════════════════════════════════════════════════╣\n");
         System.out.printf("║  Ngày thanh toán: %45s  ║\n", giaodich.donhang.getOrderDate());
         System.out.printf("║  Tên KhH: %-15s%38s  ║\n", giaodich.donhang.customer.getName(),
-                giaodich.donhang.customer.getCustomerID());
+                "Mã KhH: " + giaodich.donhang.customer.getCustomerID());
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
         System.out.printf("║  Tên Sản Phẩm           SL        Giá          Tổng Tiền         ║\n");
 
         for (Product pr : giaodich.donhang.product) {
-            System.out.printf("║  %-20s   %-5d    %-10d   %,-19.2f║\n", pr.getName(), pr.getQuantity(), pr.getPrice(),
+            System.out.printf("║  %-20s   %-5d    %,-10d   %,-19.2f║\n", pr.getName(), pr.getQuantity(), pr.getPrice(),
                     (double) pr.getPrice() * pr.getQuantity());
             if (i < giaodich.donhang.product.length - 1) {
                 System.out.printf("║  ..............................................................  ║\n");
@@ -102,7 +102,7 @@ public class Receipt implements QLFile {
     public static Receipt[] taogiaodich(Receipt[] receipts, Order or, Scanner scanner) {
         receipts = Arrays.copyOf(receipts, receipts.length + 1);
         int i = receipts.length - 1;
-        receipts[i]=new Receipt();
+        receipts[i] = new Receipt();
         String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int length = 8;
         receipts[i].setMaHoaDon("HD" + Receipt.generateRandomString(length, charSet));
@@ -114,10 +114,10 @@ public class Receipt implements QLFile {
 
         System.out.print("Phuong thuc thanh toan?\n 1.Thẻ/Chuyển Khoản \t 2.Tiền mặt\n→ ");
         int pt = 0;
-        boolean isValid = false; 
+        boolean isValid = false;
         while (!isValid) {
             try {
-                pt = Integer.parseInt(scanner.nextLine()); 
+                pt = Integer.parseInt(scanner.nextLine());
                 if (pt == 1 || pt == 2) {
                     isValid = true; // Đúng giá trị mong muốn
                 } else {
@@ -137,17 +137,17 @@ public class Receipt implements QLFile {
             date = null;
             System.out.println("Lỗi không định dạng được ngày: " + e.getMessage());
         }
-        if (receipts[i].discount.getDiscountByDay(date) == null) {            //nếu đối tượng này null tức là không nằm trong tg discount nên  
-            receipts[i].discount.setDiscountPercentage(0); //phần trăm giảm = 0
+        if (receipts[i].discount.getDiscountByDay(date) == null) { // nếu đối tượng này null tức là không nằm trong tg
+                                                                   // discount nên
+            receipts[i].discount.setDiscountPercentage(0); // phần trăm giảm = 0
         } else {
             receipts[i].discount = receipts[i].discount.getDiscountByDay(date);
         }
-        //Tiền hàng sau khi giảm = (Tổng tiền hàng + Tiền VAT) * (1 - Phần trăm giảm)
-        double tien, 
-            tien_hang_sau_khi_giam = (
-            receipts[i].giaodich.donhang.calculateTotalAmount()
-            + Order.calculateVAT(receipts[i].giaodich.donhang.calculateTotalAmount()))
-            * (1.0 - receipts[i].discount.getDiscountPercentage() / 100.0);
+        // Tiền hàng sau khi giảm = (Tổng tiền hàng + Tiền VAT) * (1 - Phần trăm giảm)
+        double tien,
+                tien_hang_sau_khi_giam = (receipts[i].giaodich.donhang.calculateTotalAmount()
+                        + Order.calculateVAT(receipts[i].giaodich.donhang.calculateTotalAmount()))
+                        * (1.0 - receipts[i].discount.getDiscountPercentage() / 100.0);
 
         if (pt == 1) {
             System.out.print("Nhập STK: ");
@@ -155,11 +155,12 @@ public class Receipt implements QLFile {
             tien = tien_hang_sau_khi_giam;
             receipts[i].giaodich.phuongThucThanhToan = new CardPayment(tien, cardId); // Đa hình
         } else {
-            System.out.printf("Tổng tiền là: %,.2f\n",tien_hang_sau_khi_giam);
+            System.out.printf("Tổng tiền là: %,.2f\n", tien_hang_sau_khi_giam);
             System.out.println("Nhập tiền khách đưa: ");
             tien = Double.parseDouble(scanner.nextLine());
             while (tien < tien_hang_sau_khi_giam) {
-                System.out.printf("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng (%,.2f), hãy nhập lại: ",tien_hang_sau_khi_giam);
+                System.out.printf("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng (%,.2f), hãy nhập lại: ",
+                        tien_hang_sau_khi_giam);
                 tien = Double.parseDouble(scanner.nextLine());
             }
             receipts[i].giaodich.phuongThucThanhToan = new CashPayment(tien); // Đa hình
@@ -433,6 +434,16 @@ public class Receipt implements QLFile {
         if (orderDate.isEmpty())
             orderDate = null;
 
+        System.out.print("Từ ngày (dd/mm/yyyy): "); // **Thêm mới**
+        String startDate = scanner.nextLine();
+        if (startDate.isEmpty())
+            startDate = null;
+
+        System.out.print("Đến ngày (dd/mm/yyyy): "); // **Thêm mới**
+        String endDate = scanner.nextLine();
+        if (endDate.isEmpty())
+            endDate = null;
+        
         System.out.print("Tên khách hàng: ");
         String nameCustomer = scanner.nextLine();
         if (nameCustomer.isEmpty())
@@ -507,7 +518,7 @@ public class Receipt implements QLFile {
 
         for (Receipt rc : receipts) {
             if (isInvoiceMatch(rc, maHoaDon, orderDate, nameCustomer, nameProduct, quantityProduct, priceProduct,
-                    tienKhachDua, orId, idcus, pthuc_thanh_toan, maSoThe, tienKhachChuyen)) {
+                    tienKhachDua, orId, idcus, pthuc_thanh_toan, maSoThe, tienKhachChuyen,startDate, endDate)) {
                 filteredInvoices[count++] = rc;
             }
         }
@@ -526,7 +537,7 @@ public class Receipt implements QLFile {
 
     private static boolean isInvoiceMatch(Receipt receipt, String maHoaDon, String orderDate,
             String nameCustomer, String nameProduct, int quantityProduct, int priceProduct, double tienKhachDua,
-            String orId, int idcus, String pthuc_thanh_toan, String masothe, double tienKhachChuyen) {
+            String orId, int idcus, String pthuc_thanh_toan, String masothe, double tienKhachChuyen, String startDate, String endDate) {
         if (maHoaDon != null && !receipt.maHoaDon.equals(maHoaDon))
             return false;
         if (orderDate != null && !receipt.giaodich.donhang.getOrderDate().equals(orderDate))
@@ -537,7 +548,6 @@ public class Receipt implements QLFile {
             return false;
         if (idcus != 0 && receipt.giaodich.donhang.customer.getCustomerID() != idcus)
             return false;
-
         if (pthuc_thanh_toan != null) {
             if (pthuc_thanh_toan.equals("1")) { // Thẻ/Chuyển khoản
                 if (!(receipt.giaodich.phuongThucThanhToan instanceof CardPayment)) {
@@ -563,7 +573,30 @@ public class Receipt implements QLFile {
                 return false; // Nếu lựa chọn phương thức thanh toán không hợp lệ
             }
         }
-
+        if (startDate != null || endDate != null) { // **Thêm mới**
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date receiptDate = sdf.parse(receipt.giaodich.donhang.getOrderDate());
+        
+                if (startDate != null) {
+                    Date start = sdf.parse(startDate);
+                    if (receiptDate.before(start)) {
+                        return false;
+                    }
+                }
+        
+                if (endDate != null) {
+                    Date end = sdf.parse(endDate);
+                    if (receiptDate.after(end)) {
+                        return false;
+                    }
+                }
+            } catch (ParseException e) {
+                System.out.println("Lỗi định dạng ngày tháng: " + e.getMessage());
+                return false;
+            }
+        }
+        
         // Kiểm tra sản phẩm
         boolean productMatch = false;
         for (Product pr : receipt.giaodich.donhang.product) {
@@ -585,8 +618,9 @@ public class Receipt implements QLFile {
     }
 
     @Override
-    public Receipt[] readFromFile(String filename) { //file hoadon.txt có định dạng là
-                                                    //mã hóa đơn;mã đơn hàng;phương thức thanh toán(card\cash);số tiền;số thẻ (hoặc để trống nếu là cash)
+    public Receipt[] readFromFile(String filename) { // file hoadon.txt có định dạng là
+                                                     // mã hóa đơn;mã đơn hàng;phương thức thanh toán(card\cash);số
+                                                     // tiền;số thẻ (hoặc để trống nếu là cash)
         Receipt[] receipts;
         int n = 0, i = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -607,18 +641,17 @@ public class Receipt implements QLFile {
                 String[] parts = Line.split(";");
                 receipts[i].maHoaDon = parts[0];
 
-                receipts[i].giaodich.donhang=new Order(parts[1],
-                receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getOrderDate(),
-                receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getCustomer(),
-                receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getProductList());
+                receipts[i].giaodich.donhang = new Order(parts[1],
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getOrderDate(),
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getCustomer(),
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getProductList());
 
                 if (parts[2].equals("Card")) {
                     receipts[i].giaodich.phuongThucThanhToan = new CardPayment(Double.parseDouble(parts[3]), parts[4]);
-                }
-                else if(parts[2].equals("Cash")){
+                } else if (parts[2].equals("Cash")) {
                     receipts[i].giaodich.phuongThucThanhToan = new CashPayment(Double.parseDouble(parts[3]));
                 }
-                
+
                 String daytmp = receipts[i].giaodich.donhang.getOrderDate();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Định dạng ngày
                 Date date;
@@ -629,7 +662,8 @@ public class Receipt implements QLFile {
                     System.out.println("Lỗi không định dạng được ngày: " + e.getMessage());
                 }
 
-                if (receipts[i].discount.getDiscountByDay(date) == null) { //kiểm tra xem ngày có nằm trong thời gian discount ko
+                if (receipts[i].discount.getDiscountByDay(date) == null) { // kiểm tra xem ngày có nằm trong thời gian
+                                                                           // discount ko
                     System.out.println("ko dc giam gia");
                     receipts[i].discount.setDiscountPercentage(0);
                 } else {
@@ -696,6 +730,7 @@ public class Receipt implements QLFile {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
+
     public static void xemlichsugiaodich() {
         int kichthuoc = 0;
         try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
