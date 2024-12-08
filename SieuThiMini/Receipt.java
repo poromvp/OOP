@@ -15,7 +15,9 @@ public class Receipt implements QLFile {
     public Transaction giaodich;
     public Discount discount;
     public String maHoaDon;
+    public Manager NV;
     public Receipt() {
+        NV = new Manager();
         giaodich = new Transaction();
         discount = new Discount();
     }
@@ -39,7 +41,7 @@ public class Receipt implements QLFile {
         System.out.printf("║%28s%-20s%18s║\n", " ", getMaHoaDon(), " ");
         System.out.printf("╠══════════════════════════════════════════════════════════════════╣\n");
         System.out.printf("║  Ngày thanh toán: %45s  ║\n", giaodich.donhang.getOrderDate());
-        System.out.printf("║  Th.Ngân: %-55s║\n", Store.getAccountById(staffID).getName());
+        System.out.printf("║  Th.Ngân: %-55s║\n", NV.getName());
         System.out.printf("║  Tên KhH: %-15s%38s  ║\n", giaodich.donhang.customer.getName(),
                 "Mã KhH: " + giaodich.donhang.customer.getCustomerID());
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
@@ -105,6 +107,15 @@ public class Receipt implements QLFile {
         receipts = Arrays.copyOf(receipts, receipts.length + 1);
         int i = receipts.length - 1;
         receipts[i] = new Receipt();
+
+        System.out.print("Nhập mã nhân viên: ");
+        String idNV=scanner.nextLine();
+        while(Manager.getManagerbyID(idNV)==null){
+            System.out.println("Mã Nhân Viên Này Không Có Trong Danh Sách, Hãy Nhập Lại!");
+            idNV=scanner.nextLine();
+        }
+        receipts[i].NV=new Manager(Manager.getManagerbyID(idNV).getStaffID(),Manager.getManagerbyID(idNV).getName(),Manager.getManagerbyID(idNV).getRole(),Manager.getManagerbyID(idNV).getSalary(),Manager.getManagerbyID(idNV).getContactNum());
+
         String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int length = 8;
         receipts[i].setMaHoaDon("HD" + Receipt.generateRandomString(length, charSet));
@@ -432,17 +443,22 @@ public class Receipt implements QLFile {
         if (orId.isEmpty())
             orId = null;
 
-        System.out.print("Ngày thanh toán (dd/mm/yyyy): ");
+        System.out.printf("Mã Nhân Viên: ");
+        String idNV = scanner.nextLine();
+        if (idNV.isEmpty())
+            idNV = null;
+
+        System.out.print("Ngày thanh toán chính xác (dd/mm/yyyy): ");
         String orderDate = scanner.nextLine();
         if (orderDate.isEmpty())
             orderDate = null;
 
-        System.out.print("Từ ngày (dd/mm/yyyy): "); // **Thêm mới**
+        System.out.print("Hoặc từ ngày (dd/mm/yyyy): "); // **Thêm mới**
         String startDate = scanner.nextLine();
         if (startDate.isEmpty())
             startDate = null;
 
-        System.out.print("Đến ngày (dd/mm/yyyy): "); // **Thêm mới**
+        System.out.print("Hoặc đến ngày (dd/mm/yyyy): "); // **Thêm mới**
         String endDate = scanner.nextLine();
         if (endDate.isEmpty())
             endDate = null;
@@ -521,7 +537,7 @@ public class Receipt implements QLFile {
 
         for (Receipt rc : receipts) {
             if (isInvoiceMatch(rc, maHoaDon, orderDate, nameCustomer, nameProduct, quantityProduct, priceProduct,
-                    tienKhachDua, orId, idcus, pthuc_thanh_toan, maSoThe, tienKhachChuyen,startDate, endDate)) {
+                    tienKhachDua, orId, idcus, pthuc_thanh_toan, maSoThe, tienKhachChuyen,startDate, endDate, idNV)) {
                 filteredInvoices[count++] = rc;
             }
         }
@@ -540,7 +556,7 @@ public class Receipt implements QLFile {
 
     private static boolean isInvoiceMatch(Receipt receipt, String maHoaDon, String orderDate,
             String nameCustomer, String nameProduct, int quantityProduct, int priceProduct, double tienKhachDua,
-            String orId, int idcus, String pthuc_thanh_toan, String masothe, double tienKhachChuyen, String startDate, String endDate) {
+            String orId, int idcus, String pthuc_thanh_toan, String masothe, double tienKhachChuyen, String startDate, String endDate, String idNV) {
         if (maHoaDon != null && !receipt.maHoaDon.equals(maHoaDon))
             return false;
         if (orderDate != null && !receipt.giaodich.donhang.getOrderDate().equals(orderDate))
@@ -551,6 +567,9 @@ public class Receipt implements QLFile {
             return false;
         if (idcus != 0 && receipt.giaodich.donhang.customer.getCustomerID() != idcus)
             return false;
+        if (idNV != null && !receipt.NV.getStaffID().equalsIgnoreCase(idNV))
+            return false;
+
         if (pthuc_thanh_toan != null) {
             if (pthuc_thanh_toan.equals("1")) { // Thẻ/Chuyển khoản
                 if (!(receipt.giaodich.phuongThucThanhToan instanceof CardPayment)) {
@@ -643,16 +662,16 @@ public class Receipt implements QLFile {
                 receipts[i] = new Receipt();
                 String[] parts = Line.split(";");
                 receipts[i].maHoaDon = parts[0];
+                receipts[i].NV=new Manager(Manager.getManagerbyID(parts[1]).getStaffID(),Manager.getManagerbyID(parts[1]).getName(),Manager.getManagerbyID(parts[1]).getRole(), Manager.getManagerbyID(parts[1]).getSalary(), Manager.getManagerbyID(parts[1]).getContactNum());
+                receipts[i].giaodich.donhang = new Order(parts[2],
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getOrderDate(),
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getCustomer(),
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getProductList());
 
-                receipts[i].giaodich.donhang = new Order(parts[1],
-                        receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getOrderDate(),
-                        receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getCustomer(),
-                        receipts[i].giaodich.donhang.getOrderbyID(parts[1]).getProductList());
-
-                if (parts[2].equals("Card")) {
-                    receipts[i].giaodich.phuongThucThanhToan = new CardPayment(Double.parseDouble(parts[3]), parts[4]);
-                } else if (parts[2].equals("Cash")) {
-                    receipts[i].giaodich.phuongThucThanhToan = new CashPayment(Double.parseDouble(parts[3]));
+                if (parts[3].equals("Card")) {
+                    receipts[i].giaodich.phuongThucThanhToan = new CardPayment(Double.parseDouble(parts[4]), parts[5]);
+                } else if (parts[3].equals("Cash")) {
+                    receipts[i].giaodich.phuongThucThanhToan = new CashPayment(Double.parseDouble(parts[4]));
                 }
 
                 String daytmp = receipts[i].giaodich.donhang.getOrderDate();
@@ -705,7 +724,7 @@ public class Receipt implements QLFile {
     @Override
     public void writeToFile(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-            writer.write(getMaHoaDon()
+            writer.write(getMaHoaDon()+";"+NV.getStaffID()
                     + ";" + giaodich.donhang.getOrderId()
                     + ";");
             if (giaodich.getPhuongThucThanhToan() instanceof CardPayment) {
@@ -724,7 +743,7 @@ public class Receipt implements QLFile {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("lichsugiaodich.txt", true))) {
 
             writer.write(
-                    "Mã Hóa Đơn:\t" + getMaHoaDon()
+                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên: " +NV.getName()
                             + "\nNgày Giao Dịch: \t" + giaodich.donhang.getOrderDate()
                             + "\nPhuong Thuc Thanh Toan: \n" + giaodich.phuongThucThanhToan.xuLyThanhToan());
             writer.newLine();
@@ -749,7 +768,7 @@ public class Receipt implements QLFile {
 
         String[] ds = new String[kichthuoc];
 
-        try (BufferedReader br = new BufferedReader(new FileReader("SieuThiMini\\lichsugiaodich.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
             String Line;
             int i = 0;
             while ((Line = br.readLine()) != null) {
