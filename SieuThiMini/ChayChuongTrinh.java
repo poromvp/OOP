@@ -443,9 +443,8 @@ public class ChayChuongTrinh {
                         System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Xuất danh sách tài khoản");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thêm tài khoản ");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xoá tài khoản");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Sửa tài khoản ");
-                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Tìm kiếm tài khoản");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Sửa tài khoản ");
+                        System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Tìm kiếm tài khoản");
                         System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                         System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                         System.out.print("Lựa chọn của bạn: ");
@@ -457,13 +456,10 @@ public class ChayChuongTrinh {
                     case 2: 
                         store.ThemTK();
                         break;
-                    case 3:
-                        store.XoaTK();
-                        break;
-                    case 4: 
+                    case 3: 
                         store.SuaTK();
                         break;
-                    case 5: 
+                    case 4: 
                         store.TimTK();
                         break;
                     case 0:
