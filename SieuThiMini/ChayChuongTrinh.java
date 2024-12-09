@@ -582,16 +582,16 @@ public class ChayChuongTrinh {
 
             switch (choice) {
                 case 1:
-                    store.GiaoDichMoi(scanner);
+                    store.GiaoDichMoi(scanner,staffID);
                     break;
                 case 2:
-                    store.xuatHoaDon(staffID);
+                    store.xuatHoaDon();
                     break;
                 case 3:
                     store.xoaHoaDon(scanner);
                     break;
                 case 4:
-                    store.timHoaDon(scanner,staffID);
+                    store.timHoaDon(scanner);
                     break;
                 case 5:
                     store.xem();
