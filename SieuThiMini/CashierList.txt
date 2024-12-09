@@ -15,4 +15,4 @@ NV1016 Le Quach Khang Saler A 30
 NK0098 Duong Thi Hong Nhat Warehouseman A 30
 QL3452 Duong Tang Ngoc Ngoc Manager B 28
 NV0764 Tang Thien Dat Saler B 23
-NK7681 Le Quang Tuan Warehouseman A 24
+QL1211 Huy Bao Manager B 27
