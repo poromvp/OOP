@@ -688,7 +688,7 @@ public class Receipt implements QLFile {
 
                 if (receipts[i].discount.getDiscountByDay(date) == null) { // kiểm tra xem ngày có nằm trong thời gian
                                                                            // discount ko
-                    System.out.println("ko dc giam gia");
+                    System.out.println("Khong duoc giam gia");
                     receipts[i].discount.setDiscountPercentage(0);
                 } else {
                     receipts[i].discount = receipts[i].discount.getDiscountByDay(date);

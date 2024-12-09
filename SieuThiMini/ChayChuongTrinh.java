@@ -6,9 +6,12 @@ public class ChayChuongTrinh {
         int choice;
         Store sieuthi = new Store();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhap vao ma nhan vien:");
+        System.out.println("╔════════════════════════════════════════╗");
+        System.out.println("║               DANG NHAP                ║");
+        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("        Nhap vao ma nhan vien:");
         String staffID=scanner.nextLine();
-        System.out.println("Nhap vao mat khau:");
+        System.out.println("        Nhap vao mat khau:");
         String passWord=scanner.nextLine();
         int login= sieuthi.login(staffID,passWord);
         if (login==2){
@@ -248,6 +251,9 @@ public class ChayChuongTrinh {
                 case 6:
                     store.statisticImportByQuantity(scanner);
                     break;
+//                case 7:
+//                    store.averageStatistic(scanner);
+//                    break;
                 case 0:
                     break;
                 default:
@@ -351,15 +357,17 @@ public class ChayChuongTrinh {
     private static void manageThongKe(Scanner scanner, Store store) {
         int choice;
         do {
-            System.out.printf("%-20s%s","","╔═════════════════════════════════════════════════╗\n");
-            System.out.printf("%-20s║ %-18s %-28s ║\n",""," " ,"Thống kê");
-            System.out.printf("%-20s%s","","╠═════════════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "1.", "Thống kê doanh thu theo quý");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Thống kê theo top các sản phẩm bán chạy nhất");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "4.", "Thống kê theo nhân viên xuất sắc nhất");
-            System.out.printf("%-20s║ %-2s %-44s ║\n","", "0.", "Thoát");
-            System.out.printf("%-20s%s","","╚═════════════════════════════════════════════════╝\n");
+            System.out.printf("%-20s%s","","╔══════════════════════════════════════════════════════════════════════════╗\n");
+            System.out.printf("%-20s║ %-20s %-51s ║\n",""," " ,"Thống kê");
+            System.out.printf("%-20s%s","","╠══════════════════════════════════════════════════════════════════════════╣\n");
+            System.out.printf("%-20s║ %-2s %-69s ║\n","", "1.", "Thống kê doanh thu theo quý");
+            System.out.printf("%-20s║ %-2s %-69s ║\n","", "2.", "Thống kê theo top các sản phẩm bán chạy nhất");
+            System.out.printf("%-20s║ %-2s %-69s ║\n","", "3.", "Thống kê khách hàng có lượt mua nhiều nhất");
+            System.out.printf("%-20s║ %-2s %-69s ║\n","", "4.", "Thống kê theo nhân viên xuất sắc nhất");
+            System.out.printf("%-20s║ %-2s %-69s ║\n","", "5.", "Thong ke san pham nhap vao nhieu nhat (theo tong tien nhap)");
+            System.out.printf("%-20s║ %-2s %-69s ║\n","", "6.", "Thong ke san pham nhap vao nhieu nhat (theo so luong san pham)");
+            System.out.printf("%-20s║ %-2s %-69s ║\n","", "0.", "Thoát");
+            System.out.printf("%-20s%s","","╚══════════════════════════════════════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
             choice = Integer.parseInt(scanner.nextLine());
 
@@ -376,6 +384,12 @@ public class ChayChuongTrinh {
                     break;
                 case 4:
                     store.thongKeNhanVien();
+                    break;
+                case 5:
+                    store.statisticImportByTotal(scanner);
+                    break;
+                case 6:
+                    store.statisticImportByQuantity(scanner);
                     break;
                 case 0:
                     break;
