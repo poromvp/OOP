@@ -316,16 +316,17 @@ public class Order implements QLFile {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = formatter.format(date);
         orderList[i].setOrderDate(formattedDate);
-
-        System.out.print("Nhập Mã Khách Hàng: ");
-        int cusId = Integer.parseInt(scanner.nextLine());
+        
+        //System.out.print("Nhập Mã Khách Hàng: ");
+        //int cusId = Integer.parseInt(scanner.nextLine());
+        int cusId = Customer.kiemTraMaKhachHang(scanner);
         if(orderList[i].customer.getCustomerById(cusId) == null){
-            System.out.printf("%30sMã khách hàng này không tồn tại....\n");
-            System.out.printf("%30sTiến hành tạo khách hàng mới\n");
+            System.out.printf("%30sMã khách hàng này không tồn tại....\n", " ");
+            System.out.printf("%30sTiến hành tạo khách hàng mới\n", " ");
             System.out.print("Nhập tên: ");
             String name=scanner.nextLine();
-            System.out.print("Nhập số điện thoại: ");
-            String sdt=scanner.nextLine();
+            //System.out.print("Nhập số điện thoại: ");
+            String sdt = Customer.kiemTraSoDienThoai(scanner);
             orderList[i].customer = new Customer(
                 cusId,
                 name,
@@ -343,9 +344,10 @@ public class Order implements QLFile {
                 System.out.print("Bao nhiêu sản phẩm ?: "); // bởi vì 1 đơn hàng có nhiều sản phẩm
                 int n = Integer.parseInt(scanner.nextLine());
                 while (n < 0) {
-                    System.out.printf("%30sKhông hợp lệ, hãy nhập lại\n");
+                    System.out.printf("%30sKhông hợp lệ, hãy nhập lại\n", " ");
                     n = Integer.parseInt(scanner.nextLine());
                 }
+        
         orderList[i].product = new Product[n];
         
         for (int j = 0; j < orderList[i].product.length; j++) {
@@ -362,7 +364,7 @@ public class Order implements QLFile {
                 continue;
             }
             if (Product.getProductById(id).getQuantity() == 0) {
-                System.out.printf("%30sSản phẩm này đã hết hàng, vui vòng nhập mã SP khác\n");
+                System.out.printf("%30sSản phẩm này đã hết hàng, vui vòng nhập mã SP khác\n", " ");
                 j--;
                 continue;
             }
@@ -386,7 +388,7 @@ public class Order implements QLFile {
                     int sl = Integer.parseInt(scanner.nextLine());
                     while (sl > Product.getProductById(id).getQuantity() || sl < 0) {
                         if (sl < 0) {
-                            System.out.printf("%30sSố lượng bạn nhập không được < 0, hãy nhập lại\n");
+                            System.out.printf("%30sSố lượng bạn nhập không được < 0, hãy nhập lại\n", " ");
                         }
                         if (sl > Product.getProductById(id).getQuantity()) {
                             System.out.println("Số lượng " + sl + " vượt quá " + orderList[i].product[j].getQuantity()
@@ -412,6 +414,15 @@ public class Order implements QLFile {
         //Customer.getCustomerById(orderList[i].customer.getCustomerID()).setLoyaltyPoints(n);
         //orderList[i].customer.writeToFile("customers.txt");
         //orderList[i].customer.capnhatlaiCustomers(cusId, orderList[i].customer.getLoyaltyPoints());
+
+        // Tăng điểm tích lũy cho khách hàng
+        if (orderList[i].getCustomer() != null) {
+            orderList[i].getCustomer().setLoyaltyPoints(
+                orderList[i].getCustomer().calculateLoyaltyPoints(orderList[i])
+            );
+            System.out.println("Điểm tích lũy của khách hàng đã được cập nhật.");
+        }
+
         return orderList;
     }
 

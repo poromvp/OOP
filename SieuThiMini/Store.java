@@ -195,10 +195,10 @@ public class Store {
     /* Các thao tác cho danh sách khách hàng START */
 
     // Chức năng thứ 1 trong menu
-    public void themKhachHang(Scanner scanner) {
+    /*public void themKhachHang(Scanner scanner) {
         customers = Customer.addCustomers(customers, scanner);
         ghifilecus();
-    }
+    } */
 
     // Chức năng thứ 2 trong menu
     public void xuatDanhSachKhachHang() {
