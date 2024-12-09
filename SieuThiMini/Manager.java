@@ -384,23 +384,4 @@ public class Manager extends Staff {
         System.out.printf(
                 "╚════════════╧═════════════════════════════════════╧═════════════════╧═════════════════╧═════════════════╝\n");
     }
-
-    public static Manager getManagerbyID(String id) {
-        Manager temp=new Manager();
-        Manager[] a = temp.readFromFile("dsnv.txt");
-        int tmp = 0;
-        boolean flag = false;
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] != null && a[i].getStaffID().equals(id)) {
-                tmp = i;
-                flag = true;
-                break;
-            }
-        }
-        if (flag == false) {
-            return null;
-        } else {
-            return a[tmp];
-        }
-    }
 }
