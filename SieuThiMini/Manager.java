@@ -129,10 +129,10 @@ public class Manager extends Staff {
 
 
         // Đọc danh sách nhân viên hiện tại từ file
-        Manager[] managers = readFromFile("dsnv.txt");
+       // Manager[] managers = readFromFile("dsnv.txt");
 
         System.out.print("Bạn muốn thêm bao nhiêu nhân viên: ");
-        int n = Integer.parseInt(sc.nextLine());
+        //int n = Integer.parseInt(sc.nextLine());
         while (n < 0) {
             System.out.print("số lượng không hợp lệ !!!! vui lòng nhập lại: ");
             n = Integer.parseInt(sc.nextLine());

@@ -127,7 +127,7 @@ public class Receipt implements QLFile {
                 receipts[i].giaodich.donhang.getOrderbyID(or.getOrderId()).getCustomer(),
                 receipts[i].giaodich.donhang.getOrderbyID(or.getOrderId()).getProductList());
 
-        System.out.print("Phuong thuc thanh toan?\n 1.Thẻ/Chuyển Khoản \t 2.Tiền mặt\n→ ");
+        System.out.print("Phương thức thanh toán?\n1.Thẻ/Chuyển Khoản \t 2.Tiền mặt\n→ ");
         int pt = 0;
         boolean isValid = false;
         while (!isValid) {
@@ -171,11 +171,11 @@ public class Receipt implements QLFile {
             tien = tien_hang_sau_khi_giam;
             receipts[i].giaodich.phuongThucThanhToan = new CardPayment(tien, cardId); // Đa hình
         } else {
-            System.out.printf("Tổng tiền là: %,.2f\n", tien_hang_sau_khi_giam);
+            System.out.printf("Tổng tiền là: %,.2fđ\n", tien_hang_sau_khi_giam);
             System.out.println("Nhập tiền khách đưa: ");
             tien = Double.parseDouble(scanner.nextLine());
             while (tien < tien_hang_sau_khi_giam) {
-                System.out.printf("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng (%,.2f), hãy nhập lại: ",
+                System.out.printf("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng (%,.2fđ), hãy nhập lại: ",
                         tien_hang_sau_khi_giam);
                 tien = Double.parseDouble(scanner.nextLine());
             }
@@ -183,79 +183,6 @@ public class Receipt implements QLFile {
         }
         receipts[i].giaodich.getPhuongThucThanhToan().setSoTien(tien);
         receipts[i].inHoaDon();
-        return receipts;
-    }
-
-    public static void nhaphoadon(Scanner scanner, Receipt receipt) {
-        System.out.print("Nhập mã đơn hàng để tạo hóa đơn và tính tiền: ");
-        String orId = scanner.nextLine();
-        while (receipt.giaodich.donhang.getOrderbyID(orId) == null) {
-            System.out.print("Mã đơn hàng mà bạn nhập không có, hãy nhập lại: ");
-            orId = scanner.nextLine();
-        }
-        receipt.giaodich.donhang = receipt.giaodich.donhang.getOrderbyID(orId);
-
-        System.out.print("Phuong thuc thanh toan?\n 1.Thẻ/Chuyển Khoản \t 2.Tiền mặt\n→");
-        int pt = Integer.parseInt(scanner.nextLine());
-        while (pt != 1 && pt != 2) {
-            System.out.print("Không hợp lệ, hãy nhập lại: ");
-            pt = Integer.parseInt(scanner.nextLine());
-        }
-
-        String daytmp = receipt.giaodich.donhang.getOrderDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Định dạng ngày
-        Date date;
-        try {
-            date = sdf.parse(daytmp); // Chuyển đổi từ String thành Date
-        } catch (ParseException e) {
-            date = null;
-            System.out.println("Lỗi không định dạng được ngày: " + e.getMessage());
-        }
-        if (receipt.discount.getDiscountByDay(date) == null) {
-            receipt.discount.setDiscountPercentage(0);
-        } else {
-            receipt.discount = receipt.discount.getDiscountByDay(date);
-        }
-        double tien, tien_hang_sau_khi_giam = (receipt.giaodich.donhang.calculateTotalAmount()
-                + Order.calculateVAT(receipt.giaodich.donhang.calculateTotalAmount()))
-                * (1.0 - receipt.discount.getDiscountPercentage() / 100.0);
-
-        if (pt == 1) {
-            System.out.print("Nhập STK: ");
-            String cardId = scanner.nextLine();
-            System.out.println("Nhập số tiền khách chuyển: ");
-            tien = Double.parseDouble(scanner.nextLine());
-            while (tien < tien_hang_sau_khi_giam) {
-                System.out.print("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng (" + tien_hang_sau_khi_giam
-                        + "), hãy nhập lại: ");
-                tien = Double.parseDouble(scanner.nextLine());
-            }
-            receipt.giaodich.phuongThucThanhToan = new CardPayment(tien, cardId); // Đa hình
-        } else {
-            System.out.println("Nhập tiền khách đưa: ");
-            tien = Double.parseDouble(scanner.nextLine());
-            while (tien < tien_hang_sau_khi_giam) {
-                System.out.print("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng(" + tien_hang_sau_khi_giam
-                        + "), hãy nhập lại: ");
-                tien = Double.parseDouble(scanner.nextLine());
-            }
-            receipt.giaodich.phuongThucThanhToan = new CashPayment(tien); // Đa hình
-        }
-        receipt.giaodich.getPhuongThucThanhToan().setSoTien(tien);
-    }
-
-    public static Receipt[] themhoadon(Receipt[] receipts, Scanner scanner, Order[] orderList) {
-        String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        int length = 8;
-        System.out.print("Bạn muốn thêm bao nhiêu hóa đơn?: ");
-        int n = Integer.parseInt(scanner.nextLine());
-        receipts = Arrays.copyOf(receipts, receipts.length + n);
-        for (int j = receipts.length - n; j < receipts.length; j++) {
-            receipts[j] = new Receipt();
-            receipts[j].setMaHoaDon("HD" + Receipt.generateRandomString(length, charSet));
-            nhaphoadon(scanner, receipts[j]);
-        }
-        System.out.println("Đã thêm hóa đơn thành công");
         return receipts;
     }
 
@@ -292,9 +219,12 @@ public class Receipt implements QLFile {
                 System.out.println("Bạn đã nhập sai quá nhiều lần. Đang thoát...");
                 break;
             }
-            System.out.print(
-                    "Mã Hóa Đơn Mà Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Xóa Hóa Đơn Không?\n "
-                            + "1.Có    0.Không");
+            System.out.println("╔══════════════════════════════════════════════════════════════════════════════════════════╗");
+            System.out.println("║ Mã Hóa Đơn Mà Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Xóa Hóa Đơn Không? ║");
+            System.out.println("║                                                                                          ║");
+            System.out.println("║                          1. CÓ                        0. KHÔNG                           ║");
+            System.out.println("╚══════════════════════════════════════════════════════════════════════════════════════════╝");
+
             do {
                 System.out.print("\n→ ");
                 choice = Byte.parseByte(scanner.nextLine());
@@ -314,118 +244,6 @@ public class Receipt implements QLFile {
             } while (choice != 0 && choice != 1);
         } while (!flag);
         return receipts;
-    }
-
-    public static Receipt[] suahoadon(Receipt[] receipts, String editID, Scanner scanner) {
-        // Tìm kiếm hóa đơn theo ID
-        Receipt hoadon = null;
-        for (Receipt rc : receipts) {
-            if (rc.getMaHoaDon().equals(editID)) {
-                hoadon = rc;
-                break;
-            }
-        }
-
-        if (hoadon != null) {
-            hoadon.inHoaDon();
-            System.out.println("\nNhấn Enter để giữ nguyên thông tin hiện tại.");
-
-            // Cập nhật mã hóa đơn
-            System.out.print("Mã hóa đơn: ");
-            String receiptId = scanner.nextLine();
-            if (!receiptId.trim().isEmpty()) {
-                hoadon.setMaHoaDon(receiptId);
-            }
-
-            // Cập nhật mã đơn hàng
-            System.out.print("Mã đơn hàng: ");
-            String orderId = scanner.nextLine();
-            if (!orderId.trim().isEmpty()) {
-                if (hoadon.giaodich.donhang.getOrderbyID(orderId) == null) {
-                    hoadon.giaodich.donhang = new Order();
-                    hoadon.giaodich.donhang.setOrderId("NONE");
-                    hoadon.giaodich.donhang.setOrderDate("NONE");
-                    hoadon.giaodich.donhang.customer.setCustomerID(0);
-                    hoadon.giaodich.donhang.customer.setLoyaltyPoints(0);
-                    hoadon.giaodich.donhang.customer.setName("NONE");
-                    hoadon.giaodich.donhang.customer.setContactNumber("NONE");
-                    hoadon.giaodich.donhang.product = new Product[1];
-                    hoadon.giaodich.donhang.product[0] = new Product();
-                    hoadon.giaodich.phuongThucThanhToan = new CashPayment(0);
-                } else {
-                    hoadon.giaodich.donhang = hoadon.giaodich.donhang.getOrderbyID(orderId);
-                }
-            }
-
-            // Cập nhật phương thức thanh toán và tiền khách đưa/chuyển
-            System.out.println("Chọn phương thức thanh toán:");
-            System.out.println("1. Thẻ/Chuyển khoản");
-            System.out.println("2. Tiền mặt");
-            System.out.print("Nhấn Enter để giữ nguyên phương thức thanh toán hiện tại hoặc chọn 1 hoặc 2: ");
-            String tmpInput = scanner.nextLine();
-
-            double tien_hang_sau_khi_giam = (hoadon.giaodich.donhang.calculateTotalAmount()
-                    + Order.calculateVAT(hoadon.giaodich.donhang.calculateTotalAmount()))
-                    * (1.0 - hoadon.discount.getDiscountPercentage() / 100.0);
-            if (!tmpInput.trim().isEmpty()) {
-                byte tmp = Byte.parseByte(tmpInput);
-                if (tmp == 1) { // Thẻ/Chuyển khoản
-                    System.out.print("Số tiền khách chuyển: ");
-                    String newMoney = scanner.nextLine();
-
-                    double newTien;
-                    if (newMoney.trim().isEmpty()) {
-                        newTien = hoadon.giaodich.getPhuongThucThanhToan().getSoTien();
-                    } else {
-
-                        newTien = Double.parseDouble(newMoney);
-                        while (newTien < tien_hang_sau_khi_giam) {
-                            System.out.print("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng("
-                                    + tien_hang_sau_khi_giam + "), hãy nhập lại: ");
-                            newTien = Double.parseDouble(scanner.nextLine());
-                        }
-                    }
-
-                    System.out.print("Số thẻ: ");
-                    String newidthe = scanner.nextLine();
-
-                    String soThe;
-                    if (newidthe.trim().isEmpty()) {
-                        if (hoadon.giaodich.getPhuongThucThanhToan() instanceof CardPayment) {
-                            soThe = ((CardPayment) hoadon.giaodich.getPhuongThucThanhToan()).getSoThe();
-                        } else {
-                            soThe = "UNKNOWN";
-                        }
-                    } else {
-                        soThe = newidthe;
-                    }
-
-                    hoadon.giaodich.phuongThucThanhToan = new CardPayment(newTien, soThe);
-
-                } else if (tmp == 2) { // Tiền mặt
-                    System.out.print("Số tiền khách đưa: ");
-                    String newMoney = scanner.nextLine();
-
-                    double newTien;
-                    if (newMoney.trim().isEmpty()) {
-                        newTien = hoadon.giaodich.getPhuongThucThanhToan().getSoTien();
-                    } else {
-                        newTien = Double.parseDouble(newMoney);
-                        while (newTien < tien_hang_sau_khi_giam) {
-                            System.out.print("Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền hàng("
-                                    + tien_hang_sau_khi_giam + "), hãy nhập lại: ");
-                            newTien = Double.parseDouble(scanner.nextLine());
-                        }
-                    }
-
-                    hoadon.giaodich.phuongThucThanhToan = new CashPayment(newTien);
-                }
-            }
-        } else {
-            System.out.println("Không tìm thấy hóa đơn với mã: " + editID);
-        }
-        System.out.println("Đã cập nhật thông tin");
-        return receipts; // Trả về danh sách khách hàng sau khi cập nhật
     }
 
     public static void locHoaDon(Scanner scanner, Receipt[] receipts) {
@@ -484,7 +302,7 @@ public class Receipt implements QLFile {
         if (nameProduct.isEmpty())
             nameProduct = null;
 
-        System.out.print("Số lượng sản phẩm: ");
+        System.out.print("Số lượng mua: ");
         in = scanner.nextLine();
         int quantityProduct;
         if (in.isEmpty())
@@ -502,7 +320,7 @@ public class Receipt implements QLFile {
             priceProduct = Integer.parseInt(in);
         }
 
-        System.out.print("Thanh toán bằng\n 1.thẻ/chuyển khoản\t2.Tiền mặt\n");
+        System.out.print("Thanh toán bằng: \t1.Thẻ/Chuyển khoản\t2.Tiền mặt\n");
         String pthuc_thanh_toan = scanner.nextLine();
         if (pthuc_thanh_toan.isEmpty())
             pthuc_thanh_toan = null;
@@ -547,9 +365,9 @@ public class Receipt implements QLFile {
         Receipt[] result = Arrays.copyOf(filteredInvoices, count);
 
         if (result.length == 0) {
-            System.out.println("Không tìm thấy hóa đơn nào khớp với tiêu chí.");
+            System.out.println("Không Tìm Thấy Hóa Đơn Nào Khớp Với Tiêu Chí.");
         } else {
-            System.out.println("\nDanh sách hóa đơn:\n");
+            System.out.println("\nDanh Sách Hóa Đơn Khớp Với Tiêu Chí:\n");
             for (Receipt rc : result) {
                 rc.inHoaDon();
             }
@@ -688,7 +506,6 @@ public class Receipt implements QLFile {
 
                 if (receipts[i].discount.getDiscountByDay(date) == null) { // kiểm tra xem ngày có nằm trong thời gian
                                                                            // discount ko
-                    System.out.println("Khong duoc giam gia");
                     receipts[i].discount.setDiscountPercentage(0);
                 } else {
                     receipts[i].discount = receipts[i].discount.getDiscountByDay(date);
@@ -745,8 +562,8 @@ public class Receipt implements QLFile {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("lichsugiaodich.txt", true))) {
 
             writer.write(
-                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên: "+ Store.getAccountById(MaNV).getName()
-                            + "\nNgày Giao Dịch: \t" + giaodich.donhang.getOrderDate()
+                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên:\t"+ Store.getAccountById(MaNV).getName()
+                            + "\nNgày Giao Dịch:\t" + giaodich.donhang.getOrderDate()
                             + "\nPhuong Thuc Thanh Toan: \n" + giaodich.phuongThucThanhToan.xuLyThanhToan());
             writer.newLine();
 
