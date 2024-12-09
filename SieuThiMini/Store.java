@@ -617,6 +617,9 @@ public class Store {
     public void statisticImportByQuantity(Scanner scanner){
         ImportManager.statisticImportByQuantity(scanner);
     }
+//    public void averageStatistic(Scanner scanner){
+//        ImportManager.averageStatistic(scanner);
+//    }
     //Ghi file
     public void writeFileImport(){
         Import.writeFile("import.txt");
