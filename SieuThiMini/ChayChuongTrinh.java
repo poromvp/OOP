@@ -275,7 +275,7 @@ public class ChayChuongTrinh {
                
                 case 1:
                     // Thêm mới 1 phần tử, k phần tử
-                    store.themKhachHang(scanner);
+                    //store.themKhachHang(scanner);
                     break;
                 case 2:
                     store.xuatDanhSachKhachHang();

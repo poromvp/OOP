@@ -76,6 +76,7 @@ public class Customer implements QLFile {
                 " ");
     }
 
+    // Phương thức thêm khách hàng vào danh sách
     public static Customer[] themCustomers(Customer[] customers, Customer cusThem){
         customers=Arrays.copyOf(customers, customers.length+1);
         int i=customers.length-1;
@@ -88,6 +89,7 @@ public class Customer implements QLFile {
     }
 
     // Phương thức thêm khách hàng vào danh sách (3)
+    /* 
     public static Customer[] addCustomers(Customer[] customers, Scanner scanner) {
         System.out.print("Nhập số lượng khách hàng cần thêm: ");
         int n = Integer.parseInt(scanner.nextLine());
@@ -119,7 +121,7 @@ public class Customer implements QLFile {
             System.out.println("Đã thêm khách hàng: " + name);
         }
         return updatedCustomers;
-    }
+    } */
 
     // Phương thức sửa (cập nhật) thông tin của khách hàng trong danh sách (4)
     public static Customer[] updateCustomerByID(Customer[] customers, int customerID, Scanner scanner) {
@@ -415,27 +417,28 @@ public class Customer implements QLFile {
         }
         return 0.0; // Nếu không có order, không áp dụng giảm giá
     }
-    // Phương thức kiểm tra số âm
-    public int inputCustomerID(Scanner scanner) {
+    
+    // Phương thức kiểm tra mã khách hàng, mã khách hàng không được là số âm và không được trùng 
+    // với những mã khách hàng đã có trước đó
+    public static int kiemTraMaKhachHang(Scanner scanner) {
         int id;
         while (true) {
-            System.out.print("Nhập mã khách hàng (không được là số âm): ");
+            System.out.print("Nhập mã khách hàng: ");
             try {
                 id = Integer.parseInt(scanner.nextLine());
                 if (id >= 0) {
-                    break; // Thoát khỏi vòng lặp nếu mã hợp lệ
+                    return id; // Mã hợp lệ, trả về kết quả
                 } else {
                     System.out.println("Lỗi: Mã khách hàng không được là số âm. Vui lòng thử lại.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Lỗi: Giá trị nhập vào không hợp lệ. Vui lòng nhập một số nguyên.");
+                System.out.println("Lỗi: Giá trị không hợp lệ. Vui lòng nhập một số nguyên.");
             }
         }
-        return id;
     }
     
     // Phương thức kiểm tra số điện thoại nhập vào phải có đủ 11 số và bắt đầu bằng số 0
-    public static String validatePhoneNumber(Scanner scanner) {
+    public static String kiemTraSoDienThoai(Scanner scanner) {
         while (true) {
             System.out.print("Nhập số điện thoại khách hàng (10 chữ số, bắt đầu bằng '0'): ");
             String phoneNumber = scanner.nextLine().trim();
