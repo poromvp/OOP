@@ -84,7 +84,6 @@ public class Customer implements QLFile {
             cusThem.getName(),
             cusThem.getContactNumber(),
             cusThem.getLoyaltyPoints());
-        System.out.println("Them thanh cong");
         return customers;
     }
 
