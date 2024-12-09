@@ -1,15 +1,40 @@
-Mã Hóa Đơn:	HD4ddJVCls
-Tên Nhân Viên: Nguyen Minh Khoa
-Ngày Giao Dịch: 	09/12/2024
+Mã Hóa Đơn:	HDw77d66cA
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	06/01/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 123 với số tiền:         0.00đ
-Mã Hóa Đơn:	HDs4eQgsn0
-Tên Nhân Viên: Bui Van An
-Ngày Giao Dịch: 	09/12/2024
+Thanh toán qua thẻ: 546 với số tiền:         49,087.50đ
+Mã Hóa Đơn:	HDFS6TcbvO
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	20/11/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:         1.00đ
-Mã Hóa Đơn:	HDkZK2pTOT
-Tên Nhân Viên: Nguyen Minh Khoa
-Ngày Giao Dịch: 	09/12/2024
+Thanh toán qua thẻ: 123 với số tiền:         28,050.00đ
+Mã Hóa Đơn:	HDBsOkwklm
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	03/11/2022
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:         12.00đ
+Thanh toán qua thẻ: 232 với số tiền:         38,335.00đ
+Mã Hóa Đơn:	HD8S65cbv1
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	14/06/2024
+Phuong Thuc Thanh Toan: 
+Thanh toán qua thẻ: 121 với số tiền:         62,645.00đ
+Mã Hóa Đơn:	HD2sOk6kam
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	05/12/2024
+Phuong Thuc Thanh Toan: 
+Thanh toán qua thẻ: 666 với số tiền:         14,726.25đ
+Mã Hóa Đơn:	HD6u0zcgF1
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	09/12/2024
+Phuong Thuc Thanh Toan: 
+Thanh toán bằng tiền mặt với số tiền:         90,000.00đ
+Mã Hóa Đơn:	HDZvPUVEuF
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	09/12/2024
+Phuong Thuc Thanh Toan: 
+Thanh toán qua thẻ: 123 với số tiền:         56,100.00đ
+Mã Hóa Đơn:	HDHE37GBzk
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	09/12/2024
+Phuong Thuc Thanh Toan: 
+Thanh toán qua thẻ: 123 với số tiền:         45,581.25đ

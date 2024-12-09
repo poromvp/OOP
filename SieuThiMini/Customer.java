@@ -76,6 +76,17 @@ public class Customer implements QLFile {
                 " ");
     }
 
+    public static Customer[] themCustomers(Customer[] customers, Customer cusThem){
+        customers=Arrays.copyOf(customers, customers.length+1);
+        int i=customers.length-1;
+        customers[i]=new Customer(
+            cusThem.getCustomerID(),
+            cusThem.getName(),
+            cusThem.getContactNumber(),
+            cusThem.getLoyaltyPoints());
+        return customers;
+    }
+
     // Phương thức thêm khách hàng vào danh sách (3)
     public static Customer[] addCustomers(Customer[] customers, Scanner scanner) {
         System.out.print("Nhập số lượng khách hàng cần thêm: ");
@@ -400,8 +411,40 @@ public class Customer implements QLFile {
             } else if (this.loyaltyPoints > 1000 && this.loyaltyPoints <= 1500) {
                 return totalAmount - totalAmount * 0.05;
             }
-            //else if(this.loyaltyPoints <= 1000) return totalAmount;
+            else return totalAmount;
         }
         return 0.0; // Nếu không có order, không áp dụng giảm giá
+    }
+    // Phương thức kiểm tra số âm
+    public int inputCustomerID(Scanner scanner) {
+        int id;
+        while (true) {
+            System.out.print("Nhập mã khách hàng (không được là số âm): ");
+            try {
+                id = Integer.parseInt(scanner.nextLine());
+                if (id >= 0) {
+                    break; // Thoát khỏi vòng lặp nếu mã hợp lệ
+                } else {
+                    System.out.println("Lỗi: Mã khách hàng không được là số âm. Vui lòng thử lại.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Lỗi: Giá trị nhập vào không hợp lệ. Vui lòng nhập một số nguyên.");
+            }
+        }
+        return id;
+    }
+    
+    // Phương thức kiểm tra số điện thoại nhập vào phải có đủ 11 số và bắt đầu bằng số 0
+    public static String validatePhoneNumber(Scanner scanner) {
+        while (true) {
+            System.out.print("Nhập số điện thoại khách hàng (10 chữ số, bắt đầu bằng '0'): ");
+            String phoneNumber = scanner.nextLine().trim();
+    
+            if (phoneNumber.matches("0\\d{9}")) { // Kiểm tra định dạng bằng regex
+                return phoneNumber; // Số điện thoại hợp lệ
+            } else {
+                System.out.println("Số điện thoại không hợp lệ. Vui lòng nhập lại!");
+            }
+        }
     }
 }
