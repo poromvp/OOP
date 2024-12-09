@@ -308,48 +308,6 @@ public class AccountManager extends Staff {
             }
         }
 
-        if(count==0){
-            System.out.print("Nhập tài khoản bạn muốn xoá: ");
-            String acc = sc.nextLine();
-            System.out.println();
-            System.out.println("bạn có chắc bạn muốn xoá tài khoản " + acc + " ? ");
-            System.out.print("nhập Y (có)/N (không): ");
-            String choice = sc.nextLine();
-            while (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n")){
-                System.out.print("Lựa chọn không hợp lệ mời nhập lại (nhập Y hoặc N): ");
-                choice = sc.nextLine();
-            }
-            if(choice.equalsIgnoreCase("y")){
-                int newSize = 0;
-                for (AccountManager account : accounts) {
-                    if (!account.getAccount().equals(acc)) {
-                        newSize++; //nếu không phải là tài khoản bị xoá, tăng kích thước mảng mới
-                    }
-                }
-                
-                if (newSize == accounts.length) {
-                    System.out.println("Không tìm thấy tài khoản với mã: " + acc);
-                } else {
-                    // Tạo một mảng mới với kích thước giảm đi 1
-                    AccountManager[] updatedAccount = new AccountManager[newSize];
-                    int index = 0;
-                
-                    // Duyệt qua mảng và sao chép các tài khoản không bị xoá
-                    for (AccountManager account : accounts) {
-                        if (!account.getAccount().equals(acc)) {
-                            updatedAccount[index++] = account;
-                        }
-                    }
-        
-                        // Ghi lại danh sách mới vào file
-                    writeToFile("AccountManager.txt", updatedAccount);
-                    System.out.println("Tài khoản " + acc + " đã được xoá.");
-                }
-            }
-            else{
-                System.out.println("không có tài khoản nào bị xoá");
-            }
-        }   
     }
 
     @Override
