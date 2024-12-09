@@ -53,6 +53,7 @@ public class ChayChuongTrinh {
                 System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ SIÊU THỊ MINI");
                 System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
                 System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Quản lý bán hàng");
+                System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Quản lý khách hàng");
                 System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                 System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                 System.out.print("Nhập lựa chọn của bạn: ");
@@ -62,6 +63,9 @@ public class ChayChuongTrinh {
                 switch (choice) {
                     case 1:
                         manageInvoice(scanner, sieuthi, staffID);
+                        break;
+                    case 2:
+                        manageCustomer(scanner, sieuthi);
                         break;
                     case 0:
                         System.out.println("Đã thoát chương trình.");
@@ -81,12 +85,9 @@ public class ChayChuongTrinh {
                 System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
                 System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Quản lý sản phẩm");
                 System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Quản lý nhập hàng.");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Quản lý khách hàng");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Quản lý đơn hàng");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Quản lý nhân sự");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "6.", "Quản lý hóa đơn");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "7.", "Quản lý CTKM");
-                System.out.printf("%-20s║ %-2s %-35s ║\n","", "8.", "Thống kê");
+                System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Quản lý nhân sự");
+                System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Quản lý CTKM");
+                System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Thống kê");
                 System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
                 System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
                 System.out.print("Nhập lựa chọn của bạn: ");
@@ -101,21 +102,12 @@ public class ChayChuongTrinh {
                         manageImport(scanner,sieuthi,staffID);
                         break;
                     case 3:
-                        manageCustomer(scanner, sieuthi);
-                        break;
-                    case 4:
-                        manageOrders(scanner, sieuthi);
-                        break;
-                    case 5:
                         manageStaffs(scanner, sieuthi);
                         break;
-                    case 6:
-                        manageInvoice(scanner, sieuthi,staffID);
-                        break;
-                    case 7:
+                    case 4:
                         manageDiscounnt(scanner, sieuthi);
                         break;
-                    case 8:
+                    case 5:
                         // Thống kê
                         manageThongKe(scanner, sieuthi);
                         break;
