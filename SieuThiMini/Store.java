@@ -651,6 +651,6 @@ public class Store {
                 return acc;
             }
         }
-        return accList[0];
+        return null;
     }
 }
