@@ -155,7 +155,7 @@ public class ImportDetail {
         }
     }
     public void outImportDetail(){
-        System.out.println(productID+"     "+quantity+"     "+price+"     "+toTal);
+        System.out.printf("%-15s %-10s %-10s %-10s\n",productID,quantity,price,toTal);
     }
     //read from file
     public static void readFile(String fileName) {
@@ -210,7 +210,6 @@ public class ImportDetail {
                 cnt--;
                 i--;
             }
-
         }
     }
 }

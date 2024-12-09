@@ -107,12 +107,32 @@ public class Manager extends Staff {
     @Override
     // them nhan vien vao danh sach nhan vien
     public void add() {
+      
+    // Đọc danh sách nhân viên hiện tại từ file
+    Manager[] managers = readFromFile("dsnv.txt");
+
+    int n;
+    do {
+        System.out.println("Bạn muốn thêm bao nhiêu nhân viên: ");
+        try {
+            n = Integer.parseInt(sc.nextLine());
+            if (n < 0) {
+                System.out.print("Số lượng không hợp lệ mời bạn nhập lại: ");
+            } 
+        } catch (NumberFormatException e) {
+            System.out.print("Số lượng nhân viên bạn muốn thêm phải là một số nguyên lớn hơn không !!! Mời bạn nhập lại: ");
+            n = -1; // Đặt giá trị không hợp lệ để lặp lại
+        }
+    } while (n < 0);
+
+    System.out.println("=================================================================");
+
 
         // Đọc danh sách nhân viên hiện tại từ file
-        Manager[] managers = readFromFile("dsnv.txt");
+       // Manager[] managers = readFromFile("dsnv.txt");
 
         System.out.print("Bạn muốn thêm bao nhiêu nhân viên: ");
-        int n = Integer.parseInt(sc.nextLine());
+        //int n = Integer.parseInt(sc.nextLine());
         while (n < 0) {
             System.out.print("số lượng không hợp lệ !!!! vui lòng nhập lại: ");
             n = Integer.parseInt(sc.nextLine());
@@ -153,8 +173,12 @@ public class Manager extends Staff {
             }
             System.out.println("Vai trò của nhân viên : " + role);
 
-            System.out.print("Nhập số điện thoại của nhân viên mới: ");
-            String PhoneNum = sc.nextLine();
+        System.out.print("Nhập số điện thoại của nhân viên mới: ");
+        String PhoneNum = sc.nextLine();
+        while(PhoneNum.length() != 10 || !PhoneNum.matches("\\d+")){
+            System.out.print("Số điện thoại của bạn không hợp lệ, mời nhập lại (10 số): ");
+            PhoneNum = sc.nextLine();
+        }
 
             // Tạo nhân viên mới
             Manager newManager = new Manager(ID, Ten, role, Luong, PhoneNum);
@@ -279,11 +303,18 @@ public class Manager extends Staff {
                     } else {
                         role = "Warehouseman";
                     }
+
+                managers[i].setRole(role);
+
                 // Cập nhật số điện thoại
                 System.out.print("Nhập số điện thoại mới: ");
                 String contactNum = sc.nextLine();
                 if (!contactNum.isEmpty()) {
-                    managers[i].setContactNum(contactNum); // Nếu không để trống, cập nhật số điện thoại mới
+                    while(contactNum.length() != 10 || !contactNum.matches("\\d+")){
+                        System.out.print("Số điện thoại của bạn không hợp lệ, mời nhập lại (10 số): ");
+                        contactNum = sc.nextLine();
+                    }
+                    managers[i].setContactNum(contactNum);
                 }
 
                 System.out.println("Thông tin nhân viên đã được cập nhật.");
@@ -383,24 +414,5 @@ public class Manager extends Staff {
         // Đường viền cuối bảng
         System.out.printf(
                 "╚════════════╧═════════════════════════════════════╧═════════════════╧═════════════════╧═════════════════╝\n");
-    }
-
-    public static Manager getManagerbyID(String id) {
-        Manager temp=new Manager();
-        Manager[] a = temp.readFromFile("dsnv.txt");
-        int tmp = 0;
-        boolean flag = false;
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] != null && a[i].getStaffID().equals(id)) {
-                tmp = i;
-                flag = true;
-                break;
-            }
-        }
-        if (flag == false) {
-            return null;
-        } else {
-            return a[tmp];
-        }
     }
 }

@@ -71,16 +71,12 @@ public class Store {
         managers.search();
     }
 
-    public void XuatTK() {
+    public void XuatTK(){
         accounts.getdetail();
     }
 
     public void ThemTK() {
         accounts.add();
-    }
-
-    public void XoaTK() {
-        accounts.remove();
     }
 
     public void SuaTK() {
@@ -139,83 +135,7 @@ public class Store {
         cashiers.statisticBestCashier();
     }
 
-
-
     /* các thao tác cho ds đơn đặt hàng START */
-    public void xuatOrder() {
-        System.out.printf("%-53s╔═══════════════════════════════════════╗\n", " ");
-        System.out.printf("%-53s║           CHI TIẾT ĐƠN HÀNG           ║\n"," ");
-        System.out.printf("%-53s╚═══════════════════════════════════════╝\n\n", " ");
-        for (Order or : orderList) {
-            or.displayOrderDetails();
-        }
-    }
-
-    public void addOrder(Scanner scanner) { // thêm đơn hàng
-        orderList = Order.add(scanner, orderList);
-        System.out.println("Thêm Đơn Hàng Mới Thành Công!");
-        ghifileord();
-    }
-
-    public void removeOrder(Scanner scanner) { // xóa đơn hàng theo mã
-        orderList = Order.xoa(scanner, orderList);
-        ghifileord();
-    }
-
-    public void editOrder(Scanner scanner) {
-        System.out.print("Nhập mã đơn hàng cần chỉnh sửa: ");
-        String temp = scanner.nextLine();
-        boolean flag = false; // dùng lính canh để lặp lại chương trình nếu nhập sai
-        byte so_lan_thu = 0; // nếu số lần nhập sai quá nhiều thì sẽ break
-        byte choice = 0; // Lụa chọn có tiếp tục chỉnh sửa không hay thoát
-        do {
-            so_lan_thu++;
-            for (int i = 0; i < orderList.length; i++) {
-                if (orderList[i].orderId.equals(temp)) {
-                    orderList[i].edit(scanner, orderList[i].product, orderList, i); // phương thức chỉnh sửa của class
-                                                                                    // order
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag) {
-                if (so_lan_thu > 2) {
-                    System.out.println("Bạn đã nhập sai quá nhiều lần. Đang thoát...");
-                    break;
-                }
-                System.out.println(
-                        "Mã Đơn Hàng Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Chỉnh Sửa Không?\n 1.Có  0.Không");
-                do {
-                    System.out.print("→ ");
-                    choice = Byte.parseByte(scanner.nextLine());
-                    switch (choice) {
-                        case 1:
-                            System.out.println("Vậy Hãy Nhập Lại Mã Đơn Hàng Chính Xác");
-                            System.out.print("→ ");
-                            temp = scanner.nextLine();
-                            break;
-                        case 0:
-                            System.out.println("Đã thoát!");
-                            flag = true;
-                            break;
-                        default:
-                            System.out.println("Không hợp lệ hãy nhập lại!");
-                            break;
-                    }
-                } while (choice != 0 && choice != 1);
-            }
-        } while (flag != true);
-        ghifileord();
-    }
-
-    public void sapxepdonhang(){
-        Order.sapxepngay(orderList);
-    }
-
-    public void timkiem(Scanner scanner) { // Tìm kiếm đơn hàng theo nhiều khóa
-        Order.loc(scanner, orderList);
-    }
-
     public void thongkeDoanhThu(Scanner scanner) {
         byte i = 0;
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US); // chuyển định dạng xuất có , ngăn cách hàng nghìn, trăm, triệu
@@ -229,7 +149,7 @@ public class Store {
         // Lặp qua các phần tử trong mảng
         for (double mang : Order.thongkeQUY(orderList,n)) {
             String formattedAmount = numberFormat.format(mang);
-            System.out.printf("%20s║   Quý %-5d ║ %-27s ║\n", " ", (i + 1), formattedAmount);
+            System.out.printf("%20s║   Quý %-5d ║ %-27s ║\n", " ", (i + 1), formattedAmount+"đ");
             i++;
         }
         
@@ -246,10 +166,10 @@ public class Store {
             n = Integer.parseInt(scanner.nextLine());
         }
         System.out.println("╔══════════════════════╦══════════════════════╗");
-        System.out.println("║     Tên Sản Phẩm     ║     Số Lượng Bán     ║");
+        System.out.println("║      Mã Sản Phẩm     ║     Số Lượng Bán     ║");
         System.out.println("╠══════════════════════╬══════════════════════╣");
         for (int i = 0; i < n; i++) {
-            System.out.printf("║   %-19s║           %-11s║\n", Order.thongkeBanChay(orderList)[i].getName(),
+            System.out.printf("║   %-19s║           %-11s║\n", Order.thongkeBanChay(orderList)[i].getProductID(),
                     Order.thongkeBanChay(orderList)[i].getQuantity());
             if (i < n - 1) {
                 System.out.println("╠══════════════════════╬══════════════════════╣");
@@ -534,34 +454,38 @@ public class Store {
 
 
     /* Các thao tác cho HÓA ĐƠN START */
-    public void xuatHoaDon(String staffID){
+    public void GiaoDichMoi(Scanner scanner, String staffID){
+            orderList=Order.themgiaodich(scanner, orderList);
+            ghifileord(); //ghi vào đơn hàng đã nhập để thống kê sau
+            boolean flag=false; //kiểm tra xem mã khách hàng có trùng ko, nếu trùng thì tăng điểm, nếu không trùng thì tạo KH mới
+            for(int i=0;i<customers.length;i++){
+                if(customers[i].getCustomerID()==(orderList[orderList.length-1].customer.getCustomerID())){
+                    customers[i].setLoyaltyPoints(orderList[orderList.length-1].customer.getLoyaltyPoints());
+                    flag=true;
+                    break;
+                }
+            }
+            if(!flag){
+                customers=Customer.themCustomers(customers, orderList[orderList.length-1].customer);
+            }
+            ghifilecus();
+            receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner,staffID);
+            ghihoadon();
+    }
+    
+    public void xuatHoaDon(){
         for(Receipt rc: receipts){
-            rc.inHoaDon(staffID);
+            rc.inHoaDon();
         }
     }
-
-    public void themHoaDon(Scanner scanner){
-        receipts=Receipt.themhoadon(receipts, scanner, orderList);
-        ghihoadon();
-        for(Receipt rc: receipts){
-            orderList= Order.capnhatlaiOrders(orderList,rc.giaodich.donhang.getOrderId());
-        }
-        ghifileord();
-    }
-
+    
     public void xoaHoaDon(Scanner scanner){
         receipts=Receipt.xoahoadon(receipts, scanner);
         ghihoadon();
     }
 
-    public void suaHoaDon(Scanner scanner, String staffID){
-        System.out.print("Nhập id hóa đơn mà bạn muốn chỉnh sửa: ");
-        receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner, staffID);
-        ghihoadon();
-    }
-
-    public void timHoaDon(Scanner scanner, String staffID){
-        Receipt.locHoaDon(scanner, receipts,staffID);
+    public void timHoaDon(Scanner scanner){
+        Receipt.locHoaDon(scanner, receipts);
     }
 
     public void ghihoadon(){
@@ -578,23 +502,6 @@ public class Store {
         Receipt.xemlichsugiaodich();
     }
 
-    public void GiaoDichMoi(Scanner scanner){
-        System.out.print("Bạn muốn thêm bao nhiêu giao dịch ?: ");
-        int n = Integer.parseInt(scanner.nextLine());
-        while(n<0){
-            System.out.println("Không hợp lệ, hãy nhập lại");
-            n=Integer.parseInt(scanner.nextLine());
-        }
-        for(int i=0;i<n;i++){
-            orderList=Order.themgiaodich(scanner, orderList);
-            ghifileord();
-            receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner);
-            /*System.out.println(orderList[orderList.length-1].getOrderId());
-            orderList=Order.capnhatlaiOrders(orderList, orderList[orderList.length-1].getOrderId());
-            ghifileord();*/
-            ghihoadon();
-        }
-    }
     /* các thao tác cho hóa đơn END */
 
     /* cac thao tac cho Import START*/
@@ -617,6 +524,9 @@ public class Store {
     public void statisticImportByQuantity(Scanner scanner){
         ImportManager.statisticImportByQuantity(scanner);
     }
+//    public void averageStatistic(Scanner scanner){
+//        ImportManager.averageStatistic(scanner);
+//    }
     //Ghi file
     public void writeFileImport(){
         Import.writeFile("import.txt");
@@ -652,6 +562,6 @@ public class Store {
                 return acc;
             }
         }
-        return accList[0];
+        return null;
     }
 }
