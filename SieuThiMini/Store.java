@@ -71,16 +71,12 @@ public class Store {
         managers.search();
     }
 
-    public void XuatTK() {
+    public void XuatTK(){
         accounts.getdetail();
     }
 
     public void ThemTK() {
         accounts.add();
-    }
-
-    public void XoaTK() {
-        accounts.remove();
     }
 
     public void SuaTK() {
