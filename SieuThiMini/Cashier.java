@@ -121,21 +121,29 @@ public class Cashier extends Staff {
             return;
         }
     
-        System.out.println("Danh sách nhân viên thu ngân");
-        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤════════════════════════════════╗");
-        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", " Số ngày công (trong tháng)");
-        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪════════════════════════════════╣");
+        System.out.println("Danh sách ca làm của nhân viên");
+        System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤═════════════╤════════════════════════════════╗");
+        System.out.printf("║ %-10s │ %-30s │ %-15s │ %-11s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", "Số ngày công (tháng 11)");
+        System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪═════════════╪════════════════════════════════╣");
     
         for (Cashier cashier : cashiers) {
-            System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30d ║\n",
+
+            String calam;
+            if(cashier.getShift().equals("A")){
+                calam = cashier.getShift() + " (7h-15h)";
+            }else {
+                calam = cashier.getShift() + " (14h-22h)";
+            }
+
+            System.out.printf("║ %-10s │ %-30s │ %-15s │ %-11s │ %-30d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
-                    cashier.getShift(),
+                    calam,
                     cashier.getNumWorkingDays());
         }
     
-        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧════════════════════════════════╝");
+        System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧═════════════╧════════════════════════════════╝");
     }
     
     // Phương thức thêm một Cashier mới vào danh sách
@@ -278,37 +286,48 @@ public class Cashier extends Staff {
             }
         }
 
-        if(count == 0){
-
-            System.out.print("Nhập mã nhân viên bạn muốn xóa lịch làm: ");
-            String cashierID = sc.nextLine();
-
-            // Duyệt qua mảng cashiers để tìm và xóa thu ngân
-            int newSize = 0;
-            for (Cashier cashier : cashiers) {
-                if (!cashier.getCashierID().equals(cashierID)) {
-                    newSize++;
-                }
+        if (count == 0) {
+            System.out.print("Bạn có muốn thay đổi ca làm không? (Y/N): ");
+            String changeShiftResponse = sc.nextLine();
+            
+            while(!changeShiftResponse.equalsIgnoreCase("Y") && !changeShiftResponse.equalsIgnoreCase("N")){
+                System.out.print("Lựa chọn của bạn không hợp lệ, mời nhập lại: ");
+                changeShiftResponse = sc.nextLine();
             }
 
-            if (newSize == cashiers.length) {
-                System.out.println("Không tìm thấy nhân viên với mã: " + cashierID);
-            } else {
-                // Tạo mảng mới và sao chép các thu ngân không bị xóa
-                Cashier[] updatedCashiers = new Cashier[newSize];
-                int index = 0;
-
+            if (changeShiftResponse.equalsIgnoreCase("Y")) {
+                System.out.print("Nhập mã nhân viên bạn muốn xóa lịch làm: ");
+                String cashierID = sc.nextLine();
+        
+                // Duyệt qua mảng cashiers để tìm và xóa thu ngân
+                int newSize = 0;
                 for (Cashier cashier : cashiers) {
                     if (!cashier.getCashierID().equals(cashierID)) {
-                        updatedCashiers[index++] = cashier;
+                        newSize++;
                     }
                 }
-
-                // Ghi lại dữ liệu vào file
-                writeToFile("CashierList.txt", updatedCashiers);
-                System.out.println("Nhân viên với mã " + cashierID + " đã được xóa lịch làm.");
+        
+                if (newSize == cashiers.length) {
+                    System.out.println("Không tìm thấy nhân viên với mã: " + cashierID);
+                } else {
+                    // Tạo mảng mới và sao chép các thu ngân không bị xóa
+                    Cashier[] updatedCashiers = new Cashier[newSize];
+                    int index = 0;
+        
+                    for (Cashier cashier : cashiers) {
+                        if (!cashier.getCashierID().equals(cashierID)) {
+                            updatedCashiers[index++] = cashier;
+                        }
+                    }
+        
+                    // Ghi lại dữ liệu vào file
+                    writeToFile("CashierList.txt", updatedCashiers);
+                    System.out.println("Nhân viên với mã " + cashierID + " đã được xóa lịch làm.");
+                }
+            } else {
+                System.out.println("Bạn đã chọn không thay đổi ca làm.");
             }
-        }
+        }        
     }
         
 
@@ -469,17 +488,25 @@ public class Cashier extends Staff {
     
             // Nếu tất cả tiêu chí khớp, in ra thông tin thu ngân
             if (match) {
+
+                String calam;
+                if(cashier.getShift().equals("A")){
+                    calam = cashier.getShift() + " (7h-15h)";
+                }else {
+                    calam = cashier.getShift() + " (14h-22h)";
+                }
+
                 found = true;
-                System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤════════════════════════════════╗");
-                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", " Số ngày công (trong tháng)");
-                System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪════════════╪════════════════════════════════╣");
-                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30d ║\n",
+                System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤═════════════╤════════════════════════════════╗");
+                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-11s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", " Số ngày công (trong tháng)");
+                System.out.println("╠════════════╪════════════════════════════════╪═════════════════╪═════════════╪════════════════════════════════╣");
+                System.out.printf("║ %-10s │ %-30s │ %-15s │ %-11s │ %-30d ║\n",
                     cashier.getCashierID(),
                     cashier.getCashierName(),
                     cashier.getRole(),
-                    cashier.getShift(),
+                    calam,
                     cashier.getNumWorkingDays());
-                System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧════════════╧════════════════════════════════╝");
+                System.out.println("╚════════════╧════════════════════════════════╧═════════════════╧═════════════╧════════════════════════════════╝");
 
             }
         }
@@ -488,7 +515,7 @@ public class Cashier extends Staff {
         if (!found) {
             System.out.println("╔════════════╤════════════════════════════════╤═════════════════╤════════════╤════════════════════════════════╗");
             System.out.printf("║ %-10s │ %-30s │ %-15s │ %-10s │ %-30s ║\n", "Mã NV", "Họ Tên", "Vai trò", "Ca Làm", " Số ngày công (trong tháng)");
-            System.out.println("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+            System.out.println("╠════════════╧════════════════════════════════╧═════════════════╧════════════╧════════════════════════════════╣");
             System.out.printf("║ %-108s║\n","Không tìm thấy nhân viên");
             System.out.println("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
 
