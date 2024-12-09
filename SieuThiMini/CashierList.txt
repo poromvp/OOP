@@ -1,0 +1,18 @@
+NV1001 Nguyen Minh Khoa Saler A 23
+QL1002 Le Thi Thu Manager B 26
+NK1004 Pham Thi Hoa Warehouseman A 24
+NV1005 Bui Van An Saler A 20
+QL1006 Tran Thi Bich Manager B 18
+NV1007 Le Van Cuong Saler A 22
+NV1008 Nguyen Thi Lan Saler A 25
+NK1009 Pham Van Duc Warehouseman A 30
+NV1010 Nguyen Minh Tu Saler A 20
+QL1011 Le Thi Mai Manager B 18
+NV1012 Hoang Thi Lan Saler A 22
+NK1013 Phan Minh Anh Warehouseman B 25
+NV1014 Dao Thanh Son Saler A 30
+QL1015 Duong Thi Hoa Manager B 18
+NV1016 Le Quach Khang Saler a 30
+NK0098 Duong Thi Hong Nhat Warehouseman A 30
+QL3452 Duong Tang Ngoc Ngoc Manager B 28
+NV0764 Tang Thien Dat Saler B 23
