@@ -530,9 +530,9 @@ public class Store {
 
 
     /* Các thao tác cho HÓA ĐƠN START */
-    public void xuatHoaDon(String staffID){
+    public void xuatHoaDon(){
         for(Receipt rc: receipts){
-            rc.inHoaDon(staffID);
+            rc.inHoaDon();
         }
     }
 
@@ -550,14 +550,14 @@ public class Store {
         ghihoadon();
     }
 
-    public void suaHoaDon(Scanner scanner, String staffID){
+    public void suaHoaDon(Scanner scanner){
         System.out.print("Nhập id hóa đơn mà bạn muốn chỉnh sửa: ");
-        receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner, staffID);
+        receipts=Receipt.suahoadon(receipts, scanner.nextLine(), scanner);
         ghihoadon();
     }
 
-    public void timHoaDon(Scanner scanner, String staffID){
-        Receipt.locHoaDon(scanner, receipts,staffID);
+    public void timHoaDon(Scanner scanner){
+        Receipt.locHoaDon(scanner, receipts);
     }
 
     public void ghihoadon(){
@@ -574,22 +574,26 @@ public class Store {
         Receipt.xemlichsugiaodich();
     }
 
-    public void GiaoDichMoi(Scanner scanner){
-        System.out.print("Bạn muốn thêm bao nhiêu giao dịch ?: ");
-        int n = Integer.parseInt(scanner.nextLine());
-        while(n<0){
-            System.out.println("Không hợp lệ, hãy nhập lại");
-            n=Integer.parseInt(scanner.nextLine());
-        }
-        for(int i=0;i<n;i++){
+    public void GiaoDichMoi(Scanner scanner, String staffID){
             orderList=Order.themgiaodich(scanner, orderList);
             ghifileord();
-            receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner);
+            boolean flag=false;
+            for(int i=0;i<customers.length;i++){
+                if(customers[i].getCustomerID()==(orderList[orderList.length-1].customer.getCustomerID())){
+                    customers[i].setLoyaltyPoints(orderList[orderList.length-1].customer.getLoyaltyPoints());
+                    flag=true;
+                    break;
+                }
+            }
+            if(!flag){
+                customers=Customer.themCustomers(customers, orderList[orderList.length-1].customer);
+            }
+            ghifilecus();
+            receipts=Receipt.taogiaodich(receipts, orderList[orderList.length-1],scanner,staffID);
             /*System.out.println(orderList[orderList.length-1].getOrderId());
             orderList=Order.capnhatlaiOrders(orderList, orderList[orderList.length-1].getOrderId());
             ghifileord();*/
             ghihoadon();
-        }
     }
     /* các thao tác cho hóa đơn END */
 

@@ -971,7 +971,11 @@ public class Order implements QLFile {
                 j--;
                 continue;
             }
-            
+            if(Product.getProductById(id).getProductID().equals("SP000")){
+                System.out.printf("%30sMã Sản Phẩm Không Hợp Lệ, Hãy Nhập Lại\n", " ");
+                j--;
+                continue;
+            }
             if (Product.getProductById(id).getQuantity() == 0) {
                 System.out.println("Sản phẩm này đã hết hàng, vui vòng nhập mã SP khác");
                 j--;
@@ -1020,7 +1024,9 @@ public class Order implements QLFile {
             orderList[i].product[j].setQuantity(sl); // set số lượng mua
         }
         orderList[i].customer.setLoyaltyPoints(orderList[i].customer.calculateLoyaltyPoints(orderList[i]));
-        orderList[i].customer.writeToFile("customers.txt");
+        //Customer.getCustomerById(orderList[i].customer.getCustomerID()).setLoyaltyPoints(n);
+        //orderList[i].customer.writeToFile("customers.txt");
+        //orderList[i].customer.capnhatlaiCustomers(cusId, orderList[i].customer.getLoyaltyPoints());
         return orderList;
     }
 }

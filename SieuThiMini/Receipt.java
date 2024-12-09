@@ -12,12 +12,12 @@ import java.util.Date;
 import java.util.Random;
 
 public class Receipt implements QLFile {
+    
     public Transaction giaodich;
     public Discount discount;
     public String maHoaDon;
-    public Manager NV;
+    public String MaNV;
     public Receipt() {
-        NV = new Manager();
         giaodich = new Transaction();
         discount = new Discount();
     }
@@ -26,7 +26,14 @@ public class Receipt implements QLFile {
         this.maHoaDon = maHoaDon;
         this.giaodich = giaodich;
     }
+    
+    public String getMaNV() {
+        return MaNV;
+    }
 
+    public void setMaNV(String maNV) {
+        MaNV = maNV;
+    }
     public void setMaHoaDon(String maHoaDon) {
         this.maHoaDon = maHoaDon;
     }
@@ -35,13 +42,13 @@ public class Receipt implements QLFile {
         return maHoaDon;
     }
 
-    public void inHoaDon(String staffID) {
+    public void inHoaDon() {
         int i = 0;
         System.out.printf("╔══════════════════════════════════════════════════════════════════╗\n");
         System.out.printf("║%28s%-20s%18s║\n", " ", getMaHoaDon(), " ");
         System.out.printf("╠══════════════════════════════════════════════════════════════════╣\n");
         System.out.printf("║  Ngày thanh toán: %45s  ║\n", giaodich.donhang.getOrderDate());
-        System.out.printf("║  Th.Ngân: %-55s║\n", NV.getName());
+        System.out.printf("║  Th.Ngân: %-55s║\n", Store.getAccountById(MaNV).getName());
         System.out.printf("║  Tên KhH: %-15s%38s  ║\n", giaodich.donhang.customer.getName(),
                 "Mã KhH: " + giaodich.donhang.customer.getCustomerID());
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
@@ -103,18 +110,13 @@ public class Receipt implements QLFile {
         return randomString.toString();
     }
 
-    public static Receipt[] taogiaodich(Receipt[] receipts, Order or, Scanner scanner) {
+    public static Receipt[] taogiaodich(Receipt[] receipts, Order or, Scanner scanner, String idNV) {
         receipts = Arrays.copyOf(receipts, receipts.length + 1);
         int i = receipts.length - 1;
         receipts[i] = new Receipt();
 
-        System.out.print("Nhập mã nhân viên: ");
-        String idNV=scanner.nextLine();
-        while(Manager.getManagerbyID(idNV)==null){
-            System.out.println("Mã Nhân Viên Này Không Có Trong Danh Sách, Hãy Nhập Lại!");
-            idNV=scanner.nextLine();
-        }
-        receipts[i].NV=new Manager(Manager.getManagerbyID(idNV).getStaffID(),Manager.getManagerbyID(idNV).getName(),Manager.getManagerbyID(idNV).getRole(),Manager.getManagerbyID(idNV).getSalary(),Manager.getManagerbyID(idNV).getContactNum());
+        //lấy mã nhân viên hiện tại đang làm hóa đơn
+        receipts[i].MaNV=Store.getAccountById(idNV).getAccount();
 
         String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int length = 8;
@@ -180,7 +182,7 @@ public class Receipt implements QLFile {
             receipts[i].giaodich.phuongThucThanhToan = new CashPayment(tien); // Đa hình
         }
         receipts[i].giaodich.getPhuongThucThanhToan().setSoTien(tien);
-
+        receipts[i].inHoaDon();
         return receipts;
     }
 
@@ -314,7 +316,7 @@ public class Receipt implements QLFile {
         return receipts;
     }
 
-    public static Receipt[] suahoadon(Receipt[] receipts, String editID, Scanner scanner, String staffID) {
+    public static Receipt[] suahoadon(Receipt[] receipts, String editID, Scanner scanner) {
         // Tìm kiếm hóa đơn theo ID
         Receipt hoadon = null;
         for (Receipt rc : receipts) {
@@ -325,7 +327,7 @@ public class Receipt implements QLFile {
         }
 
         if (hoadon != null) {
-            hoadon.inHoaDon(staffID);
+            hoadon.inHoaDon();
             System.out.println("\nNhấn Enter để giữ nguyên thông tin hiện tại.");
 
             // Cập nhật mã hóa đơn
@@ -426,7 +428,7 @@ public class Receipt implements QLFile {
         return receipts; // Trả về danh sách khách hàng sau khi cập nhật
     }
 
-    public static void locHoaDon(Scanner scanner, Receipt[] receipts, String staffID) {
+    public static void locHoaDon(Scanner scanner, Receipt[] receipts) {
         System.out.println();
         System.out.printf("%20s╔═════════════════════════════════════════════════════════════════╗\n", "");
         System.out.printf("%20s║                        TÌM KIẾM HÓA ĐƠN                         ║\n", "");
@@ -549,7 +551,7 @@ public class Receipt implements QLFile {
         } else {
             System.out.println("\nDanh sách hóa đơn:\n");
             for (Receipt rc : result) {
-                rc.inHoaDon(staffID);
+                rc.inHoaDon();
             }
         }
     }
@@ -567,7 +569,7 @@ public class Receipt implements QLFile {
             return false;
         if (idcus != 0 && receipt.giaodich.donhang.customer.getCustomerID() != idcus)
             return false;
-        if (idNV != null && !receipt.NV.getStaffID().equalsIgnoreCase(idNV))
+        if (idNV != null && !Store.getAccountById(receipt.getMaNV()).getAccount().equalsIgnoreCase(idNV))
             return false;
 
         if (pthuc_thanh_toan != null) {
@@ -662,7 +664,7 @@ public class Receipt implements QLFile {
                 receipts[i] = new Receipt();
                 String[] parts = Line.split(";");
                 receipts[i].maHoaDon = parts[0];
-                receipts[i].NV=new Manager(Manager.getManagerbyID(parts[1]).getStaffID(),Manager.getManagerbyID(parts[1]).getName(),Manager.getManagerbyID(parts[1]).getRole(), Manager.getManagerbyID(parts[1]).getSalary(), Manager.getManagerbyID(parts[1]).getContactNum());
+                receipts[i].MaNV=parts[1];
                 receipts[i].giaodich.donhang = new Order(parts[2],
                         receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getOrderDate(),
                         receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getCustomer(),
@@ -724,7 +726,7 @@ public class Receipt implements QLFile {
     @Override
     public void writeToFile(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-            writer.write(getMaHoaDon()+";"+NV.getStaffID()
+            writer.write(getMaHoaDon()+";"+ MaNV
                     + ";" + giaodich.donhang.getOrderId()
                     + ";");
             if (giaodich.getPhuongThucThanhToan() instanceof CardPayment) {
@@ -743,7 +745,7 @@ public class Receipt implements QLFile {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("lichsugiaodich.txt", true))) {
 
             writer.write(
-                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên: " +NV.getName()
+                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên: "+ Store.getAccountById(MaNV).getName()
                             + "\nNgày Giao Dịch: \t" + giaodich.donhang.getOrderDate()
                             + "\nPhuong Thuc Thanh Toan: \n" + giaodich.phuongThucThanhToan.xuLyThanhToan());
             writer.newLine();

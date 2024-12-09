@@ -76,6 +76,18 @@ public class Customer implements QLFile {
                 " ");
     }
 
+    public static Customer[] themCustomers(Customer[] customers, Customer cusThem){
+        customers=Arrays.copyOf(customers, customers.length+1);
+        int i=customers.length-1;
+        customers[i]=new Customer(
+            cusThem.getCustomerID(),
+            cusThem.getName(),
+            cusThem.getContactNumber(),
+            cusThem.getLoyaltyPoints());
+        System.out.println("Them thanh cong");
+        return customers;
+    }
+
     // Phương thức thêm khách hàng vào danh sách (3)
     public static Customer[] addCustomers(Customer[] customers, Scanner scanner) {
         System.out.print("Nhập số lượng khách hàng cần thêm: ");
@@ -404,4 +416,25 @@ public class Customer implements QLFile {
         }
         return 0.0; // Nếu không có order, không áp dụng giảm giá
     }
+    /*public void capnhatlaiCustomers(int idCus, int point){
+        Customer[] a=readFromFile("customers.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("customers.txt", true))) {
+            boolean flag=false;
+            for(int i=0;i<a.length;i++){
+                if(a[i].getCustomerID()==idCus){
+                    System.out.println("Trùng");
+                    writer.write(getCustomerID() + "," + getName() + "," + getContactNumber() + "," + point);
+                    writer.newLine();
+                    flag=true;
+                    break;
+                }
+            }
+            if(!flag){
+                writer.write(getCustomerID() + "," + getName() + "," + getContactNumber() + "," + point);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }*/
 }
