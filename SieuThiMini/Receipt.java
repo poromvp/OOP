@@ -7,7 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 import java.util.Date;
 
 import java.util.Random;
@@ -494,116 +493,12 @@ public class Receipt implements QLFile {
         return true;
     }
 
-    @Override
-    public Receipt[] readFromFile(String filename) { // file hoadon.txt có định dạng là
-                                                     // mã hóa đơn;mã đơn hàng;phương thức thanh toán(card\cash);số
-                                                     // tiền;số thẻ (hoặc để trống nếu là cash)
-        Receipt[] receipts;
-        int n = 0, i = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String Line;
-            while ((Line = br.readLine()) != null) {
-                n++;
-            }
-            br.close();
-            Line = Line + "line"; // Để cho nó không hiện broblem isn't used nữa
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        receipts = new Receipt[n];
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String Line;
-            while ((Line = br.readLine()) != null) {
-                receipts[i] = new Receipt();
-                String[] parts = Line.split(";");
-                receipts[i].maHoaDon = parts[0];
-                receipts[i].MaNV = parts[1];
-                receipts[i].giaodich.donhang = new Order(parts[2],
-                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getOrderDate(),
-                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getCustomer(),
-                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getProductList());
-
-                if (parts[3].equals("Card")) {
-                    receipts[i].giaodich.phuongThucThanhToan = new CardPayment(Double.parseDouble(parts[4]), parts[5]);
-                } else if (parts[3].equals("Cash")) {
-                    receipts[i].giaodich.phuongThucThanhToan = new CashPayment(Double.parseDouble(parts[4]));
-                }
-
-                String daytmp = receipts[i].giaodich.donhang.getOrderDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Định dạng ngày
-                Date date;
-                try {
-                    date = sdf.parse(daytmp); // Chuyển đổi từ String thành Date
-                } catch (ParseException e) {
-                    date = null;
-                    System.out.println("Lỗi không định dạng được ngày: " + e.getMessage());
-                }
-
-                if (receipts[i].discount.getDiscountByDay(date) == null) { // kiểm tra xem ngày có nằm trong thời gian
-                                                                           // discount ko
-                    receipts[i].discount.setDiscountPercentage(0);
-                } else {
-                    receipts[i].discount = receipts[i].discount.getDiscountByDay(date);
-                }
-
-                i++;
-
-            }
-            br.close();
-            Line = Line + "line"; // Để cho nó không hiện broblem isn't used nữa
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return receipts;
-    }
-
     public static void xoaNoiDungFile(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             // Mở file ở chế độ ghi đè nhưng không ghi gì cả
             writer.close();
         } catch (IOException e) {
             System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
-        }
-    }
-
-    public static void xoaNoiDungFilelichsugiaodich(String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
-            // Mở file ở chế độ ghi đè nhưng không ghi gì cả
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void writeToFile(String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-            writer.write(getMaHoaDon() + ";" + MaNV
-                    + ";" + giaodich.donhang.getOrderId()
-                    + ";");
-            if (giaodich.getPhuongThucThanhToan() instanceof CardPayment) {
-                writer.write("Card" + ";" + giaodich.getPhuongThucThanhToan().getSoTien() + ";"
-                        + ((CardPayment) giaodich.getPhuongThucThanhToan()).getSoThe());
-            } else {
-                writer.write("Cash" + ";" + giaodich.getPhuongThucThanhToan().getSoTien());
-            }
-            writer.newLine();
-
-        } catch (IOException e) {
-            System.out.println("Lỗi khi ghi file: " + e.getMessage());
-        }
-
-        // ghi vào file lichsugiaodich.txt để lưu lại lịch sử giao dịch
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("lichsugiaodich.txt", true))) {
-
-            writer.write(
-                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên:\t" + Store.getAccountById(MaNV).getName()
-                            + "\nNgày Giao Dịch:\t" + giaodich.donhang.getOrderDate()
-                            + "\nPhuong Thuc Thanh Toan: \n" + giaodich.phuongThucThanhToan.xuLyThanhToan());
-            writer.newLine();
-
-        } catch (IOException e) {
-            System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
 
@@ -630,7 +525,7 @@ public class Receipt implements QLFile {
                 }
                 i++;
             }
-
+            
             writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
             writer.write(String.format("║  Thành Tiền                                   %,-19.2f║\n",
                     giaodich.donhang.calculateTotalAmount()));
@@ -718,41 +613,85 @@ public class Receipt implements QLFile {
         }
     }
 
-    public static void xemlichsugiaodich() {
-        int kichthuoc = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
+    @Override
+    public Receipt[] readFromFile(String filename) { // file hoadon.txt có định dạng là
+                                                     // mã hóa đơn;mã đơn hàng;phương thức thanh toán(card\cash);số
+                                                     // tiền;số thẻ (hoặc để trống nếu là cash)
+        Receipt[] receipts;
+        int n = 0, i = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String Line;
             while ((Line = br.readLine()) != null) {
-                kichthuoc++;
+                n++;
             }
             br.close();
             Line = Line + "line"; // Để cho nó không hiện broblem isn't used nữa
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        String[] ds = new String[kichthuoc];
-
-        try (BufferedReader br = new BufferedReader(new FileReader("lichsugiaodich.txt"))) {
+        receipts = new Receipt[n];
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String Line;
-            int i = 0;
             while ((Line = br.readLine()) != null) {
-                ds[i] = Line;
+                receipts[i] = new Receipt();
+                String[] parts = Line.split(";");
+                receipts[i].maHoaDon = parts[0];
+                receipts[i].MaNV = parts[1];
+                receipts[i].giaodich.donhang = new Order(parts[2],
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getOrderDate(),
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getCustomer(),
+                        receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getProductList());
+    
+                if (parts[3].equals("Card")) {
+                    receipts[i].giaodich.phuongThucThanhToan = new CardPayment(Double.parseDouble(parts[4]), parts[5]);
+                } else if (parts[3].equals("Cash")) {
+                    receipts[i].giaodich.phuongThucThanhToan = new CashPayment(Double.parseDouble(parts[4]));
+                }
+    
+                String daytmp = receipts[i].giaodich.donhang.getOrderDate();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Định dạng ngày
+                Date date;
+                try {
+                    date = sdf.parse(daytmp); // Chuyển đổi từ String thành Date
+                } catch (ParseException e) {
+                    date = null;
+                    System.out.println("Lỗi không định dạng được ngày: " + e.getMessage());
+                }
+    
+                if (receipts[i].discount.getDiscountByDay(date) == null) { // kiểm tra xem ngày có nằm trong thời gian
+                                                                           // discount ko
+                    receipts[i].discount.setDiscountPercentage(0);
+                } else {
+                    receipts[i].discount = receipts[i].discount.getDiscountByDay(date);
+                }
+    
                 i++;
+    
             }
             br.close();
             Line = Line + "line"; // Để cho nó không hiện broblem isn't used nữa
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.printf("%40s\n\n", "LỊCH SỬ GIAO DỊCH");
-        int i = 0;
-        for (String ls : ds) {
-            i++;
-            System.out.println(ls);
-            if (i % 5 == 0) {
-                System.out.println();
+        return receipts;
+    }
+
+    @Override
+    public void writeToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            writer.write(getMaHoaDon() + ";" + MaNV
+                    + ";" + giaodich.donhang.getOrderId()
+                    + ";");
+            if (giaodich.getPhuongThucThanhToan() instanceof CardPayment) {
+                writer.write("Card" + ";" + giaodich.getPhuongThucThanhToan().getSoTien() + ";"
+                        + ((CardPayment) giaodich.getPhuongThucThanhToan()).getSoThe());
+            } else {
+                writer.write("Cash" + ";" + giaodich.getPhuongThucThanhToan().getSoTien());
             }
+            writer.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
 }
