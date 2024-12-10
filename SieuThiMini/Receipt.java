@@ -7,26 +7,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.Date;
 
 import java.util.Random;
 
 public class Receipt implements QLFile {
-    
+
     public Transaction giaodich;
     public Discount discount;
     public String maHoaDon;
     public String MaNV;
+
     public Receipt() {
-        giaodich = new Transaction();
-        discount = new Discount();
+        this.giaodich = new Transaction();
+        this.discount = new Discount();
     }
 
     public Receipt(String maHoaDon, Transaction giaodich) {
         this.maHoaDon = maHoaDon;
         this.giaodich = giaodich;
     }
-    
+
     public String getMaNV() {
         return MaNV;
     }
@@ -34,6 +36,7 @@ public class Receipt implements QLFile {
     public void setMaNV(String maNV) {
         MaNV = maNV;
     }
+
     public void setMaHoaDon(String maHoaDon) {
         this.maHoaDon = maHoaDon;
     }
@@ -67,9 +70,9 @@ public class Receipt implements QLFile {
         System.out.printf("║  Thành Tiền                                   %,-19.2f║\n",
                 giaodich.donhang.calculateTotalAmount());
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
-        double tien_giam_theo_point=giaodich.donhang.customer.isLoyaltyPoints(giaodich.donhang);
-            System.out.printf("║  Sau Khi Giảm Theo Point                      %,-19.2f║\n",
-                    tien_giam_theo_point);
+        double tien_giam_theo_point = giaodich.donhang.customer.isLoyaltyPoints(giaodich.donhang);
+        System.out.printf("║  Sau Khi Giảm Theo Point                      %,-19.2f║\n",
+                tien_giam_theo_point);
         System.out.printf("║  ══════════════════════════════════════════════════════════════  ║\n");
         if (discount.getDiscountPercentage() != 0) { // Nếu có chương trình giảm giá
             double tien_sau_khi_giam_gia = tien_giam_theo_point
@@ -115,8 +118,8 @@ public class Receipt implements QLFile {
         int i = receipts.length - 1;
         receipts[i] = new Receipt();
 
-        //lấy mã nhân viên hiện tại đang làm hóa đơn
-        receipts[i].MaNV=Store.getAccountById(idNV).getAccount();
+        // lấy mã nhân viên hiện tại đang làm hóa đơn
+        receipts[i].MaNV = Store.getAccountById(idNV).getAccount();
 
         String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int length = 8;
@@ -158,10 +161,11 @@ public class Receipt implements QLFile {
         } else {
             receipts[i].discount = receipts[i].discount.getDiscountByDay(date);
         }
-        // Tiền hàng sau khi giảm = (Tổng tiền hàng sau khi giảm theo point) * (1 - Phần trăm giảm) + Tiền VAT
+        // Tiền hàng sau khi giảm = (Tổng tiền hàng sau khi giảm theo point) * (1 - Phần
+        // trăm giảm) + Tiền VAT
         double tien,
-                tien_hang_sau_khi_giam = (receipts[i].giaodich.donhang.customer.isLoyaltyPoints(receipts[i].giaodich.donhang)
-                        )
+                tien_hang_sau_khi_giam = (receipts[i].giaodich.donhang.customer
+                        .isLoyaltyPoints(receipts[i].giaodich.donhang))
                         * (1.0 - receipts[i].discount.getDiscountPercentage() / 100.0);
         tien_hang_sau_khi_giam += Order.calculateVAT(tien_hang_sau_khi_giam);
 
@@ -182,15 +186,19 @@ public class Receipt implements QLFile {
             receipts[i].giaodich.phuongThucThanhToan = new CashPayment(tien); // Đa hình
         }
         receipts[i].giaodich.getPhuongThucThanhToan().setSoTien(tien);
-        receipts[i].inHoaDon();
+        receipts[i].inHoaDon(); //xuất hóa đơn ra
+        receipts[i].inHoaDonToFile(); //ghi thêm hóa đơn vào file receipt để khi xóa sản phẩm thì hóa đơn cũng sẽ không thay đổi
         return receipts;
     }
 
-    public static Receipt[] xoahoadon(Receipt[] receipts, Scanner scanner) {
+    public static Receipt[] xoahoadon(Receipt[] receipts, Scanner scanner, Order[] orders) {
         System.out.println("Nhập mã hóa đơn bạn muốn xóa: ");
         boolean flag = false; // Tạo lính canh để kiểm tra nếu sau khi duyệt mà nó còn false thì sẽ cho nhập
                               // lại cho đúng
         byte choice = 0, so_lan_thu = 0;
+
+        String[] mang_hoa_don = docFileTraVeString(receipts.length); //đọc file receipt.txt để tiến hành cập nhật lại mảng
+
         do {
             so_lan_thu++;
             String temp = scanner.nextLine();
@@ -204,13 +212,34 @@ public class Receipt implements QLFile {
             }
             if (flag) {
                 if (pos == receipts.length - 1) {
-                    receipts = Arrays.copyOf(receipts, receipts.length - 1);
+                    orders=Arrays.copyOf(orders, orders.length-1); //xóa mảng order
+                    mang_hoa_don = Arrays.copyOf(mang_hoa_don, mang_hoa_don.length - 1); //xóa mảng chuỗi hóa đơn
+                    receipts = Arrays.copyOf(receipts, receipts.length - 1); //xóa mảng hóa đơn
+                    ghiFile(mang_hoa_don); //sau khi xóa mảng chuỗi hóa đơn thì ghi đè vào lại
+
+                    Order tam=new Order();
+                    tam.xoaNoiDungFile("donhang.txt");
+                    for(int i=0;i<orders.length;i++){ //cập nhật lại mảng donhang
+                        orders[i].writeToFile("donhang.txt");
+                    }
+
                     System.out.println("Đã xóa hóa đơn");
                 } else {
                     for (int i = pos; i < receipts.length - 1; i++) {
+                        orders[i] = orders[i+1];
+                        mang_hoa_don[i] = mang_hoa_don[i + 1];
                         receipts[i] = receipts[i + 1];
                     }
-                    receipts = Arrays.copyOf(receipts, receipts.length - 1);
+                    orders=Arrays.copyOf(orders, orders.length-1);//xóa mảng order
+                    mang_hoa_don = Arrays.copyOf(mang_hoa_don, mang_hoa_don.length - 1);//xóa mảng chuỗi hóa đơn
+                    receipts = Arrays.copyOf(receipts, receipts.length - 1);//xóa mảng hóa đơn
+                    ghiFile(mang_hoa_don);//sau khi xóa mảng chuỗi hóa đơn thì ghi đè vào lại
+
+                    Order tam=new Order();
+                    tam.xoaNoiDungFile("donhang.txt");
+                    for(int i=0;i<orders.length;i++){ //cập nhật lại mảng donhang
+                        orders[i].writeToFile("donhang.txt");
+                    }
                     System.out.println("Đã xóa hóa đơn");
                 }
                 break;
@@ -219,11 +248,16 @@ public class Receipt implements QLFile {
                 System.out.println("Bạn đã nhập sai quá nhiều lần. Đang thoát...");
                 break;
             }
-            System.out.println("╔══════════════════════════════════════════════════════════════════════════════════════════╗");
-            System.out.println("║ Mã Hóa Đơn Mà Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Xóa Hóa Đơn Không? ║");
-            System.out.println("║                                                                                          ║");
-            System.out.println("║                          1. CÓ                        0. KHÔNG                           ║");
-            System.out.println("╚══════════════════════════════════════════════════════════════════════════════════════════╝");
+            System.out.println(
+                    "╔══════════════════════════════════════════════════════════════════════════════════════════╗");
+            System.out.println(
+                    "║ Mã Hóa Đơn Mà Bạn Nhập Không Có Trong Danh Sách, Bạn Có Muốn Tiếp Tục Xóa Hóa Đơn Không? ║");
+            System.out.println(
+                    "║                                                                                          ║");
+            System.out.println(
+                    "║                          1. CÓ                        0. KHÔNG                           ║");
+            System.out.println(
+                    "╚══════════════════════════════════════════════════════════════════════════════════════════╝");
 
             do {
                 System.out.print("\n→ ");
@@ -282,7 +316,7 @@ public class Receipt implements QLFile {
         String endDate = scanner.nextLine();
         if (endDate.isEmpty())
             endDate = null;
-        
+
         System.out.print("Tên khách hàng: ");
         String nameCustomer = scanner.nextLine();
         if (nameCustomer.isEmpty())
@@ -357,7 +391,7 @@ public class Receipt implements QLFile {
 
         for (Receipt rc : receipts) {
             if (isInvoiceMatch(rc, maHoaDon, orderDate, nameCustomer, nameProduct, quantityProduct, priceProduct,
-                    tienKhachDua, orId, idcus, pthuc_thanh_toan, maSoThe, tienKhachChuyen,startDate, endDate, idNV)) {
+                    tienKhachDua, orId, idcus, pthuc_thanh_toan, maSoThe, tienKhachChuyen, startDate, endDate, idNV)) {
                 filteredInvoices[count++] = rc;
             }
         }
@@ -376,7 +410,8 @@ public class Receipt implements QLFile {
 
     private static boolean isInvoiceMatch(Receipt receipt, String maHoaDon, String orderDate,
             String nameCustomer, String nameProduct, int quantityProduct, int priceProduct, double tienKhachDua,
-            String orId, int idcus, String pthuc_thanh_toan, String masothe, double tienKhachChuyen, String startDate, String endDate, String idNV) {
+            String orId, int idcus, String pthuc_thanh_toan, String masothe, double tienKhachChuyen, String startDate,
+            String endDate, String idNV) {
         if (maHoaDon != null && !receipt.maHoaDon.equals(maHoaDon))
             return false;
         if (orderDate != null && !receipt.giaodich.donhang.getOrderDate().equals(orderDate))
@@ -419,14 +454,14 @@ public class Receipt implements QLFile {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 Date receiptDate = sdf.parse(receipt.giaodich.donhang.getOrderDate());
-        
+
                 if (startDate != null) {
                     Date start = sdf.parse(startDate);
                     if (receiptDate.before(start)) {
                         return false;
                     }
                 }
-        
+
                 if (endDate != null) {
                     Date end = sdf.parse(endDate);
                     if (receiptDate.after(end)) {
@@ -438,7 +473,7 @@ public class Receipt implements QLFile {
                 return false;
             }
         }
-        
+
         // Kiểm tra sản phẩm
         boolean productMatch = false;
         for (Product pr : receipt.giaodich.donhang.product) {
@@ -482,7 +517,7 @@ public class Receipt implements QLFile {
                 receipts[i] = new Receipt();
                 String[] parts = Line.split(";");
                 receipts[i].maHoaDon = parts[0];
-                receipts[i].MaNV=parts[1];
+                receipts[i].MaNV = parts[1];
                 receipts[i].giaodich.donhang = new Order(parts[2],
                         receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getOrderDate(),
                         receipts[i].giaodich.donhang.getOrderbyID(parts[2]).getCustomer(),
@@ -543,7 +578,7 @@ public class Receipt implements QLFile {
     @Override
     public void writeToFile(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-            writer.write(getMaHoaDon()+";"+ MaNV
+            writer.write(getMaHoaDon() + ";" + MaNV
                     + ";" + giaodich.donhang.getOrderId()
                     + ";");
             if (giaodich.getPhuongThucThanhToan() instanceof CardPayment) {
@@ -562,13 +597,124 @@ public class Receipt implements QLFile {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("lichsugiaodich.txt", true))) {
 
             writer.write(
-                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên:\t"+ Store.getAccountById(MaNV).getName()
+                    "Mã Hóa Đơn:\t" + getMaHoaDon() + "\nTên Nhân Viên:\t" + Store.getAccountById(MaNV).getName()
                             + "\nNgày Giao Dịch:\t" + giaodich.donhang.getOrderDate()
                             + "\nPhuong Thuc Thanh Toan: \n" + giaodich.phuongThucThanhToan.xuLyThanhToan());
             writer.newLine();
 
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
+
+    public void inHoaDonToFile() { //ghi hóa đơn vào file chuỗi
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("receipt.txt", true))) {
+            int i = 0;
+            writer.write("╔══════════════════════════════════════════════════════════════════╗\n");
+            writer.write(String.format("║%28s%-20s%18s║\n", " ", getMaHoaDon(), " "));
+            writer.write("╠══════════════════════════════════════════════════════════════════╣\n");
+            writer.write(String.format("║  Ngày thanh toán: %45s  ║\n", giaodich.donhang.getOrderDate()));
+            writer.write(String.format("║  Th.Ngân: %-55s║\n", Store.getAccountById(MaNV).getName()));
+            writer.write(String.format("║  Tên KhH: %-15s%38s  ║\n",
+                    giaodich.donhang.customer.getName(),
+                    "Mã KhH: " + giaodich.donhang.customer.getCustomerID()));
+            writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
+            writer.write("║  Tên Sản Phẩm           SL        Giá          Tổng Tiền         ║\n");
+
+            for (Product pr : giaodich.donhang.product) {
+                writer.write(String.format("║  %-20s   %-5d    %,-10d   %,-19.2f║\n",
+                        pr.getName(), pr.getQuantity(), pr.getPrice(),
+                        (double) pr.getPrice() * pr.getQuantity()));
+                if (i < giaodich.donhang.product.length - 1) {
+                    writer.write("║  ..............................................................  ║\n");
+                }
+                i++;
+            }
+
+            writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
+            writer.write(String.format("║  Thành Tiền                                   %,-19.2f║\n",
+                    giaodich.donhang.calculateTotalAmount()));
+            writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
+
+            double tien_giam_theo_point = giaodich.donhang.customer.isLoyaltyPoints(giaodich.donhang);
+            writer.write(String.format("║  Sau Khi Giảm Theo Point                      %,-19.2f║\n",
+                    tien_giam_theo_point));
+            writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
+
+            if (discount.getDiscountPercentage() != 0) { // Nếu có chương trình giảm giá
+                double tien_sau_khi_giam_gia = tien_giam_theo_point * (1.0 - discount.getDiscountPercentage() / 100);
+                writer.write(String.format("║  %-23s                      %,-19.2f║\n",
+                        discount.getName(), tien_sau_khi_giam_gia));
+                writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
+                writer.write(String.format("║  Tổng Thanh Toán (Có VAT)                     %,-19.2f║\n",
+                        tien_sau_khi_giam_gia + Order.calculateVAT(tien_sau_khi_giam_gia)));
+                writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
+                writer.write(String.format("║  %-64s║\n", giaodich.phuongThucThanhToan.xuLyThanhToan()));
+                writer.write(String.format("║  Tiền Thối Lại                                %,-19.2f║\n",
+                        giaodich.phuongThucThanhToan.getSoTien()
+                                - (tien_sau_khi_giam_gia + Order.calculateVAT(tien_sau_khi_giam_gia))));
+            } else {
+                double so_tien_sau_VAT = tien_giam_theo_point + Order.calculateVAT(tien_giam_theo_point);
+                writer.write(
+                        String.format("║  Tổng Thanh Toán (Có VAT)                     %,-19.2f║\n", so_tien_sau_VAT));
+                writer.write("║  ══════════════════════════════════════════════════════════════  ║\n");
+                writer.write(String.format("║  %-64s║\n", giaodich.phuongThucThanhToan.xuLyThanhToan()));
+                writer.write(String.format("║  Tiền Thối Lại                                %,-19.2f║\n",
+                        giaodich.phuongThucThanhToan.getSoTien() - so_tien_sau_VAT));
+            }
+
+            writer.write("╚══════════════════════════════════════════════════════════════════╝\n" +
+                    ">------------------------------------------------------------------<\n");
+        } catch (IOException e) {
+            System.err.println("Lỗi khi ghi vào file: " + e.getMessage());
+        }
+    }
+
+    public static void docVaInFile() { //đọc từng chuỗi và in hóa đơn ra 
+        try (BufferedReader reader = new BufferedReader(new FileReader("receipt.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Lỗi khi đọc file: " + e.getMessage());
+        }
+    }
+
+    public static String[] docFileTraVeString(int n) { // đọc lại file và tách nó và trả về mảng chuỗi các hóa đơn
+        try (BufferedReader reader = new BufferedReader(new FileReader("receipt.txt"))) {
+            StringBuilder temp = new StringBuilder();
+            String line;
+
+            // Đọc toàn bộ nội dung file
+            while ((line = reader.readLine()) != null) {
+                temp.append(line).append("\n");
+            }
+            String chuoi = temp.toString();
+
+            String ngan_cach = ">------------------------------------------------------------------<";
+
+            String[] mang_hoa_don = chuoi.split(ngan_cach);
+            mang_hoa_don=Arrays.copyOf(mang_hoa_don, n);
+            return mang_hoa_don; // Trả về mảng String[]
+
+        } catch (IOException e) {
+            System.err.println("Lỗi khi đọc file: " + e.getMessage());
+            return new String[0];
+        }
+    }
+
+    public static void ghiFile(String[] mangHoaDon) { // ghi đè lên file chuỗi hóa đơn để cập nhật lại mỗi khi xóa 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("receipt.txt"))) {
+            // Lặp qua từng phần tử trong mảng và ghi vào file
+            for (int i = 0; i < mangHoaDon.length; i++) {
+                writer.write(mangHoaDon[i]);
+                // Nếu không phải phần tử cuối, thêm dấu phân cách vào sau
+                writer.write(">------------------------------------------------------------------<");
+            }
+            writer.write("\n");
+        } catch (IOException e) {
+            System.err.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }
 
