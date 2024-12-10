@@ -474,13 +474,11 @@ public class Store {
     }
     
     public void xuatHoaDon(){
-        for(Receipt rc: receipts){
-            rc.inHoaDon();
-        }
+        Receipt.docVaInFile();
     }
     
     public void xoaHoaDon(Scanner scanner){
-        receipts=Receipt.xoahoadon(receipts, scanner);
+        receipts=Receipt.xoahoadon(receipts, scanner,orderList);
         ghihoadon();
     }
 

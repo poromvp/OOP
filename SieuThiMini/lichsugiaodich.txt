@@ -23,13 +23,3 @@ Tên Nhân Viên:	Nguyen Minh Khoa
 Ngày Giao Dịch:	05/12/2024
 Phuong Thuc Thanh Toan: 
 Thanh toán qua thẻ: 666 với số tiền:         14,726.25đ
-Mã Hóa Đơn:	HDY7TI2ueF
-Tên Nhân Viên:	Nguyen Minh Khoa
-Ngày Giao Dịch:	10/12/2024
-Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 321645 với số tiền:         91,162.50đ
-Mã Hóa Đơn:	HDKftlW9lQ
-Tên Nhân Viên:	Nguyen Minh Khoa
-Ngày Giao Dịch:	10/12/2024
-Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:         80,000.00đ

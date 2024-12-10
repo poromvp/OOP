@@ -519,11 +519,10 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s%s","","╔════════════════════════════════════════╗\n");
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ BÁN HÀNG");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Tạo giao dịch mới");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xuất hóa đơn");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Bán hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xuất các hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Xóa hóa đơn");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Tìm kiếm hóa đơn");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "5.", "Xem lịch sử giao dịch");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -541,9 +540,6 @@ public class ChayChuongTrinh {
                     break;
                 case 4:
                     store.timHoaDon(scanner);
-                    break;
-                case 5:
-                    store.xem();
                     break;
                 case 0:
                     break;
