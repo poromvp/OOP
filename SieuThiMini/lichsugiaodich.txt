@@ -2,29 +2,34 @@ Mã Hóa Đơn:	HDw77d66cA
 Tên Nhân Viên:	Nguyen Minh Khoa
 Ngày Giao Dịch:	06/01/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 546 với số tiền:         49.087,50đ
+Thanh toán qua thẻ: 546 với số tiền:         49,087.50đ
 Mã Hóa Đơn:	HDFS6TcbvO
 Tên Nhân Viên:	Nguyen Minh Khoa
 Ngày Giao Dịch:	20/11/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 123 với số tiền:         28.050,00đ
+Thanh toán qua thẻ: 123 với số tiền:         28,050.00đ
 Mã Hóa Đơn:	HDBsOkwklm
 Tên Nhân Viên:	Nguyen Minh Khoa
 Ngày Giao Dịch:	03/11/2022
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 232 với số tiền:         38.335,00đ
+Thanh toán qua thẻ: 232 với số tiền:         38,335.00đ
 Mã Hóa Đơn:	HD8S65cbv1
 Tên Nhân Viên:	Nguyen Minh Khoa
 Ngày Giao Dịch:	14/06/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 121 với số tiền:         62.645,00đ
+Thanh toán qua thẻ: 121 với số tiền:         62,645.00đ
 Mã Hóa Đơn:	HD2sOk6kam
 Tên Nhân Viên:	Nguyen Minh Khoa
 Ngày Giao Dịch:	05/12/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán qua thẻ: 666 với số tiền:         14.726,25đ
-Mã Hóa Đơn:	HD2waakW9W
+Thanh toán qua thẻ: 666 với số tiền:         14,726.25đ
+Mã Hóa Đơn:	HDY7TI2ueF
 Tên Nhân Viên:	Nguyen Minh Khoa
-Ngày Giao Dịch:	09/12/2024
+Ngày Giao Dịch:	10/12/2024
 Phuong Thuc Thanh Toan: 
-Thanh toán bằng tiền mặt với số tiền:         100.000,00đ
+Thanh toán qua thẻ: 321645 với số tiền:         91,162.50đ
+Mã Hóa Đơn:	HDKftlW9lQ
+Tên Nhân Viên:	Nguyen Minh Khoa
+Ngày Giao Dịch:	10/12/2024
+Phuong Thuc Thanh Toan: 
+Thanh toán bằng tiền mặt với số tiền:         80,000.00đ

@@ -262,9 +262,9 @@ public class ChayChuongTrinh {
             System.out.printf("%-20s║ %-8s %-29s ║\n","","" ,"QUẢN LÝ KHÁCH HÀNG");
             System.out.printf("%-20s%s","","╠════════════════════════════════════════╣\n");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "1.", "Xem danh sách KHÁCH HÀNG");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa khách hàng");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Sửa khách hàng");
-            System.out.printf("%-20s║ %-2s %-35s ║\n","", "4.", "Tìm kiếm khách hàng");
+           // System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Xóa khách hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "2.", "Sửa khách hàng");
+            System.out.printf("%-20s║ %-2s %-35s ║\n","", "3.", "Tìm kiếm khách hàng");
             System.out.printf("%-20s║ %-2s %-35s ║\n","", "0.", "Thoát");
             System.out.printf("%-20s%s","","╚════════════════════════════════════════╝\n");
             System.out.print("Lựa chọn của bạn: ");
@@ -274,15 +274,15 @@ public class ChayChuongTrinh {
                 case 1:
                     store.xuatDanhSachKhachHang();
                     break;
-                case 2:
+                /*case 2:
                     // Xóa khách hàng (theo mã)
                     store.xoaKhachHang(scanner);
-                    break;
-                case 3:
+                    break;*/
+                case 2:
                     // Sửa khách hàng (theo mã)
                     store.capNhatKhachHang(scanner);
                     break;
-                case 4:
+                case 3:
                     // Tìm kiếm khách hàng (theo mã)
                     store.timKhachHang(scanner);
                     break;

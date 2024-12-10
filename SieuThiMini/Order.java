@@ -413,15 +413,14 @@ public class Order implements QLFile {
         orderList[i].customer.setLoyaltyPoints(orderList[i].customer.calculateLoyaltyPoints(orderList[i]));
         //Customer.getCustomerById(orderList[i].customer.getCustomerID()).setLoyaltyPoints(n);
         //orderList[i].customer.writeToFile("customers.txt");
-        //orderList[i].customer.capnhatlaiCustomers(cusId, orderList[i].customer.getLoyaltyPoints());
 
-        // Tăng điểm tích lũy cho khách hàng
+        /*// Tăng điểm tích lũy cho khách hàng
         if (orderList[i].getCustomer() != null) {
             orderList[i].getCustomer().setLoyaltyPoints(
                 orderList[i].getCustomer().calculateLoyaltyPoints(orderList[i])
             );
             System.out.println("Điểm tích lũy của khách hàng đã được cập nhật.");
-        }
+        }*/
 
         return orderList;
     }
