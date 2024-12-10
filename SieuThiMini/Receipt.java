@@ -493,17 +493,7 @@ public class Receipt implements QLFile {
         return true;
     }
 
-    
     public static void xoaNoiDungFile(String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
-            // Mở file ở chế độ ghi đè nhưng không ghi gì cả
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Lỗi khi xóa dữ liệu trong file: " + e.getMessage());
-        }
-    }
-
-    public static void xoaNoiDungFilelichsugiaodich(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             // Mở file ở chế độ ghi đè nhưng không ghi gì cả
             writer.close();
