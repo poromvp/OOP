@@ -489,15 +489,10 @@ public class Store {
     public void ghihoadon(){
         String filename="hoadon.txt";
         Receipt.xoaNoiDungFile(filename);
-        Receipt.xoaNoiDungFilelichsugiaodich("lichsugiaodich.txt");
         for(Receipt rc:receipts){
             rc.writeToFile(filename);
         }
-        System.out.println("Đã ghi vào file hoadon.txt và lichsugiaodich.txt");
-    }
-
-    public void xem(){
-        Receipt.xemlichsugiaodich();
+        System.out.println("Đã ghi vào file hoadon.txt");
     }
 
     /* các thao tác cho hóa đơn END */
